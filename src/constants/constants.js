@@ -9,5 +9,6 @@ export class Constants{
     REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME = "Password and Confirm Password should be same.";
     TERMS_CONDITIONS = "Please accept terms & conditions.";
     MOBILE_NUMBER_FORMAT = "Phone number is invalid. Please enter in the following format [+][country code][area code][phone number]";
+    USER_NAME_EXISTS = 'Username already in use';
     
 }

@@ -86,3 +86,6 @@ label {
     color: #ffffff;
     outline: none;
 }
+.parentContainerLogin  {
+    margin: 30px !important;
+}

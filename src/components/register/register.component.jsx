@@ -19,7 +19,9 @@ class RegisterComponent extends Component{
             confirmPassword:'',
             password:'',
             errorMessage:'',
-            isRememberMe: false
+            isRememberMe: false,
+            userNameExists:'',
+            userAccessId: ''
         }
         this.navigateToLogin = this.navigateToLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -27,12 +29,33 @@ class RegisterComponent extends Component{
         this.removeImageBtn = this.removeImageBtn.bind(this);
         this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
         this.signUpFn = this.signUpFn.bind(this);
+        this.checkUserNameExists = this.checkUserNameExists.bind(this);
+        this.checkValidations = this.checkValidations.bind(this);
     }
 
+    //Reset all state values to default value.
+    componentWillUnmount() {
+        this.setState({
+            userImageName: '',
+            currentUserImage: userDefaultImage,
+            email:'',
+            userName:'',
+            mobileNumber:'',
+            confirmPassword:'',
+            password:'',
+            errorMessage:'',
+            isRememberMe: false,
+            userNameExists:'',
+            userAccessId: ''
+        });
+    }
+
+    //USer profile pic upload.
     handleChange(event) {
         let reader = new FileReader();
         if(event.target.files && event.target.files.length > 0) {
             this.imageFile = event.target.files[0];
+            //Change user profile image size limit here.
             if(this.imageFile.size <=1600000) {
                 reader.readAsDataURL(this.imageFile);
                 this.setState({
@@ -49,11 +72,15 @@ class RegisterComponent extends Component{
         }
     }
 
+    //Onchange event for all input text boxes.
     handleInputChangeEvent(event,type) {
         switch(type) {
             case 'username':
+                //Add username value to state
+                //Clear the username exists message
                 this.setState({
-                    userName: event.target.value
+                    userName: event.target.value,
+                    userNameExists: ''
                 })
                 break;
             case 'password':
@@ -76,36 +103,84 @@ class RegisterComponent extends Component{
                     isRememberMe : event.target.checked
                 });
                 break;
+            default:
+                // do nothing
         }
         this.setState({
             errorMessage: ''
         })
     }
 
+    //Check username exists
+    checkUserNameExists() {
+        let username = this.state.userName;
+        if(username !== null) {
+            let obj = {username:username}
+            this.Fsnethttp.checkUserName(obj).then(result=>{
+                if(result && result.usernameAvaliable) {
+                    this.setState({
+                        userNameExists: ''
+                    })
+                }
+            })
+            .catch(error=>{
+                if(error) {
+                    this.setState({
+                        userNameExists: this.Constants.USER_NAME_EXISTS
+                    })
+                }
+            });
+        }
+    }
+
+    //signup button click functionality
     signUpFn() {
+        let error = this.checkValidations();
+        if(!error) {
+            //call the signup api
+            let errorObj = {username:this.state.userName,password:this.state.password, confirmPassword:this.state.confirmPassword,rememberme:this.state.isRememberMe, email:this.state.email, id:this.state.userAccessId};
+            if(this.state.userImageName !== '') {
+                errorObj['userPic'] = this.state.currentUserImage
+            }
+            console.log(errorObj);
+        }
+    }
+
+    checkValidations() {
         let errosArr = [];
-        if(this.state.password != this.state.confirmPassword) {
+        //Check password and confirm password is same.
+        //If both passwords are not same then show the error.
+        if(this.state.password !== this.state.confirmPassword) {
             errosArr.push(this.Constants.REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME)
         } 
+
+        //Need to agree FSNET's Terms of service checkbox
         if(!this.state.isRememberMe) {
             errosArr.push(this.Constants.TERMS_CONDITIONS)
         }
+
+        //Phone number validation
+        //Change the regex if needed to support below format
+        //[+][country code][area code][phone number]
         let phoneNumberRegex = /^\+[1-9]{1}[0-9]{3,14}$/;
         if(!phoneNumberRegex.test(this.state.mobileNumber)) {
             errosArr.push(this.Constants.MOBILE_NUMBER_FORMAT)
         }
 
+        //append all the errors to one string.
         if(errosArr.length >0) {
             let idx = 1;
             let error = '';
             for(let index of errosArr) {
                 error = error+idx+'. '+index+"\n";
                 idx++;
-
             }
             this.setState({
                 errorMessage: error
             })
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -126,22 +201,30 @@ class RegisterComponent extends Component{
         let url = window.location.href;
         let getId = url.split('id=');
         let userAccessId = getId[1];
+        //In register url get the id to get the user details
+        //If id is not present in url then redirect to 404.
         if(userAccessId) {
             this.Fsnethttp.getInviationData(userAccessId).then(result=>{
                 if(result.data) {
                     this.setState({
-                        email:result.data.data.email
+                        email:result.data.data.email,
+                        userAccessId:userAccessId
                     })
                 }
                 this.close();
             })
             .catch(error=>{
-                console.log(error)
                 this.close();
+                this.props.history.push('/404');
             });
+        } else {
+            this.props.history.push('/404');
         }
     }
 
+    //Clear the image when user click on remove button
+    //Clear the image name from state
+    //Clear the input file value
     removeImageBtn() {
         this.setState({
             userImageName: '',
@@ -154,6 +237,7 @@ class RegisterComponent extends Component{
         document.getElementById('uploadBtn').click();
     }
 
+    //Naviage to sign
     navigateToLogin() {
         this.props.history.push('/login');
     }
@@ -166,7 +250,7 @@ class RegisterComponent extends Component{
                         <div className="logo cursor">FSNET LOGO</div>
                     </Col>
                     <Col className="content">
-                        <div className="homeLink cursor">Home</div>
+                        <div className="homeLink cursor"><a href="/login">Home</a></div>
                     </Col>
                 </Row>
                 <Row className="registerContainer">
@@ -176,7 +260,8 @@ class RegisterComponent extends Component{
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Username</label>
-                                <input type="text" name="username" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')}/>
+                                <input type="text" name="username" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
+                                <span className="error">{this.state.userNameExists}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Email Address</label>
@@ -202,7 +287,7 @@ class RegisterComponent extends Component{
                         <label className="profile-text">Profile Picture:(Image must not exceed 160x160)</label>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <img src={this.state.currentUserImage} className="profile-pic"/>
+                                <img src={this.state.currentUserImage} alt="profile-pic" className="profile-pic"/>
                                 <span className="profilePicName">{this.state.userImageName}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
@@ -213,7 +298,7 @@ class RegisterComponent extends Component{
                         </Row>
                         <CBox id="rememberme" className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'isRememberMe')}>
                         </CBox>
-                        <label className="rememberLabel">By Checking this box you agree to <a>FSNET's Terms of service</a></label>
+                        <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label>
                         <pre className="error">{this.state.errorMessage}</pre>
                         <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
                         <label className="already-text" onClick={this.navigateToLogin}> Already have an account? Sign In</label>

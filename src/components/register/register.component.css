@@ -36,6 +36,10 @@
     color: #2f4858;
     float: right;
 }
+.homeLink a {
+    text-decoration: none !important;
+    color: #2f4858 !important;
+}
 .cursor {
     cursor: pointer;
 }
@@ -150,7 +154,7 @@
 .signupBtn {
     width: 290px;
     height: 48px;
-    background-color: #f5f5f5;;
+    background-color:  #bdbdbd;
     font-family: OpenSans;
     font-weight: bold !important;
     font-style: normal;
@@ -160,9 +164,12 @@
     text-align: center;
     color: #ffffff;
     border-radius: 40px !important;
-    font-size: 25px !important;
+    font-size: 20px !important;
     margin-top: 20px;
     display: block !important;
+}
+.btn {
+    box-shadow: initial !important;
 }
 .already-text {
     width: 250px;
@@ -193,5 +200,10 @@
 @media only screen and (min-width: 1025px) {
     .width40 {
         max-width: 400px !important;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .registerContainer, .parentDiv {
+        margin-left: 0px !important;
     }
 }
