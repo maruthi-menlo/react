@@ -10,8 +10,23 @@
     letter-spacing: normal;
     color: #39bcd5;
 }
+#loginForm {
+    margin: 20px;
+}
+.forgot-pwd {
+    height: 24px;
+    text-align: center;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+}
 .labelSignIn {
-    width: 330px;
     height: 32px;
     font-family: OpenSans;
     font-size: 20px;
@@ -21,6 +36,7 @@
     line-height: 1.6;
     letter-spacing: normal;
     color: #2f4858;
+    text-align: center;
 }
 .formContainer  {
     width: 450px;
@@ -46,7 +62,7 @@
 }
 .formControl {
     width: 370px;
-    height: 24px;
+    height: 40px;
     opacity: 0.25;
     font-family: OpenSans;
     font-size: 16px;
