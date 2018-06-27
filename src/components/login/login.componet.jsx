@@ -31,30 +31,34 @@ class LoginComponent extends Component{
 
     render(){
         return(
-            <Row className="parentContainerLogin">                    
-                <Col className="loginContainer" md={8} lg={6} sm={12} xs={12}>
-                    <Row>
-                        <div className="fsnet-logo">FSNET LOGO</div>
-                        <Col lg={9} md={9} sm={9} xs={10} className="formContainer">
-                            <p className="labelSignIn">Already Have an account? Sign In</p>
-                            <Form horizontal id="loginForm">
-                                <FormGroup controlId="username">
-                                    <ControlLabel className="labelFormControl">Username</ControlLabel>
-                                    <FormControl type="text" placeholder="Username" className="formControl"/>
-                                </FormGroup>
-                                <FormGroup controlId="password">
-                                    <ControlLabel className="labelFormControl">Password</ControlLabel>
-                                    <FormControl type="password" placeholder="Password"  className="formControl"/>
-                                </FormGroup>
-                                <CBox id="rememberme" className="cbRemeberMe">
-                                    &nbsp; Remember Username?
-                                </CBox>
-                                <Button className="btnText" onClick={this.loginFn}>Sign In</Button>
-                            </Form>
-                            <Loader isShow={this.state.showModal}></Loader>
-                        </Col>
-                    </Row>
-                </Col>
+            <Row>                    
+                <Row className="mainContainer">
+                    <div className="fsnet-logo">FSNET LOGO</div>
+                </Row>
+                <Row className="mainContainer">
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                        <p className="content-heading">Nam dapibus nisl vitae elit fringilla rutrum. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium metus, quis mollis nisl nunc et massa.</p>
+                        <p className="content-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. <br/>Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida.</p>
+                    </Col>
+                    <Col lg={6} md={6} sm={6} xs={12} className="formContainer">
+                        <p className="labelSignIn">Already Have an account? Sign In</p>
+                        <Form horizontal id="loginForm">
+                            <FormGroup controlId="username">
+                                <ControlLabel className="labelFormControl">Username</ControlLabel>
+                                <FormControl type="text" placeholder="Username" className="formControl"/>
+                            </FormGroup>
+                            <FormGroup controlId="password">
+                                <ControlLabel className="labelFormControl">Password</ControlLabel>
+                                <FormControl type="password" placeholder="Password"  className="formControl"/>
+                            </FormGroup>
+                            <CBox id="rememberme" className="cbRemeberMe">
+                                &nbsp; Remember Username?
+                            </CBox>
+                            <Button className="btnText" onClick={this.loginFn}>Sign In</Button>
+                        </Form>
+                        <Loader isShow={this.state.showModal}></Loader>
+                    </Col>
+                </Row>
             </Row>
         );
     }
