@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './login.component.css';
-import { Row, Col, Grid, Form, FormGroup, Checkbox as CBox, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import { Row, Col, Form, FormGroup, Checkbox as CBox, FormControl, ControlLabel, Button} from 'react-bootstrap';
 import Loader from '../../widgets/loader/loader.component';
 
 class LoginComponent extends Component{
@@ -46,17 +46,17 @@ class LoginComponent extends Component{
                             <Form horizontal id="loginForm">
                                 <FormGroup controlId="username">
                                     <ControlLabel className="labelFormControl">Username</ControlLabel>
-                                    <FormControl type="text" placeholder="Username" className="formControl"/>
+                                    <FormControl type="text" placeholder="Username" className="formControl" autoComplete="off"/>
                                 </FormGroup>
                                 <FormGroup controlId="password">
                                     <ControlLabel className="labelFormControl">Password</ControlLabel>
-                                    <FormControl type="password" placeholder="Password"  className="formControl"/>
+                                    <FormControl type="password" placeholder="Password"  className="formControl" autoComplete="off"/>
                                 </FormGroup>
-                                <CBox id="rememberme" className="cbRemeberMe">
+                                <CBox className="loginRemeberMe">
                                     &nbsp; Remember Username?
                                 </CBox>
                                 <Button className="btnText" onClick={this.loginFn}>Sign In</Button>
-                                <div className="forgot-pwd"><a>Forgot Password?</a></div>
+                                <div className="forgot-pwd"><a href="/forgot-password">Forgot Password?</a></div>
                             </Form>
                         </div>
                         <Loader isShow={this.state.showModal}></Loader>

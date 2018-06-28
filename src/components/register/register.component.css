@@ -146,6 +146,12 @@
     display: inline;
     margin-right: 10px;
 }
+#rememberme {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 6px;
+}
 .rememberLabel a {
     color: #39bcd5 !important;
     text-decoration: underline !important;
@@ -205,5 +211,22 @@
 @media only screen and (max-width: 1024px) {
     .registerContainer, .parentDiv {
         margin-left: 0px !important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .inputFormControl {
+        width: 100% !important;
+    }
+    .profile-Row {
+        text-align: center;
+    }
+    .removeBtn {
+        margin-left: 0px;
+    }
+    .rememberLabel {
+        display: inline !important;
+    }
+    .uploadFile  {
+        margin-top: 10px;
     }
 }

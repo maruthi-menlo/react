@@ -24,7 +24,11 @@
     font-stretch: normal;
     line-height: 1.5;
     letter-spacing: normal;
-    color: #2f4858;
+    color: #2f4858 !important;
+}
+.forgot-pwd a {
+    color: #2f4858 !important;
+    text-decoration: none !important;
 }
 .labelSignIn {
     height: 32px;
@@ -37,10 +41,11 @@
     letter-spacing: normal;
     color: #2f4858;
     text-align: center;
+    margin-top: 20px;
 }
 .formContainer  {
     width: 450px;
-    height: 533px;
+    min-height: 400px;
     opacity: 0.95;
     border-radius: 8px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
@@ -48,7 +53,6 @@
     border: solid 1px rgba(74, 74, 74, 0.25);
 }
 .labelFormControl {
-    width: 386px;
     height: 20px;
     opacity: 0.5;
     font-family: OpenSans;
@@ -61,21 +65,25 @@
     color: #2f4858;
 }
 .formControl {
-    width: 370px;
     height: 40px;
     opacity: 0.25;
     font-family: OpenSans;
-    font-size: 16px;
+    font-size: 16px !important;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
     letter-spacing: normal;
-    color: #2f4858;
+    color: #2f4858 !important;
 }
-.cbRemeberMe {
+.loginRemeberMe input{
     width: 24px;
     height: 24px;
+    position: relative;
+    top: 6px;
+}
+.loginRemeberMe  {
+    margin-bottom: 30px;
 }
 label {
     height: 24px;
@@ -89,7 +97,9 @@ label {
     color: #2f4858;
 }
 .btnText {
-    width: 386px;
+    width: 100% !important;
+    margin-bottom: 20px;
+    border-radius: 30px !important;
     height: 48px;
     font-family: OpenSans;
     font-size: 20px !important;
@@ -127,5 +137,20 @@ label {
     font-stretch: normal;
     line-height: 1.5;
     letter-spacing: normal;
-    color: #2f4858;
+    color: #2f4858 !important;
+}
+
+@media only screen and (max-width: 1024px) {
+    .content-heading, .content-text {
+        width: 100% !important;
+        height: auto !important;
+    }
+    .formContainer {
+        width: 100% !important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .labelSignIn {
+        font-size: 16px !important;
+    }
 }

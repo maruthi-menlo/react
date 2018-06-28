@@ -5,6 +5,7 @@ import RegisterComponent from '../components/register/register.component';
 import PageNotFoundComponent from '../components/pagenotfound/pagenotfound.component';
 import DashboardComponent from '../components/dashboard/dashboard.component';
 import TermsAndConditionsComponent from '../components/termsandconditions/termsandconditions.component';
+import ForgotPasswordComponent from '../components/forgotpassword/forgotpassword.component';
 
 class FsnetRouter extends Component{
 
@@ -19,6 +20,7 @@ class FsnetRouter extends Component{
                         <Route path='/404' component={PageNotFoundComponent}/>
                         <Route path='/dashboard' component={DashboardComponent}/>
                         <Route path='/terms-and-conditions' component={TermsAndConditionsComponent}/>
+                        <Route path='/forgot-password' component={ForgotPasswordComponent}/>
                         <Redirect from='*' to='/404'/>
                     </Switch>
                 </div>

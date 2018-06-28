@@ -285,7 +285,7 @@ class RegisterComponent extends Component{
                             </Col>
                         </Row>
                         <label className="profile-text">Profile Picture:(Image must not exceed 160x160)</label>
-                        <Row>
+                        <Row className="profile-Row">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <img src={this.state.currentUserImage} alt="profile-pic" className="profile-pic"/>
                                 <span className="profilePicName">{this.state.userImageName}</span>
@@ -299,7 +299,7 @@ class RegisterComponent extends Component{
                         <CBox id="rememberme" className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'isRememberMe')}>
                         </CBox>
                         <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label>
-                        <pre className="error">{this.state.errorMessage}</pre>
+                        <div className="error">{this.state.errorMessage}</div>
                         <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
                         <label className="already-text" onClick={this.navigateToLogin}> Already have an account? Sign In</label>
                     </div>
