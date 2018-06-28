@@ -23,7 +23,6 @@ class RegisterComponent extends Component{
             userNameExists:'',
             userAccessId: ''
         }
-        this.navigateToLogin = this.navigateToLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
         this.removeImageBtn = this.removeImageBtn.bind(this);
@@ -142,6 +141,7 @@ class RegisterComponent extends Component{
             if(this.state.userImageName !== '') {
                 errorObj['userPic'] = this.state.currentUserImage
             }
+            this.props.history.push('/dashboard');
             console.log(errorObj);
         }
     }
@@ -237,11 +237,6 @@ class RegisterComponent extends Component{
         document.getElementById('uploadBtn').click();
     }
 
-    //Naviage to sign
-    navigateToLogin() {
-        this.props.history.push('/login');
-    }
-
     render(){
         return(
             <div className="parentContainer">            
@@ -301,7 +296,7 @@ class RegisterComponent extends Component{
                         <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label>
                         <div className="error">{this.state.errorMessage}</div>
                         <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
-                        <label className="already-text" onClick={this.navigateToLogin}> Already have an account? Sign In</label>
+                        <label className="signIn-text"> <a href="/login">Already have an account? Sign In</a></label>
                     </div>
                     <Loader isShow={this.state.showModal}></Loader>
                 </Row>

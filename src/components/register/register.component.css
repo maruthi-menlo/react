@@ -151,6 +151,7 @@
     height: 24px;
     position: relative;
     top: 6px;
+    cursor: pointer;
 }
 .rememberLabel a {
     color: #39bcd5 !important;
@@ -177,7 +178,7 @@
 .btn {
     box-shadow: initial !important;
 }
-.already-text {
+.signIn-text {
     width: 250px;
     height: 24px;
     font-family: OpenSans;
@@ -191,6 +192,10 @@
     margin-top: 15px;
     margin-left: 20px;
     cursor: pointer;
+}
+.signIn-text a {
+    color: #39bcd5 !important;
+    text-decoration: none !important;
 }
 .error {
     color: red;

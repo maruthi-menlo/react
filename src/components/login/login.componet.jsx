@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './login.component.css';
 import { Row, Col, Form, FormGroup, Checkbox as CBox, FormControl, ControlLabel, Button} from 'react-bootstrap';
 import Loader from '../../widgets/loader/loader.component';
+import {Constants} from '../../constants/constants';
+import {Fsnethttp} from '../../services/fsnethttp';
 
 class LoginComponent extends Component{
 
@@ -10,13 +12,68 @@ class LoginComponent extends Component{
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.loginFn = this.loginFn.bind(this);
+        this.loginInputHandleEvent = this.loginInputHandleEvent.bind(this);
         this.state = {
             showModal : false,
+            loginUserName:'',
+            loginPassword:'',
+            userNameError: '',
+            passwordError:'',
+            loginRemember: false,
+            loginErrorMsz: '',
         }
+    }
+
+    componentDidMount() {
+        this.Constants = new Constants();
+        this.Fsnethttp = new Fsnethttp();
+    }
+
+    //Reset all state values to default value.
+    componentWillUnmount() {
+        this.setState({
+            showModal : false,
+            loginUserName:'',
+            loginPassword:'',
+            userNameError: '',
+            passwordError:'',
+            loginRemember: false,
+            loginErrorMsz: '',
+        });
     }
     
     loginFn() {
-        this.open();
+        if(this.state.loginUserName && this.state.loginPassword) {
+            this.open();
+            let username = this.state.loginUserName;
+            let password = this.state.loginPassword;
+            let loginRemember = this.state.loginRemember;
+            let loginObj = {username:username, password:password, rememberMe:loginRemember};
+            this.Fsnethttp.login(loginObj).then(result=>{
+                console.log(result);
+                this.close();
+                this.props.history.push('/dashboard');
+            })
+            .catch(error=>{
+                if(error) {
+                    this.close();
+                    this.setState({
+                        loginErrorMsz: this.Constants.INVALID_LOGIN
+                    })
+                }
+            });
+        } else {
+            if(this.state.loginUserName === '') {
+                this.setState({
+                    userNameError: this.Constants.LOGIN_USER_NAME_REQUIRED
+                });
+            } 
+            if(this.state.loginPassword === '') {
+                this.setState({
+                    passwordError: this.Constants.LOGIN_PASSWORD_REQUIRED
+                });
+            }
+        }
     }
 
     // ProgressLoader : close progress loader
@@ -27,6 +84,37 @@ class LoginComponent extends Component{
     // ProgressLoader : show progress loade
     open() {
         this.setState({ showModal: true });
+    }
+
+    //Onchange event for all input text boxes.
+    loginInputHandleEvent(event,type) {
+        //Clear the login error message.
+        this.setState({
+            loginErrorMsz: ''
+        })
+        switch(type) {
+            case 'username':
+                //Add username value to state
+                this.setState({
+                    loginUserName: event.target.value,
+                    userNameError: '',
+                })
+                break;
+            case 'password':
+                //Add password value to state
+                this.setState({
+                    loginPassword: event.target.value,
+                    passwordError:'',
+                })
+                break;
+            case 'isRememberMe':
+                this.setState({
+                    loginRemember : event.target.checked
+                });
+                break;
+            default:
+                // do nothing
+        }
     }
 
     render(){
@@ -43,16 +131,19 @@ class LoginComponent extends Component{
                     <Col lg={6} md={6} sm={6} xs={12}>
                         <div className="formContainer">
                             <p className="labelSignIn">Already Have an account? Sign In</p>
+                            <div className="loginError marginLeft20">{this.state.loginErrorMsz}</div>
                             <Form horizontal id="loginForm">
                                 <FormGroup controlId="username">
                                     <ControlLabel className="labelFormControl">Username</ControlLabel>
-                                    <FormControl type="text" placeholder="Username" className="formControl" autoComplete="off"/>
+                                    <FormControl type="text" placeholder="Username" className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'username')} autoComplete="off"/>
+                                    <div className="loginError">{this.state.userNameError}</div>
                                 </FormGroup>
                                 <FormGroup controlId="password">
                                     <ControlLabel className="labelFormControl">Password</ControlLabel>
-                                    <FormControl type="password" placeholder="Password"  className="formControl" autoComplete="off"/>
+                                    <FormControl type="password" placeholder="Password"  className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'password')} autoComplete="off"/>
+                                    <div className="loginError">{this.state.passwordError}</div>
                                 </FormGroup>
-                                <CBox className="loginRemeberMe">
+                                <CBox className="loginRemeberMe" onChange={(e) => this.loginInputHandleEvent(e,'isRememberMe')}>
                                     &nbsp; Remember Username?
                                 </CBox>
                                 <Button className="btnText" onClick={this.loginFn}>Sign In</Button>

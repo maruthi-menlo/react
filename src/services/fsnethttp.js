@@ -18,4 +18,9 @@ export class Fsnethttp{
         return axios.post(this.Constants.BASE_URL+'isUsernameAvaliable', userName);
     }
 
+    //User login
+    login(userObj) {
+        return axios.post(this.Constants.BASE_URL+'login', userObj);
+    }
+
 }

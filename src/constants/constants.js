@@ -10,5 +10,8 @@ export class Constants{
     TERMS_CONDITIONS = "Please accept terms & conditions.";
     MOBILE_NUMBER_FORMAT = "Phone number is invalid. Please enter in the following format [+][country code][area code][phone number]";
     USER_NAME_EXISTS = 'Username already in use';
+    LOGIN_USER_NAME_REQUIRED = 'Please enter username.';
+    LOGIN_PASSWORD_REQUIRED = 'Please enter password.';
+    INVALID_LOGIN = 'Invalid credentials. Please try again.';
     
 }

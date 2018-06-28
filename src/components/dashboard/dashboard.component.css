@@ -1,0 +1,63 @@
+.dashboardContainer {
+    width: 100%;
+    margin: 0 !important;
+}
+.dashboardContainer  .row {
+    margin: 0 !important;
+}
+.row.fund-container {
+    margin: 0px auto !important;
+    width: 1000px;
+}
+.myFunds {
+    height: 36px;
+    font-family: OpenSans;
+    font-size: 24px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+    color: #2f4858;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.dashboard-filter {
+    width: 24px;
+    height: 24px;
+}
+.filter-mode {
+    height: 17px;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.formFilterControl {
+    display: inline-block !important;
+    width: 288px !important;
+    height: 40px;
+    border-radius: 3px !important;
+    border: solid 1px #526173 !important;
+    box-shadow: initial !important;
+    opacity: 0.25;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-left: 30px;
+}
+@media only screen and (max-width: 480px) {
+    .row.dashboardMainRow {
+        margin: 20px 0px !important;
+    }
+}

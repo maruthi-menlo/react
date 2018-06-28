@@ -9,6 +9,7 @@
     line-height: 1.6;
     letter-spacing: normal;
     color: #39bcd5;
+    cursor: pointer;
 }
 #loginForm {
     margin: 20px;
@@ -65,7 +66,7 @@
     color: #2f4858;
 }
 .formControl {
-    height: 40px;
+    height: 40px !important;
     opacity: 0.25;
     font-family: OpenSans;
     font-size: 16px !important;
@@ -75,15 +76,21 @@
     line-height: 1.5;
     letter-spacing: normal;
     color: #2f4858 !important;
+    border-radius: 3px !important;
+    border: solid 1px #526173 !important;
 }
 .loginRemeberMe input{
     width: 24px;
     height: 24px;
     position: relative;
     top: 6px;
+    cursor: pointer;
 }
 .loginRemeberMe  {
     margin-bottom: 30px;
+}
+.loginRemeberMe  label{
+    cursor: pointer;
 }
 label {
     height: 24px;
@@ -139,7 +146,13 @@ label {
     letter-spacing: normal;
     color: #2f4858 !important;
 }
-
+.loginError {
+    color: red;
+    margin-top: 5px;
+}
+.marginLeft20 {
+    margin-left: 20px;
+}
 @media only screen and (max-width: 1024px) {
     .content-heading, .content-text {
         width: 100% !important;
