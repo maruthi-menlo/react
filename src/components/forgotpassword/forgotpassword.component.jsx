@@ -12,6 +12,38 @@ class ForgotPasswordComponent extends Component{
             showForgotScreen3: false,
             showForgotScreen4: false,
         }
+        this.showForgotScreenFn = this.showForgotScreenFn.bind(this);
+    }
+
+
+    //Show forgot screens based on the screen type.
+    showForgotScreenFn(event, screen) {
+        switch(screen){
+            case 'screen1':
+                this.setState({
+                    showForgotScreen1: false,
+                    showForgotScreen2: true,
+                });
+                break;
+            case 'screen2':
+                this.setState({
+                    showForgotScreen2: false,
+                    showForgotScreen3: true,
+                });
+                break;
+            case 'screen3':
+                this.setState({
+                    showForgotScreen3: false,
+                    showForgotScreen4: true,
+                });
+                break;
+            case 'screen4':
+                this.props.history.push('/login');
+                break;
+            default:
+                // do nothing
+        }
+
     }
 
     render(){
@@ -35,7 +67,7 @@ class ForgotPasswordComponent extends Component{
                                 <input type="text" name="phonenumber" className="forgotFormControl" placeholder="(123)4568-8910"/>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit">Submit</Button> <br/>
+                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen1')}>Submit</Button> <br/>
                             </Row>
                             <label className="cancel-text"> <a href="/login">Cancel</a></label>
                         </Row>
@@ -45,7 +77,7 @@ class ForgotPasswordComponent extends Component{
                                 <input type="text" name="verifyPhoneNumber" className="forgotFormControl"/> <span>Send Code Again</span>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit">Reset Password</Button> <br/>
+                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen2')}>Reset Password</Button> <br/>
                             </Row>
                             <label className="cancel-text"> <a href="/login">Cancel</a></label>
                         </Row>
@@ -57,7 +89,7 @@ class ForgotPasswordComponent extends Component{
                                 <input type="text" name="confirmPassword" className="forgotFormControl"/>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit">Reset Password</Button> <br/>
+                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen3')}>Reset Password</Button> <br/>
                             </Row>
                             <label className="cancel-text"> <a href="/login">Cancel</a></label>
                         </Row>
@@ -67,7 +99,7 @@ class ForgotPasswordComponent extends Component{
                                 <label className="forgot-label-text">Your password has been reset</label>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit">Sign In</Button> <br/>
+                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen4')}>Sign In</Button> <br/>
                             </Row>
                         </Row>
                     </div>
