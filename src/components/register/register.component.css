@@ -1,48 +1,6 @@
 .row {
     width: 100%;
 }
-.parentContainer {
-    margin: 30px;
-}
-.headerContainer {
-    height: 100px;
-}
-.content {
-    width: 50%;
-}
-.logo {
-    width: 200px;
-    height: 32px;
-    font-family: OpenSans;
-    font-size: 20px;
-    font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.6;
-    letter-spacing: normal;
-    color: #39bcd5;
-}
-.homeLink {
-    width: 84px;
-    height: 32px;
-    opacity: 0.5;
-    font-family: OpenSans;
-    font-size: 20px;
-    font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.6;
-    letter-spacing: normal;
-    color: #2f4858;
-    float: right;
-}
-.homeLink a {
-    text-decoration: none !important;
-    color: #2f4858 !important;
-}
-.cursor {
-    cursor: pointer;
-}
 .registerContainer {
     margin-left: 20px !important;
 }
@@ -54,8 +12,20 @@
 .parentDiv {
     margin: 20px 0 0 30px;
 }
+.mandatory-content {
+    height: 20px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-bottom: 10px;
+}
 .register-text {
-    width: 276px;
     height: 32px;
     font-family: OpenSans;
     font-size: 20px;

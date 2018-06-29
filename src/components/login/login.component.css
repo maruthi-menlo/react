@@ -103,7 +103,7 @@ label {
     letter-spacing: normal;
     color: #2f4858;
 }
-.btnText {
+.signinBtn {
     width: 100% !important;
     margin-bottom: 20px;
     border-radius: 30px !important;
@@ -118,9 +118,14 @@ label {
     text-align: center !important;
     color: #ffffff;
     outline: none;
+    background-color: #bdbdbd !important;
 }
 .mainContainer  {
     margin: 30px !important;
+    height: 70px;
+}
+.loginContainer {
+    margin: 30px 30px 30px 10% !important;
 }
 .content-heading {
     width: 530px;
@@ -153,7 +158,7 @@ label {
 .marginLeft20 {
     margin-left: 20px;
 }
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1180px) {
     .content-heading, .content-text {
         width: 100% !important;
         height: auto !important;
@@ -165,5 +170,8 @@ label {
 @media only screen and (max-width: 480px) {
     .labelSignIn {
         font-size: 16px !important;
+    }
+    .mainContainer {
+        height: 20px;
     }
 }

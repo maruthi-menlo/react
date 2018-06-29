@@ -5,6 +5,7 @@ import {Fsnethttp} from '../../services/fsnethttp';
 import {Constants} from '../../constants/constants';
 import userDefaultImage from '../../images/default_user.png';
 import Loader from '../../widgets/loader/loader.component';
+import  HeaderComponent from '../authheader/header.component'
 
 class RegisterComponent extends Component{
 
@@ -16,10 +17,11 @@ class RegisterComponent extends Component{
             email:'',
             userName:'',
             mobileNumber:'',
+            cellNumber:'',
             confirmPassword:'',
             password:'',
             errorMessage:'',
-            isRememberMe: false,
+            fsnetTermsandServices: false,
             userNameExists:'',
             userAccessId: ''
         }
@@ -40,10 +42,11 @@ class RegisterComponent extends Component{
             email:'',
             userName:'',
             mobileNumber:'',
+            cellNumber:'',
             confirmPassword:'',
             password:'',
             errorMessage:'',
-            isRememberMe: false,
+            fsnetTermsandServices: false,
             userNameExists:'',
             userAccessId: ''
         });
@@ -97,9 +100,14 @@ class RegisterComponent extends Component{
                     mobileNumber: event.target.value
                 })
                 break;
-            case 'isRememberMe':
+            case 'cellNumber':
                 this.setState({
-                    isRememberMe : event.target.checked
+                    cellNumber: event.target.value
+                })
+                break;
+            case 'fsnetTermsandServices':
+                this.setState({
+                    fsnetTermsandServices : event.target.checked
                 });
                 break;
             default:
@@ -137,12 +145,11 @@ class RegisterComponent extends Component{
         let error = this.checkValidations();
         if(!error) {
             //call the signup api
-            let errorObj = {username:this.state.userName,password:this.state.password, confirmPassword:this.state.confirmPassword,rememberme:this.state.isRememberMe, email:this.state.email, id:this.state.userAccessId};
+            let errorObj = {username:this.state.userName,password:this.state.password, confirmPassword:this.state.confirmPassword,fsnetTermsandServices:this.state.fsnetTermsandServices, email:this.state.email, id:this.state.userAccessId};
             if(this.state.userImageName !== '') {
                 errorObj['userPic'] = this.state.currentUserImage
             }
             this.props.history.push('/dashboard');
-            console.log(errorObj);
         }
     }
 
@@ -155,7 +162,7 @@ class RegisterComponent extends Component{
         } 
 
         //Need to agree FSNET's Terms of service checkbox
-        if(!this.state.isRememberMe) {
+        if(!this.state.fsnetTermsandServices) {
             errosArr.push(this.Constants.TERMS_CONDITIONS)
         }
 
@@ -215,9 +222,10 @@ class RegisterComponent extends Component{
             })
             .catch(error=>{
                 this.close();
-                this.props.history.push('/404');
+                //this.props.history.push('/404');
             });
         } else {
+            this.close();
             this.props.history.push('/404');
         }
     }
@@ -240,21 +248,15 @@ class RegisterComponent extends Component{
     render(){
         return(
             <div className="parentContainer">            
-                <Row className="headerContainer"> 
-                    <Col className="content"> 
-                        <div className="logo cursor">FSNET LOGO</div>
-                    </Col>
-                    <Col className="content">
-                        <div className="homeLink cursor"><a href="/login">Home</a></div>
-                    </Col>
-                </Row>
+                <HeaderComponent></HeaderComponent>
                 <Row className="registerContainer">
                     <div className="topBorder"></div>
                     <div className="parentDiv">
                         <h1 className="register-text">FSNET Account registration</h1>
+                        <div className="mandatory-content">Fill in the form below to register for your account. Fields marked with an * are mandatory.</div>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Username</label>
+                                <label className="label-text">Username*</label>
                                 <input type="text" name="username" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
                                 <span className="error">{this.state.userNameExists}</span>
                             </Col>
@@ -265,18 +267,22 @@ class RegisterComponent extends Component{
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Password</label>
+                                <label className="label-text">Password*</label>
                                 <input type="password" name="password" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'password')}/>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Password Again</label>
+                                <label className="label-text">Password Confirm*</label>
                                 <input type="password" name="confirmPassword" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'confirmPassword')}/>
                             </Col>
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Phone Number</label>
+                                <label className="label-text">Phone Number (Home)</label>
                                 <input type="text" name="phoneNumber" className="inputFormControl" placeholder="(123) 4568-8910" onChange={(e) => this.handleInputChangeEvent(e,'mobileNumber')}/>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="label-text">Phone Number (Cell)</label>
+                                <input type="text" name="phoneNumber" className="inputFormControl" placeholder="(123) 4568-8910" onChange={(e) => this.handleInputChangeEvent(e,'cellNumber')}/>
                             </Col>
                         </Row>
                         <label className="profile-text">Profile Picture:(Image must not exceed 160x160)</label>
@@ -291,7 +297,7 @@ class RegisterComponent extends Component{
                                 <label className="removeBtn" onClick={this.removeImageBtn}>Remove</label>
                             </Col>
                         </Row>
-                        <CBox id="rememberme" className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'isRememberMe')}>
+                        <CBox id="rememberme" className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
                         </CBox>
                         <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label>
                         <div className="error">{this.state.errorMessage}</div>
