@@ -61,3 +61,248 @@
         margin: 20px 0px !important;
     }
 }
+
+.fundBoxEdit{
+    height: 288px;
+    width: 288px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(155, 155, 155, 0.5);
+    background-color: #ffffff;
+    border: solid 1px rgba(51, 101, 138, 0.25);
+    padding: 8px 12px 16px 12px;
+}
+/*.fundImageEdit{
+    height: 48px;
+}*/
+.Fund-Image{
+    width: 48px;
+    height: 48px;
+    border-radius:30px;
+    top: -5px;
+    position: relative;
+    margin-right: 8px;
+}
+.Fund-Name {
+    width: 152px;
+    height: 38px;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-right: 14px;
+}
+.Bounding-Box {
+    width: 20px;
+    height: 20px;
+}
+.notificationCount {
+    width: 16px;
+    height: 20px;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    text-align: center;
+    color: #39bcd5;
+}
+.openEdit {
+    width: 41px;
+    height: 24px;
+    border-radius: 2px !important;
+    background-color: #03a9f4;
+    font-family: OpenSans;
+    font-size: 10px !important;
+    font-weight: normal !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #ffffff;  
+    padding: 4px 7px 4px 8px !important;  
+    margin-left: 56px;
+    margin-right: 8px;
+    margin-bottom: 31px;
+}
+.actionRequired {
+    width: 99px;
+    height: 24px;
+    border-radius: 2px !important;     
+    border: solid 1px #ff3a3a !important;
+    font-family: OpenSans;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    color: #2f4858;
+    padding: 4px 9px 4px 10px !important;
+    margin-bottom: 31px;
+}
+.Fund-Start-Date {
+    width: 129px;
+    height: 16px;
+    font-family: OpenSans;
+    font-size: 10px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+.text-style-1 {
+    font-weight: normal;
+}
+.Fund-End-Date {
+    width: 124px;
+    height: 16px;
+    font-family: OpenSans;
+    font-size: 10px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+  .text-style-1 {
+    font-weight: normal;
+}
+.Line {
+    width: 240px;
+    height: 2px;
+    border: solid 1px rgba(51, 101, 138, 0.2);
+    margin-bottom: 8px;
+    margin-left: 12px;
+}
+.Invited {
+    width: 19px;
+    height: 24px;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-left: 27px;
+    margin-right: 77px;
+}
+  .Invited1 {
+    width: 19px;
+    height: 24px;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-right: 82px;
+}
+  .Invited2 {
+    width: 10px;
+    height: 24px;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.labelInvited {
+    width: 50px;
+    height: 20px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-left: 12px;
+    margin-right: 28px;
+    margin-bottom: 8px;
+}
+.labelClosedReady {
+    width: 85px;
+    height: 20px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-right: 31px;
+    margin-bottom: 8px;
+}
+.labelClosed {
+    width: 46px;
+    height: 20px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+.Hard-Cap-2000000 {
+    width: 143px;
+    height: 16px;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    margin-right: 106px;
+}
+.Dollars-Closed-17 {
+    width: 174px;
+    height: 16px;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+  }
+  
+  .text-style-1 {
+    font-weight: normal;
+  }

@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import './dashboard.component.css';
 import { FsnetAuth } from'../../services/fsnetauth';
-import { Row, Col, FormControl } from 'react-bootstrap';
+import { Row, Col, FormControl,Button } from 'react-bootstrap';
+import userDefaultImage from '../../images/default_user.png';
 
 class DashboardComponent extends Component{
 
@@ -42,6 +43,41 @@ class DashboardComponent extends Component{
                         <img src="" alt="filter" className="dashboard-filter"/>
                         <span className="filter-mode">Filter (Off)</span>
                         <FormControl type="text" placeholder="Search Funds" className="formFilterControl"/>
+
+                    </Col>
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                    <Col lg={4} md={4} sm={6} xs={12}>
+                        <div className="fundBoxEdit">
+                            <div className="fundImageEdit">
+                                <img src={userDefaultImage} alt="fund_image" className="Fund-Image"/>
+                                <p className="Fund-Name">The Pheonician Investment Fund</p>
+                                <img src={userDefaultImage} alt="fund_image" className="Bounding-Box"/>
+                                <span className="notificationCount">11</span>
+                            </div>
+                            <div>
+                            <Button className="openEdit">Open</Button>
+                            <Button className="actionRequired">Closed Already</Button>
+                            </div>
+                            <div>
+                                <p className="Fund-Start-Date">Fund Start Date: <span className="text-style-1">2/24/2018</span></p>
+                                <p className="Fund-End-Date">Fund Start Date: <span className="text-style-1">2/24/2018</span></p>
+                            </div>
+                            <div className="Line"></div>
+                            <div>
+                                <span className="Invited">24</span>
+                                <span className="Invited1">18</span>
+                                <span className="Invited2">8</span>
+                            </div>
+                            <div>
+                                <p className="labelInvited">Invited</p>
+                                <p className="labelClosedReady">Close-Ready</p>
+                                <p className="labelClosed">Closed</p>
+                            </div>
+                            <div className="Line"></div>
+                            <p className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</p>
+                            <p className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></p>
+                        </div>
+                    </Col>
                     </Col>
                 </Row>
             </Row>
