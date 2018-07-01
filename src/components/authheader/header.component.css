@@ -1,5 +1,5 @@
 .headerContainer {
-    height: 100px;
+    height: 120px;
 }
 .content {
     width: 50%;
@@ -15,6 +15,7 @@
     line-height: 1.6;
     letter-spacing: normal;
     color: #39bcd5;
+    margin-left: 36px;
 }
 .homeLink {
     width: 84px;
@@ -29,6 +30,7 @@
     letter-spacing: normal;
     color: #2f4858;
     float: right;
+    margin-right: 7%;
 }
 .homeLink a {
     text-decoration: none !important;

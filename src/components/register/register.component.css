@@ -7,10 +7,11 @@
 .topBorder {
     height: 2px;
     border: solid 1px rgba(51, 101, 138, 0.5);
-    width: 90%;
+    width: 84%;
+    margin-left: 5%;
 }
 .parentDiv {
-    margin: 20px 0 0 30px;
+    margin: 20px 0 0 10%;
 }
 .mandatory-content {
     height: 20px;
@@ -23,7 +24,7 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #2f4858;
-    margin-bottom: 10px;
+    margin-bottom: 19px;
 }
 .register-text {
     height: 32px;
@@ -35,6 +36,7 @@
     line-height: 1.6;
     letter-spacing: normal;
     color: #2f4858;
+    margin-bottom: 8px;
 }
 .label-text {
     width: 290px;
@@ -47,16 +49,17 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #2f4858;
+    margin-bottom: 8px !important;
 }
 .inputFormControl {
     width: 290px;
     height: 40px;
     border-radius: 3px;
     border: solid 1px #526173;
-    padding-left: 5px;
+    padding: 8px;
 }
 .parentDiv .row {
-    margin-bottom: 10px;
+    margin-bottom: 24px;
 }
 .profile-text {
     width: 344px;
@@ -70,6 +73,8 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #2f4858;
+    margin-top: 8px;
+    margin-bottom: 32px !important;
 }
 .uploadFile {
     width: 142px;
@@ -144,6 +149,7 @@
     font-size: 20px !important;
     margin-top: 20px;
     display: block !important;
+    margin-top: 36px;
 }
 .btn {
     box-shadow: initial !important;
@@ -162,6 +168,7 @@
     margin-top: 15px;
     margin-left: 20px;
     cursor: pointer;
+    margin-bottom: 24px !important;
 }
 .signIn-text a {
     color: #39bcd5 !important;
@@ -178,6 +185,9 @@
     height: 80px;
     border-radius: 40px;
 }
+.profileMargin{
+    margin-bottom: 67px !important;
+}
 @media only screen and (min-width: 1025px) {
     .width40 {
         max-width: 400px !important;
@@ -186,6 +196,9 @@
 @media only screen and (max-width: 1024px) {
     .registerContainer, .parentDiv {
         margin-left: 0px !important;
+    }
+    .topBorder{
+        margin-left: 10px !important;
     }
 }
 @media only screen and (max-width: 480px) {
@@ -203,5 +216,17 @@
     }
     .uploadFile  {
         margin-top: 10px;
+    }
+    .registerContainer{
+        margin-left: 20px !important;
+    }  
+    .topBorder{
+        margin-left: 10px !important;
+    }
+    .logo{
+        margin-left: 0px !important;
+    }
+    .bottomBorder{
+        margin-bottom: 30px !important;
     }
 }

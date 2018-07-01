@@ -55,16 +55,16 @@ class ForgotPasswordComponent extends Component{
                     <div className="forgotParentDiv">
                         <h1 className="forgot-text">Forgot password</h1>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen1}>Enter your email or phone below to receive instructions to reset your password.</div>
-                        <div className="instructions-content" hidden={!this.state.showForgotScreen2}>Enter the code we sent to your phone nnumber.</div>
+                        <div className="instructions-content marginBottom30" hidden={!this.state.showForgotScreen2}>Enter the code we sent to your phone nnumber.</div>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen3}>Create a new password. Password must be Lorum Ipsum and Lorum Ipsum.</div>
                         <Row hidden={!this.state.showForgotScreen1}>
                             <Col lg={12} md={12} sm={12} xs={12}>
                                 <label className="forgot-label-text">Email Address</label>
-                                <input type="text" name="email" className="forgotFormControl" placeholder="JohnDoe@gmail.com"/>
+                                <input type="text" name="email" className="forgotFormControl emailFormControl" placeholder="JohnDoe@gmail.com"/>
                             </Col>
                             <Col lg={12} md={12} sm={12} xs={12}>
                                 <label className="forgot-label-text">Phone Number</label>
-                                <input type="text" name="phonenumber" className="forgotFormControl" placeholder="(123)4568-8910"/>
+                                <input type="text" name="phonenumber" className="forgotFormControl " placeholder="(123)4568-8910"/>
                             </Col>
                             <Row>
                                 <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen1')}>Submit</Button> <br/>
@@ -74,7 +74,7 @@ class ForgotPasswordComponent extends Component{
                         <Row hidden={!this.state.showForgotScreen2}>
                             <Col lg={12} md={12} sm={12} xs={12}>
                                 <label className="forgot-label-text">Verification Code</label>
-                                <input type="text" name="verifyPhoneNumber" className="forgotFormControl"/> <span>Send Code Again</span>
+                                <input type="text" name="verifyPhoneNumber" placeholder="A3456IHOP" className="forgotFormControl"/> <span className="sendCodeAgain">Send Code Again</span>
                             </Col>
                             <Row>
                                 <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen2')}>Reset Password</Button> <br/>
@@ -82,10 +82,13 @@ class ForgotPasswordComponent extends Component{
                             <label className="cancel-text"> <a href="/login">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen3}>
-                            <Col lg={12} md={12} sm={12} xs={12}>
-                                <label className="forgot-label-text">password</label>
-                                <input type="text" name="password" className="forgotFormControl"/>
-                                <label className="forgot-label-text">password Again</label>
+                            <Col className="width40" lg={6} md={6} sm={6} xs={12}>
+                                <label className="forgot-label-text">Password</label>
+                                <input type="text" name="password" className="forgotFormControl inputMarginBottom"/><br/>
+                                <span className="passwordDNRequirements">Password doesn't meet requirements</span>
+                            </Col>
+                            <Col className="width40" lg={6} md={6} sm={6} xs={12}>
+                                <label className="forgot-label-text">Password Again</label>
                                 <input type="text" name="confirmPassword" className="forgotFormControl"/>
                             </Col>
                             <Row>

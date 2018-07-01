@@ -9,6 +9,36 @@
     margin: 0px auto !important;
     width: 1000px;
 }
+.John-Appleseed {
+    width: 116px;
+    height: 24px;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-left: 250px;
+}
+.ArrowDownBounding-Box {
+    width: 24px;
+    height: 24px;
+}
+.profilePic {
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+}
+.notificationsBell {
+    width: 24px;
+    height: 24px;
+}
+.overFlowIcon {
+    width: 24px;
+    height: 24px;
+  }
 .myFunds {
     height: 36px;
     font-family: OpenSans;
@@ -99,6 +129,9 @@
 .Bounding-Box {
     width: 20px;
     height: 20px;
+    position: relative;
+    top: -15px;
+    margin-right: 2px;
 }
 .notificationCount {
     width: 16px;
@@ -112,6 +145,8 @@
     letter-spacing: normal;
     text-align: center;
     color: #39bcd5;
+    position: relative;
+    top: -18px;
 }
 .openEdit {
     width: 41px;
@@ -288,7 +323,7 @@
     letter-spacing: normal;
     color: #2f4858;
     display: inline-block;
-    margin-right: 106px;
+    margin-left: 118px;
 }
 .Dollars-Closed-17 {
     width: 174px;
@@ -306,3 +341,39 @@
   .text-style-1 {
     font-weight: normal;
   }
+  label{
+      margin-bottom: 0 !important;
+}
+.gridIcon {
+    width: 24px;
+    height: 24px;
+    margin-left: 207px;
+}
+.view-mode {
+    width: 65px;
+    height: 17px;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.newFundButton {
+    width: 144px;
+    height: 40px;
+    border-radius: 30px !important;
+    border: solid 1px #39bcd5 !important;
+    font-family: OpenSans;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5 !important;
+    letter-spacing: normal;
+    color: #39bcd5;
+    background-color: white;
+    float: right;
+}

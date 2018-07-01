@@ -222,7 +222,7 @@ class RegisterComponent extends Component{
             })
             .catch(error=>{
                 this.close();
-                //this.props.history.push('/404');
+                this.props.history.push('/404');
             });
         } else {
             this.close();
@@ -286,7 +286,7 @@ class RegisterComponent extends Component{
                             </Col>
                         </Row>
                         <label className="profile-text">Profile Picture:(Image must not exceed 160x160)</label>
-                        <Row className="profile-Row">
+                        <Row className="profile-Row profileMargin">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <img src={this.state.currentUserImage} alt="profile-pic" className="profile-pic"/>
                                 <span className="profilePicName">{this.state.userImageName}</span>
@@ -304,6 +304,7 @@ class RegisterComponent extends Component{
                         <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
                         <label className="signIn-text"> <a href="/login">Already have an account? Sign In</a></label>
                     </div>
+                    <div className="topBorder bottomBorder"></div>
                     <Loader isShow={this.state.showModal}></Loader>
                 </Row>
             </div>
