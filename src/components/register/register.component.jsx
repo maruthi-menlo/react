@@ -207,32 +207,32 @@ class RegisterComponent extends Component{
     }
 
     componentDidMount() {
-        this.open();
-        this.Fsnethttp = new Fsnethttp();
-        this.Constants = new Constants();
-        let url = window.location.href;
-        let getId = url.split('id=');
-        let userAccessId = getId[1];
-        //In register url get the id to get the user details
-        //If id is not present in url then redirect to 404.
-        if(userAccessId) {
-            this.Fsnethttp.getInviationData(userAccessId).then(result=>{
-                if(result.data) {
-                    this.setState({
-                        email:result.data.data.email,
-                        userAccessId:userAccessId
-                    })
-                }
-                this.close();
-            })
-            .catch(error=>{
-                this.close();
-                this.props.history.push('/404');
-            });
-        } else {
-            this.close();
-            this.props.history.push('/404');
-        }
+        // this.open();
+        // this.Fsnethttp = new Fsnethttp();
+        // this.Constants = new Constants();
+        // let url = window.location.href;
+        // let getId = url.split('id=');
+        // let userAccessId = getId[1];
+        // //In register url get the id to get the user details
+        // //If id is not present in url then redirect to 404.
+        // if(userAccessId) {
+        //     this.Fsnethttp.getInviationData(userAccessId).then(result=>{
+        //         if(result.data) {
+        //             this.setState({
+        //                 email:result.data.data.email,
+        //                 userAccessId:userAccessId
+        //             })
+        //         }
+        //         this.close();
+        //     })
+        //     .catch(error=>{
+        //         this.close();
+        //         this.props.history.push('/404');
+        //     });
+        // } else {
+        //     this.close();
+        //     this.props.history.push('/404');
+        // }
     }
 
     //Clear the image when user click on remove button

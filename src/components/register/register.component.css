@@ -16,7 +16,7 @@
 .mandatory-content {
     height: 20px;
     opacity: 0.5;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -28,7 +28,7 @@
 }
 .register-text {
     height: 32px;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -41,7 +41,7 @@
 .label-text {
     width: 290px;
     height: 20px;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -65,7 +65,7 @@
     width: 344px;
     height: 20px;
     opacity: 0.5;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -80,7 +80,7 @@
     width: 142px;
     height: 36px;
     background-color: #39bcd5;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -94,7 +94,7 @@
     width: 59px;
     height: 20px;
     opacity: 0.5;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -107,7 +107,7 @@
 }
 .profilePicName {
     height: 20px;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -137,7 +137,7 @@
     width: 290px;
     height: 48px;
     background-color:  #bdbdbd;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
@@ -157,7 +157,7 @@
 .signIn-text {
     width: 250px;
     height: 24px;
-    font-family: OpenSans;
+    font-family: 'Open sans';
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -186,7 +186,7 @@
     border-radius: 40px;
 }
 .profileMargin{
-    margin-bottom: 67px !important;
+    margin-bottom: 30px !important;
 }
 @media only screen and (min-width: 1025px) {
     .width40 {
