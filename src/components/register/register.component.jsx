@@ -6,6 +6,9 @@ import {Constants} from '../../constants/constants';
 import userDefaultImage from '../../images/default_user.png';
 import Loader from '../../widgets/loader/loader.component';
 import  HeaderComponent from '../authheader/header.component'
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/rrui.css'
+import 'react-phone-number-input/style.css'
 
 class RegisterComponent extends Component{
 
@@ -96,9 +99,11 @@ class RegisterComponent extends Component{
                 })
                 break;
             case 'mobileNumber':
-                this.setState({
-                    mobileNumber: event.target.value
-                })
+            // console.log(event)
+            // console.log(event.target.value)
+                // this.setState({
+                //     mobileNumber: event.target.value
+                // })
                 break;
             case 'cellNumber':
                 this.setState({
@@ -278,7 +283,8 @@ class RegisterComponent extends Component{
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Phone Number (Home)</label>
-                                <input type="text" name="phoneNumber" className="inputFormControl" placeholder="(123) 4568-8910" onChange={(e) => this.handleInputChangeEvent(e,'mobileNumber')}/>
+                                {/* <input type="text" name="phoneNumber" className="inputFormControl" placeholder="(123) 4568-8910" onChange={(e) => this.handleInputChangeEvent(e,'mobileNumber')}/> */}
+                                <PhoneInput placeholder="Enter phone number" value={ this.state.mobileNumber } onChange={ phone => this.setState({ mobileNumber: phone }) }/>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Phone Number (Cell)</label>

@@ -10,6 +10,7 @@
     "react-bootstrap-validation": "^0.1.11",
     "react-checkbox-group": "^4.0.1",
     "react-dom": "^16.4.1",
+    "react-phone-number-input": "^1.1.12",
     "react-responsive-modal": "^3.0.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
