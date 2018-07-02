@@ -422,6 +422,10 @@
 .display-filter {
     display: inline-block;
 }
+.filter-right-block {
+    float: right;
+    width: 250px;
+}
 @media only screen and (max-width: 1180px) {
     .row.fund-container {
         width: 100%;

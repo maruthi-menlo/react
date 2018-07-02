@@ -56,9 +56,11 @@ class DashboardComponent extends Component{
                             <FormControl type="text" placeholder="Search Funds" className="formFilterControl"/>
                         </Col>
                         <Col lg={6} md={6} sm={6} xs={12} className="display-filter">
-                            <i className="fa fa-th-large" aria-hidden="true"></i>
-                            <span className="view-mode">View (Card)</span>
-                            <Button className="newFundButton">New Fund</Button>
+                            <div className="filter-right-block">
+                                <i className="fa fa-th-large" aria-hidden="true"></i>
+                                <span className="view-mode">View (Card)</span>
+                                <Button className="newFundButton">New Fund</Button>
+                            </div>
                         </Col>
                     </Col>
                     <Col lg={12} md={12} sm={12} xs={12}>
