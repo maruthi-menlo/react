@@ -10,7 +10,7 @@ export class Fsnethttp{
 
     // Get email id of the user using ID from the url.
     getInviationData(data){
-        return axios.post(this.Constants.BASE_URL+'getInviationData', data);
+        return axios.get(this.Constants.BASE_URL+'getInviationData/'+data);
     }
 
     //check username exists

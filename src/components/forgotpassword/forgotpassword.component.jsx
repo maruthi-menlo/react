@@ -53,7 +53,7 @@ class ForgotPasswordComponent extends Component{
                 <Row className="forgotContainer">
                     <div className="forgotTopBorder"></div>
                     <div className="forgotParentDiv">
-                        <h1 className="forgot-text">Forgot password</h1>
+                        <h1 className="forgot-text" hidden={this.state.showForgotScreen4}>Forgot password</h1>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen1}>Enter your email or phone below to receive instructions to reset your password.</div>
                         <div className="instructions-content marginBottom30" hidden={!this.state.showForgotScreen2}>Enter the code we sent to your phone nnumber.</div>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen3}>Create a new password. Password must be Lorum Ipsum and Lorum Ipsum.</div>
@@ -98,12 +98,15 @@ class ForgotPasswordComponent extends Component{
                         </Row>
                         <Row hidden={!this.state.showForgotScreen4}>
                             <Col lg={12} md={12} sm={12} xs={12}>
-                                <label className="forgot-label-text">success</label>
-                                <label className="forgot-label-text">Your password has been reset</label>
+                                <label className="forgot-success-text">success</label>
+                                <label className="forgot-reset-text">Your password has been reset</label>
+                                <div className="success-icon">
+                                    <i className="fa fa-check-circle" aria-hidden="true"></i>
+                                </div>
+                                <div className="text-center">
+                                    <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen4')}>Sign In</Button> <br/>
+                                </div>
                             </Col>
-                            <Row>
-                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen4')}>Sign In</Button> <br/>
-                            </Row>
                         </Row>
                     </div>
                 </Row>

@@ -16,7 +16,7 @@ class FsnetRouter extends Component{
                     <Switch>
                         <Route exact path='/' component={LoginComponent}/> 
                         <Route exact path='/login' component={LoginComponent}/> 
-                        <Route exact path='/register' component={RegisterComponent}/> 
+                        <Route exact path='/getInviationData/*' component={RegisterComponent}/> 
                         <Route path='/404' component={PageNotFoundComponent}/>
                         <Route path='/dashboard' component={DashboardComponent}/>
                         <Route path='/terms-and-conditions' component={TermsAndConditionsComponent}/>

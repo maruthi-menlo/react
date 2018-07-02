@@ -26,7 +26,9 @@ class RegisterComponent extends Component{
             errorMessage:'',
             fsnetTermsandServices: false,
             userNameExists:'',
-            userAccessId: ''
+            userAccessId: '',
+            invalidInvitationCode:'',
+            showRegisterScreen: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
@@ -51,7 +53,9 @@ class RegisterComponent extends Component{
             errorMessage:'',
             fsnetTermsandServices: false,
             userNameExists:'',
-            userAccessId: ''
+            userAccessId: '',
+            invalidInvitationCode:'',
+            showRegisterScreen: false,
         });
     }
 
@@ -207,32 +211,39 @@ class RegisterComponent extends Component{
     }
 
     componentDidMount() {
-        // this.open();
-        // this.Fsnethttp = new Fsnethttp();
-        // this.Constants = new Constants();
-        // let url = window.location.href;
-        // let getId = url.split('id=');
-        // let userAccessId = getId[1];
-        // //In register url get the id to get the user details
-        // //If id is not present in url then redirect to 404.
-        // if(userAccessId) {
-        //     this.Fsnethttp.getInviationData(userAccessId).then(result=>{
-        //         if(result.data) {
-        //             this.setState({
-        //                 email:result.data.data.email,
-        //                 userAccessId:userAccessId
-        //             })
-        //         }
-        //         this.close();
-        //     })
-        //     .catch(error=>{
-        //         this.close();
-        //         this.props.history.push('/404');
-        //     });
-        // } else {
-        //     this.close();
-        //     this.props.history.push('/404');
-        // }
+        this.open();
+        this.Fsnethttp = new Fsnethttp();
+        this.Constants = new Constants();
+        let url = window.location.href;
+        let getId = url.split('getInviationData/');
+        let userAccessId = getId[1];
+        //In register url get the id to get the user details
+        //If id is not present in url then redirect to 404.
+        if(userAccessId) {
+            this.Fsnethttp.getInviationData(userAccessId).then(result=>{
+                if(result.data) {
+                    this.setState({
+                        email:result.data.data.email,
+                        userAccessId:userAccessId,
+                        showRegisterScreen:true
+                    })
+                }
+                this.close();
+            })
+            .catch(error=>{
+                this.close();
+                if(error && error.response.data.errors !== undefined) {
+                    //this.props.history.push('/404');
+                    this.setState({
+                        invalidInvitationCode: error.response.data.errors[0].msg,
+                        showRegisterScreen:false
+                    });
+                }
+            });
+        } else {
+            this.close();
+            this.props.history.push('/404');
+        }
     }
 
     //Clear the image when user click on remove button
@@ -253,8 +264,13 @@ class RegisterComponent extends Component{
     render(){
         return(
             <div className="parentContainer">            
-                <HeaderComponent></HeaderComponent>
-                <Row className="registerContainer">
+                <div className="text-center" hidden={this.state.showRegisterScreen}>
+                    <h1>{this.state.invalidInvitationCode}</h1>
+                </div>
+                <div hidden={!this.state.showRegisterScreen}>
+                    <HeaderComponent ></HeaderComponent>
+                </div>
+                <Row className="registerContainer" hidden={!this.state.showRegisterScreen}>
                     <div className="topBorder"></div>
                     <div className="parentDiv">
                         <h1 className="register-text">FSNET Account registration</h1>

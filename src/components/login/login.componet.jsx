@@ -50,7 +50,6 @@ class LoginComponent extends Component{
             let loginRemember = this.state.loginRemember;
             let loginObj = {username:username, password:password, rememberMe:loginRemember};
             this.Fsnethttp.login(loginObj).then(result=>{
-                console.log(result);
                 this.close();
                 this.props.history.push('/dashboard');
             })
