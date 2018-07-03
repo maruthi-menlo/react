@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Row,Col,Button} from 'react-bootstrap';
 import  HeaderComponent from '../authheader/header.component'
 import './forgotpassword.component.css';
+import { FsnetAuth } from'../../services/fsnetauth';
 
 class ForgotPasswordComponent extends Component{
     constructor(props){
         super(props);
+        this.FsnetAuth = new FsnetAuth();
         this.state = {
             showForgotScreen1: true,
             showForgotScreen2: false,
@@ -14,7 +16,14 @@ class ForgotPasswordComponent extends Component{
         }
         this.showForgotScreenFn = this.showForgotScreenFn.bind(this);
     }
-
+    
+    componentDidMount() {
+        //Check if user already logged in
+        //If yes redirect to dashboard page
+        if(this.FsnetAuth.isAuthenticated()){
+            this.props.history.push('/dashboard');
+        }
+    }
 
     //Show forgot screens based on the screen type.
     showForgotScreenFn(event, screen) {

@@ -4,11 +4,14 @@ import { Row, Col, Form, FormGroup, Checkbox as CBox, FormControl, ControlLabel,
 import Loader from '../../widgets/loader/loader.component';
 import {Constants} from '../../constants/constants';
 import {Fsnethttp} from '../../services/fsnethttp';
+import { reactLocalStorage } from 'reactjs-localstorage';
+import { FsnetAuth } from'../../services/fsnetauth';
 
 class LoginComponent extends Component{
 
     constructor(props){
         super(props);
+        this.FsnetAuth = new FsnetAuth();
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.loginFn = this.loginFn.bind(this);
@@ -27,6 +30,9 @@ class LoginComponent extends Component{
     componentDidMount() {
         this.Constants = new Constants();
         this.Fsnethttp = new Fsnethttp();
+        if(this.FsnetAuth.isAuthenticated()){
+            this.props.history.push('/dashboard');
+        }
     }
 
     //Reset all state values to default value.
@@ -51,7 +57,11 @@ class LoginComponent extends Component{
             let loginObj = {username:username, password:password, rememberMe:loginRemember};
             this.Fsnethttp.login(loginObj).then(result=>{
                 this.close();
-                this.props.history.push('/dashboard');
+                console.log(result);
+                if(result.data) {
+                    reactLocalStorage.set('userData', JSON.stringify(result.data.user));
+                    this.props.history.push('/dashboard');
+                }
             })
             .catch(error=>{
                 if(error) {

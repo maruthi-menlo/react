@@ -4,6 +4,7 @@ import './dashboard.component.css';
 import { FsnetAuth } from'../../services/fsnetauth';
 import { Row, Col, FormControl,Button } from 'react-bootstrap';
 import userDefaultImage from '../../images/default_user.png';
+import { reactLocalStorage } from 'reactjs-localstorage';
 
 class DashboardComponent extends Component{
 
@@ -22,8 +23,9 @@ class DashboardComponent extends Component{
     componentDidMount() {
         if(this.FsnetAuth.isAuthenticated()){
             //Get user obj from local storage.
+            console.log(reactLocalStorage.getObject('userData'));
         }else{
-            //this.props.history.push('/');
+            this.props.history.push('/');
         }        
     }
 
