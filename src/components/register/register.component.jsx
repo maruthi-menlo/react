@@ -15,7 +15,7 @@ class RegisterComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
-            userImageName: '',
+            userImageName: 'Profile_Pic.jpg',
             currentUserImage: userDefaultImage,
             email:'',
             userName:'',
@@ -29,6 +29,10 @@ class RegisterComponent extends Component{
             userAccessId: '',
             invalidInvitationCode:'',
             showRegisterScreen: false,
+            passwordEmptyMsz: '',
+            confirmPasswordEmptyMsz: '',
+            cellNumberEmptyMsz:'',
+            termsandConditionsRequired:''
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
@@ -37,12 +41,18 @@ class RegisterComponent extends Component{
         this.signUpFn = this.signUpFn.bind(this);
         this.checkUserNameExists = this.checkUserNameExists.bind(this);
         this.checkValidations = this.checkValidations.bind(this);
+        this.navigateToLogin = this.navigateToLogin.bind(this);
+    }
+
+    //Navigate to login
+    navigateToLogin() {
+        this.props.history.push('/login');
     }
 
     //Reset all state values to default value.
     componentWillUnmount() {
         this.setState({
-            userImageName: '',
+            userImageName: 'Profile_Pic.jpg',
             currentUserImage: userDefaultImage,
             email:'',
             userName:'',
@@ -56,6 +66,10 @@ class RegisterComponent extends Component{
             userAccessId: '',
             invalidInvitationCode:'',
             showRegisterScreen: false,
+            passwordEmptyMsz: '',
+            confirmPasswordEmptyMsz: '',
+            cellNumberEmptyMsz:'',
+            termsandConditionsRequired:''
         });
     }
 
@@ -94,12 +108,14 @@ class RegisterComponent extends Component{
                 break;
             case 'password':
                 this.setState({
-                    password: event.target.value
+                    password: event.target.value,
+                    passwordEmptyMsz:''
                 })
                 break;
             case 'confirmPassword':
                 this.setState({
-                    confirmPassword: event.target.value
+                    confirmPassword: event.target.value,
+                    confirmPasswordEmptyMsz:''
                 })
                 break;
             case 'mobileNumber':
@@ -111,12 +127,14 @@ class RegisterComponent extends Component{
                 break;
             case 'cellNumber':
                 this.setState({
-                    cellNumber: event.target.value
+                    cellNumber: event,
+                    cellNumberEmptyMsz:''
                 })
                 break;
             case 'fsnetTermsandServices':
                 this.setState({
-                    fsnetTermsandServices : event.target.checked
+                    fsnetTermsandServices : event.target.checked,
+                    termsandConditionsRequired:''
                 });
                 break;
             default:
@@ -140,10 +158,10 @@ class RegisterComponent extends Component{
                 }
             })
             .catch(error=>{
-                if(error) {
+                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.setState({
-                        userNameExists: this.Constants.USER_NAME_EXISTS
-                    })
+                        userNameExists: error.response.data.errors[0].msg,
+                    });
                 }
             });
         }
@@ -152,18 +170,65 @@ class RegisterComponent extends Component{
     //signup button click functionality
     signUpFn() {
         let error = this.checkValidations();
+        
         if(!error) {
+            this.open();
             //call the signup api
-            let errorObj = {username:this.state.userName,password:this.state.password, confirmPassword:this.state.confirmPassword,fsnetTermsandServices:this.state.fsnetTermsandServices, email:this.state.email, id:this.state.userAccessId};
+            let errorObj = {username:this.state.userName, password:this.state.password, email:this.state.email, emailConfirmCode:this.state.userAccessId, cellNumber:this.state.cellNumber};
             if(this.state.userImageName !== '') {
                 errorObj['userPic'] = this.state.currentUserImage
             }
-            this.props.history.push('/dashboard');
+            if(this.state.homeNumber !== '' && this.state.homeNumber !== undefined) {
+                errorObj['homeNumber'] = this.state.mobileNumber
+            }
+            console.log(errorObj);
+            this.Fsnethttp.register(errorObj).then(result=>{
+                this.close();
+                this.setState({
+                    showSuccesScreen: true
+                })
+            })
+            .catch(error=>{
+                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+                    this.close();
+                    this.setState({
+                        errorMessage: error.response.data.errors[0].msg,
+                    });
+                }
+            });
+            
         }
     }
 
     checkValidations() {
         let errosArr = [];
+        let registerError = false;
+        //Check Username is null
+        if(this.state.userName === '') {
+            registerError = true;
+            this.setState({
+                userNameExists: this.Constants.LOGIN_USER_NAME_REQUIRED
+            })
+        }
+        if(this.state.password === '') {
+            registerError = true;
+            this.setState({
+                passwordEmptyMsz: this.Constants.LOGIN_PASSWORD_REQUIRED
+            })
+        }
+        if(this.state.confirmPassword === '') {
+            registerError = true;
+            this.setState({
+                confirmPasswordEmptyMsz: this.Constants.LOGIN_PASSWORD_REQUIRED
+            })
+        }
+        if(this.state.cellNumber === '' || this.state.cellNumber === undefined) {
+            registerError = true;
+            this.setState({
+                cellNumberEmptyMsz: this.Constants.CELL_NUMBER_REQUIRED
+            })
+        }
+
         //Check password and confirm password is same.
         //If both passwords are not same then show the error.
         if(this.state.password !== this.state.confirmPassword) {
@@ -172,16 +237,19 @@ class RegisterComponent extends Component{
 
         //Need to agree FSNET's Terms of service checkbox
         if(!this.state.fsnetTermsandServices) {
-            errosArr.push(this.Constants.TERMS_CONDITIONS)
+            registerError = true;
+            this.setState({
+                termsandConditionsRequired: this.Constants.TERMS_CONDITIONS
+            })
         }
 
         //Phone number validation
         //Change the regex if needed to support below format
         //[+][country code][area code][phone number]
-        let phoneNumberRegex = /^\+[1-9]{1}[0-9]{3,14}$/;
-        if(!phoneNumberRegex.test(this.state.mobileNumber)) {
-            errosArr.push(this.Constants.MOBILE_NUMBER_FORMAT)
-        }
+        // let phoneNumberRegex = /^\+[1-9]{1}[0-9]{3,14}$/;
+        // if(!phoneNumberRegex.test(this.state.cellNumber)) {
+        //     errosArr.push(this.Constants.MOBILE_NUMBER_FORMAT)
+        // }
 
         //append all the errors to one string.
         if(errosArr.length >0) {
@@ -194,6 +262,9 @@ class RegisterComponent extends Component{
             this.setState({
                 errorMessage: error
             })
+            return true;
+        } else if(registerError){
+            window.scrollTo(300, 0)
             return true;
         } else {
             return false;
@@ -232,8 +303,7 @@ class RegisterComponent extends Component{
             })
             .catch(error=>{
                 this.close();
-                if(error && error.response.data.errors !== undefined) {
-                    //this.props.history.push('/404');
+                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.setState({
                         invalidInvitationCode: error.response.data.errors[0].msg,
                         showRegisterScreen:false
@@ -251,7 +321,7 @@ class RegisterComponent extends Component{
     //Clear the input file value
     removeImageBtn() {
         this.setState({
-            userImageName: '',
+            userImageName: 'Profile_Pic.jpg',
             currentUserImage : userDefaultImage,
         });
         document.getElementById('uploadBtn').value = "";
@@ -270,7 +340,7 @@ class RegisterComponent extends Component{
                 <div hidden={!this.state.showRegisterScreen}>
                     <HeaderComponent ></HeaderComponent>
                 </div>
-                <Row className="registerContainer" hidden={!this.state.showRegisterScreen}>
+                <Row className="registerContainer" hidden={!this.state.showRegisterScreen || this.state.showSuccesScreen}>
                     <div className="topBorder"></div>
                     <div className="parentDiv">
                         <h1 className="register-text">FSNET Account registration</h1>
@@ -278,36 +348,38 @@ class RegisterComponent extends Component{
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Username*</label>
-                                <input type="text" name="username" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
+                                <input type="text" name="username" maxLength="200" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
                                 <span className="error">{this.state.userNameExists}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Email Address</label>
-                                <input type="text" name="email" disabled className="inputFormControl" id="email" placeholder="JohnDoe@gmail.com" value={this.state.email}/>
+                                <input type="text" name="email" disabled className="inputFormControl opacityInput" id="email" placeholder="JohnDoe@gmail.com" value={this.state.email}/>
                             </Col>
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Password*</label>
-                                <input type="password" name="password" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'password')}/>
+                                <input type="password" name="password" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'password')}/><br/>
+                                <span className="error">{this.state.passwordEmptyMsz}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Password Confirm*</label>
-                                <input type="password" name="confirmPassword" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'confirmPassword')}/>
+                                <input type="password" name="confirmPassword" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'confirmPassword')}/><br/>
+                                <span className="error">{this.state.confirmPasswordEmptyMsz}</span>
                             </Col>
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Phone Number (Home)</label>
-                                {/* <input type="text" name="phoneNumber" className="inputFormControl" placeholder="(123) 4568-8910" onChange={(e) => this.handleInputChangeEvent(e,'mobileNumber')}/> */}
-                                <PhoneInput placeholder="Enter phone number" value={ this.state.mobileNumber } onChange={ phone => this.setState({ mobileNumber: phone }) }/>
+                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.mobileNumber } country="US" onChange={ phone => this.setState({ mobileNumber: phone }) }/>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Phone Number (Cell)</label>
-                                <input type="text" name="phoneNumber" className="inputFormControl" placeholder="(123) 4568-8910" onChange={(e) => this.handleInputChangeEvent(e,'cellNumber')}/>
+                                <label className="label-text">Phone Number (Cell)*</label>
+                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')}/>
+                                <span className="error">{this.state.cellNumberEmptyMsz}</span>
                             </Col>
                         </Row>
-                        <label className="profile-text">Profile Picture:(Image must not exceed 160x160)</label>
+                        <label className="profile-text">Profile Picture: (Image must not exceed 512 x 512)</label>
                         <Row className="profile-Row profileMargin">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <img src={this.state.currentUserImage} alt="profile-pic" className="profile-pic"/>
@@ -321,7 +393,8 @@ class RegisterComponent extends Component{
                         </Row>
                         <CBox id="rememberme" className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
                         </CBox>
-                        <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label>
+                        <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label><br/>
+                        <span className="error">{this.state.termsandConditionsRequired}</span>
                         <div className="error">{this.state.errorMessage}</div>
                         <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
                         <label className="signIn-text"> <a href="/login">Already have an account? Sign In</a></label>
@@ -329,6 +402,20 @@ class RegisterComponent extends Component{
                     <div className="topBorder bottomBorder"></div>
                     <Loader isShow={this.state.showModal}></Loader>
                 </Row>
+                <Row hidden={!this.state.showSuccesScreen} className="sucess-row">
+                    <div className="topBorder"></div>
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                        <label className="register-success-text">success</label>
+                        <label className="register-reset-text">Your account has been created</label>
+                        <div className="success-icon">
+                            <i className="fa fa-check-circle" aria-hidden="true"></i>
+                        </div>
+                        <div className="text-center">
+                            <Button className="register-submit" onClick={this.navigateToLogin}>Proceed to Login</Button> <br/>
+                        </div>
+                    </Col>
+                </Row>
+
             </div>
         );
     }

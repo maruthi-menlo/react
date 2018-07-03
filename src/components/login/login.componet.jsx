@@ -127,7 +127,7 @@ class LoginComponent extends Component{
                         <p className="content-heading">Nam dapibus nisl vitae elit fringilla rutrum. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium metus, quis mollis nisl nunc et massa.</p>
                         <p className="content-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. <br/>Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida.</p>
                     </Col>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={6} xs={12} className="paddingLeft7">
                         <div className="formContainer">
                             <p className="labelSignIn">Already Have an account? Sign In</p>
                             <div className="loginError marginLeft20">{this.state.loginErrorMsz}</div>

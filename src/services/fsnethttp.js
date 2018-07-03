@@ -23,4 +23,9 @@ export class Fsnethttp{
         return axios.post(this.Constants.BASE_URL+'login', userObj);
     }
 
+    //FSNET registration
+    register(userObj) {
+        return axios.post(this.Constants.BASE_URL+'register', userObj);
+    }
+
 }

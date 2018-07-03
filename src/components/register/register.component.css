@@ -10,8 +10,12 @@
     width: 84%;
     margin-left: 5%;
 }
+.opacityInput {
+    opacity: 0.25;
+}
 .parentDiv {
     margin: 20px 0 0 10%;
+    width: 100%;
 }
 .mandatory-content {
     height: 20px;
@@ -50,6 +54,7 @@
     letter-spacing: normal;
     color: #2f4858;
     margin-bottom: 8px !important;
+    margin-top: 8px !important;
 }
 .inputFormControl {
     width: 290px;
@@ -116,6 +121,8 @@
     letter-spacing: normal;
     color: #2f4858;
     padding-left: 10px;
+    position: absolute;
+    top: 10px;
 }
 .cbRemeberMe {
     display: inline;
@@ -149,7 +156,7 @@
     font-size: 20px !important;
     margin-top: 20px;
     display: block !important;
-    margin-top: 36px;
+    margin-top: 30px;
 }
 .btn {
     box-shadow: initial !important;
@@ -176,6 +183,7 @@
 }
 .error {
     color: red;
+    margin-top: 10px;
 }
 .hide {
     display: none;
@@ -188,25 +196,84 @@
 .profileMargin{
     margin-bottom: 30px !important;
 }
+
+.register-success-text {
+    height: 32px;
+    font-family: 'Open sans';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+}
+.register-reset-text {
+    display: block;
+    height: 20px;
+    opacity: 0.5;
+    font-family: 'Open sans';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    text-align: center;
+}
+.register-submit {
+    width: 290px;
+    height: 48px;
+    background-color: #00bcd4;
+    font-family: 'Open sans';
+    font-size: 20px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #ffffff;
+    border-radius: 30px !important;
+    margin: 30px !important;
+}
 @media only screen and (min-width: 1025px) {
     .width40 {
         max-width: 400px !important;
     }
 }
 @media only screen and (max-width: 1024px) {
-    .registerContainer, .parentDiv {
+    .registerContainer {
         margin-left: 0px !important;
+    }
+    .parentDiv {
+        margin-left: 10px !important;
     }
     .topBorder{
         margin-left: 10px !important;
+        width: 90%;
+    }
+    .headerContainer {
+        height: 75px;
+    }
+    .logo {
+        margin-left: 25px !important;
     }
 }
-@media only screen and (max-width: 480px) {
-    .inputFormControl {
+@media only screen and (max-width: 700px) {
+    .inputFormControl, .react-phone-number-input{
         width: 100% !important;
+    }
+    .content {
+        padding-left: 15px;
     }
     .profile-Row {
         text-align: center;
+        padding-right: 15% !important; 
     }
     .removeBtn {
         margin-left: 0px;
@@ -217,8 +284,9 @@
     .uploadFile  {
         margin-top: 10px;
     }
-    .registerContainer{
-        margin-left: 20px !important;
+    .headerContainer {
+        margin: 10px !important;
+        height: 50px !important;
     }  
     .topBorder{
         margin-left: 10px !important;
@@ -228,5 +296,12 @@
     }
     .bottomBorder{
         margin-bottom: 30px !important;
+    }
+    .parentDiv {
+        padding: 20px !important;
+        margin: 0;
+    }
+    .sucess-row {
+        padding-left: 30px;
     }
 }
