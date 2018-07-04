@@ -142,12 +142,12 @@ class LoginComponent extends Component{
                             <p className="labelSignIn">Already Have an account? Sign In</p>
                             <div className="loginError marginLeft20">{this.state.loginErrorMsz}</div>
                             <Form horizontal id="loginForm">
-                                <FormGroup controlId="username">
+                                <FormGroup controlId="username" className="formGroupMargin">
                                     <ControlLabel className="labelFormControl">Username</ControlLabel>
                                     <FormControl type="text" placeholder="Username" className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'username')} autoComplete="off"/>
                                     <div className="loginError">{this.state.userNameError}</div>
                                 </FormGroup>
-                                <FormGroup controlId="password">
+                                <FormGroup controlId="password" className="formGroupMargin">
                                     <ControlLabel className="labelFormControl">Password</ControlLabel>
                                     <FormControl type="password" placeholder="Password"  className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'password')} autoComplete="off"/>
                                     <div className="loginError">{this.state.passwordError}</div>

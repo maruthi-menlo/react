@@ -27,6 +27,7 @@
     line-height: 1.5;
     letter-spacing: normal;
     color: #2f4858 !important;
+    margin-bottom: 28px;
 }
 .forgot-pwd a {
     color: #2f4858 !important;
@@ -43,7 +44,8 @@
     letter-spacing: normal;
     color: #2f4858;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 35px;
+    margin-bottom: 44px;
 }
 .formContainer  {
     width: 450px;
@@ -64,7 +66,7 @@
     font-stretch: normal;
     line-height: 1.43;
     letter-spacing: normal;
-    color: #2f4858;
+    color: #2f4858 !important;
 }
 .formControl {
     height: 40px !important;
@@ -74,12 +76,15 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: 1.5;
+    line-height: 1.5 !important;
     letter-spacing: normal;
     color: #2f4858 !important;
     border-radius: 3px !important;
     border: solid 1px #526173 !important;
-    margin-top: 5px;
+    margin-top: 8px;
+}
+.formGroupMargin{
+    margin-bottom: 24px !important;
 }
 .loginRemeberMe input{
     width: 24px;
@@ -89,7 +94,7 @@
     cursor: pointer;
 }
 .loginRemeberMe  {
-    margin-bottom: 30px;
+    margin-bottom: 42px;
 }
 .loginRemeberMe  label{
     cursor: pointer;
@@ -107,7 +112,7 @@ label {
 }
 .signinBtn {
     width: 100% !important;
-    margin-bottom: 20px;
+    margin-bottom: 32px;
     border-radius: 30px !important;
     height: 48px;
     font-family: 'Open Sans';
@@ -153,6 +158,7 @@ label {
     line-height: 1.5;
     letter-spacing: normal;
     color: #2f4858 !important;
+    margin-top: 23px;
 }
 .loginError {
     color: red;

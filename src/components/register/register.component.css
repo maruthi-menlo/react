@@ -14,7 +14,7 @@
     opacity: 0.25;
 }
 .parentDiv {
-    margin: 20px 0 0 10%;
+    margin: 46px 0 0 10%;
     width: 100%;
 }
 .mandatory-content {
@@ -28,7 +28,7 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #2f4858;
-    margin-bottom: 19px;
+    margin-bottom: 11px;
 }
 .register-text {
     height: 32px;
@@ -267,6 +267,9 @@
 @media only screen and (max-width: 700px) {
     .inputFormControl, .react-phone-number-input{
         width: 100% !important;
+    }
+    .mandatory-content {
+        height: auto;
     }
     .content {
         padding-left: 15px;
