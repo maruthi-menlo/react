@@ -12,6 +12,9 @@ class DashboardComponent extends Component{
         super(props);
         this.FsnetAuth = new FsnetAuth();
         this.redirectHome = this.redirectHome.bind(this);
+        this.state = {
+            loggedInUserObj: [],
+        }
     }
 
     redirectHome() {
@@ -23,7 +26,12 @@ class DashboardComponent extends Component{
     componentDidMount() {
         if(this.FsnetAuth.isAuthenticated()){
             //Get user obj from local storage.
-            console.log(reactLocalStorage.getObject('userData'));
+            let userObj = reactLocalStorage.getObject('userData');
+            if(userObj) {
+                this.setState({
+                    loggedInUserObj: userObj
+                }) 
+            }
         }else{
             this.props.history.push('/');
         }        
@@ -40,7 +48,7 @@ class DashboardComponent extends Component{
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12} id="header-right">
                         <Row className="header-right-row">
-                            <div className="user-name">John Appleseed <i className="fa fa-caret-down" aria-hidden="true"></i></div>
+                            <div className="user-name">{this.state.loggedInUserObj.firstName}{this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
                             <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
                             <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
                             <span className="notification-count">3</span>

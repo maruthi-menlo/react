@@ -6,6 +6,7 @@ import {Constants} from '../../constants/constants';
 import {Fsnethttp} from '../../services/fsnethttp';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from'../../services/fsnetauth';
+import ReactDOM from 'react-dom';
 
 class LoginComponent extends Component{
 
@@ -16,6 +17,7 @@ class LoginComponent extends Component{
         this.close = this.close.bind(this);
         this.loginFn = this.loginFn.bind(this);
         this.loginInputHandleEvent = this.loginInputHandleEvent.bind(this);
+        this.autoLoginOnEnterKey = this.autoLoginOnEnterKey.bind(this);
         this.state = {
             showModal : false,
             loginUserName:'',
@@ -30,6 +32,8 @@ class LoginComponent extends Component{
     componentDidMount() {
         this.Constants = new Constants();
         this.Fsnethttp = new Fsnethttp();
+        //Check if user already logged in
+        //If yes redirect to dashboard page
         if(this.FsnetAuth.isAuthenticated()){
             this.props.history.push('/dashboard');
         }
@@ -47,6 +51,15 @@ class LoginComponent extends Component{
             loginErrorMsz: '',
         });
     }
+
+    // On enter key call auto login.
+    autoLoginOnEnterKey(event){
+        if(event.key === 'Enter'){
+            let currentElem = ReactDOM.findDOMNode(this.login)
+            currentElem.click();
+        }
+    }
+
     
     loginFn() {
         if(this.state.loginUserName && this.state.loginPassword) {
@@ -142,20 +155,20 @@ class LoginComponent extends Component{
                             <p className="labelSignIn">Already Have an account? Sign In</p>
                             <div className="loginError marginLeft20">{this.state.loginErrorMsz}</div>
                             <Form horizontal id="loginForm">
-                                <FormGroup controlId="username" className="formGroupMargin">
+                                <FormGroup controlId="username">
                                     <ControlLabel className="labelFormControl">Username</ControlLabel>
-                                    <FormControl type="text" placeholder="Username" className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'username')} autoComplete="off"/>
+                                    <FormControl type="text" placeholder="Username" className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'username')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
                                     <div className="loginError">{this.state.userNameError}</div>
                                 </FormGroup>
-                                <FormGroup controlId="password" className="formGroupMargin">
+                                <FormGroup controlId="password">
                                     <ControlLabel className="labelFormControl">Password</ControlLabel>
-                                    <FormControl type="password" placeholder="Password"  className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'password')} autoComplete="off"/>
+                                    <FormControl type="password" placeholder="Password"  className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'password')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
                                     <div className="loginError">{this.state.passwordError}</div>
                                 </FormGroup>
                                 <CBox className="loginRemeberMe" onChange={(e) => this.loginInputHandleEvent(e,'isRememberMe')}>
                                     &nbsp; Remember Username?
                                 </CBox>
-                                <Button className="signinBtn" onClick={this.loginFn}>Sign In</Button>
+                                <Button ref={(button) => {this.login = button}} className="signinBtn" onClick={this.loginFn}>Sign In</Button>
                                 <div className="forgot-pwd"><a href="/forgot-password">Forgot Password?</a></div>
                             </Form>
                         </div>

@@ -28,4 +28,14 @@ export class Fsnethttp{
         return axios.post(this.Constants.BASE_URL+'register', userObj);
     }
 
+    //Forgot password
+
+    forgotPassword(obj) {
+        return axios.post(this.Constants.BASE_URL+'forgotPassword', obj);
+    }
+
+    //Verify forgot password code
+    verifycode(obj) {
+        return axios.post(this.Constants.BASE_URL+'forgotPasswordTokenValidate', obj);
+    }
 }

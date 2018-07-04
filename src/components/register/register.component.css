@@ -268,7 +268,7 @@
     .inputFormControl, .react-phone-number-input{
         width: 100% !important;
     }
-    .mandatory-content {
+    .mandatory-content, .register-text {
         height: auto;
     }
     .content {

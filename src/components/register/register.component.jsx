@@ -229,11 +229,16 @@ class RegisterComponent extends Component{
             })
         }
 
+        let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
         //Check password and confirm password is same.
         //If both passwords are not same then show the error.
         if(this.state.password !== this.state.confirmPassword) {
             errosArr.push(this.Constants.REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME)
         } 
+        //Check password contains min 8 letters with letters, numbers and symbols.
+        else if(!passwordRegex.test(this.state.password) || !passwordRegex.test(this.state.confirmPassword)) {
+            errosArr.push(this.Constants.PASSWORD_RULE_MESSAGE)
+        }
 
         //Need to agree FSNET's Terms of service checkbox
         if(!this.state.fsnetTermsandServices) {
@@ -370,13 +375,13 @@ class RegisterComponent extends Component{
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Phone Number (Home)</label>
-                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.mobileNumber } country="US" onChange={ phone => this.setState({ mobileNumber: phone }) }/>
-                            </Col>
-                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Phone Number (Cell)*</label>
+                                <label className="label-text">Phone Number (Main)*</label>
                                 <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')}/>
                                 <span className="error">{this.state.cellNumberEmptyMsz}</span>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="label-text">Phone Number (Cell)</label>
+                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.mobileNumber } country="US" onChange={ phone => this.setState({ mobileNumber: phone }) }/>
                             </Col>
                         </Row>
                         <label className="profile-text">Profile Picture: (Image must not exceed 512 x 512)</label>
