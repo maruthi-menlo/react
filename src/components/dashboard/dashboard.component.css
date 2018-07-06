@@ -21,9 +21,13 @@
     color: #2f4858;
 }
 .header-right-row {
-    width: 225px;
+    width: 300px;
     float: right;
 }
+.logout {
+    cursor: pointer;
+    margin-right: 10px;
+} 
 .user-name i {
     width: 10px;
     height: 6px;
@@ -425,6 +429,43 @@
 .filter-right-block {
     float: right;
     width: 250px;
+}
+#MainDashboard .colEmpty, #MainDashboard .rowFilters {
+    height: 0!important;
+}
+.filtersHolder{
+    position: relative;
+}
+
+.filters{
+    position: relative;
+    z-index: 1000;
+    height: auto;
+    float: none;
+    top: 5px;
+    left: 30px;
+    width: 368px;
+    width: 368px;
+    min-height: 448px;
+    border-radius: 8px;
+    box-shadow: -12px 8px 24px 2px rgba(155, 155, 155, 0.25);
+    background-color: #ffffff;
+    border: solid 1px rgba(51, 101, 138, 0.25);
+}
+#fsnet-tabs {
+    margin-bottom: 20px;
+    min-height: 40px!important;
+    height: auto!important;
+}
+#fsnet-tabs ul {
+    border: none!important;
+}
+#fsnet-tabs ul li {
+    width: 50%;
+    border: none;
+}
+.fade.in {
+    opacity: 1;
 }
 @media only screen and (max-width: 1180px) {
     .row.fund-container {

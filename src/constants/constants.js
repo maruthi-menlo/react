@@ -18,5 +18,6 @@ export class Constants{
     ACCOUNT_TYPE_REQUIRED = 'Please enter account type.';
     EMAIL_MOBILE_REQUIRED = 'Please enter email or cell number';
     INVALID_VERIFY_CODE = 'Please enter valid code';
+    PASSWORD_NOT_MATCH = 'Password doesnt meet requirements';
     
 }

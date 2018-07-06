@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import './dashboard.component.css';
 import { FsnetAuth } from'../../services/fsnetauth';
-import { Row, Col, FormControl,Button } from 'react-bootstrap';
+import { Row, Col, FormControl, Button, Tabs, Tab } from 'react-bootstrap';
 import userDefaultImage from '../../images/default_user.png';
 import { reactLocalStorage } from 'reactjs-localstorage';
 
@@ -12,8 +12,11 @@ class DashboardComponent extends Component{
         super(props);
         this.FsnetAuth = new FsnetAuth();
         this.redirectHome = this.redirectHome.bind(this);
+        this.logout = this.logout.bind(this);
+        this.hideAndShowFilters = this.hideAndShowFilters.bind(this);
         this.state = {
             loggedInUserObj: [],
+            isHide : true,
         }
     }
 
@@ -21,25 +24,38 @@ class DashboardComponent extends Component{
         this.props.history.push('/dashboard');
     }
     
+    logout() {
+        reactLocalStorage.clear();
+        this.props.history.push('/');
+    }
+    
     // Get current loggedin user details
     //If token is undefined then redirect to login page 
     componentDidMount() {
         if(this.FsnetAuth.isAuthenticated()){
             //Get user obj from local storage.
-            let userObj = reactLocalStorage.getObject('userData');
-            if(userObj) {
-                this.setState({
-                    loggedInUserObj: userObj
-                }) 
-            }
+            // let userObj = reactLocalStorage.getObject('userData');
+            // if(userObj) {
+            //     this.setState({
+            //         loggedInUserObj: userObj
+            //     }) 
+            // }
         }else{
-            this.props.history.push('/');
+            //this.props.history.push('/');
         }        
+    }
+
+    //To show and hide filters
+    hideAndShowFilters() {
+        let isHideLocal = !(this.state.isHide);
+        this.setState({
+            isHide : isHideLocal,
+        });
     }
 
     render(){
         return(
-            <Row className="dashboardContainer">
+            <Row className="dashboardContainer" id="MainDashboard">
                 <Row className="dashboardMainRow">
                     <Col lg={6} md={6} sm={6} xs={12}>
                         <Row>
@@ -48,6 +64,7 @@ class DashboardComponent extends Component{
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12} id="header-right">
                         <Row className="header-right-row">
+                            <span className="logout" onClick={this.logout}>Logout </span>
                             <div className="user-name">{this.state.loggedInUserObj.firstName}{this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
                             <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
                             <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
@@ -56,12 +73,13 @@ class DashboardComponent extends Component{
                         </Row>
                     </Col>
                 </Row>
+                
                 <Row className="dashboardMainRow fund-container"> 
                     <div className="myFunds">Your Funds</div>
                     <Col lg={12} md={12} sm={12} xs={12}>
                         <Col lg={6} md={6} sm={6} xs={12} className="display-filter">
                             <span className="filter-icon"><i className="fa fa-filter" aria-hidden="true"></i></span>
-                            <span className="filter-mode">Filter (Off)<i className="fa fa-caret-down" aria-hidden="true"></i></span>
+                            <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter (Off)<i className="fa fa-caret-down" aria-hidden="true"></i></span>
                             <span className="search-icon"><i className="fa fa-search" aria-hidden="true"></i></span>
                             <FormControl type="text" placeholder="Search Funds" className="formFilterControl"/>
                         </Col>
@@ -73,6 +91,20 @@ class DashboardComponent extends Component{
                             </div>
                         </Col>
                     </Col>
+                    <Row className="rowFilters" hidden={this.state.isHide}>
+                        <Col lg={6} md={6} sm={12} xs={12} className="filtersHolder colEmpty">
+                            <div className="filters">
+                                <Tabs defaultActiveKey={0} id="fsnet-tabs">
+                                    <Tab eventKey={0} title="Date Range">                               <label>Fund start date</label>
+                                    </Tab>
+                                    <Tab eventKey={1} title="Status">                                    
+                                    </Tab>
+                                </Tabs>                  
+                            </div>
+                        </Col>
+                        <Col lg={6} md={6} className="colEmpty">
+                        </Col>
+                    </Row>
                     <Col lg={12} md={12} sm={12} xs={12}>
                         <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
                             <div className="fundBoxEdit">

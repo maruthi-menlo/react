@@ -38,4 +38,9 @@ export class Fsnethttp{
     verifycode(obj) {
         return axios.post(this.Constants.BASE_URL+'forgotPasswordTokenValidate', obj);
     }
+
+    //Reset password
+    resetPassword(obj) {
+        return axios.post(this.Constants.BASE_URL+'resetPassword', obj);
+    }
 }
