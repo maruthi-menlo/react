@@ -4,7 +4,8 @@ export class Constants{
 
     // Develop
 
-    BASE_URL = `http://192.168.1.231:3000/api/v1/`;
+    // BASE_URL = `http://192.168.1.231:3000/api/v1/`;
+    BASE_URL = `http://137.116.56.150:3000/api/v1/`;
 
     REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME = "Password and Confirm Password should be same.";
     TERMS_CONDITIONS = "Please accept terms & conditions.";

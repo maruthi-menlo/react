@@ -291,7 +291,7 @@ class RegisterComponent extends Component{
         this.Fsnethttp = new Fsnethttp();
         this.Constants = new Constants();
         let url = window.location.href;
-        let getId = url.split('getInviationData/');
+        let getId = url.split('register/');
         let userAccessId = getId[1];
         //In register url get the id to get the user details
         //If id is not present in url then redirect to 404.
