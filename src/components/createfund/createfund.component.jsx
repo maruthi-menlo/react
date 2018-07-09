@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import './createfund.component.css';
-import { DropdownButton, Grid, Jumbotron, Button, Row, Col, Navbar, NavItem, Nav, NavDropdown, MenuItem, NavbarHeader, NavbarBrand, Badge, ControlLabel, FormControl, HelpBlock, FormGroup } from 'react-bootstrap';
+import { DropdownButton, Grid, Jumbotron, Button,Checkbox as CBox, Row, Col, Navbar, NavItem, Nav, NavDropdown, MenuItem, NavbarHeader, NavbarBrand, Badge, ControlLabel, FormControl, HelpBlock, FormGroup } from 'react-bootstrap';
 import userDefaultImage from '../../images/default_user.png';
 
 class CreateFundComponent extends Component{
@@ -53,11 +53,29 @@ class CreateFundComponent extends Component{
 
                     <Grid fluid="true">
 
+                    <Row className="dashboardMainRow">
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                        <Row>
+                                
+                        </Row>
+                    </Col>
+                    <Col lg={6} md={6} sm={6} xs={12} id="header-right">
+                        <Row className="header-right-row">
+                            <span className="johnAppleseed" >John Appleseed </span>
+                            <div className="user-name"><i className="fa fa-caret-down" aria-hidden="true"></i></div>
+                            <img alt="profilePic" className="profilePic"/>
+                            <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
+                            <i class="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
+                            {/* <img src="" alt="icon" className="overFlowIcon"/> */}
+                        </Row>
+                    </Col>
+                </Row>
+
                         <Col xs={6} md={12}>
                         <div className="main-heading"><span className="main-title">Create New Fund</span><a className="cancel-fund">Cancel</a></div>
                         </Col>                   
                       
-                        <div className="form-grid">
+                        {/*<div className="form-grid">
                         <form>
                         <h2>Fund Details</h2>
                         <h4>Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
@@ -93,8 +111,44 @@ class CreateFundComponent extends Component{
 
                         </FormGroup>
                         </form>
+        </div>*/}
+                        <div className="GpDelegatesContainer">
+                        <h1 className="assignGp">Assign GP Delegates</h1>
+                        <p className="Subtext">Select GP Delegate(s) from the list below or add a new one.</p>
+                        <Button className="gpDelegateButton">Gp Delegate</Button>
+                        <div className="checkBoxGpContainer">
+                        <label className="Rectangle-6">
+                            <span className="Ben-Parker">Ben Parker</span>
+                            <CBox className="checkBoxBen">                  
+                            </CBox>
+                        </label>
+                        <label className="Rectangle-6">
+                            <span className="Ben-Parker">Jeff Lynne</span>
+                            <CBox className="checkBoxBen">                  
+                            </CBox>
+                        </label>
+                        <label className="Rectangle-6">
+                            <span className="Ben-Parker">Kaitlyn Lopez</span>
+                            <CBox className="checkBoxBen">                  
+                            </CBox>
+                        </label>
+                        <label className="Rectangle-6">
+                            <span className="Ben-Parker">Larry Croft</span>
+                            <CBox className="checkBoxBen">                  
+                            </CBox>
+                        </label>
+                        <label className="Rectangle-6">
+                            <span className="Ben-Parker">Samrutha Karujika</span>
+                            <CBox className="checkBoxBen">                  
+                            </CBox>
+                        </label>
+                        <label className="Rectangle-6">
+                            <span className="Ben-Parker">Samrutha Karujika</span>
+                            <CBox className="checkBoxBen">                  
+                            </CBox>
+                        </label>
                         </div>
-
+                        </div>
                         <Col xs={6} md={12}>
                         <div className="footer-nav"><i class="fa fa-chevron-left" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
                         </Col>  

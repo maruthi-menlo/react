@@ -23,6 +23,8 @@
 .header-right-row {
     width: 300px;
     float: right;
+    position: relative;
+    right: -15%;
 }
 .logout {
     cursor: pointer;
@@ -63,7 +65,14 @@
 .overFlowIcon {
     width: 24px;
     height: 24px;
-  }
+}
+.ellipsisH {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 5px;
+    font-size: 20px;
+}
 .myFunds {
     height: 36px;
     font-family: 'Open Sans';
@@ -162,6 +171,10 @@
     top: -15px;
     margin-right: 2px;
 }
+.bellO{
+    position: relative;
+    top: -16px;
+}
 .notificationCount {
     width: 16px;
     height: 20px;
@@ -195,6 +208,8 @@
     margin-left: 56px;
     margin-right: 8px;
     margin-bottom: 31px;
+    position: relative;
+    top: -7px;
 }
 .actionRequired {
     width: 99px;
@@ -211,6 +226,54 @@
     color: #2f4858;
     padding: 4px 9px 4px 10px !important;
     margin-bottom: 31px;
+    position: relative;
+    top: -7px;
+    background-color: white;
+}
+.closedReadyEdit {
+    width: 88px;
+    height: 24px;
+    border-radius: 2px !important;
+    background-color: #1adbb9;
+    font-family: OpenSans;
+    font-size: 10px !important;
+    font-weight: normal !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #ffffff;
+    padding: 4px 7px 4px 8px !important;  
+    margin-left: 56px;
+    margin-right: 8px;
+    margin-bottom: 31px;
+    position: relative;
+    top: -15px;
+}
+.open-Ready-Edit{
+    width: 88px;
+}
+.closedEdit{
+    width: 48px;
+    height: 24px;
+    border-radius: 2px !important;
+    background-color: #1adbb9;    
+    font-family: OpenSans;
+    font-size: 10px !important;
+    font-weight: normal !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #ffffff;
+    padding: 4px 7px 4px 8px !important;  
+    margin-left: 56px;
+    margin-right: 8px;
+    margin-bottom: 31px;
+    position: relative;
+    top: -7px;
 }
 .Fund-Start-Date {
     width: 129px;
@@ -225,8 +288,11 @@
     color: #2f4858;
     display: inline-block;
     margin-bottom: 8px;
+    position: relative;
+    top: -8px;
+    margin-right: 8px;
 }
-.text-style-1 {
+.Fund-Start-Date .text-style-1 {
     font-weight: normal;
 }
 .Fund-End-Date {
@@ -242,8 +308,10 @@
     color: #2f4858;
     display: inline-block;
     margin-bottom: 8px;
+    position: relative;
+    top: -8px;
 }
-  .text-style-1 {
+.Fund-End-Date .text-style-1 {
     font-weight: normal;
 }
 .Line {
@@ -341,7 +409,7 @@
     margin-bottom: 8px;
 }
 .Hard-Cap-2000000 {
-    width: 143px;
+    
     height: 16px;
     font-family: 'Open Sans';
     font-size: 12px;
@@ -352,7 +420,9 @@
     letter-spacing: normal;
     color: #2f4858;
     display: inline-block;
-    margin-left: 118px;
+    margin-left: 45%;
+    position: relative;
+    top: -8px;
 }
 .Dollars-Closed-17 {
     width: 174px;
@@ -389,6 +459,10 @@
     line-height: normal;
     letter-spacing: normal;
     color: #2f4858;
+    position: relative;
+    top: 8px;
+    left: -28px;
+    
 }
 .newFundButton {
     width: 144px;
@@ -405,6 +479,8 @@
     color: #39bcd5;
     background-color: white;
     float: right;
+    position: relative;
+    left: -10px;
 }
 .progress-bar {
     width: 196px;
@@ -429,6 +505,17 @@
 .filter-right-block {
     float: right;
     width: 250px;
+    position: relative;
+    top: 15px;
+}
+.thLarge{
+    position: relative;
+    top: 10px;
+    margin-right: 8px;
+    left: -28px;
+}
+.caretDown{
+    margin-left: 3px;
 }
 #MainDashboard .colEmpty, #MainDashboard .rowFilters {
     height: 0!important;
@@ -459,19 +546,144 @@
 }
 #fsnet-tabs ul {
     border: none!important;
+    margin-top: 12px;
+    margin-bottom: 8px;
 }
 #fsnet-tabs ul li {
     width: 50%;
     border: none;
 }
+#fsnet-tabs ul li a {
+    text-decoration: none;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #39bcd5;
+    margin-left: 45px;
+}
 .fade.in {
-    opacity: 1;
+    opacity: 1 !important;
+}
+.borderDateRange{
+    width: 184px;
+    height: 4px;
+    background-color: #4acddd;
+}
+.borderStatusRange{
+    width: 184px;
+    height: 4px;
+    background-color: #4acddd;
+    margin-left: 50%;
+}    
+.drfStartDate {
+    width: 264px !important;
+    height: 40px;
+    opacity: 0.25;
+    border-radius: 3px !important;
+    border: solid 1px #526173 !important;
+    margin-bottom: 28px;
+}
+.drfEndDate{
+    margin-bottom: 25%;
+}
+.btnClearAll {
+    width: 91px;
+    height: 36px;
+    background-color: rgba(245, 245, 245, 0.3);
+    font-family: Lato;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #0c0033;
+    padding: 8px 16px !important;
+    border-radius: 30px !important;
+    margin-left: 32px;
+}
+.btnClearAllStatus{
+    margin-left: 20%;
+}
+.btnSave {
+    width: 91px;
+    height: 36px;
+    background-color: #00bcd4;
+    font-family: Lato;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #ffffff;
+    padding: 8px 16px !important;
+    border-radius: 30px !important;
+    margin-left: 16px;
+}
+.fundStartContainer{
+    margin-top: 76px;
+    margin-left: 52px;
+}
+.fsDate{
+    margin-bottom: 8px !important;
+}
+.checkBoxContainer{
+    margin: 24px 0 50% 24px;
+}
+.checkBoxLogo{
+    
+  height: 24px;
+  font-family: OpenSans;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.checkBoxLogo input{
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    background-color: #000000;
+    position: relative; 
+    top: 6px;
+    margin-right: 8px;
+}
+.marginBottomCheckBox{
+    margin-bottom: 24px;
 }
 @media only screen and (max-width: 1180px) {
     .row.fund-container {
         width: 100%;
     }
 
+}
+@media only screen and (max-width: 780px){
+    .fundBoxEdit{
+        margin: 30px;
+    }
+    .formFilterControl{
+        width: 175px !important;
+        margin-left: 15px;
+    }
+    .filter-icon{
+        margin-left: 30px !important;
+    }
+    .newFundButton{
+        left: -20px;
+    }
+    .search-icon i{
+        left: 40px;
+    }
 }
 @media only screen and (max-width: 480px) {
     .row.dashboardMainRow {
