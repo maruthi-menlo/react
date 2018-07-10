@@ -28,17 +28,17 @@ class DashboardComponent extends Component {
     // Get current loggedin user details
     //If token is undefined then redirect to login page 
     componentDidMount() {
-        if(this.FsnetAuth.isAuthenticated()){
-            //Get user obj from local storage.
-            let userObj = reactLocalStorage.getObject('userData');
-            if(userObj) {
-                this.setState({
-                    loggedInUserObj: userObj
-                }) 
-            }
-        }else{
-           this.props.history.push('/');
-        }        
+        // if(this.FsnetAuth.isAuthenticated()){
+        //     //Get user obj from local storage.
+        //     let userObj = reactLocalStorage.getObject('userData');
+        //     if(userObj) {
+        //         this.setState({
+        //             loggedInUserObj: userObj
+        //         }) 
+        //     }
+        // }else{
+        //    this.props.history.push('/');
+        // }        
     }
 
     //To show and hide filters
@@ -258,6 +258,38 @@ class DashboardComponent extends Component {
                                 <label className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</label>
                                 <div className="progress-bar"><span className="progress"></span></div>
                                 <label className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></label>
+                            </div>
+                        </Col>
+                        <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
+                            <div className="fundBoxEdit fundBoxEditHelios">
+                                <div className="fundImageEdit heliosFundBox">
+                                    <div className="heliosFundColumn">
+                                    <i className="fa fa-bell-o speaker-fund-Picture" aria-hidden="true"></i>
+                                    <label className="helios-Fund-Name">Helios Fund</label>
+                                    <i className="fa fa-bell-o closeIcon" aria-hidden="true"></i>
+                                    </div>
+                                    <h4 className="activityFeed">Activity Feed</h4>
+                                </div>
+                                <div className="ellenSmithensonLp">
+                                <i className="fa fa-bell-o ellenIcon" aria-hidden="true"></i>
+                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Ellen Smithenson (LP) </label> 
+                                        has accepted the invite to the fund.</div>
+                                        <label className="timeDate">6/19 - 11:01 AM</label>
+
+                                </div>
+                                <div className="ellenSmithensonLp">
+                                <i className="fa fa-bell-o ellenIcon" aria-hidden="true"></i>
+                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Sarah Douglas (LP)</label>
+                                    has signed subscription document.</div>
+                                        <label className="timeDate">6/18 - 3:12 PM</label>
+                                </div>
+                                <div className="ellenSmithensonLp benParker">
+                                <i className="fa fa-bell-o ellenIcon" aria-hidden="true"></i>
+                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Ben Parker (GP)</label>
+                                    has amended fund.</div>
+                                        <label className="timeDate">6/19 - 11:01 AM</label>
+                                </div>
+                                
                             </div>
                         </Col>
                     </Col>

@@ -41,17 +41,17 @@ class HeaderComponent extends Component{
     }
 
     componentDidMount() {
-        if(this.FsnetAuth.isAuthenticated()){
-            //Get user obj from local storage.
-            let userObj = reactLocalStorage.getObject('userData');
-            if(userObj) {
-                this.setState({
-                    loggedInUserObj: userObj
-                }) 
-            }
-        }else{
-            this.props.history.push('/');
-        }        
+        // if(this.FsnetAuth.isAuthenticated()){
+        //     //Get user obj from local storage.
+        //     let userObj = reactLocalStorage.getObject('userData');
+        //     if(userObj) {
+        //         this.setState({
+        //             loggedInUserObj: userObj
+        //         }) 
+        //     }
+        // }else{
+        //     this.props.history.push('/');
+        // }        
     }
 
 
