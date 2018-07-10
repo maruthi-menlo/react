@@ -1,10 +1,16 @@
 
 import React, { Component } from 'react';
 import './createfund.component.css';
-import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl,  FormGroup } from 'react-bootstrap';
+import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import userDefaultImage from '../../images/default_user.png';
 import { reactLocalStorage } from 'reactjs-localstorage';
-import { FsnetAuth } from'../../services/fsnetauth';
+import { FsnetAuth } from '../../services/fsnetauth';
+import Step1Component from '../createfund/step1/step1.component';
+import Step2Component from '../createfund/step2/step2.component';
+import Step3Component from '../createfund/step3/step3.component';
+import Step4Component from '../createfund/step4/step4.component';
+import Step5Component from '../createfund/step5/step5.component';
+
 
 class CreateFundComponent extends Component {
 
@@ -12,13 +18,100 @@ class CreateFundComponent extends Component {
         super(props);
         this.FsnetAuth = new FsnetAuth();
         this.logout = this.logout.bind(this);
+        this.proceedToBack = this.proceedToBack.bind(this);
+        this.proceedToNext = this.proceedToNext.bind(this);
         this.state = {
             loggedInUserObj: [],
+            showStep1Page : true,
+            showStep2Page : false,
+            showStep3Page : false,
+            showStep4Page : false,
+            showStep5Page : false,
+            currentPage: 1,
+            totalPageCount: 4,
         }
 
     }
 
-    title = "ding";
+    proceedToBack() {
+        let page = this.state.currentPage;
+        if(this.state.currentPage <= this.state.totalPageCount+1 && this.state.currentPage >=0) {
+            console.log(this.state.currentPage);
+            switch(page) {
+                case 2:
+                    this.setState({
+                        showStep2Page : false,
+                        showStep1Page : true,
+                        currentPage: page-1,
+                    })
+                    break;
+                case 3:
+                    this.setState({
+                        showStep3Page : false,
+                        showStep2Page : true,
+                        currentPage: page-1,
+                    })
+                    break;
+                case 4:
+                    this.setState({
+                        showStep3Page : true,
+                        showStep4Page : false,
+                        currentPage: page-1,
+                    })
+                    break;
+                case 5:
+                    this.setState({
+                        showStep4Page : true,
+                        showStep5Page : false,
+                        currentPage: page-1,
+                    })
+                    break;
+                default:
+                    //Do nothing
+            }
+        }
+    }
+
+    proceedToNext() {
+        let page = this.state.currentPage;
+        if(this.state.currentPage <= this.state.totalPageCount) {
+            console.log(this.state.currentPage);
+            switch(page) {
+                case 1:
+                    this.setState({
+                        showStep2Page : true,
+                        showStep1Page : false,
+                        currentPage: page+1,
+                    })
+                    break;
+                case 2:
+                    this.setState({
+                        showStep3Page : true,
+                        showStep2Page : false,
+                        currentPage: page+1,
+                    })
+                    break;
+                case 3:
+                    this.setState({
+                        showStep4Page : true,
+                        showStep3Page : false,
+                        currentPage: page+1,
+                    })
+                    break;
+                case 4:
+                    this.setState({
+                        showStep5Page : true,
+                        showStep4Page : false,
+                        currentPage: page+1,
+                    })
+                    break;
+                default:
+                    //Do nothing
+            }
+        }
+
+        
+    }
 
     logout() {
         reactLocalStorage.clear();
@@ -41,11 +134,11 @@ class CreateFundComponent extends Component {
 
     render() {
         return (
-            <div class="wrapper">
+            <div className="wrapper">
                 <div className="sidenav">
-                    <h1><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
-                    <h2><i class="fa fa-home" aria-hidden="true"></i>&nbsp; Dashboard</h2>
-                    <div className="active-item"><i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge" pullRight="true">1/5</span></div>
+                    <h1><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
+                    <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; Dashboard</h2>
+                    <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">1/5</span></div>
                     <ul className="sidenav-menu">
                         <li><a href="#about">Fund Details</a></li>
                         <li><a href="#services">Assign GP Delegates</a></li>
@@ -55,20 +148,20 @@ class CreateFundComponent extends Component {
                         <li><a href="#contact">Review & Confirm</a></li>
                     </ul>
 
-                    <div class="start-box"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Start Fund</div>
+                    <div className="start-box"><i className="fa fa-check" aria-hidden="true"></i>&nbsp;Start Fund</div>
 
-                    <div class="section-head">GP Delegates<span className="btn-add pull-right">+</span></div>
-                    <div class="section">
-                        <div class="user">
-                            <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                    <div className="section-head">GP Delegates<span className="btn-add pull-right">+</span></div>
+                    <div className="section">
+                        <div className="user">
+                            <i className="fa fa-user fa-2x" aria-hidden="true"></i>
                             <p>You haven’t added any GP Delegates to this fund yet</p>
                         </div>
                     </div>
 
-                    <div class="section-head">LP's<span className="btn-add pull-right">+</span></div>
-                    <div class="section">
-                        <div class="user">
-                            <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                    <div className="section-head">LP's<span className="btn-add pull-right">+</span></div>
+                    <div className="section">
+                        <div className="user">
+                            <i className="fa fa-user fa-2x" aria-hidden="true"></i>
                             <p>You haven’t added any LP’s to this fund yet</p>
                         </div>
                     </div>
@@ -77,101 +170,40 @@ class CreateFundComponent extends Component {
 
                 <div className="main">
 
-                    <Grid fluid="true">
-                        <Col xs={6} md={12}>
-                            <Row className="header-right-row">
-                                <span className="logout" onClick={this.logout}>Logout </span>
-                                <div className="user-name">{this.state.loggedInUserObj.firstName}{this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
-                                <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
-                                <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
-                                <span className="notification-count">3</span>
-                                <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
-                            </Row>
-                        </Col>
+                    {/* <Grid fluid="true"> */}
+                    <Col xs={6} md={12}>
+                        <Row className="header-right-row">
+                            <span className="logout" onClick={this.logout}>Logout </span>
+                            <div className="user-name">{this.state.loggedInUserObj.firstName}{this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
+                            <img src={userDefaultImage} alt="profilePic" className="profilePic" />
+                            <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
+                            <span className="notification-count">3</span>
+                            <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
+                        </Row>
+                    </Col>
+                    <div hidden={!this.state.showStep1Page}>
+                        <Step1Component></Step1Component>
+                    </div>
+                    <div hidden={!this.state.showStep2Page}>
+                        <Step2Component></Step2Component>
+                    </div>
+                    <div hidden={!this.state.showStep3Page}>
+                        <Step3Component></Step3Component>
+                    </div>
+                    <div hidden={!this.state.showStep4Page}>
+                        <Step4Component></Step4Component>
+                    </div>
+                    <div hidden={!this.state.showStep5Page}>
+                        <Step5Component></Step5Component>
+                    </div>
+                    <Col xs={6} md={12}>
+                        <div className="footer-nav">
+                            <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
+                            <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
+                        </div>
+                    </Col>
 
-                        <Col xs={6} md={12}>
-                            <div className="main-heading"><span className="main-title">Create New Fund</span><a className="cancel-fund">Cancel</a></div>
-                        </Col>
-
-                        <div className="form-grid">
-                        <form>
-                        <h2>Fund Details</h2>
-                        <h4>Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
-                        <FormGroup controlId="formBasicText">
-                        <Row bsClass="form-row">
-                            <Col xs={6} md={6}>
-                                <ControlLabel className="form-label">Fund Name*</ControlLabel>
-                                <FormControl type="text" placeholder="Helios"/>
-                                <FormControl.Feedback /> 
-                            </Col>
-
-                            <Col xs={6} md={6}>
-                            <ControlLabel className="form-label">Fund Amount*</ControlLabel>
-                                <FormControl type="text" placeholder="$15,000,000.00"/>
-                                <FormControl.Feedback />
-                            </Col>
-                        </Row>    
-
-                        <Row bsClass="form-row">
-                            <Col xs={6} md={6}>
-                            <DropdownButton title="Fund Duration"  className="ddstyles">
-                                <MenuItem eventKey="1">Action</MenuItem>
-                                <MenuItem eventKey="2">Another action</MenuItem>
-                                <MenuItem eventKey="3">Something else here</MenuItem>
-                                <MenuItem divider />
-                                <MenuItem eventKey="4">Separated link</MenuItem>
-                            </DropdownButton>
-                            </Col>
-                        </Row> 
-
-                        <h2>Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
-                        <h4>Fill in one. Minimum fund participation can be calculated based off on percentage participation.</h4>
-
-                        </FormGroup>
-                        </form>
-        </div>
-                        {/* <div className="GpDelegatesContainer">
-                            <h1 className="assignGp">Assign GP Delegates</h1>
-                            <p className="Subtext">Select GP Delegate(s) from the list below or add a new one.</p>
-                            <Button className="gpDelegateButton">Gp Delegate</Button>
-                            <div className="checkBoxGpContainer">
-                                <label className="Rectangle-6">
-                                    <span className="Ben-Parker">Ben Parker</span>
-                                    <CBox className="checkBoxBen">
-                                    </CBox>
-                                </label>
-                                <label className="Rectangle-6">
-                                    <span className="Ben-Parker">Jeff Lynne</span>
-                                    <CBox className="checkBoxBen">
-                                    </CBox>
-                                </label>
-                                <label className="Rectangle-6">
-                                    <span className="Ben-Parker">Kaitlyn Lopez</span>
-                                    <CBox className="checkBoxBen">
-                                    </CBox>
-                                </label>
-                                <label className="Rectangle-6">
-                                    <span className="Ben-Parker">Larry Croft</span>
-                                    <CBox className="checkBoxBen">
-                                    </CBox>
-                                </label>
-                                <label className="Rectangle-6">
-                                    <span className="Ben-Parker">Samrutha Karujika</span>
-                                    <CBox className="checkBoxBen">
-                                    </CBox>
-                                </label>
-                                <label className="Rectangle-6">
-                                    <span className="Ben-Parker">Samrutha Karujika</span>
-                                    <CBox className="checkBoxBen">
-                                    </CBox>
-                                </label>
-                            </div>
-                        </div> */}
-                        <Col xs={6} md={12}>
-                            <div className="footer-nav"><i class="fa fa-chevron-left" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
-                        </Col>
-
-                    </Grid>
+                    {/* </Grid> */}
                 </div>
             </div>
         );

@@ -9,6 +9,7 @@ import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
 import {Constants} from '../../constants/constants';
 import Loader from '../../widgets/loader/loader.component';
+import successImage from '../../images/success.png';
 
 class ForgotPasswordComponent extends Component{
     constructor(props){
@@ -97,7 +98,9 @@ class ForgotPasswordComponent extends Component{
         if((event.target !==undefined  && event.target.value.length === 6) || button === 'verifyResetButton') {
             this.open();
             let postObj = {email:this.state.email, cellNumber:this.state.cellNumber, accountType:this.state.accountType, code:code}
-            this.Fsnethttp.verifycode(postObj).then(result=>{
+            let newPostObj = this.clean(postObj)
+            console.log(newPostObj);
+            this.Fsnethttp.verifycode(newPostObj).then(result=>{
                 this.close();
                 if(result) {
                     this.setState({
@@ -114,12 +117,10 @@ class ForgotPasswordComponent extends Component{
             })
             .catch(error=>{
                 this.close();
-                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.setState({
                         invalidVerifyCodeMsz: error.response.data.errors[0].msg,
-                        verificationCode:code,
-                        showForgotScreen2: false,
-                        showForgotScreen3: true,
+                        verificationCode:code
                     });
                 }
             });
@@ -142,10 +143,21 @@ class ForgotPasswordComponent extends Component{
         this.setState({ showModal: true });
     }
 
+    clean(obj) {
+        for (var propName in obj) { 
+          if (obj[propName] === null || obj[propName] === undefined || obj[propName] === '') {
+            delete obj[propName];
+          }
+        }
+        return obj;
+    }
+
     //Send code again
     sendCodeAgain() {
         let forgotObj = {email:this.state.email, cellNumber:this.state.cellNumber, accountType:this.state.accountType}
-        this.Fsnethttp.forgotPassword(forgotObj).then(result=>{
+        let newObj = this.clean(forgotObj)
+        console.log(newObj);
+        this.Fsnethttp.forgotPassword(newObj).then(result=>{
             this.close();
             if(result.data) {
                 this.setState({
@@ -156,7 +168,7 @@ class ForgotPasswordComponent extends Component{
         })
         .catch(error=>{
             this.close();
-            if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                 this.setState({
                     forgotScreen1ErrorMsz: error.response.data.errors[0].msg
                 })
@@ -201,7 +213,8 @@ class ForgotPasswordComponent extends Component{
 
     resetPassword() {
         let resetPwdObj = {email:this.state.email, cellNumber:this.state.cellNumber, accountType:this.state.accountType, code: this.state.verificationCode, password: this.state.password, passwordConfirmation: this.state.confirmPassword}
-        this.Fsnethttp.resetPassword(resetPwdObj).then(result=>{
+        let newPostObj = this.clean(resetPwdObj)
+        this.Fsnethttp.resetPassword(newPostObj).then(result=>{
             this.close();
             if(result.data) {
                 this.setState({
@@ -212,7 +225,7 @@ class ForgotPasswordComponent extends Component{
         })
         .catch(error=>{
             this.close();
-            if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                 this.setState({
                     createNewPwdErr: false,
                     createNewPwdErrMsz: error.response.data.errors[0].msg,
@@ -354,7 +367,8 @@ class ForgotPasswordComponent extends Component{
                                 <label className="forgot-success-text">success</label>
                                 <label className="forgot-reset-text">Your password has been reset</label>
                                 <div className="success-icon">
-                                    <i className="fa fa-check-circle" aria-hidden="true"></i>
+                                    {/* <i className="fa fa-check-circle" aria-hidden="true"></i> */}
+                                    <img src={successImage} alt="success"/>
                                 </div>
                                 <div className="text-center">
                                     <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen4')}>Sign In</Button> <br/>

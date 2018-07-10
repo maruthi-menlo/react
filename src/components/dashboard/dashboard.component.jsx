@@ -6,6 +6,7 @@ import { Row, Col, FormControl, Button, Tabs, Tab, Checkbox as CBox } from 'reac
 import userDefaultImage from '../../images/default_user.png';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import HeaderComponent from '../header/header.component'
+import { DateRange } from 'react-date-range';
 
 class DashboardComponent extends Component {
 
@@ -28,17 +29,17 @@ class DashboardComponent extends Component {
     // Get current loggedin user details
     //If token is undefined then redirect to login page 
     componentDidMount() {
-        // if(this.FsnetAuth.isAuthenticated()){
-        //     //Get user obj from local storage.
-        //     let userObj = reactLocalStorage.getObject('userData');
-        //     if(userObj) {
-        //         this.setState({
-        //             loggedInUserObj: userObj
-        //         }) 
-        //     }
-        // }else{
-        //    this.props.history.push('/');
-        // }        
+        if(this.FsnetAuth.isAuthenticated()){
+            //Get user obj from local storage.
+            let userObj = reactLocalStorage.getObject('userData');
+            if(userObj) {
+                this.setState({
+                    loggedInUserObj: userObj
+                }) 
+            }
+        }else{
+           this.props.history.push('/');
+        }        
     }
 
     //To show and hide filters
@@ -79,6 +80,7 @@ class DashboardComponent extends Component {
                                         <div className="fundStartContainer">
                                             <label className="fsDate">Fund Start Date</label>
                                             <FormControl type="text" placeholder="12/12/2017" className="drfStartDate" />
+                                            {/* <DateRange calendars="1"/> */}
                                             <label className="fsDate">Fund End Date</label>
                                             <FormControl type="text" placeholder="12/12/2017" className="drfStartDate drfEndDate" />
                                             <Button className="btnClearAll">Clear All</Button>
@@ -122,7 +124,7 @@ class DashboardComponent extends Component {
                         <Col lg={6} md={6} className="colEmpty">
                         </Col>
                     </Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
+                    {/* <Col lg={12} md={12} sm={12} xs={12}> */}
                         <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
                             {/* <div className={"fundBoxEdit " + (this.state.rowData === 0 ? 'show' : 'hidden')}> */}
                             <div className="fundBoxEdit">
@@ -260,7 +262,7 @@ class DashboardComponent extends Component {
                                 <label className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></label>
                             </div>
                         </Col>
-                        <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
+                        {/* <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
                             <div className="fundBoxEdit fundBoxEditHelios">
                                 <div className="fundImageEdit heliosFundBox">
                                     <div className="heliosFundColumn">
@@ -272,27 +274,27 @@ class DashboardComponent extends Component {
                                 </div>
                                 <div className="ellenSmithensonLp">
                                 <i className="fa fa-bell-o ellenIcon" aria-hidden="true"></i>
-                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Ellen Smithenson (LP) </label> 
-                                        has accepted the invite to the fund.</div>
-                                        <label className="timeDate">6/19 - 11:01 AM</label>
+                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Ellen Smithenson (LP)  </label> 
+                                         has accepted the invite to the fund.</div>
+                                        <span className="timeDate">6/19 - 11:01 AM</span>
 
                                 </div>
                                 <div className="ellenSmithensonLp">
                                 <i className="fa fa-bell-o ellenIcon" aria-hidden="true"></i>
-                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Sarah Douglas (LP)</label>
-                                    has signed subscription document.</div>
-                                        <label className="timeDate">6/18 - 3:12 PM</label>
+                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Sarah Douglas (LP) </label>
+                                      has signed subscription document.</div>
+                                        <span className="timeDate">6/18 - 3:12 PM</span>
                                 </div>
                                 <div className="ellenSmithensonLp benParker">
                                 <i className="fa fa-bell-o ellenIcon" aria-hidden="true"></i>
-                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Ben Parker (GP)</label>
-                                    has amended fund.</div>
-                                        <label className="timeDate">6/19 - 11:01 AM</label>
+                                    <div className="Ellen-Smithenson-LP"><label className="Ellen-Smithenson-LP-Font">Ben Parker (GP) </label>
+                                     has amended fund.</div>
+                                        <span className="timeDate">6/19 - 11:01 AM</span>
                                 </div>
                                 
                             </div>
-                        </Col>
-                    </Col>
+                        </Col> */}
+                    {/* </Col> */}
                 </Row>
             </Row>
         );

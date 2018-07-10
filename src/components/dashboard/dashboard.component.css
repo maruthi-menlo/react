@@ -632,7 +632,7 @@
 .speaker-fund-Picture {
     width: 16px;
     height: 16px;
-    background-color: white;
+    color: #ffffff;
     margin-left: 93px;
     margin-right: 4px;
   }
@@ -652,7 +652,7 @@
 .closeIcon {
     width: 12px;
     height: 12px;
-    background-color: white;
+    color: #ffffff;
     position: relative;
     top: 3px;
     
@@ -667,7 +667,7 @@
 .ellenIcon {
     width: 13px;
     height: 13px;
-    background-color: #00bcd4;
+    color: #00bcd4;
     margin-left: 9px;
     margin-right: 8px;
     position: relative;
@@ -691,26 +691,19 @@
     font-weight: 600;
 }
 .timeDate{
-    width: 73px;
+    width: 90px;
     height: 16px;
     font-family: OpenSans;
     font-size: 10px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: 1.6;
     letter-spacing: normal;
     text-align: right;
     color: #2f4858;
     position: absolute;
-    right: 32px;
-    margin-top: 5px;
-    /*left: 70%;
-    top: -110%;*/
-    /*right: 0;
-    top: 0;
-    z-index: 1;*/
-  }
+    right: 50px;
+}
 .benParker{
     background-color: white !important;
 }

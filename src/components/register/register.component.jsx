@@ -9,6 +9,7 @@ import  HeaderComponent from '../authheader/header.component'
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/rrui.css'
 import 'react-phone-number-input/style.css'
+import successImage from '../../images/success.png';
 
 class RegisterComponent extends Component{
 
@@ -32,7 +33,8 @@ class RegisterComponent extends Component{
             passwordEmptyMsz: '',
             confirmPasswordEmptyMsz: '',
             cellNumberEmptyMsz:'',
-            termsandConditionsRequired:''
+            termsandConditionsRequired:'',
+            showSuccesScreen:false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
@@ -158,7 +160,7 @@ class RegisterComponent extends Component{
                 }
             })
             .catch(error=>{
-                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.setState({
                         userNameExists: error.response.data.errors[0].msg,
                     });
@@ -189,7 +191,7 @@ class RegisterComponent extends Component{
                 })
             })
             .catch(error=>{
-                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.close();
                     this.setState({
                         errorMessage: error.response.data.errors[0].msg,
@@ -308,7 +310,7 @@ class RegisterComponent extends Component{
             })
             .catch(error=>{
                 this.close();
-                if(error.response.data !==undefined && error.response.data.errors !== undefined) {
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.setState({
                         invalidInvitationCode: error.response.data.errors[0].msg,
                         showRegisterScreen:false
@@ -413,7 +415,8 @@ class RegisterComponent extends Component{
                         <label className="register-success-text">success</label>
                         <label className="register-reset-text">Your account has been created</label>
                         <div className="success-icon">
-                            <i className="fa fa-check-circle" aria-hidden="true"></i>
+                            {/* <i className="fa fa-check-circle" aria-hidden="true"></i> */}
+                            <img src={successImage} alt="success"/>
                         </div>
                         <div className="text-center">
                             <Button className="register-submit" onClick={this.navigateToLogin}>Proceed to Login</Button> <br/>
