@@ -4,6 +4,7 @@ import './dashboard.component.css';
 import { FsnetAuth } from '../../services/fsnetauth';
 import { Row, Col, FormControl, Button, Tabs, Tab, Checkbox as CBox } from 'react-bootstrap';
 import userDefaultImage from '../../images/default_user.png';
+import rightIcon from '../../images/success-icon.svg';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import HeaderComponent from '../header/header.component'
 import { DateRange } from 'react-date-range';
@@ -172,7 +173,7 @@ class DashboardComponent extends Component {
                                     <span className="notificationCount">2</span>
                                 </div>
                                 <div>
-                                    <Button className="closedReadyEdit">Closed-Ready</Button>
+                                    <Button className="closedReadyEdit"><img src={rightIcon} alt="closed"/>Closed-Ready</Button>
 
                                 </div>
                                 <div>
@@ -206,7 +207,7 @@ class DashboardComponent extends Component {
                                 </div>
                                 <div>
                                     <Button className="openEdit open-Ready-Edit">Open-Ready</Button>
-                                    <Button className="actionRequired">Closed Ready</Button>
+                                    <Button className="actionRequired">Action Required</Button>
                                 </div>
                                 <div>
                                     <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:4/1/2018</span></span>

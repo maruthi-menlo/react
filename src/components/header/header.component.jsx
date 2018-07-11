@@ -37,7 +37,7 @@ class HeaderComponent extends Component{
     
 
     redirectHome() {
-        this.props.history.push('/dashboard');
+        // this.props.history.push('/dashboard');
     }
 
     componentDidMount() {

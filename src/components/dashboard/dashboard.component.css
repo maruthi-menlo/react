@@ -169,6 +169,10 @@
     /*top: -7px;*/
     background-color: white;
 }
+.closedReadyEdit img{
+    width: 15px;
+    height: 15px;
+}
 .closedReadyEdit {
     width: 88px;
     height: 24px;
@@ -738,7 +742,7 @@
 }
 @media only screen and (max-width: 780px){
     .fundBoxEdit{
-        margin: 30px;
+        margin: 30px 30px 12px 50px;
     }
     .formFilterControl{
         width: 175px !important;
