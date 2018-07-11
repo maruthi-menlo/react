@@ -57,7 +57,7 @@ class DashboardComponent extends Component {
                 <Row className="dashboardMainRow fund-container">
                     <div className="myFunds">Your Funds</div>
                     <Col lg={12} md={12} sm={12} xs={12}>
-                        <Col lg={6} md={6} sm={6} xs={12} className="display-filter">
+                        <Col lg={6} md={6} sm={6} xs={12} className="display-filter display-filter-padding">
                             <span className="filter-icon"><i className="fa fa-filter" aria-hidden="true"></i></span>
                             <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter (Off)<i className="fa fa-caret-down" aria-hidden="true"></i></span>
                             <span className="search-icon"><i className="fa fa-search" aria-hidden="true"></i></span>
@@ -130,7 +130,7 @@ class DashboardComponent extends Component {
                             <div className="fundBoxEdit">
                                 <div className="fundImageEdit">
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
-                                    <p className="Fund-Name">The Pheonician Investment Fund1</p>
+                                    <div className="Fund-Name">The Pheonician Investment Fund</div>
                                     <i className="fa fa-bell-o bellO" onClick={this.showActivityFeed} aria-hidden="true"></i>
                                     <span className="notificationCount">11</span>
                                 </div>
@@ -139,24 +139,24 @@ class DashboardComponent extends Component {
                                     <Button className="actionRequired">Action Required</Button>
                                 </div>
                                 <div>
-                                    <label className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></label>
-                                    <label className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></label>
+                                    <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></span>
+                                    <span className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></span>
                                 </div>
                                 <div className="Line"></div>
                                 <div>
-                                    <label className="Invited">24</label>
-                                    <label className="Invited1">18</label>
-                                    <label className="Invited2">8</label>
+                                    <span className="Invited">24</span>
+                                    <span className="Invited1">18</span>
+                                    <span className="Invited2">8</span>
                                 </div>
                                 <div>
-                                    <label className="labelInvited">Invited</label>
-                                    <label className="labelClosedReady">Close-Ready</label>
-                                    <label className="labelClosed">Closed</label>
+                                    <span className="labelInvited">Invited</span>
+                                    <span className="labelClosedReady">Close-Ready</span>
+                                    <span className="labelClosed">Closed</span>
                                 </div>
                                 <div className="Line"></div>
-                                <label className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</label>
-                                <div className="progress-bar"><span className="progress"></span></div>
-                                <label className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></label>
+                                <span className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</span>
+                                <div className="progress-bar"><span className="progress progress-yellow"></span></div>
+                                <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></span>
                             </div>
                             {/* <div className={"fundBoxEdit " + (this.state.rowData === 1 ? 'show' : 'hidden')}>
                                 
@@ -169,31 +169,31 @@ class DashboardComponent extends Component {
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
                                     <p className="Fund-Name">The Pheonician Investment Fund</p>
                                     <i className="fa fa-bell-o bellO" aria-hidden="true"></i>
-                                    <span className="notificationCount">11</span>
+                                    <span className="notificationCount">2</span>
                                 </div>
                                 <div>
                                     <Button className="closedReadyEdit">Closed-Ready</Button>
 
                                 </div>
                                 <div>
-                                    <label className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></label>
-                                    <label className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></label>
+                                    <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:3/15/2018</span></span>
+                                    <span className="Fund-End-Date">Fund End Date <span className="text-style-1">:6/18/2018</span></span>
                                 </div>
                                 <div className="Line"></div>
                                 <div>
-                                    <label className="Invited">24</label>
-                                    <label className="Invited1">18</label>
-                                    <label className="Invited2">8</label>
+                                    <span className="Invited">34</span>
+                                    <span className="Invited1">24</span>
+                                    <span className="Invited2">8</span>
                                 </div>
                                 <div>
-                                    <label className="labelInvited">Invited</label>
-                                    <label className="labelClosedReady">Close-Ready</label>
-                                    <label className="labelClosed">Closed</label>
+                                    <span className="labelInvited">Invited</span>
+                                    <span className="labelClosedReady">Close-Ready</span>
+                                    <span className="labelClosed">Closed</span>
                                 </div>
                                 <div className="Line"></div>
-                                <label className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</label>
-                                <div className="progress-bar"><span className="progress"></span></div>
-                                <label className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></label>
+                                <span className="Hard-Cap-2000000 hardCapDollar1">Hard Cap: $1,525,000,000</span>
+                                <div className="progress-bar"><span className="progress progress-green"></span></div>
+                                <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$4,350,000,000</span></span>
                             </div>
                         </Col>
                         <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
@@ -202,31 +202,31 @@ class DashboardComponent extends Component {
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
                                     <p className="Fund-Name">The Pheonician Investment Fund</p>
                                     <i className="fa fa-bell-o bellO" aria-hidden="true"></i>
-                                    <span className="notificationCount">11</span>
+                                    <span className="notificationCount">20</span>
                                 </div>
                                 <div>
                                     <Button className="openEdit open-Ready-Edit">Open-Ready</Button>
                                     <Button className="actionRequired">Closed Ready</Button>
                                 </div>
                                 <div>
-                                    <label className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></label>
-                                    <label className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></label>
+                                    <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:4/1/2018</span></span>
+                                    <span className="Fund-End-Date">Fund End Date <span className="text-style-1">:12/31/2018</span></span>
                                 </div>
                                 <div className="Line"></div>
                                 <div>
-                                    <label className="Invited">24</label>
-                                    <label className="Invited1">18</label>
-                                    <label className="Invited2">8</label>
+                                    <span className="Invited">56</span>
+                                    <span className="Invited1">24</span>
+                                    <span className="Invited2">6</span>
                                 </div>
                                 <div>
-                                    <label className="labelInvited">Invited</label>
-                                    <label className="labelClosedReady">Close-Ready</label>
-                                    <label className="labelClosed">Closed</label>
+                                    <span className="labelInvited">Invited</span>
+                                    <span className="labelClosedReady">Close-Ready</span>
+                                    <span className="labelClosed">Closed</span>
                                 </div>
                                 <div className="Line"></div>
-                                <label className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</label>
-                                <div className="progress-bar"><span className="progress"></span></div>
-                                <label className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></label>
+                                <span className="Hard-Cap-2000000 hardCapDollar2">Hard Cap: $2,000,000,000</span>
+                                <div className="progress-bar"><span className="progress progress-red"></span></div>
+                                <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></span>
                             </div>
                         </Col>
                         <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
@@ -242,24 +242,24 @@ class DashboardComponent extends Component {
 
                                 </div>
                                 <div>
-                                    <label className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></label>
-                                    <label className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></label>
+                                    <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:3/1/2018</span></span>
+                                    <span className="Fund-End-Date">Fund End Date <span className="text-style-1">:6/15/2018</span></span>
                                 </div>
                                 <div className="Line"></div>
                                 <div>
-                                    <label className="Invited">24</label>
-                                    <label className="Invited1">18</label>
-                                    <label className="Invited2">8</label>
+                                    <span className="Invited">18</span>
+                                    <span className="Invited1">0</span>
+                                    <span className="Invited2">18</span>
                                 </div>
                                 <div>
-                                    <label className="labelInvited">Invited</label>
-                                    <label className="labelClosedReady">Close-Ready</label>
-                                    <label className="labelClosed">Closed</label>
+                                    <span className="labelInvited">Invited</span>
+                                    <span className="labelClosedReady">Close-Ready</span>
+                                    <span className="labelClosed">Closed</span>
                                 </div>
                                 <div className="Line"></div>
-                                <label className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</label>
-                                <div className="progress-bar"><span className="progress"></span></div>
-                                <label className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></label>
+                                <span className="Hard-Cap-2000000 hardCapDollar3">Hard Cap: $1,200,000,000</span>
+                                <div className="progress-bar"><span className="progress progress-green"></span></div>
+                                <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></span>
                             </div>
                         </Col>
                         {/* <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">

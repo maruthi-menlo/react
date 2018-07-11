@@ -87,7 +87,7 @@
 }
 .Fund-Name {
     width: 152px;
-    height: 38px;
+    min-height: auto;
     font-family: 'Open Sans';
     font-size: 14px;
     font-weight: bold;
@@ -212,7 +212,7 @@
     top: -7px;
 }
 .Fund-Start-Date {
-    width: 129px;
+    /*width: 129px;*/
     height: 16px;
     font-family: 'Open Sans';
     font-size: 10px;
@@ -232,7 +232,7 @@
     font-weight: normal;
 }
 .Fund-End-Date {
-    width: 124px;
+    /*width: 124px;*/
     height: 16px;
     font-family: 'Open Sans';
     font-size: 10px;
@@ -356,9 +356,18 @@
     letter-spacing: normal;
     color: #2f4858;
     display: inline-block;
-    margin-left: 45%;
+    margin-left: 42%;
     position: relative;
     top: -8px;
+}
+.hardCapDollar1{
+    margin-left: 12%;
+}
+.hardCapDollar2{
+    margin-left: 32%;
+}
+.hardCapDollar3{
+    margin-left: 23%;
 }
 .Dollars-Closed-17 {
     width: 174px;
@@ -423,7 +432,7 @@
     left: -10px;
 }
 .progress-bar {
-    width: 196px;
+    width: 260px;   
     height: 12px;
     background-color: rgba(245, 245, 245, 0.3) !important;
     border-radius: 20px;
@@ -431,6 +440,17 @@
 .progress {
     width:  80% !important;
     background-color: #39bcd5 !important;
+}
+.progress-yellow{
+    background-color: yellow !important;
+}
+.progress-green{
+    background-color: lightgreen !important;
+    width: 100% !important;
+}
+.progress-red{
+    background-color: #ff3a3a !important;
+    width: 30% !important;
 }
 .fund-col-container {
     display: inline-block;
@@ -737,4 +757,43 @@
 }
 .hidden {
     display: none;
+}
+
+@media only screen and (max-width: 480px){
+    .fundBoxEdit{
+        margin: 20px !important;
+    }
+    .filter-icon{
+        margin-left: 0px !important;
+    }
+    .display-filter{
+        margin-left: 25px;
+        margin-bottom: 20px;
+        
+    }
+    .filter-right-block{
+        left: 15px;
+    }
+    .formFilterControl{
+        width: 160px !important;
+        margin-left: 0;
+    }
+    
+    .header-right-row{
+        margin-top: 25px;
+        float: none !important;
+        right: -11% !important;
+    }
+    .search-icon i{
+        left: 25px;
+    }
+    .filter-right-block{
+        float: none !important
+    }
+    .display-filter-padding{
+        padding-left: 0px !important;
+    }
+    .fsnet-logo {
+        margin-left: 35px !important;
+    }
 }
