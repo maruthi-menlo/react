@@ -85,6 +85,9 @@
     position: relative;
     margin-right: 8px;
 }
+.fundImageEdit{
+    line-height: 3;
+}
 .Fund-Name {
     width: 152px;
     min-height: auto;
@@ -145,7 +148,7 @@
     margin-right: 8px;
     margin-bottom: 31px;
     position: relative;
-    top: -7px;
+    /*top: -7px;*/
 }
 .actionRequired {
     width: 99px;
@@ -163,7 +166,7 @@
     padding: 4px 9px 4px 10px !important;
     margin-bottom: 31px;
     position: relative;
-    top: -7px;
+    /*top: -7px;*/
     background-color: white;
 }
 .closedReadyEdit {
@@ -185,7 +188,7 @@
     margin-right: 8px;
     margin-bottom: 31px;
     position: relative;
-    top: -15px;
+    
 }
 .open-Ready-Edit{
     width: 88px;
@@ -209,7 +212,7 @@
     margin-right: 8px;
     margin-bottom: 31px;
     position: relative;
-    top: -7px;
+    /*top: -7px;*/
 }
 .Fund-Start-Date {
     /*width: 129px;*/

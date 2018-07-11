@@ -167,7 +167,7 @@ class DashboardComponent extends Component {
                             <div className="fundBoxEdit">
                                 <div className="fundImageEdit">
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
-                                    <p className="Fund-Name">The Pheonician Investment Fund</p>
+                                    <div className="Fund-Name">The Pheonician Investment Fund1</div>
                                     <i className="fa fa-bell-o bellO" aria-hidden="true"></i>
                                     <span className="notificationCount">2</span>
                                 </div>
@@ -200,7 +200,7 @@ class DashboardComponent extends Component {
                             <div className="fundBoxEdit">
                                 <div className="fundImageEdit">
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
-                                    <p className="Fund-Name">The Pheonician Investment Fund</p>
+                                    <div className="Fund-Name">The Pheonician Investment Fund2</div>
                                     <i className="fa fa-bell-o bellO" aria-hidden="true"></i>
                                     <span className="notificationCount">20</span>
                                 </div>
@@ -233,7 +233,7 @@ class DashboardComponent extends Component {
                             <div className="fundBoxEdit">
                                 <div className="fundImageEdit">
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
-                                    <p className="Fund-Name">The Pheonician Investment Fund</p>
+                                    <div className="Fund-Name">Spartan Alliance Capital Fund </div>
                                     <i className="fa fa-bell-o bellO" aria-hidden="true"></i>
                                     <span className="notificationCount">11</span>
                                 </div>
