@@ -27,6 +27,7 @@ class HeaderComponent extends Component{
         this.setState({
             showandhideUserDropdown: !value,
         })
+
     }
 
     logout() {
@@ -68,7 +69,7 @@ class HeaderComponent extends Component{
                             </ul>    
                         </div>
                         
-                        <div className="user-name" onClick={this.userDropdownList}>{this.state.loggedInUserObj.firstName} {this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
+                        <div className={"user-name " + (this.state.showandhideUserDropdown ? '' : 'active')} onClick={this.userDropdownList}>{this.state.loggedInUserObj.firstName} {this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
                         <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
                         <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
                         <span className="notification-count">3</span>

@@ -10,11 +10,14 @@
   font-stretch: normal;
   line-height: 1.5;
   letter-spacing: normal;
-  color: #39bcd5 !important;
+  color: #2f4858;
   cursor: pointer;
 }
+.user-name.active, .user-name.active .fa {
+    color: #39bcd5 !important;   
+}
 .user-name .fa {
-    color: #39bcd5 !important;
+    color: #2f4858;
     cursor: pointer;
 }
 .header-right-row {
@@ -95,7 +98,7 @@
 .user-dropdown-list ul li {
     width: 168px;
     height: 40px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 16px;
     font-weight: normal;
     font-style: normal;

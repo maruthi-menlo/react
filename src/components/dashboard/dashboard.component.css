@@ -174,11 +174,11 @@
     height: 15px;
 }
 .closedReadyEdit {
-    width: 88px;
+    width: 100px;
     height: 24px;
     border-radius: 2px !important;
     background-color: #1adbb9;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 10px !important;
     font-weight: normal !important;
     font-style: normal;
@@ -202,7 +202,7 @@
     height: 24px;
     border-radius: 2px !important;
     background-color: #1adbb9;    
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 10px !important;
     font-weight: normal !important;
     font-style: normal;
@@ -522,7 +522,7 @@
 }
 #fsnet-tabs ul li a {
     text-decoration: none;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 16px;
     font-weight: bold;
     font-style: normal;
@@ -607,7 +607,7 @@
 .checkBoxLogo{
     
   height: 24px;
-  font-family: OpenSans;
+  font-family: 'Open Sans';
   font-size: 16px;
   font-weight: normal;
   font-style: normal;
@@ -644,7 +644,7 @@
 .activityFeed {
     width: 82px;
     height: 20px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -666,7 +666,7 @@
   .helios-Fund-Name {
     width: 82px;
     height: 20px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -703,7 +703,7 @@
 .Ellen-Smithenson-LP {
     width: 170px;
     height: 60px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -720,7 +720,7 @@
 .timeDate{
     width: 90px;
     height: 16px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 10px;
     font-weight: normal;
     font-style: normal;

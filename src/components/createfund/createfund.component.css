@@ -203,7 +203,7 @@
 .assignGp {
     width: 201px;
     height: 32px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -216,7 +216,7 @@
     width: 410px;
     height: 20px;
     opacity: 0.5;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -231,7 +231,7 @@
     height: 40px;
     background-color: #39bcd5;
     border-radius: 30px !important;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 16px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -257,7 +257,7 @@
 .Ben-Parker {
     
     height: 20px;
-    font-family: OpenSans;
+    font-family: 'Open Sans';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
