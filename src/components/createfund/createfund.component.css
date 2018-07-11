@@ -201,7 +201,7 @@
     margin-left: 35px;
 }
 .assignGp {
-    width: 201px;
+    /*width: 201px;*/
     height: 32px;
     font-family: 'Open Sans';
     font-size: 20px;
@@ -213,7 +213,7 @@
     color: #2f4858;
 }
 .Subtext {
-    width: 410px;
+    /*width: 410px;*/
     height: 20px;
     opacity: 0.5;
     font-family: 'Open Sans';
@@ -240,6 +240,83 @@
     letter-spacing: normal;
     color: #ffffff;
     padding: 8px 51px 8px 62px !important;
+}
+.lpDelegateButton{
+    border: solid 1px #39bcd5 !important;
+    color: #39bcd5 !important;
+    background-color: white !important;
+}
+.lpName {
+    /*width: 100px;*/
+    height: 20px;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+  }
+.organizationName {
+    width: 117px;
+    height: 16px;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.lpCheckBox{
+    top: 3px !important;
+}
+.rowWidth{
+    width: 50%;
+    margin-bottom: 9px;
+    margin-left: 3px !important;
+}
+.rowLpWidth{
+    width: 50%;
+    border: 1px solid lightgray;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 3px !important;
+}
+.lpNameHeading {
+    width: 54px;
+    height: 16px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-right: 4px;
+    margin-left: 47px;
+  }
+  .organizationHeading {
+    width: 78px;
+    height: 16px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-right: 4px;
+  }
+.lpDelegateImg{
+    top: 0px !important;
+    margin-left: 0px !important;
 }
 .checkBoxGpContainer{
     margin-top: 24px;
