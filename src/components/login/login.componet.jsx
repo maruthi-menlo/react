@@ -62,7 +62,7 @@ class LoginComponent extends Component{
 
     
     loginFn() {
-        if(this.state.loginUserName && this.state.loginPassword) {
+        if(this.state.loginUserName.trim() && this.state.loginPassword.trim()) {
             this.open();
             let username = this.state.loginUserName;
             let password = this.state.loginPassword;
@@ -85,12 +85,12 @@ class LoginComponent extends Component{
                 }
             });
         } else {
-            if(this.state.loginUserName === '') {
+            if(this.state.loginUserName.trim() === '') {
                 this.setState({
                     userNameError: this.Constants.LOGIN_USER_NAME_REQUIRED
                 });
             } 
-            if(this.state.loginPassword === '') {
+            if(this.state.loginPassword.trim() === '') {
                 this.setState({
                     passwordError: this.Constants.LOGIN_PASSWORD_REQUIRED
                 });

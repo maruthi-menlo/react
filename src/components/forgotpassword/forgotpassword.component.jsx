@@ -97,7 +97,7 @@ class ForgotPasswordComponent extends Component{
         }
         if((event.target !==undefined  && event.target.value.length === 6) || button === 'verifyResetButton') {
             this.open();
-            let postObj = {email:this.state.email, cellNumber:this.state.cellNumber, accountType:this.state.accountType, code:code}
+            let postObj = {email:this.state.email.trim(), cellNumber:this.state.cellNumber, accountType:this.state.accountType, code:code}
             let newPostObj = this.clean(postObj)
             console.log(newPostObj);
             this.Fsnethttp.verifycode(newPostObj).then(result=>{
@@ -154,7 +154,7 @@ class ForgotPasswordComponent extends Component{
 
     //Send code again
     sendCodeAgain() {
-        let forgotObj = {email:this.state.email, cellNumber:this.state.cellNumber, accountType:this.state.accountType}
+        let forgotObj = {email:this.state.email.trim(), cellNumber:this.state.cellNumber, accountType:this.state.accountType}
         let newObj = this.clean(forgotObj)
         console.log(newObj);
         this.Fsnethttp.forgotPassword(newObj).then(result=>{
@@ -235,7 +235,7 @@ class ForgotPasswordComponent extends Component{
     }
 
     screen1Validations() {
-        let email = this.state.email;
+        let email = this.state.email.trim();
         let number = this.state.cellNumber;
         let type = this.state.accountType;
         let error = false;
@@ -261,8 +261,8 @@ class ForgotPasswordComponent extends Component{
     }
 
     screen3Validations() {
-        let password = this.state.password;
-        let cnfrmPassword = this.state.confirmPassword;
+        let password = this.state.password.trim();
+        let cnfrmPassword = this.state.confirmPassword.trim();
         let error = false;
         if(password === '' || cnfrmPassword === '') {
             this.setState({

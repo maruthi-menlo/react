@@ -18,6 +18,7 @@ class RegisterComponent extends Component{
         this.state = {
             userImageName: 'Profile_Pic.jpg',
             currentUserImage: userDefaultImage,
+            profilePicFile: {},
             email:'',
             userName:'',
             mobileNumber:'',
@@ -56,6 +57,7 @@ class RegisterComponent extends Component{
         this.setState({
             userImageName: 'Profile_Pic.jpg',
             currentUserImage: userDefaultImage,
+            profilePicFile: {},
             email:'',
             userName:'',
             mobileNumber:'',
@@ -71,7 +73,8 @@ class RegisterComponent extends Component{
             passwordEmptyMsz: '',
             confirmPasswordEmptyMsz: '',
             cellNumberEmptyMsz:'',
-            termsandConditionsRequired:''
+            termsandConditionsRequired:'',
+            showSuccesScreen:false,
         });
     }
 
@@ -82,6 +85,9 @@ class RegisterComponent extends Component{
             this.imageFile = event.target.files[0];
             //Change user profile image size limit here.
             if(this.imageFile.size <=1600000) {
+                    this.setState({
+                        profilePicFile : event.target.files[0],
+                    });
                 reader.readAsDataURL(this.imageFile);
                 this.setState({
                     userImageName: event.target.files[0].name
@@ -92,7 +98,7 @@ class RegisterComponent extends Component{
                     });
                 }
             } else {
-               alert('Please upload image Maximum file size : 160X160')
+               alert('Please upload image Maximum file size : 512X512')
             }
         }
     }
@@ -149,23 +155,31 @@ class RegisterComponent extends Component{
 
     //Check username exists
     checkUserNameExists() {
-        let username = this.state.userName;
+        let username = this.state.userName.trim();
+        let userNameSpaceRegex = /^[a-zA-Z0-9]+$/;
         if(username !== null) {
-            let obj = {username:username}
-            this.Fsnethttp.checkUserName(obj).then(result=>{
-                if(result && result.usernameAvaliable) {
-                    this.setState({
-                        userNameExists: ''
-                    })
-                }
-            })
-            .catch(error=>{
-                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
-                    this.setState({
-                        userNameExists: error.response.data.errors[0].msg,
-                    });
-                }
-            });
+            if(!userNameSpaceRegex.test(username)) {
+                this.setState({
+                    userNameExists: this.Constants.USERNAME_FORMAT
+                });
+            } else {
+                let obj = {username:username}
+                this.Fsnethttp.checkUserName(obj).then(result=>{
+                    if(result && result.usernameAvaliable) {
+                        this.setState({
+                            userNameExists: ''
+                        })
+                    }
+                })
+                .catch(error=>{
+                    if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                        this.setState({
+                            userNameExists: error.response.data.errors[0].msg,
+                        });
+                    }
+                });
+            }
+            
         }
     }
 
@@ -176,26 +190,35 @@ class RegisterComponent extends Component{
         if(!error) {
             this.open();
             //call the signup api
-            let errorObj = {username:this.state.userName, password:this.state.password, email:this.state.email, emailConfirmCode:this.state.userAccessId, cellNumber:this.state.cellNumber};
+            var formData = new FormData();
+            formData.append("username", this.state.userName);
+            formData.append("password", this.state.password);
+            formData.append("email", this.state.email);
+            formData.append("emailConfirmCode", this.state.userAccessId);
+            formData.append("cellNumber", this.state.cellNumber);
             if(this.state.userImageName !== '') {
-                errorObj['userPic'] = this.state.currentUserImage
+                formData.append("profilePic", this.state.profilePicFile);
             }
             if(this.state.homeNumber !== '' && this.state.homeNumber !== undefined) {
-                errorObj['homeNumber'] = this.state.mobileNumber
+                formData.append("homeNumber", this.state.mobileNumber);
             }
-            console.log(errorObj);
-            this.Fsnethttp.register(errorObj).then(result=>{
+            this.Fsnethttp.register(formData).then(result=>{
                 this.close();
                 this.setState({
                     showSuccesScreen: true
                 })
             })
             .catch(error=>{
+                this.close();
                 if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
-                    this.close();
                     this.setState({
                         errorMessage: error.response.data.errors[0].msg,
                     });
+                } else {
+                    this.setState({
+                        errorMessage: this.Constants.INTERNAL_SERVER_ERROR,
+                    });
+
                 }
             });
             
@@ -206,19 +229,19 @@ class RegisterComponent extends Component{
         let errosArr = [];
         let registerError = false;
         //Check Username is null
-        if(this.state.userName === '') {
+        if(this.state.userName.trim() === '') {
             registerError = true;
             this.setState({
                 userNameExists: this.Constants.LOGIN_USER_NAME_REQUIRED
             })
         }
-        if(this.state.password === '') {
+        if(this.state.password.trim() === '') {
             registerError = true;
             this.setState({
                 passwordEmptyMsz: this.Constants.LOGIN_PASSWORD_REQUIRED
             })
         }
-        if(this.state.confirmPassword === '') {
+        if(this.state.confirmPassword.trim() === '') {
             registerError = true;
             this.setState({
                 confirmPasswordEmptyMsz: this.Constants.LOGIN_PASSWORD_REQUIRED

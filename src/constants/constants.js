@@ -5,6 +5,8 @@ export class Constants{
     // Develop
 
     // BASE_URL = `http://192.168.1.231:3000/api/v1/`;
+    
+    //Stage URL
     BASE_URL = `http://137.116.56.150:3000/api/v1/`;
 
     REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME = "Password and Confirm Password should be same.";
@@ -20,5 +22,7 @@ export class Constants{
     EMAIL_MOBILE_REQUIRED = 'Please enter email or cell number';
     INVALID_VERIFY_CODE = 'Please enter valid code';
     PASSWORD_NOT_MATCH = 'Password doesnt meet requirements';
+    INTERNAL_SERVER_ERROR = 'Something went wrong.';
+    USERNAME_FORMAT = 'Username can only contain letters and numbers'
     
 }

@@ -25,7 +25,11 @@ export class Fsnethttp{
 
     //FSNET registration
     register(userObj) {
-        return axios.post(this.Constants.BASE_URL+'register', userObj);
+        return axios.post(this.Constants.BASE_URL+'register', userObj,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
     }
 
     //Forgot password

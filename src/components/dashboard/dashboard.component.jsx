@@ -18,7 +18,8 @@ class DashboardComponent extends Component {
         this.showActivityFeed = this.showActivityFeed.bind(this);
         this.state = {
             isHide: true,
-            rowData: 0
+            rowData: 0,
+            filterState: 'Off'
         }
     }
     showActivityFeed() {
@@ -46,6 +47,15 @@ class DashboardComponent extends Component {
     //To show and hide filters
     hideAndShowFilters() {
         let isHideLocal = !(this.state.isHide);
+        if(!isHideLocal) {
+            this.setState({
+                filterState: 'On'
+            })
+        } else {
+            this.setState({
+                filterState: 'Off'
+            })
+        }
         this.setState({
             isHide: isHideLocal,
         });
@@ -67,7 +77,7 @@ class DashboardComponent extends Component {
                     <Col lg={12} md={12} sm={12} xs={12}>
                         <Col lg={6} md={6} sm={6} xs={12} className="display-filter display-filter-padding">
                             <span className="filter-icon"><i className="fa fa-filter" aria-hidden="true"></i></span>
-                            <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter (Off)<i className="fa fa-caret-down" aria-hidden="true"></i></span>
+                            <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter ({this.state.filterState})<i className="fa fa-caret-down" aria-hidden="true"></i></span>
                             <span className="search-icon"><i className="fa fa-search" aria-hidden="true"></i></span>
                             <FormControl type="text" placeholder="Search Funds" className="formFilterControl" />
                         </Col>
