@@ -57,12 +57,7 @@ class HeaderComponent extends Component{
 
     render(){
         return(
-            <Row className="dashboardMainRow">
-                <Col lg={5} md={6} sm={6} xs={12}>
-                    <Row>
-                        <div className="fsnet-logo" onClick={this.redirectHome}>FSNET LOGO</div>    
-                    </Row>
-                </Col>
+            
                 <Col lg={6} md={6} sm={6} xs={12} id="header-right">
                     <Row className="header-right-row">
                         <div className="user-dropdown-list" hidden={this.state.showandhideUserDropdown}>
@@ -80,7 +75,7 @@ class HeaderComponent extends Component{
                         <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
                     </Row>
                 </Col>
-            </Row>
+            // </Row>
         );
     }
 }

@@ -279,3 +279,8 @@
     
 }
 
+#createFund #header-right {
+    max-width: 90%;
+    margin-top: 15px;
+    height: 35px;
+}

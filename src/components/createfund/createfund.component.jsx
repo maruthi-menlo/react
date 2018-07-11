@@ -10,6 +10,7 @@ import Step2Component from '../createfund/step2/step2.component';
 import Step3Component from '../createfund/step3/step3.component';
 import Step4Component from '../createfund/step4/step4.component';
 import Step5Component from '../createfund/step5/step5.component';
+import HeaderComponent from '../header/header.component';
 
 
 class CreateFundComponent extends Component {
@@ -134,7 +135,7 @@ class CreateFundComponent extends Component {
 
     render() {
         return (
-            <div className="wrapper">
+            <div className="wrapper" id="createFund">
                 <div className="sidenav">
                     <h1><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
                     <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; Dashboard</h2>
@@ -171,7 +172,7 @@ class CreateFundComponent extends Component {
                 <div className="main">
 
                     {/* <Grid fluid="true"> */}
-                    <Col xs={6} md={12}>
+                    {/* <Col xs={6} md={12}>
                         <Row className="header-right-row">
                             <span className="logout" onClick={this.logout}>Logout </span>
                             <div className="user-name">{this.state.loggedInUserObj.firstName}{this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
@@ -180,7 +181,8 @@ class CreateFundComponent extends Component {
                             <span className="notification-count">3</span>
                             <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
                         </Row>
-                    </Col>
+                    </Col> */}
+                    <HeaderComponent ></HeaderComponent>
                     <div hidden={!this.state.showStep1Page}>
                         <Step1Component></Step1Component>
                     </div>

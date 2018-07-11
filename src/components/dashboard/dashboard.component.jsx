@@ -54,7 +54,14 @@ class DashboardComponent extends Component {
     render() {
         return (
             <Row className="dashboardContainer" id="MainDashboard">
-                <HeaderComponent ></HeaderComponent>
+                <Row className="dashboardMainRow">
+                    <Col lg={5} md={6} sm={6} xs={12}>
+                        <Row>
+                            <div className="fsnet-logo" onClick={this.redirectHome}>FSNET LOGO</div>    
+                        </Row>
+                    </Col>
+                    <HeaderComponent ></HeaderComponent>
+                </Row>
                 <Row className="dashboardMainRow fund-container">
                     <div className="myFunds">Your Funds</div>
                     <Col lg={12} md={12} sm={12} xs={12}>
