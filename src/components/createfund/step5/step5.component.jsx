@@ -20,11 +20,11 @@ class Step5Component extends Component {
                     <Row className="rowWidth">
                         <Col lg={5} md={5} sm={5} xs={5}>
                         <span className="lpNameHeading">LP Name</span>  
-                        <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                        <i className="fa fa-sort-desc" aria-hidden="true"></i>
                         </Col>
                         <Col lg={7} md={7} sm={7} xs={7}>
                         <span className="organizationHeading">Organization</span>
-                        <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                        <i className="fa fa-sort-desc" aria-hidden="true"></i>
                         </Col>
                     </Row>        
                     <Row className="rowLpWidth">
