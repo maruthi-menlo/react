@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
-import { Button, Checkbox as CBox } from 'react-bootstrap';
+import { Button, Checkbox as CBox,Row,Col } from 'react-bootstrap';
 import userDefaultImage from '../../../images/default_user.png';
 class Step2Component extends Component {
 
@@ -93,7 +93,34 @@ class Step2Component extends Component {
                     </label>
                 </div>
                 <div className="addRoleModal" hidden={!this.state.showAddGpDelegateModal}>
-                    <h4>Add Lp</h4>                            
+                    
+                    <h3 className="addGpDelegate">Add GP Delegate</h3>
+                    <p className="addGpSubtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</p>                            
+                    <Row>
+                        <Col lg={6} md={6} sm={6} xs={12}>
+                            <label className="addGpFLName">First Name*</label>
+                            <input type="text" name="firstName" className="inputFormBox" placeholder="Charles"/>                    
+                        </Col>
+                        <Col lg={6} md={6} sm={6} xs={12}>
+                            <label className="addGpFLName">Last Name*</label>
+                            <input type="text" name="lastName" className="inputFormBox" placeholder="Xavier"/>
+                        </Col>
+                    </Row> 
+                    <Row>
+                        <Col lg={6} md={6} sm={6} xs={12}>
+                            <label className="addGpFLName">Email Address*</label>
+                            <input type="email" name="email" className="inputFormBox" placeholder="ProfessorX@gmail.com"/>                                
+                        </Col>
+                    </Row>  
+                    <Row className="cancelSubmitMargin">
+                        <Col lg={6} md={6} sm={6} xs={12}>
+                        <Button type="button" className="addGpCancelBox">Cancel</Button>
+                        </Col>
+                        <Col lg={6} md={6} sm={6} xs={12}>
+                        <Button type="button" className="addGpSubmitBox">Submit</Button>
+                        </Col>
+                    </Row> 
+                       
                 </div>
             </div>
         );

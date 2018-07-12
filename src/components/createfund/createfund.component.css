@@ -375,9 +375,10 @@
     margin-right: 12px;
     margin-left: 13px;
   }
+  /*for step-2 Modal Form =========*/
   .addRoleModal {
-    max-width: 450px;
-    min-height: 533px!important;
+    max-width: 670px;
+    min-height: 496px!important;
     height: auto!important;
     opacity: 1!important;
     border-radius: 8px;
@@ -392,8 +393,100 @@
     box-shadow: -8px 8px 16px 0 rgba(82, 97, 115, 0.18);
     border: solid 1px rgba(74, 74, 74, 0.25);
     padding-bottom: 15px;
+    padding-top: 24px;
+    padding-left: 31px;
 }
-
+/*.addRoleModalMargin{
+    margin-top: 24px;
+    margin-left: 31px;
+}*/
+.addGpDelegate{
+    width: 165px;
+    height: 32px;
+    font-family: OpenSans;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.addGpSubtext {
+  width: 380px;
+  height: 40px;
+  opacity: 0.5;
+  font-family: OpenSans;
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.addGpFLName {
+    width: 290px;
+    height: 20px;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-bottom: 8px !important;
+}
+.inputFormBox {
+    width: 290px;
+    height: 40px;
+    border-radius: 3px;
+    border: solid 1px #526173;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    padding: 8px;
+    margin-bottom: 24px !important;
+}
+.addGpCancelBox{
+    width: 290px;
+    height: 48px;
+    border-radius: 24px !important;
+    font-family: OpenSans;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #2f4858;
+    background-color: #ffffff;
+}
+.addGpSubmitBox {
+    width: 290px;
+    height: 48px;
+    background-color: skyblue !important;
+    font-family: OpenSans;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6 !important;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #ffffff;
+    border-radius: 30px !important;
+  }
+.cancelSubmitMargin{
+    margin-top: 104px;
+}
 /* For step1 form =======================*/
 #step1Form,.step1Form-row{
     margin-top: 45px;
