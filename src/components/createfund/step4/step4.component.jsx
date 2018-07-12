@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
-// import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+ import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 class Step4Component extends Component {
 
@@ -12,7 +12,15 @@ class Step4Component extends Component {
     render() {
         return (
             <div>
-                <h1>Step 4 page</h1>
+                <h1 className="viewApproveForm">View and Approve Form</h1>
+                <p className="viewApproveSubtext">View and verify the fund document </p>
+                <div>
+                    <Button type="button" className="printButton">Print</Button>
+                    <Button type="button" className="approveDocumentButton">Approve Document</Button>
+                </div>    
+                <div className="documentViewWindow">
+                <span className="documentViewText">Document Viewing Window</span>
+                </div>    
             </div>
         );
     }
