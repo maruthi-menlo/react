@@ -487,6 +487,90 @@
 .cancelSubmitMargin{
     margin-top: 104px;
 }
+/* For step3 page ======*/
+.uploadFundDocument {
+    width: 253px;
+    height: 24px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-left: 20px;
+    margin-bottom: 24px;
+}
+.titleChooseFile {
+    width: 220px;
+    height: 32px;
+    font-family: OpenSans;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.titleChooseSubtext {
+    width: 522px;
+    height: 20px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-bottom: 46px;
+}
+.uplodFileContainer {
+    width: 529px;
+    height: 88px;
+    border: dashed 2px #9b9b9b;
+    padding-top: 24px;
+    padding-left: 17px;
+}
+.uploadFileBox {
+    width: 142px;
+    height: 36px;
+    background-color: skyblue !important;
+    font-family: OpenSans;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43 !important;
+    letter-spacing: normal;
+    color: #ffffff;
+    padding: 8px 30px !important;
+    border-radius: 30px !important;
+}
+.uploadFileSubtext {
+    width: 348px;
+    height: 40px;
+    opacity: 0.5;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    float: right;
+    position: relative;
+    /*left: -20px;*/
+}
+.chooseFileMargin{
+    margin-left: 32px;
+    margin-bottom: 42%;
+}
 /* For step1 form =======================*/
 #step1Form,.step1Form-row{
     margin-top: 45px;
@@ -512,8 +596,8 @@
     width: 290px;
     height: 20px;
     font-family: 'Open Sans';
-    font-size: 14px;
-    font-weight: normal;
+    font-size: 14px !important;
+    font-weight: normal !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
