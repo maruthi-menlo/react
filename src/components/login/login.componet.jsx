@@ -63,27 +63,39 @@ class LoginComponent extends Component{
     
     loginFn() {
         if(this.state.loginUserName.trim() && this.state.loginPassword.trim()) {
-            this.open();
-            let username = this.state.loginUserName;
-            let password = this.state.loginPassword;
-            let loginRemember = this.state.loginRemember;
-            let loginObj = {username:username, password:password, rememberMe:loginRemember};
-            this.Fsnethttp.login(loginObj).then(result=>{
-                this.close();
-                console.log(result);
-                if(result.data) {
-                    reactLocalStorage.set('userData', JSON.stringify(result.data.user));
-                    this.props.history.push('/dashboard');
-                }
-            })
-            .catch(error=>{
-                if(error) {
+            let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+            //Check password contains min 8 letters with letters, numbers and symbols.
+            if(!passwordRegex.test(this.state.loginPassword.trim())) {
+                this.setState({
+                    loginErrorMsz: this.Constants.PASSWORD_RULE_MESSAGE
+                });
+            } else {
+                this.open();
+                let username = this.state.loginUserName;
+                let password = this.state.loginPassword;
+                let loginRemember = this.state.loginRemember;
+                let loginObj = {username:username, password:password, rememberMe:loginRemember};
+                this.Fsnethttp.login(loginObj).then(result=>{
                     this.close();
-                    this.setState({
-                        loginErrorMsz: this.Constants.INVALID_LOGIN
-                    })
-                }
-            });
+                    console.log(result);
+                    if(result.data) {
+                        reactLocalStorage.set('userData', JSON.stringify(result.data.user));
+                        this.props.history.push('/dashboard');
+                    }
+                })
+                .catch(error=>{
+                    this.close();
+                    if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                        this.setState({
+                            loginErrorMsz: error.response.data.errors[0].msg,
+                        });
+                    } else {
+                        this.setState({
+                            loginErrorMsz: this.Constants.INVALID_LOGIN,
+                        });
+                    }
+                });
+            }
         } else {
             if(this.state.loginUserName.trim() === '') {
                 this.setState({

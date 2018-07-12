@@ -5,14 +5,24 @@ import { Button, Checkbox as CBox, Row, Col } from 'react-bootstrap';
 
 class Step1Component extends Component{
 
-    // constructor(props){
-    //     super(props);
-    // }
+    constructor(props){
+        super(props);
+        this.proceedToNext = this.proceedToNext.bind(this);
+        this.proceedToBack = this.proceedToBack.bind(this);
+    }
+
+    proceedToNext() {
+        this.props.history.push('/createfund/step2');
+    }
+    
+    proceedToBack() {
+        this.props.history.push('/createfund/step1');
+    }
 
 
     render(){
         return(
-            <div>
+            <div className="step1FormClass">
                 <div className="form-grid">
                     <h2>Fund Details</h2>
                     <h4>Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
@@ -66,8 +76,16 @@ class Step1Component extends Component{
                                 <label className="removeBtn">Remove</label>
                             </Col>
                         </Row>
+                        
                     </div>
                 </div>
+                
+                <div className="footer-nav">        
+                    <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
+                    <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
+                </div>
+                   
+                
             </div>
         );
     }

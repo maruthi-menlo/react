@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
 import './createfund.component.css';
-import { Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 // import userDefaultImage from '../../images/default_user.png';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from '../../services/fsnetauth';
+import { Route } from "react-router-dom";
 import Step1Component from '../createfund/step1/step1.component';
 import Step2Component from '../createfund/step2/step2.component';
 import Step3Component from '../createfund/step3/step3.component';
@@ -20,113 +21,103 @@ class CreateFundComponent extends Component {
         super(props);
         this.FsnetAuth = new FsnetAuth();
         this.logout = this.logout.bind(this);
-        this.proceedToBack = this.proceedToBack.bind(this);
-        this.proceedToNext = this.proceedToNext.bind(this);
         this.state = {
-            loggedInUserObj: [],
-            showStep1Page: true,
-            showStep2Page: false,
-            showStep3Page: false,
-            showStep4Page: false,
-            showStep5Page: false,
-            showStep6Page: false,
-            currentPage: 1,
-            totalPageCount: 5,
+            loggedInUserObj: []
         }
 
     }
 
-    proceedToBack() {
-        let page = this.state.currentPage;
-        if (this.state.currentPage <= this.state.totalPageCount + 1 && this.state.currentPage >= 0) {
-            switch (page) {
-                case 2:
-                    this.setState({
-                        showStep2Page: false,
-                        showStep1Page: true,
-                        currentPage: page - 1,
-                    })
-                    break;
-                case 3:
-                    this.setState({
-                        showStep3Page: false,
-                        showStep2Page: true,
-                        currentPage: page - 1,
-                    })
-                    break;
-                case 4:
-                    this.setState({
-                        showStep3Page: true,
-                        showStep4Page: false,
-                        currentPage: page - 1,
-                    })
-                    break;
-                case 5:
-                    this.setState({
-                        showStep4Page: true,
-                        showStep5Page: false,
-                        currentPage: page - 1,
-                    })
-                    break;
-                case 6:
-                    this.setState({
-                        showStep5Page: true,
-                        showStep6Page: false,
-                        currentPage: page - 1,
-                    })
-                    break;
-                default:
-                //Do nothing
-            }
-        }
-    }
+    // proceedToBack() {
+    //     let page = this.state.currentPage;
+    //     if (this.state.currentPage <= this.state.totalPageCount + 1 && this.state.currentPage >= 0) {
+    //         switch (page) {
+    //             case 2:
+    //                 this.setState({
+    //                     showStep2Page: false,
+    //                     showStep1Page: true,
+    //                     currentPage: page - 1,
+    //                 })
+    //                 break;
+    //             case 3:
+    //                 this.setState({
+    //                     showStep3Page: false,
+    //                     showStep2Page: true,
+    //                     currentPage: page - 1,
+    //                 })
+    //                 break;
+    //             case 4:
+    //                 this.setState({
+    //                     showStep3Page: true,
+    //                     showStep4Page: false,
+    //                     currentPage: page - 1,
+    //                 })
+    //                 break;
+    //             case 5:
+    //                 this.setState({
+    //                     showStep4Page: true,
+    //                     showStep5Page: false,
+    //                     currentPage: page - 1,
+    //                 })
+    //                 break;
+    //             case 6:
+    //                 this.setState({
+    //                     showStep5Page: true,
+    //                     showStep6Page: false,
+    //                     currentPage: page - 1,
+    //                 })
+    //                 break;
+    //             default:
+    //             //Do nothing
+    //         }
+    //     }
+    // }
 
-    proceedToNext() {
-        let page = this.state.currentPage;
-        if (this.state.currentPage <= this.state.totalPageCount) {
-            switch (page) {
-                case 1:
-                    this.setState({
-                        showStep2Page: true,
-                        showStep1Page: false,
-                        currentPage: page + 1,
-                    })
-                    break;
-                case 2:
-                    this.setState({
-                        showStep3Page: true,
-                        showStep2Page: false,
-                        currentPage: page + 1,
-                    })
-                    break;
-                case 3:
-                    this.setState({
-                        showStep4Page: true,
-                        showStep3Page: false,
-                        currentPage: page + 1,
-                    })
-                    break;
-                case 4:
-                    this.setState({
-                        showStep5Page: true,
-                        showStep4Page: false,
-                        currentPage: page + 1,
-                    })
-                    break;
-                case 5:
-                    this.setState({
-                        showStep6Page: true,
-                        showStep5Page: false,
-                        currentPage: page + 1,
-                    })
-                    break;
-                default:
-                //Do nothing
-            }
-        }
+    // proceedToNext() {
+    //     let page = this.state.currentPage;
+    //     if (this.state.currentPage <= this.state.totalPageCount) {
+    //         switch (page) {
+    //             case 1:
+    //                 this.setState({
+    //                     showStep2Page: true,
+    //                     showStep1Page: false,
+    //                     currentPage: page + 1,
+    //                 })
+    //                 break;
+    //             case 2:
+    //                 this.setState({
+    //                     showStep3Page: true,
+    //                     showStep2Page: false,
+    //                     currentPage: page + 1,
+    //                 })
+    //                 break;
+    //             case 3:
+    //                 this.setState({
+    //                     showStep4Page: true,
+    //                     showStep3Page: false,
+    //                     currentPage: page + 1,
+    //                 })
+    //                 break;
+    //             case 4:
+    //                 this.setState({
+    //                     showStep5Page: true,
+    //                     showStep4Page: false,
+    //                     currentPage: page + 1,
+    //                 })
+    //                 break;
+    //             case 5:
+    //                 this.setState({
+    //                     showStep6Page: true,
+    //                     showStep5Page: false,
+    //                     currentPage: page + 1,
+    //                 })
+    //                 break;
+    //             default:
+    //             //Do nothing
+    //         }
+    //     }
 
 
-    }
+    // }
 
     logout() {
         reactLocalStorage.clear();
@@ -147,7 +138,13 @@ class CreateFundComponent extends Component {
         }
     }
 
+
+    childData() {
+        alert('jao');
+    }
+    
     render() {
+        const {match} = this.props;
         return (
             <div className="wrapper" id="createFund">
                 <div className="sidenav">
@@ -155,12 +152,12 @@ class CreateFundComponent extends Component {
                     <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; <a href="/dashboard">Dashboard</a></h2>
                     <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">1/5</span></div>
                     <ul className="sidenav-menu">
-                        <li><a>Fund Details</a></li>
-                        <li><a>Assign GP Delegates</a></li>
-                        <li><a>Upload Fund Documents</a></li>
-                        <li><a>View and Approve Form</a></li>
-                        <li><a>Asign LP's to Fund</a></li>
-                        <li><a>Review & Confirm</a></li>
+                        <li><a href="/createfund/step1">Fund Details</a></li>
+                        <li><a href="/createfund/step2">Assign GP Delegates</a></li>
+                        <li><a href="/createfund/step3">Upload Fund Documents</a></li>
+                        <li><a href="/createfund/step4">View and Approve Form</a></li>
+                        <li><a href="/createfund/step5">Asign LP's to Fund</a></li>
+                        <li><a href="/createfund/step6">Review & Confirm</a></li>
                     </ul>
 
                     <div className="start-box"><i className="fa fa-check" aria-hidden="true"></i>&nbsp;Start Fund</div>
@@ -184,23 +181,11 @@ class CreateFundComponent extends Component {
                 </div>
 
                 <div className="main">
-
-                    {/* <Grid fluid="true"> */}
-                    {/* <Col xs={6} md={12}>
-                        <Row className="header-right-row">
-                            <span className="logout" onClick={this.logout}>Logout </span>
-                            <div className="user-name">{this.state.loggedInUserObj.firstName}{this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
-                            <img src={userDefaultImage} alt="profilePic" className="profilePic" />
-                            <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
-                            <span className="notification-count">3</span>
-                            <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
-                        </Row>
-                    </Col> */}
                     <HeaderComponent ></HeaderComponent>
                     <Col xs={6} md={12}>
                         <div className="main-heading"><span className="main-title">Create New Fund</span><a href="/dashboard" className="cancel-fund">Cancel</a></div>
                     </Col>
-                    <div hidden={!this.state.showStep1Page}>
+                    {/* <div hidden={!this.state.showStep1Page}>
                         <Step1Component></Step1Component>
                     </div>
                     <div hidden={!this.state.showStep2Page}>
@@ -217,13 +202,22 @@ class CreateFundComponent extends Component {
                     </div>
                     <div hidden={!this.state.showStep6Page}>
                         <Step6Component></Step6Component>
-                    </div>
-                    <Col xs={6} md={12}>
+                    </div> */}
+                    <Row className="main-content">
+                        <Route exact path={`${match.url}/step1`} component={Step1Component} />
+                        <Route exact path={`${match.url}/step2`} gpData={this.childData}  component={Step2Component} />
+                        <Route exact path={`${match.url}/step3`} component={Step3Component} />
+                        <Route exact path={`${match.url}/step4`} component={Step4Component} />
+                        <Route exact path={`${match.url}/step5`} component={Step5Component} />
+                        <Route exact path={`${match.url}/step6`} component={Step6Component} />
+                    
+                    </Row>
+                    {/* <Col xs={6} md={12}>
                         <div className="footer-nav">
                             <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                             <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
                         </div>
-                    </Col>
+                    </Col> */}
 
                     {/* </Grid> */}
                 </div>

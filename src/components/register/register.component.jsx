@@ -187,7 +187,7 @@ class RegisterComponent extends Component{
     signUpFn() {
         let error = this.checkValidations();
         
-        if(!error) {
+        if(!error && this.state.email.trim() !== '' && this.state.userAccessId !== '') {
             this.open();
             //call the signup api
             var formData = new FormData();
@@ -230,6 +230,7 @@ class RegisterComponent extends Component{
         let registerError = false;
         //Check Username is null
         if(this.state.userName.trim() === '') {
+            window.scrollTo(300, 0)
             registerError = true;
             this.setState({
                 userNameExists: this.Constants.LOGIN_USER_NAME_REQUIRED
@@ -252,16 +253,22 @@ class RegisterComponent extends Component{
             this.setState({
                 cellNumberEmptyMsz: this.Constants.CELL_NUMBER_REQUIRED
             })
+        } 
+        else if(this.state.cellNumber.length < 12 || this.state.cellNumber.length > 13) {
+            registerError = true;
+            this.setState({
+                cellNumberEmptyMsz: this.Constants.CELL_NUMBER_VALID
+            })
         }
 
         let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
         //Check password and confirm password is same.
         //If both passwords are not same then show the error.
-        if(this.state.password !== this.state.confirmPassword) {
+        if((this.state.password.trim() !== '' && this.state.confirmPassword.trim() !== '') &&(this.state.password !== this.state.confirmPassword)) {
             errosArr.push(this.Constants.REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME)
         } 
         //Check password contains min 8 letters with letters, numbers and symbols.
-        else if(!passwordRegex.test(this.state.password) || !passwordRegex.test(this.state.confirmPassword)) {
+        else if((!passwordRegex.test(this.state.password) || !passwordRegex.test(this.state.confirmPassword)) && (this.state.password.trim() !== '' && this.state.confirmPassword.trim() !== '')) {
             errosArr.push(this.Constants.PASSWORD_RULE_MESSAGE)
         }
 
@@ -286,7 +293,7 @@ class RegisterComponent extends Component{
             let idx = 1;
             let error = '';
             for(let index of errosArr) {
-                error = error+idx+'. '+index+"\n";
+                error = error+index+"\n";
                 idx++;
             }
             this.setState({
@@ -294,7 +301,6 @@ class RegisterComponent extends Component{
             })
             return true;
         } else if(registerError){
-            window.scrollTo(300, 0)
             return true;
         } else {
             return false;
@@ -382,7 +388,7 @@ class RegisterComponent extends Component{
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Username*</label>
-                                <input type="text" name="username" maxLength="200" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
+                                <input type="text" name="username" value= {this.state.userName} maxLength="200" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
                                 <span className="error">{this.state.userNameExists}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
@@ -408,10 +414,10 @@ class RegisterComponent extends Component{
                                 <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')}/>
                                 <span className="error">{this.state.cellNumberEmptyMsz}</span>
                             </Col>
-                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                            {/* <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Phone Number (Main)</label>
                                 <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.mobileNumber } country="US" onChange={ phone => this.setState({ mobileNumber: phone }) }/>
-                            </Col>
+                            </Col> */}
                         </Row>
                         <label className="profile-text">Profile Picture: (Image must not exceed 512 x 512)</label>
                         <Row className="profile-Row profileMargin">
@@ -425,9 +431,9 @@ class RegisterComponent extends Component{
                                 <label className="removeBtn" onClick={this.removeImageBtn}>Remove</label>
                             </Col>
                         </Row>
-                        <CBox id="rememberme" className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
+                        <CBox id="rememberme" checked={this.state.fsnetTermsandServices} className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
                         </CBox>
-                        <label className="rememberLabel">By Checking this box you agree to <a href="/terms-and-conditions">FSNET's Terms of service</a></label><br/>
+                        <label className="rememberLabel">By checking this box you agree to  <a href="/terms-and-conditions">FSNET&apos;s Terms of Service</a></label><br/>
                         <span className="error">{this.state.termsandConditionsRequired}</span>
                         <div className="error">{this.state.errorMessage}</div>
                         <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
@@ -439,7 +445,7 @@ class RegisterComponent extends Component{
                 <Row hidden={!this.state.showSuccesScreen} className="sucess-row">
                     <div className="topBorder"></div>
                     <Col lg={12} md={12} sm={12} xs={12}>
-                        <label className="register-success-text">success</label>
+                        <label className="register-success-text">Success</label>
                         <label className="register-reset-text">Your account has been created</label>
                         <div className="success-icon">
                             {/* <i className="fa fa-check-circle" aria-hidden="true"></i> */}

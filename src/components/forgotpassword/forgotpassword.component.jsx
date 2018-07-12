@@ -246,12 +246,21 @@ class ForgotPasswordComponent extends Component{
             error = true;
         }
 
-        if(email === '' && number === '') {
+        if(email === '' && (number === '' || number === undefined)) {
             this.setState({
                 forgotScreen1ErrorMsz: this.Constants.EMAIL_MOBILE_REQUIRED
             })
             error = true;
         } 
+        
+        // else if(this.state.cellNumber !== undefined) {
+        //     if((this.state.cellNumber.length < 12 || this.state.cellNumber.length > 13) && email === '') {
+        //         error = true;
+        //         this.setState({
+        //             forgotScreen1ErrorMsz: this.Constants.CELL_NUMBER_VALID
+        //         })
+        //     }
+        // }
 
         if(error) {
             return true
@@ -273,7 +282,7 @@ class ForgotPasswordComponent extends Component{
         } else if(password !== cnfrmPassword) {
             this.setState({
                 createNewPwdErr:true,
-                createNewPwdErrMsz: this.Constants.REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME,
+                createNewPwdErrMsz: this.Constants.REQUIRED_PASSWORD_AGAINPASSWORD_SAME,
             });
             error = true;
         } else {
@@ -330,7 +339,7 @@ class ForgotPasswordComponent extends Component{
                             <Row>
                                 <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen1')}>Submit</Button> <br/>
                             </Row>
-                            <label className="cancel-text"> <a href="/login">Cancel</a></label>
+                            <label className="cancel-text"> <a href="/forgot-password">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen2}>
                             <Col lg={12} md={12} sm={12} xs={12}>
@@ -345,7 +354,7 @@ class ForgotPasswordComponent extends Component{
                             <Row>
                                 <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen2')}>Reset Password</Button> <br/>
                             </Row>
-                            <label className="cancel-text"> <a href="/login">Cancel</a></label>
+                            <label className="cancel-text"> <a href="/forgot-password">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen3}>
                             <Col className="width40" lg={6} md={6} sm={6} xs={12}>
@@ -354,17 +363,17 @@ class ForgotPasswordComponent extends Component{
                                 <span className="passwordDNRequirements" hidden={!this.state.createNewPwdErr}>{this.state.createNewPwdErrMsz}</span>
                             </Col>
                             <Col className="width40" lg={6} md={6} sm={6} xs={12}>
-                                <label className="forgot-label-text">Password Again</label>
+                                <label className="forgot-label-text">Password again</label>
                                 <input type="password" onChange={(e) => this.handleChangeEvent(e,'confirmPassword')} name="confirmPassword" className="forgotFormControl"/>
                             </Col>
                             <Row>
                                 <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen3')}>Reset Password</Button> <br/>
                             </Row>
-                            <label className="cancel-text"> <a href="/login">Cancel</a></label>
+                            <label className="cancel-text"> <a href="/forgot-password">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen4}>
                             <Col lg={12} md={12} sm={12} xs={12}>
-                                <label className="forgot-success-text">success</label>
+                                <label className="forgot-success-text">Success</label>
                                 <label className="forgot-reset-text">Your password has been reset</label>
                                 <div className="success-icon">
                                     {/* <i className="fa fa-check-circle" aria-hidden="true"></i> */}

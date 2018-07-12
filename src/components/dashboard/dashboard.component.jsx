@@ -85,7 +85,7 @@ class DashboardComponent extends Component {
                             <div className="filter-right-block">
                                 <i className="fa fa-th-large thLarge" aria-hidden="true"></i>
                                 <span className="view-mode">View (Card)<i className="fa fa-caret-down caretDown" aria-hidden="true"></i></span>
-                                <Button className="newFundButton"><i class="fa fa-plus"></i><a href="/createfund">New Fund</a></Button>
+                                <Button className="newFundButton"><i className="fa fa-plus"></i><a href="/createfund/step1">New Fund</a></Button>
                             </div>
                         </Col>
                     </Col>

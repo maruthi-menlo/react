@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
-import { Button, Checkbox as CBox,Row,Col } from 'react-bootstrap';
+import { Button, Checkbox as CBox, Row, Col } from 'react-bootstrap';
 import userDefaultImage from '../../../images/default_user.png';
 class Step2Component extends Component {
 
     constructor(props) {
         super(props);
         this.addGpDelegateBtn = this.addGpDelegateBtn.bind(this);
+        this.closeGpDelegateModal = this.closeGpDelegateModal.bind(this);
+        this.proceedToNext = this.proceedToNext.bind(this);
+        this.proceedToBack = this.proceedToBack.bind(this);
         this.state = {
             showAddGpDelegateModal: false,
         }
     }
 
+    proceedToNext() {
+        this.props.history.push('/createfund/step3');
+    }
+    
+    proceedToBack() {
+        this.props.history.push('/createfund/step1');
+    }
+
     addGpDelegateBtn() {
-        console.log(this.state.showAddGpDelegateModal)
+        console.log(this.state.showAddGpDelegateModal);
+        let userObj = {name:'Maruthi', type: 'GP'};
+        // this.props.gpData();
         this.setState({
             showAddGpDelegateModal: true
+        })
+    }
+
+    closeGpDelegateModal() {
+        this.setState({
+            showAddGpDelegateModal: false
         })
     }
 
@@ -114,13 +133,17 @@ class Step2Component extends Component {
                     </Row>  
                     <Row className="cancelSubmitMargin">
                         <Col lg={6} md={6} sm={6} xs={12}>
-                        <Button type="button" className="addGpCancelBox">Cancel</Button>
+                        <Button type="button" className="addGpCancelBox" onClick={this.closeGpDelegateModal}>Cancel</Button>
                         </Col>
                         <Col lg={6} md={6} sm={6} xs={12}>
                         <Button type="button" className="addGpSubmitBox">Submit</Button>
                         </Col>
                     </Row> 
                        
+                </div>
+                <div className="footer-nav">
+                    <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
+                    <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
                 </div>
             </div>
         );
