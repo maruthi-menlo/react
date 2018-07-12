@@ -338,6 +338,10 @@ class RegisterComponent extends Component{
                         invalidInvitationCode: error.response.data.errors[0].msg,
                         showRegisterScreen:false
                     });
+                } else {
+                    this.setState({
+                        invalidInvitationCode: this.Constants.INTERNAL_SERVER_ERROR,
+                    });
                 }
             });
         } else {
@@ -400,12 +404,12 @@ class RegisterComponent extends Component{
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Phone Number (Main)*</label>
+                                <label className="label-text">Phone Number (Cell)*</label>
                                 <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')}/>
                                 <span className="error">{this.state.cellNumberEmptyMsz}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="label-text">Phone Number (Cell)</label>
+                                <label className="label-text">Phone Number (Main)</label>
                                 <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.mobileNumber } country="US" onChange={ phone => this.setState({ mobileNumber: phone }) }/>
                             </Col>
                         </Row>

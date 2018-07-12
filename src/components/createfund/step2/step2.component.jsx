@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
-import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, Checkbox as CBox } from 'react-bootstrap';
 import userDefaultImage from '../../../images/default_user.png';
 class Step2Component extends Component {
 
     constructor(props) {
         super(props);
+        this.addGpDelegateBtn = this.addGpDelegateBtn.bind(this);
+        this.state = {
+            showAddGpDelegateModal: false,
+        }
     }
 
+    addGpDelegateBtn() {
+        console.log(this.state.showAddGpDelegateModal)
+        this.setState({
+            showAddGpDelegateModal: true
+        })
+    }
+
+    componentWillUnmount () {
+        console.log(this.state.showAddGpDelegateModal)
+    }
 
     render() {
+        console.log(this.state.showAddGpDelegateModal)
         return (
             <div className="GpDelegatesContainer">
                 <h1 className="assignGp">Assign GP Delegates</h1>
                 <p className="Subtext">Select GP Delegate(s) from the list below or add a new one.</p>
-                <Button className="gpDelegateButton">Gp Delegate</Button>
+                <Button className="gpDelegateButton" onClick={this.addGpDelegateBtn}>Gp Delegate</Button>
                 <div className="checkBoxGpContainer">
                     <label className="Rectangle-6">
                     <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
@@ -76,6 +91,9 @@ class Step2Component extends Component {
                         <CBox className="checkBoxBen">
                         </CBox>
                     </label>
+                </div>
+                <div className="addRoleModal" hidden={!this.state.showAddGpDelegateModal}>
+                    <h4>Add Lp</h4>                            
                 </div>
             </div>
         );

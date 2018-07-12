@@ -7,7 +7,7 @@ import userDefaultImage from '../../images/default_user.png';
 import rightIcon from '../../images/success-icon.svg';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import HeaderComponent from '../header/header.component'
-import { DateRange } from 'react-date-range';
+// import { DateRange } from 'react-date-range';
 
 class DashboardComponent extends Component {
 
@@ -85,7 +85,7 @@ class DashboardComponent extends Component {
                             <div className="filter-right-block">
                                 <i className="fa fa-th-large thLarge" aria-hidden="true"></i>
                                 <span className="view-mode">View (Card)<i className="fa fa-caret-down caretDown" aria-hidden="true"></i></span>
-                                <Button className="newFundButton"><a href="/createfund">New Fund</a></Button>
+                                <Button className="newFundButton"><i class="fa fa-plus"></i><a href="/createfund">New Fund</a></Button>
                             </div>
                         </Col>
                     </Col>

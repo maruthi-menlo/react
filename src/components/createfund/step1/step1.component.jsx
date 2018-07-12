@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
 import staticProfile from '../../../images/profilePic.jpg';
-import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, Checkbox as CBox, Row, Col } from 'react-bootstrap';
 
 class Step1Component extends Component{
 
-    constructor(props){
-        super(props);
-    }
+    // constructor(props){
+    //     super(props);
+    // }
 
 
     render(){
@@ -17,7 +17,7 @@ class Step1Component extends Component{
                     <h2>Fund Details</h2>
                     <h4>Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
                    
-                    <div controlId="step1Form">
+                    <div id="step1Form">
                         <Row className="step1Form-row">
                             <Col xs={6} md={6} sm={6} xs={12}>
                                 <label className="form-label">Legal Entity*</label>

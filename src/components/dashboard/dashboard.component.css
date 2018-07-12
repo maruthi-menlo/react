@@ -420,6 +420,9 @@
     color: #39bcd5 !important;
     text-decoration: none !important;
 }
+.newFundButton .fa{
+    padding-right: 10px;
+}
 .newFundButton {
     width: 144px;
     height: 40px;

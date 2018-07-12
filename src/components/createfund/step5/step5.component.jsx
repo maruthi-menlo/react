@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
-import { DropdownButton, Grid, Button, Checkbox as CBox, Row, Col, MenuItem, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import {Button, Checkbox as CBox, Row, Col} from 'react-bootstrap';
 import userDefaultImage from '../../../images/default_user.png';
 
 class Step5Component extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
 
     render() {

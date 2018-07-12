@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import './createfund.component.css';
-import { DropdownButton, Grid, Form, FormGroup, FormControl, ControlLabel, Button, Checkbox as CBox, Row, Col, MenuItem } from 'react-bootstrap';
-import userDefaultImage from '../../images/default_user.png';
+import { Col } from 'react-bootstrap';
+// import userDefaultImage from '../../images/default_user.png';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from '../../services/fsnetauth';
 import Step1Component from '../createfund/step1/step1.component';
@@ -39,7 +39,6 @@ class CreateFundComponent extends Component {
     proceedToBack() {
         let page = this.state.currentPage;
         if (this.state.currentPage <= this.state.totalPageCount + 1 && this.state.currentPage >= 0) {
-            console.log(this.state.currentPage);
             switch (page) {
                 case 2:
                     this.setState({
@@ -85,7 +84,6 @@ class CreateFundComponent extends Component {
     proceedToNext() {
         let page = this.state.currentPage;
         if (this.state.currentPage <= this.state.totalPageCount) {
-            console.log(this.state.currentPage);
             switch (page) {
                 case 1:
                     this.setState({
@@ -226,12 +224,6 @@ class CreateFundComponent extends Component {
                             <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
                         </div>
                     </Col>
-
-                    <Row>
-                        <div className="addRoleModal hide">
-                            <h4>Add Lp</h4>                            
-                        </div>
-                    </Row>
 
                     {/* </Grid> */}
                 </div>
