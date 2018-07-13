@@ -13,11 +13,11 @@
 .opacityInput {
     opacity: 0.25;
 }
-.parentDiv {
+#registerContainer .parentDiv {
     margin: 46px 0 0 10%;
     width: 100%;
 }
-.mandatory-content {
+#registerContainer .mandatory-content {
     height: 20px;
     opacity: 0.5;
     font-family: 'Open Sans';
@@ -30,7 +30,7 @@
     color: #2f4858;
     margin-bottom: 11px;
 }
-.register-text {
+#registerContainer .register-text {
     height: 32px;
     font-family: 'Open Sans';
     font-size: 20px;
@@ -42,7 +42,7 @@
     color: #2f4858;
     margin-bottom: 8px;
 }
-.label-text {
+#registerContainer .label-text {
     width: 290px;
     height: 20px;
     font-family: 'Open Sans';
@@ -56,17 +56,18 @@
     margin-bottom: 8px !important;
     margin-top: 8px !important;
 }
-.inputFormControl {
+#registerContainer .inputFormControl {
     width: 290px;
     height: 40px;
     border-radius: 3px;
     border: solid 1px #526173;
     padding: 8px;
+    box-shadow: inherit;
 }
-.parentDiv .row {
+#registerContainer .parentDiv .row {
     margin-bottom: 24px;
 }
-.profile-text {
+#registerContainer .profile-text {
     width: 344px;
     height: 20px;
     opacity: 0.5;
@@ -81,7 +82,7 @@
     margin-top: 8px;
     margin-bottom: 32px !important;
 }
-.uploadFile {
+#registerContainer .uploadFile {
     width: 142px;
     height: 36px;
     background-color: #39bcd5;
@@ -95,7 +96,7 @@
     color: #ffffff;
     border-radius: 20px !important;
 }
-.removeBtn {
+#registerContainer .removeBtn {
     width: 59px;
     height: 20px;
     opacity: 0.5;
@@ -110,7 +111,7 @@
     margin: 15px 0 0 40px;
     cursor: pointer;
 }
-.profilePicName {
+#registerContainer .profilePicName {
     height: 20px;
     font-family: 'Open Sans';
     font-size: 14px;
@@ -124,23 +125,23 @@
     position: absolute;
     top: 10px;
 }
-.cbRemeberMe {
+#registerContainer .cbRemeberMe {
     display: inline;
     margin-right: 10px;
 }
-#rememberme {
+#registerContainer #rememberme {
     width: 24px;
     height: 24px;
     position: relative;
     top: 6px;
     cursor: pointer;
 }
-.rememberLabel a {
-    color: #39bcd5 !important;
-    text-decoration: underline !important;
+#registerContainer .rememberLabel a {
+    color: #39bcd5;
+    text-decoration: underline;
     cursor: pointer;
 }
-.signupBtn {
+#registerContainer .signupBtn {
     width: 290px;
     height: 48px;
     background-color:  #bdbdbd;
@@ -158,10 +159,10 @@
     display: block !important;
     margin-top: 30px;
 }
-.btn {
+#registerContainer .btn {
     box-shadow: initial !important;
 }
-.signIn-text {
+#registerContainer .signIn-text {
     width: 250px;
     height: 24px;
     font-family: 'Open Sans';
@@ -177,27 +178,26 @@
     cursor: pointer;
     margin-bottom: 24px !important;
 }
-.signIn-text a {
+#registerContainer .signIn-text a {
     color: #39bcd5 !important;
-    text-decoration: none !important;
+    text-decoration: none;
 }
-.error {
-    color: red;
+#registerContainer .error {
     margin-top: 10px;
 }
 .hide {
     display: none;
 }
-.profile-pic {
+#registerContainer .profile-pic {
     width: 80px;
     height: 80px;
     border-radius: 40px;
 }
-.profileMargin{
+#registerContainer .profileMargin{
     margin-bottom: 30px !important;
 }
 
-.register-success-text {
+#registerContainer .register-success-text {
     height: 32px;
     font-family: 'Open Sans';
     font-size: 20px;
@@ -211,7 +211,7 @@
     text-align: center;
     margin-top: 30px;
 }
-.register-reset-text {
+#registerContainer .register-reset-text {
     display: block;
     height: 20px;
     opacity: 0.5;
@@ -225,7 +225,7 @@
     color: #2f4858;
     text-align: center;
 }
-.register-submit {
+#registerContainer .register-submit {
     width: 290px;
     height: 48px;
     background-color: #00bcd4;
@@ -243,68 +243,68 @@
 }
 @media only screen and (min-width: 1025px) {
     .width40 {
-        max-width: 400px !important;
+        max-width: 350px !important;
     }
 }
 @media only screen and (max-width: 1024px) {
     .registerContainer {
         margin-left: 0px !important;
     }
-    .parentDiv {
+    #registerContainer .parentDiv {
         margin-left: 10px !important;
     }
-    .topBorder{
+    #registerContainer .topBorder{
         margin-left: 10px !important;
         width: 90%;
     }
-    .headerContainer {
+    #registerContainer .headerContainer {
         height: 75px;
     }
-    .logo {
+    #registerContainer .logo {
         margin-left: 25px !important;
     }
 }
 @media only screen and (max-width: 700px) {
-    .inputFormControl, .react-phone-number-input{
+    #registerContainer .inputFormControl, #registerContainer .react-phone-number-input{
         width: 100% !important;
     }
-    .mandatory-content, .register-text {
+    #registerContainer .mandatory-content, #registerContainer .register-text {
         height: auto;
     }
-    .content {
+    #registerContainer .content {
         padding-left: 15px;
     }
-    .profile-Row {
+    #registerContainer .profile-Row {
         text-align: center;
         padding-right: 15% !important; 
     }
-    .removeBtn {
+    #registerContainer .removeBtn {
         margin-left: 0px;
     }
-    .rememberLabel {
+    #registerContainer .rememberLabel {
         display: inline !important;
     }
-    .uploadFile  {
+    #registerContainer .uploadFile  {
         margin-top: 10px;
     }
-    .headerContainer {
+    #registerContainer .headerContainer {
         margin: 10px !important;
         height: 50px !important;
     }  
-    .topBorder{
+    #registerContainer .topBorder{
         margin-left: 10px !important;
     }
-    .logo{
+    #registerContainer .logo{
         margin-left: 0px !important;
     }
-    .bottomBorder{
+    #registerContainer .bottomBorder{
         margin-bottom: 30px !important;
     }
-    .parentDiv {
+    #registerContainer .parentDiv {
         padding: 20px !important;
         margin: 0;
     }
-    .sucess-row {
+    #registerContainer .sucess-row {
         padding-left: 30px;
     }
 }

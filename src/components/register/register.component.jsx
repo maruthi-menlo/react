@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './register.component.css';
-import { Row,Col, Button, Checkbox as CBox} from 'react-bootstrap';
+import { Row,Col, Button, Checkbox as CBox, FormControl} from 'react-bootstrap';
 import {Fsnethttp} from '../../services/fsnethttp';
 import {Constants} from '../../constants/constants';
 import userDefaultImage from '../../images/default_user.png';
@@ -36,6 +36,16 @@ class RegisterComponent extends Component{
             cellNumberEmptyMsz:'',
             termsandConditionsRequired:'',
             showSuccesScreen:false,
+            isFormValid: false,
+            isUserNameValid: false,
+            isPasswordValid: false,
+            isCnfrmPasswordValid: false,
+            isCellNumberValid: false,
+            fsnetTermsandServicesValid: false,
+            userNameBorder: false,
+            passwordBorder: false,
+            confirmPasswordBorder: false,
+            cellNumberBorder: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
@@ -75,6 +85,33 @@ class RegisterComponent extends Component{
             cellNumberEmptyMsz:'',
             termsandConditionsRequired:'',
             showSuccesScreen:false,
+            isFormValid: false,
+            isUserNameValid: false,
+            isPasswordValid: false,
+            isCnfrmPasswordValid: false,
+            isCellNumberValid: false,
+            userNameBorder: false,
+            passwordBorder: false,
+            confirmPasswordBorder: false,
+            cellNumberBorder: false,
+        });
+    }
+
+
+     // Update state params values and login button visibility
+
+     updateStateParams(updatedDataObject){
+        this.setState(updatedDataObject, ()=>{
+            this.enableDisableLoginButtion();
+        });
+    }
+
+    // Enable / Disble functionality of Login Button
+
+    enableDisableLoginButtion(){
+        let status = (this.state.isUserNameValid && this.state.isPasswordValid && this.state.isCnfrmPasswordValid && this.state.isCellNumberValid && this.state.fsnetTermsandServicesValid ) ? true : false;
+        this.setState({
+            isFormValid : status
         });
     }
 
@@ -105,45 +142,142 @@ class RegisterComponent extends Component{
 
     //Onchange event for all input text boxes.
     handleInputChangeEvent(event,type) {
+        let dataObj = {}; 
         switch(type) {
             case 'username':
                 //Add username value to state
                 //Clear the username exists message
-                this.setState({
-                    userName: event.target.value,
-                    userNameExists: ''
-                })
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        userNameExists: this.Constants.LOGIN_USER_NAME_REQUIRED,
+                        isUserNameValid: false,
+                        userNameBorder: true,
+                        userName: ''
+                    })
+                    window.scrollTo(300, 0)                    
+                    dataObj ={
+                        isUserNameValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        userName: event.target.value,
+                        userNameExists: '',
+                        isUserNameValid: true,
+                        userNameBorder: false,
+                    })
+                    dataObj ={
+                        isUserNameValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
             case 'password':
-                this.setState({
-                    password: event.target.value,
-                    passwordEmptyMsz:''
-                })
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        passwordEmptyMsz: this.Constants.LOGIN_PASSWORD_REQUIRED,
+                        isPasswordValid: false,
+                        passwordBorder: true,
+                    })
+                    dataObj ={
+                        isPasswordValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        password: event.target.value,
+                        passwordEmptyMsz: '',
+                        isPasswordValid: true,
+                        passwordBorder: false,
+                    })
+                    dataObj ={
+                        isPasswordValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
             case 'confirmPassword':
-                this.setState({
-                    confirmPassword: event.target.value,
-                    confirmPasswordEmptyMsz:''
-                })
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        confirmPasswordEmptyMsz: this.Constants.LOGIN_PASSWORD_REQUIRED,
+                        isCnfrmPasswordValid: false,
+                        confirmPasswordBorder: true,
+                    })
+                    dataObj ={
+                        isCnfrmPasswordValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        confirmPassword: event.target.value,
+                        confirmPasswordEmptyMsz: '',
+                        isCnfrmPasswordValid: true,
+                        confirmPasswordBorder: false,
+                    })
+                    dataObj ={
+                        isCnfrmPasswordValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
-            case 'mobileNumber':
+            case 'cellNumber':
+                if(event === '' || event === undefined) {
+                    this.setState({
+                        cellNumberEmptyMsz: this.Constants.CELL_NUMBER_REQUIRED,
+                        isCellNumberValid: false,
+                        cellNumberBorder: true,
+                    })
+                    dataObj ={
+                        isCellNumberValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        cellNumber: event,
+                        cellNumberEmptyMsz: '',
+                        isCellNumberValid: true,
+                        cellNumberBorder: false,
+                    })
+                    // document.getElementsByClassName('react-phone-number-input').style.borderColor = "#526173";
+                    dataObj ={
+                        isCnfrmPasswordValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
             // console.log(event)
             // console.log(event.target.value)
                 // this.setState({
                 //     mobileNumber: event.target.value
                 // })
                 break;
-            case 'cellNumber':
-                this.setState({
-                    cellNumber: event,
-                    cellNumberEmptyMsz:''
-                })
-                break;
+            // case 'cellNumber':
+            //     this.setState({
+            //         cellNumber: event,
+            //         cellNumberEmptyMsz:''
+            //     })
+            //     break;
             case 'fsnetTermsandServices':
-                this.setState({
-                    fsnetTermsandServices : event.target.checked,
-                    termsandConditionsRequired:''
-                });
+                if(event.target.checked) {
+                    this.setState({
+                        fsnetTermsandServices : event.target.checked,
+                        termsandConditionsRequired:'',
+                        fsnetTermsandServicesValid: true
+                    })
+                    dataObj ={
+                        fsnetTermsandServicesValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        termsandConditionsRequired: this.Constants.TERMS_CONDITIONS,
+                        fsnetTermsandServices : event.target.checked,
+                        fsnetTermsandServicesValid:false,
+                    })
+                    dataObj ={
+                        fsnetTermsandServicesValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
             default:
                 // do nothing
@@ -157,7 +291,7 @@ class RegisterComponent extends Component{
     checkUserNameExists() {
         let username = this.state.userName.trim();
         let userNameSpaceRegex = /^[a-zA-Z0-9]+$/;
-        if(username !== null) {
+        if(username !== null && username !== '') {
             if(!userNameSpaceRegex.test(username)) {
                 this.setState({
                     userNameExists: this.Constants.USERNAME_FORMAT
@@ -180,6 +314,20 @@ class RegisterComponent extends Component{
                 });
             }
             
+        }
+
+        if(username === '' || username === null || username === undefined) {
+            let dataObj = {};
+            this.setState({
+                userNameExists: this.Constants.LOGIN_USER_NAME_REQUIRED,
+                isUserNameValid: false,
+                userNameBorder: true,
+                userName: ''
+            })
+            dataObj ={
+                isUserNameValid :false
+            };
+            this.updateStateParams(dataObj);
         }
     }
 
@@ -373,7 +521,7 @@ class RegisterComponent extends Component{
 
     render(){
         return(
-            <div className="parentContainer">            
+            <div className="parentContainer" id="registerContainer">            
                 <div className="text-center" hidden={this.state.showRegisterScreen}>
                     <h1>{this.state.invalidInvitationCode}</h1>
                 </div>
@@ -388,30 +536,30 @@ class RegisterComponent extends Component{
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Username*</label>
-                                <input type="text" name="username" value= {this.state.userName} maxLength="200" className="inputFormControl" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/><br/>
+                                <FormControl type="text" name="username" className={"inputFormControl " + (this.state.userNameBorder ? 'inputError' : '')} value= {this.state.userName} maxLength="200" placeholder="John Doe" onChange={(e) => this.handleInputChangeEvent(e,'username')} onBlur={this.checkUserNameExists}/>
                                 <span className="error">{this.state.userNameExists}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Email Address</label>
-                                <input type="text" name="email" disabled className="inputFormControl opacityInput" id="email" placeholder="JohnDoe@gmail.com" value={this.state.email}/>
+                                <FormControl type="text" name="email" disabled className="inputFormControl opacityInput" id="email" placeholder="JohnDoe@gmail.com" value={this.state.email}/>
                             </Col>
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Password*</label>
-                                <input type="password" name="password" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'password')}/><br/>
+                                <FormControl type="password" name="password" className={"inputFormControl " + (this.state.passwordBorder ? 'inputError' : '')} placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'password')} onBlur={(e) => this.handleInputChangeEvent(e,'password')}/>
                                 <span className="error">{this.state.passwordEmptyMsz}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Password Confirm*</label>
-                                <input type="password" name="confirmPassword" className="inputFormControl" placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'confirmPassword')}/><br/>
+                                <FormControl type="password" name="confirmPassword" className={"inputFormControl " + (this.state.confirmPasswordBorder ? 'inputError' : '')} placeholder="Password" onChange={(e) => this.handleInputChangeEvent(e,'confirmPassword')} onBlur={(e) => this.handleInputChangeEvent(e,'confirmPassword')}/>
                                 <span className="error">{this.state.confirmPasswordEmptyMsz}</span>
                             </Col>
                         </Row>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Phone Number (Cell)*</label>
-                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')}/>
+                                <PhoneInput className={(this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')} />
                                 <span className="error">{this.state.cellNumberEmptyMsz}</span>
                             </Col>
                             {/* <Col lg={6} md={6} sm={6} xs={12} className="width40">
@@ -433,10 +581,10 @@ class RegisterComponent extends Component{
                         </Row>
                         <CBox id="rememberme" checked={this.state.fsnetTermsandServices} className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
                         </CBox>
-                        <label className="rememberLabel">By checking this box you agree to  <a href="/terms-and-conditions">FSNET&apos;s Terms of Service</a></label><br/>
+                        <label className="rememberLabel">By checking this box you agree to  <a>FSNET&apos;s Terms of Service</a></label><br/>
                         <span className="error">{this.state.termsandConditionsRequired}</span>
                         <div className="error">{this.state.errorMessage}</div>
-                        <Button className="signupBtn" onClick={this.signUpFn}>Sign Up</Button>
+                        <Button className={"signupBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid} onClick={this.signUpFn}>Sign Up</Button>
                         <label className="signIn-text"> <a href="/login">Already have an account? Sign In</a></label>
                     </div>
                     <div className="topBorder bottomBorder"></div>

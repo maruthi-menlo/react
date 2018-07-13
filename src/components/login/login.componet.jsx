@@ -26,6 +26,11 @@ class LoginComponent extends Component{
             passwordError:'',
             loginRemember: false,
             loginErrorMsz: '',
+            userNameValid : false,
+            passwordValid: false,
+            isFormValid: false,
+            userNameBorder: false,
+            passwordBorder: false,
         }
     }
 
@@ -63,13 +68,13 @@ class LoginComponent extends Component{
     
     loginFn() {
         if(this.state.loginUserName.trim() && this.state.loginPassword.trim()) {
-            let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-            //Check password contains min 8 letters with letters, numbers and symbols.
-            if(!passwordRegex.test(this.state.loginPassword.trim())) {
-                this.setState({
-                    loginErrorMsz: this.Constants.PASSWORD_RULE_MESSAGE
-                });
-            } else {
+            // let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+            // //Check password contains min 8 letters with letters, numbers and symbols.
+            // if(!passwordRegex.test(this.state.loginPassword.trim())) {
+            //     this.setState({
+            //         loginErrorMsz: this.Constants.PASSWORD_RULE_MESSAGE
+            //     });
+            // } else {
                 this.open();
                 let username = this.state.loginUserName;
                 let password = this.state.loginPassword;
@@ -80,6 +85,7 @@ class LoginComponent extends Component{
                     console.log(result);
                     if(result.data) {
                         reactLocalStorage.set('userData', JSON.stringify(result.data.user));
+                        reactLocalStorage.set('token', JSON.stringify(result.data.token));
                         this.props.history.push('/dashboard');
                     }
                 })
@@ -95,19 +101,22 @@ class LoginComponent extends Component{
                         });
                     }
                 });
-            }
-        } else {
-            if(this.state.loginUserName.trim() === '') {
-                this.setState({
-                    userNameError: this.Constants.LOGIN_USER_NAME_REQUIRED
-                });
-            } 
-            if(this.state.loginPassword.trim() === '') {
-                this.setState({
-                    passwordError: this.Constants.LOGIN_PASSWORD_REQUIRED
-                });
-            }
-        }
+            // }
+        } 
+        // else {
+        //     if(this.state.loginUserName.trim() === '') {
+        //         this.setState({
+        //             userNameError: this.Constants.LOGIN_USER_NAME_REQUIRED,
+        //             userNameValid: false,
+        //         });
+        //     } 
+        //     if(this.state.loginPassword.trim() === '') {
+        //         this.setState({
+        //             passwordError: this.Constants.LOGIN_PASSWORD_REQUIRED,
+        //             passwordValid: false,
+        //         });
+        //     }
+        // }
     }
 
     // ProgressLoader : close progress loader
@@ -120,26 +129,81 @@ class LoginComponent extends Component{
         this.setState({ showModal: true });
     }
 
+     // Update state params values and login button visibility
+
+     updateStateParams(updatedDataObject){
+        this.setState(updatedDataObject, ()=>{
+            this.enableDisableLoginButtion();
+        });
+    }
+
+    // Enable / Disble functionality of Login Button
+
+    enableDisableLoginButtion(){
+        let status = (this.state.userNameValid && this.state.passwordValid) ? true : false;
+        this.setState({
+            isFormValid : status
+        });
+    }
+
     //Onchange event for all input text boxes.
     loginInputHandleEvent(event,type) {
         //Clear the login error message.
         this.setState({
             loginErrorMsz: ''
         })
+        let dataObj = {};  
         switch(type) {
             case 'username':
                 //Add username value to state
-                this.setState({
-                    loginUserName: event.target.value,
-                    userNameError: '',
-                })
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        userNameError: this.Constants.LOGIN_USER_NAME_REQUIRED,
+                        userNameValid: false,
+                        userNameBorder: true,
+                    })
+                    dataObj ={
+                        userNameValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        loginUserName: event.target.value,
+                        userNameError: '',
+                        userNameValid: true,
+                        userNameBorder: false,
+                    })
+                    dataObj ={
+                        userNameValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
+                
                 break;
             case 'password':
                 //Add password value to state
-                this.setState({
-                    loginPassword: event.target.value,
-                    passwordError:'',
-                })
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        passwordError: this.Constants.LOGIN_PASSWORD_REQUIRED,
+                        passwordValid: false,
+                        passwordBorder: true
+                    })
+                    dataObj ={
+                        passwordValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        loginPassword: event.target.value,
+                        passwordError:'',
+                        passwordValid: true,
+                        passwordBorder: false
+                    })
+                    dataObj ={
+                        passwordValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
             case 'isRememberMe':
                 this.setState({
@@ -153,35 +217,35 @@ class LoginComponent extends Component{
 
     render(){
         return(
-            <Row>                    
+            <Row id="loginContainer">                    
                 <Row className="mainContainer">
                     <div className="fsnet-logo">FSNET LOGO</div>
                 </Row>
                 <Row className="loginContainer">
                     <Col lg={6} md={6} sm={6} xs={12}>
-                        <p className="content-heading">Nam dapibus nisl vitae elit fringilla rutrum. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium metus, quis mollis nisl nunc et massa.</p>
-                        <p className="content-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. <br/>Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida.</p>
+                        <p className="content-heading">Welcome to Vanilla. We are revolutionizing the way accredited investors subscribe to and manage their investments in private funds.</p>
+                        <p className="content-text">Tired of completing lengthy subscription agreements? Signing by hand? Writing checks for capital calls? Lengthy and expensive transfer of interest procedures?<br/><br/>Vanilla allows managers of venture capital, private equity, real estate and other private funds to offer their limited partner subscribers a convenient, secure and efficient way to subscribe for and manage fund interests. Limited partners for their part can elect to store information so that there is no need to enter lengthy subscription qualification information fund after fund.<br/><br/>Toss out those PDF subscription agreements. There is a better way. It's Vanilla.</p>
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12} className="paddingLeft7">
                         <div className="formContainer">
                             <p className="labelSignIn">Already Have an account? Sign In</p>
-                            <div className="loginError marginLeft20">{this.state.loginErrorMsz}</div>
+                            <div className="error marginLeft20">{this.state.loginErrorMsz}</div>
                             <Form horizontal id="loginForm">
                                 <FormGroup controlId="username">
                                     <ControlLabel className="labelFormControl">Username</ControlLabel>
-                                    <FormControl type="text" placeholder="Username" className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'username')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
-                                    <div className="loginError">{this.state.userNameError}</div>
+                                    <FormControl type="text" placeholder="Username" className={"formControl " + (this.state.userNameBorder ? 'inputError' : '')} inputRef={(input)=>{this.userName = input}} onChange={(e)=> this.loginInputHandleEvent(e,'username')} onBlur={(e)=> this.loginInputHandleEvent(e,'username')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
+                                    <div className="error">{this.state.userNameError}</div>
                                 </FormGroup>
                                 <FormGroup controlId="password">
                                     <ControlLabel className="labelFormControl">Password</ControlLabel>
-                                    <FormControl type="password" placeholder="Password"  className="formControl" onChange={(e)=> this.loginInputHandleEvent(e,'password')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
-                                    <div className="loginError">{this.state.passwordError}</div>
+                                    <FormControl type="password" placeholder="Password" className={"formControl " + (this.state.passwordBorder ? 'inputError' : '')} inputRef={(input)=>{this.password = input}} onChange={(e)=> this.loginInputHandleEvent(e,'password')} onBlur={(e)=> this.loginInputHandleEvent(e,'password')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
+                                    <div className="error">{this.state.passwordError}</div>
                                 </FormGroup>
                                 <CBox className="loginRemeberMe" onChange={(e) => this.loginInputHandleEvent(e,'isRememberMe')}>
-                                    &nbsp; Remember Username?
+                                    &nbsp; Remember username?
                                 </CBox>
-                                <Button ref={(button) => {this.login = button}} className="signinBtn" onClick={this.loginFn}>Sign In</Button>
-                                <div className="forgot-pwd"><a href="/forgot-password">Forgot Password?</a></div>
+                                <Button ref={(button) => {this.login = button}} className={"signinBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid}  onClick={this.loginFn}>Sign In</Button>
+                                <div className="forgot-pwd"><a href="/forgot-password">Forgot password?</a></div>
                             </Form>
                         </div>
                         <Loader isShow={this.state.showModal}></Loader>

@@ -15,11 +15,12 @@ body {
   text-align: center;
   color: #1adbb9;
   font-size: 128px;
+} 
+.marginTop20 {
+  margin-top: 20px;
 }
+
 /* React phone input css */
-.registerContainer   .react-phone-number-input {
-  width: 256px !important;
-}
 .react-phone-number-input {
   width: 290px !important;
   height: 40px !important;
@@ -65,3 +66,38 @@ body {
 body {
   font-family: 'Open Sans';
 }
+
+
+input:focus, .react-phone-number-input:focus {
+  border: solid 1px #39bcd5 !important;
+} 
+.react-phone-number-input input:focus {
+  border: inherit !important;
+}
+a:hover {
+  text-decoration: underline !important;
+}
+.inputError {
+  border-color: red !important;
+}
+.btn.disabled, .btn[disabled] {
+  cursor: not-allowed;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  opacity: .65;
+}
+.btnEnabled {
+  background-color: #00bcd4 !important;
+}
+
+.btnEnabled:hover {
+  background-color: #00bcd4 !important;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  font-family: 'Open Sans';
+}
+  

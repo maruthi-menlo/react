@@ -21,7 +21,7 @@ export class Constants{
     CELL_NUMBER_REQUIRED = 'Phone number is required.';
     CELL_NUMBER_VALID = 'Please enter valid phone number.';
     ACCOUNT_TYPE_REQUIRED = 'Please enter account type.';
-    EMAIL_MOBILE_REQUIRED = 'Please enter email or cell number';
+    EMAIL_MOBILE_REQUIRED = 'Please enter email or cell number.';
     INVALID_VERIFY_CODE = 'Please enter valid code.';
     PASSWORD_NOT_MATCH = "Password doesn't meet requirements.";
     INTERNAL_SERVER_ERROR = 'Something went wrong.';

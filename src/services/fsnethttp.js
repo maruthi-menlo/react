@@ -47,4 +47,10 @@ export class Fsnethttp{
     resetPassword(obj) {
         return axios.post(this.Constants.BASE_URL+'resetPassword', obj);
     }
+
+    //Create fund details step1
+    fundStore(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/store', obj);
+    }
 }

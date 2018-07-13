@@ -7,7 +7,7 @@ export class FsnetAuth{
     // Otherwise it will return false
     
     isAuthenticated(){
-        let userDetails = reactLocalStorage.get('userData');
+        let userDetails = reactLocalStorage.get('token');
         if(userDetails === "null" || userDetails === undefined){
             return false;
         }else{

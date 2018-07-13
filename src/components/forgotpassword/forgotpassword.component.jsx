@@ -323,7 +323,7 @@ class ForgotPasswordComponent extends Component{
                                 <label className="forgot-label-text">Phone Number (Cell)</label>
                                 <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleChangeEvent(phone,'cellNumber')}/>
                             </Col>
-                            <Col lg={12} md={12} sm={12} xs={12}>
+                            <Col lg={12} md={12} sm={12} xs={12} className="marginTop20">
                                 <label className="forgot-label-text">Account type*</label>
                                 <FormControl defaultValue="0" className="forgotFormControl" componentClass="select" onChange={(e) => this.handleChangeEvent(e,'accountType')} placeholder="Select Role">
                                     <option value={0}>Select Role</option>
