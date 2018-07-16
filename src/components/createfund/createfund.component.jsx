@@ -154,8 +154,7 @@ class CreateFundComponent extends Component {
                     <ul className="sidenav-menu">
                         <li><a href="/createfund/step1">Fund Details</a></li>
                         <li><a href="/createfund/step2">Assign GP Delegates</a></li>
-                        <li><a href="/createfund/step3">Upload Fund Documents</a></li>
-                        <li><a href="/createfund/step4">View and Approve Form</a></li>
+                        <li><a href="/createfund/step3">Partnership Agreement</a></li>
                         <li><a href="/createfund/step5">Asign LP's to Fund</a></li>
                         <li><a href="/createfund/step6">Review & Confirm</a></li>
                     </ul>

@@ -159,19 +159,19 @@ class Step1Component extends Component{
                                 <FormControl type="text" placeholder="Helios" className="inputFormControl" inputRef={(input)=>{this.legalEntity = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'legalEntity')} autoComplete="off"/>
                             </Col>
                             <Col xs={6} md={6} sm={6} xs={12}>
-                                <label className="form-label">Fund hard cap</label>
+                                <label className="form-label">Hard cap</label>
                                 {/* <input type="text" className= "inputFormControl" placeholder="$15,000,000.00" /> */}
                                 <FormControl type="text" placeholder="$15,000,000.00" className="inputFormControl" inputRef={(input)=>{this.fundHardCap = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} autoComplete="off"/>
                             </Col>
                         </Row>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">Fund manager (GP) legal entity name*</label>
+                                <label className="form-label">Fund Manager (GP) Legal Entity Name*</label>
                                 {/* <input type="text" className= "inputFormControl" placeholder="Helios GP I,LLC" />    */}
                                 <FormControl type="text" placeholder="Helios GP I,LLC" className="inputFormControl" inputRef={(input)=>{this.fundManagerLegalEntityName = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundManagerLegalEntityName')} autoComplete="off"/>
                             </Col>
                             <Col xs={6} md={6}>
-                                <label className="form-label">Fund target commitment</label>
+                                <label className="form-label">Fund Target Commitment</label>
                                 {/* <input type="text" className= "inputFormControl" placeholder="$20,000,000" /> */}
                                 <FormControl type="text" placeholder="$20,000,000" className="inputFormControl" inputRef={(input)=>{this.fundTargetCommitment = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} autoComplete="off"/>
                             </Col>

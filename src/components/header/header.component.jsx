@@ -73,7 +73,7 @@ class HeaderComponent extends Component{
                         <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
                         <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
                         <span className="notification-count">3</span>
-                        <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i>
+                        {/* <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i> */}
                     </Row>
                 </Col>
             // </Row>

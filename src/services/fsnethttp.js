@@ -23,6 +23,11 @@ export class Fsnethttp{
         return axios.post(this.Constants.BASE_URL+'login', userObj);
     }
 
+    //create vc frim
+    createVcFirm(obj) {
+        return axios.post(this.Constants.BASE_URL+'createVCFirm', obj);
+    }
+
     //FSNET registration
     register(userObj) {
         return axios.post(this.Constants.BASE_URL+'register', userObj,{

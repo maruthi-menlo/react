@@ -82,6 +82,10 @@
 
 .main {
     margin-left: 286px; 
+    max-width: 75%;
+}
+#createFund .radio-inline {
+    width: 105px;
 }
 
 .main-heading {

@@ -16,8 +16,17 @@ body {
   color: #1adbb9;
   font-size: 128px;
 } 
-.marginTop20 {
-  margin-top: 20px;
+.marginTop10 {
+  margin-top: 10px;
+}
+.marginBottom30{
+  margin-bottom: 30px;
+}
+.marginBot20{
+  margin-bottom: 20px;
+}
+.marginBotNone {
+  margin-bottom: 0px !important;
 }
 
 /* React phone input css */
@@ -45,18 +54,18 @@ body {
 }
 
 ::placeholder {
-  color: #2f4858;
-  opacity: 0.25;
+  color: #2f4858 !important;
+  opacity: 0.25 !important;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #2f4858;
-  opacity: 0.25;
+  color: #2f4858 !important;
+  opacity: 0.25 !important;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-  color: #2f4858;
-  opacity: 0.25;
+  color: #2f4858 !important;
+  opacity: 0.25 !important;
 }
 
 @font-face {
@@ -68,9 +77,16 @@ body {
 }
 
 
-input:focus, .react-phone-number-input:focus {
+input:focus, .react-phone-number-input:focus, select:focus {
   border: solid 1px #39bcd5 !important;
 } 
+select option {
+  margin: 10px;
+  background: #ffffff;
+  color: #2f4858;
+  font-family: 'Open Sans';
+  font-size: 16px;
+}
 .react-phone-number-input input:focus {
   border: inherit !important;
 }
@@ -87,12 +103,18 @@ a:hover {
   box-shadow: none;
   opacity: .65;
 }
-.btnEnabled {
+.btnEnabled, .fsnetBtn {
   background-color: #00bcd4 !important;
 }
 
-.btnEnabled:hover {
-  background-color: #00bcd4 !important;
+.btnEnabled:hover, .fsnetBtn:hover {
+  background-color: #4ab8c6 !important;
+}
+
+.cancelBtn a:hover {
+  border: 1px solid #000000;
+  padding: 8px 60px;
+  border-radius: 100px;
 }
 
 .error {
@@ -100,4 +122,121 @@ a:hover {
   font-size: 12px;
   font-family: 'Open Sans';
 }
+
+.marginTopminus10 {
+  margin-top: -10px !important;
+}
   
+/***********CHECKBOX STYLES START******************/
+/* The container */
+.checkbox {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #00bcd4;
+}
+.checkbox input{
+  position: absolute;
+  top: 0;
+}
+
+/* Hide the browser's default checkbox */
+.loginRemeberMe input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+.loginRemeberMe:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+input:checked ~ .checkmark {
+  background-color: #00bcd4;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.remember-text {
+  position: relative;
+  top: -8px;
+}
+/***********CHECKBOX STYLES END******************/
+
+.radio-inline {
+  width: 150px;
+  margin-bottom: 10px !important;
+}
+.marginLeft15 {
+  margin-left: 15px;
+}
+select option:hover {
+  background-color: rgba(245, 245, 245, 0.3);
+}
+select option {
+  color: #2f4858;
+  background-color: #ffffff;
+}
+
+
+/*********Form Css **************/
+.fsnetInputFormControl {
+  height: 40px;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #2f4858;
+  border-radius: 3px;
+  border: solid 1px #526173 !important;
+  margin-top: 8px;
+  box-shadow: initial !important;
+}

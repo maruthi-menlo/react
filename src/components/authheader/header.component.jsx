@@ -8,11 +8,11 @@ class HeaderComponent extends Component{
         return(
             <Row className="headerContainer"> 
                 <Col className="content"> 
-                    <div className="logo cursor">FSNET LOGO</div>
+                    <div className="logo cursor"><a href="/login">FSNET LOGO</a></div>
                 </Col>
-                <Col className="content">
+                {/* <Col className="content">
                     <div className="homeLink cursor"><a href="/login">Home</a></div>
-                </Col>
+                </Col> */}
             </Row>
         );
     }

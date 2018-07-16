@@ -126,6 +126,7 @@
     color: #ffffff;
     outline: none;
     background-color: #bdbdbd;
+    box-shadow: initial;
 }
 #loginContainer .mainContainer  {
     margin: 30px;

@@ -31,7 +31,20 @@ class ForgotPasswordComponent extends Component{
             createNewPwdErr:false,
             createNewPwdErrMsz: '',
             password: '',
-            confirmPassword : ''
+            confirmPassword : '',
+            emailErrorBorder: false,
+            cellNumberErrorBorder: false,
+            accountTypeBorder: false,
+            verifyCodeBorder: false,
+            resetCfrmPasswordBorder: false,
+            resetPasswordBorder: false,
+            cellNumberErrorMsz: '',
+            emailErrorMsz: '',
+            isscreen1FormValid: false,
+            isemailOrcellNumberValid: false,
+            isAccountTypeValid: false,
+            verifyCodeFormValid: false,
+            isscreen3FormValid: false,
         }
         this.showForgotScreenFn = this.showForgotScreenFn.bind(this);
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -44,43 +57,131 @@ class ForgotPasswordComponent extends Component{
         this.Fsnethttp = new Fsnethttp();
         //Check if user already logged in
         //If yes redirect to dashboard page
-        if(this.FsnetAuth.isAuthenticated()){
-            this.props.history.push('/dashboard');
-        }
+        // if(this.FsnetAuth.isAuthenticated()){
+        //     this.props.history.push('/dashboard');
+        // }
+    }
+
+    // Update state params values and login button visibility
+
+    updateStateParams(updatedDataObject){
+        this.setState(updatedDataObject, ()=>{
+            this.enableDisableForgotButtion();
+        });
+    }
+
+    // Enable / Disble functionality of Login Button
+
+    enableDisableForgotButtion(){
+        let status = (this.state.isemailOrcellNumberValid && this.state.isAccountTypeValid ) ? true : false;
+        this.setState({
+            isscreen1FormValid : status
+        });
     }
 
     handleChangeEvent(event, type) {
+        let dataObj = {};
         switch(type) {
             case 'email':
-                this.setState({
-                    email: event.target.value,
-                    forgotScreen1ErrorMsz:'',
-                })
+                if(event.target.value === '' && (this.state.cellNumber === '' || this.state.cellNumber === undefined)) {
+                    this.setState({
+                        email: event.target.value,
+                        isemailOrcellNumberValid: false
+                    })
+                    dataObj ={
+                        isemailOrcellNumberValid :false
+                    };
+                } else {
+                    this.setState({
+                        email: event.target.value,
+                        forgotScreen1ErrorMsz:'',
+                        emailErrorMsz: '',
+                        emailErrorBorder: false,
+                        isemailOrcellNumberValid: true
+                    })
+                    dataObj ={
+                        isemailOrcellNumberValid :true
+                    };
+                }
+                
+                this.updateStateParams(dataObj);
                 break;
             case 'cellNumber':
-                this.setState({
-                    cellNumber: event,
-                    forgotScreen1ErrorMsz:'',
-                })
+                if((event === '' || event === undefined) && this.state.email === '') {
+                    this.setState({
+                        cellNumber: event.target.value,
+                        isemailOrcellNumberValid: false
+                    })
+                    dataObj ={
+                        isemailOrcellNumberValid :false
+                    };
+                } else {
+                    this.setState({
+                        cellNumber: event,
+                        forgotScreen1ErrorMsz:'',
+                        cellNumberErrorMsz: '',
+                        cellNumberErrorBorder: false,
+                        isemailOrcellNumberValid: true
+                    })
+                    dataObj ={
+                        isemailOrcellNumberValid :true
+                    };
+                }
+                this.updateStateParams(dataObj);
                 break;
             case 'accountType':
-                this.setState({
-                    accountType: event.target.value,
-                    accountTypeRequired: ''
-                })
+                if(event.target.value === '0' || event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        isAccountTypeValid: false
+                    })
+                    dataObj ={
+                        isAccountTypeValid :false
+                    };
+                } else {
+                    this.setState({
+                        accountType: event.target.value,
+                        accountTypeRequired: '',
+                        accountTypeBorder: false,
+                        isAccountTypeValid: true
+                    })
+                    dataObj ={
+                        isAccountTypeValid :true
+                    };
+                }
+                this.updateStateParams(dataObj);
                 break;
             case 'password':
+                if(event.target.value === '' || this.state.confirmPassword === '') {
+                    this.setState({
+                        isscreen3FormValid: false,
+                    })
+                } else {
+                    this.setState({
+                        isscreen3FormValid: true,
+                    })
+                }
                 this.setState({
                     password: event.target.value,
                     createNewPwdErr: false,
-                    createNewPwdErrMsz: ''
+                    createNewPwdErrMsz: '',
+                    resetPasswordBorder: false,
                 })
                 break; 
             case 'confirmPassword':
+                if(event.target.value === '' || this.state.password === '') {
+                    this.setState({
+                        isscreen3FormValid: false,
+                    })
+                } else {
+                    this.setState({
+                        isscreen3FormValid: true,
+                    })
+                }
                 this.setState({
                     confirmPassword: event.target.value,
                     createNewPwdErr: false,
-                    createNewPwdErrMsz: ''
+                    createNewPwdErrMsz: '',
+                    resetCfrmPasswordBorder: false,
                 })
                 break; 
             default:
@@ -99,13 +200,15 @@ class ForgotPasswordComponent extends Component{
             this.open();
             let postObj = {email:this.state.email.trim(), cellNumber:this.state.cellNumber, accountType:this.state.accountType, code:code}
             let newPostObj = this.clean(postObj)
-            console.log(newPostObj);
             this.Fsnethttp.verifycode(newPostObj).then(result=>{
                 this.close();
                 if(result) {
                     this.setState({
                         showVerifyCodeIcon: true,
                         verificationCode:code,
+                        verifyCodeBorder: false,
+                        invalidVerifyCodeMsz: '',
+                        verifyCodeFormValid: true
                     });
                     if(button === 'verifyResetButton') {
                         this.setState({
@@ -120,7 +223,8 @@ class ForgotPasswordComponent extends Component{
                 if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
                     this.setState({
                         invalidVerifyCodeMsz: error.response.data.errors[0].msg,
-                        verificationCode:code
+                        verificationCode:code,
+                        verifyCodeFormValid: false,
                     });
                 }
             });
@@ -128,7 +232,9 @@ class ForgotPasswordComponent extends Component{
             this.setState({
                 showVerifyCodeIcon: false,
                 invalidVerifyCodeMsz:'',
-                verificationCode:''
+                verificationCode:'',
+                verifyCodeBorder: false,
+                verifyCodeFormValid: false,
             });
         }
     }
@@ -156,7 +262,6 @@ class ForgotPasswordComponent extends Component{
     sendCodeAgain() {
         let forgotObj = {email:this.state.email.trim(), cellNumber:this.state.cellNumber, accountType:this.state.accountType}
         let newObj = this.clean(forgotObj)
-        console.log(newObj);
         this.Fsnethttp.forgotPassword(newObj).then(result=>{
             this.close();
             if(result.data) {
@@ -191,7 +296,8 @@ class ForgotPasswordComponent extends Component{
                     this.verifyCode(this.state.verificationCode,'verifyResetButton');
                 } else {
                     this.setState({
-                        invalidVerifyCodeMsz: this.Constants.INVALID_VERIFY_CODE
+                        invalidVerifyCodeMsz: this.Constants.INVALID_VERIFY_CODE,
+                        verifyCodeBorder: true
                     })
                 }
                 break;
@@ -239,19 +345,41 @@ class ForgotPasswordComponent extends Component{
         let number = this.state.cellNumber;
         let type = this.state.accountType;
         let error = false;
+        let emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
         if(type === '0' || type === '') {
             this.setState({
-                accountTypeRequired: this.Constants.ACCOUNT_TYPE_REQUIRED
+                accountTypeRequired: this.Constants.ACCOUNT_TYPE_REQUIRED,
+                accountTypeBorder: true
             })
             error = true;
         }
 
         if(email === '' && (number === '' || number === undefined)) {
             this.setState({
-                forgotScreen1ErrorMsz: this.Constants.EMAIL_MOBILE_REQUIRED
+                forgotScreen1ErrorMsz: this.Constants.EMAIL_MOBILE_REQUIRED,
+                emailErrorBorder: true,
+                cellNumberErrorBorder: true
             })
             error = true;
         } 
+        
+        if(email !== '' && !emailRegex.test(email)) {
+            this.setState({
+                emailErrorMsz: this.Constants.VALID_EMAIL,
+                emailErrorBorder: true,
+            
+            })
+            error = true;
+        }
+
+        if(number !== '' && number !== undefined && (number.length < 12 || number.length >13)) {
+            this.setState({
+                cellNumberErrorMsz: this.Constants.CELL_NUMBER_VALID,
+                cellNumberErrorBorder: true,
+            
+            })
+            error = true;
+        }
         
         // else if(this.state.cellNumber !== undefined) {
         //     if((this.state.cellNumber.length < 12 || this.state.cellNumber.length > 13) && email === '') {
@@ -273,6 +401,16 @@ class ForgotPasswordComponent extends Component{
         let password = this.state.password.trim();
         let cnfrmPassword = this.state.confirmPassword.trim();
         let error = false;
+        if(password === '') {
+            this.setState({
+                resetPasswordBorder: true
+            });
+        }
+        if(cnfrmPassword === '') {
+            this.setState({
+                resetCfrmPasswordBorder: true
+            });
+        }
         if(password === '' || cnfrmPassword === '') {
             this.setState({
                 createNewPwdErr:true,
@@ -305,7 +443,7 @@ class ForgotPasswordComponent extends Component{
 
     render(){
         return(
-            <div className="parentContainer">
+            <div className="parentContainer" id="forgotContainer">
                 <HeaderComponent></HeaderComponent>
                 <Row className="forgotContainer">
                     <div className="forgotTopBorder"></div>
@@ -315,17 +453,19 @@ class ForgotPasswordComponent extends Component{
                         <div className="instructions-content marginBottom30" hidden={!this.state.showForgotScreen2}>Please enter the code we sent you.</div>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen3}>Create a new password. Password must contain 8 or more characters with a mix of letters, numbers & symbols</div>
                         <Row hidden={!this.state.showForgotScreen1}>
-                            <Col lg={12} md={12} sm={12} xs={12}>
+                            <Col lg={12} md={12} sm={12} xs={12} className="marginBot20">
                                 <label className="forgot-label-text">Email Address</label>
-                                <input type="text" name="email" onChange={(e) => this.handleChangeEvent(e,'email')} className="forgotFormControl" placeholder="JohnDoe@gmail.com"/>
+                                <input type="text" name="email" onChange={(e) => this.handleChangeEvent(e,'email')} className={"forgotFormControl " + (this.state.emailErrorBorder ? 'inputError' : '')} placeholder="JohnDoe@gmail.com"/><br/>
+                                <span className="error">{this.state.emailErrorMsz}</span>
                             </Col>
                             <Col lg={12} md={12} sm={12} xs={12}>
                                 <label className="forgot-label-text">Phone Number (Cell)</label>
-                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleChangeEvent(phone,'cellNumber')}/>
+                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } className={(this.state.cellNumberErrorBorder ? 'inputError' : '')} country="US" onChange={phone => this.handleChangeEvent(phone,'cellNumber')}/>
+                                <span className="error">{this.state.cellNumberErrorMsz}</span>
                             </Col>
-                            <Col lg={12} md={12} sm={12} xs={12} className="marginTop20">
+                            <Col lg={12} md={12} sm={12} xs={12} className="marginTop10">
                                 <label className="forgot-label-text">Account type*</label>
-                                <FormControl defaultValue="0" className="forgotFormControl" componentClass="select" onChange={(e) => this.handleChangeEvent(e,'accountType')} placeholder="Select Role">
+                                <FormControl defaultValue="0" className={"forgotFormControl " + (this.state.accountTypeBorder ? 'inputError' : '')} componentClass="select" onChange={(e) => this.handleChangeEvent(e,'accountType')} placeholder="Select Role">
                                     <option value={0}>Select Role</option>
                                     <option value="FSNETAdministrator">FSNETAdministrator</option>
                                     <option value="GP">GP</option>
@@ -337,14 +477,14 @@ class ForgotPasswordComponent extends Component{
                                 <div className="error">{this.state.forgotScreen1ErrorMsz} </div>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen1')}>Submit</Button> <br/>
+                                <Button className={"forgot-submit "+ (this.state.isscreen1FormValid ? 'btnEnabled' : '') } disabled={!this.state.isscreen1FormValid}  onClick={(e) => this.showForgotScreenFn(e,'screen1')}>Submit</Button> <br/>
                             </Row>
-                            <label className="cancel-text"> <a href="/forgot-password">Cancel</a></label>
+                            <label className="cancel-text cancelBtn"> <a href="/login">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen2}>
                             <Col lg={12} md={12} sm={12} xs={12}>
                                 <label className="forgot-label-text">Verification Code</label>
-                                <input type="text" name="verifyPhoneNumber" placeholder="A3456IHOP" maxLength="6" minLength="6" onChange={this.verifyCode} className="forgotFormControl marginBotNone"/> 
+                                <input type="text" name="verifyPhoneNumber" placeholder="A3456IHOP" maxLength="6" minLength="6" onChange={this.verifyCode} className={"forgotFormControl marginBotNone " + (this.state.verifyCodeBorder ? 'inputError' : '')}  /> 
                                 <div className="code-success-icon" hidden={!this.state.showVerifyCodeIcon}>
                                     <i className="fa fa-check-circle" aria-hidden="true"></i>
                                 </div>
@@ -352,24 +492,24 @@ class ForgotPasswordComponent extends Component{
                                 <span className="error">{this.state.invalidVerifyCodeMsz}</span>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen2')}>Reset Password</Button> <br/>
+                                <Button className={"forgot-submit "+ (this.state.verifyCodeFormValid ? 'btnEnabled' : '') } disabled={!this.state.verifyCodeFormValid} onClick={(e) => this.showForgotScreenFn(e,'screen2')}>Reset Password</Button> <br/>
                             </Row>
-                            <label className="cancel-text"> <a href="/forgot-password">Cancel</a></label>
+                            <label className="cancel-text cancelBtn"> <a href="/forgot-password">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen3}>
                             <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                                 <label className="forgot-label-text">Password</label>
-                                <input type="password" name="password" onChange={(e) => this.handleChangeEvent(e,'password')} className="forgotFormControl inputMarginBottom"/><br/>
+                                <input type="password" name="password" onChange={(e) => this.handleChangeEvent(e,'password')} className={"forgotFormControl inputMarginBottom " + (this.state.resetPasswordBorder ? 'inputError' : '')}/><br/>
                                 <span className="passwordDNRequirements" hidden={!this.state.createNewPwdErr}>{this.state.createNewPwdErrMsz}</span>
                             </Col>
                             <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                                 <label className="forgot-label-text">Password again</label>
-                                <input type="password" onChange={(e) => this.handleChangeEvent(e,'confirmPassword')} name="confirmPassword" className="forgotFormControl"/>
+                                <input type="password" onChange={(e) => this.handleChangeEvent(e,'confirmPassword')} name="confirmPassword" className={"forgotFormControl " + (this.state.resetCfrmPasswordBorder ? 'inputError' : '')}/>
                             </Col>
                             <Row>
-                                <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen3')}>Reset Password</Button> <br/>
+                                <Button className={"forgot-submit "+ (this.state.isscreen3FormValid ? 'btnEnabled' : '') } disabled={!this.state.isscreen3FormValid} onClick={(e) => this.showForgotScreenFn(e,'screen3')}>Reset Password</Button> <br/>
                             </Row>
-                            <label className="cancel-text"> <a href="/forgot-password">Cancel</a></label>
+                            <label className="cancel-text cancelBtn"> <a href="/forgot-password">Cancel</a></label>
                         </Row>
                         <Row hidden={!this.state.showForgotScreen4}>
                             <Col lg={12} md={12} sm={12} xs={12}>
@@ -380,7 +520,7 @@ class ForgotPasswordComponent extends Component{
                                     <img src={successImage} alt="success"/>
                                 </div>
                                 <div className="text-center">
-                                    <Button className="forgot-submit" onClick={(e) => this.showForgotScreenFn(e,'screen4')}>Sign In</Button> <br/>
+                                    <Button className="forgot-submit fsnetBtn" onClick={(e) => this.showForgotScreenFn(e,'screen4')}>Sign In</Button> <br/>
                                 </div>
                             </Col>
                         </Row>

@@ -6,7 +6,7 @@ import { Row, Col, FormControl, Button, Tabs, Tab, Checkbox as CBox } from 'reac
 import userDefaultImage from '../../images/default_user.png';
 import rightIcon from '../../images/success-icon.svg';
 import { reactLocalStorage } from 'reactjs-localstorage';
-import HeaderComponent from '../header/header.component'
+import HeaderComponent from '../header/header.component';
 // import { DateRange } from 'react-date-range';
 
 class DashboardComponent extends Component {
@@ -67,7 +67,7 @@ class DashboardComponent extends Component {
                 <Row className="dashboardMainRow">
                     <Col lg={5} md={6} sm={6} xs={12}>
                         <Row>
-                            <div className="fsnet-logo" onClick={this.redirectHome}>FSNET LOGO</div>    
+                            <div className="fsnet-logo">FSNET LOGO</div>    
                         </Row>
                     </Col>
                     <HeaderComponent ></HeaderComponent>
@@ -76,15 +76,15 @@ class DashboardComponent extends Component {
                     <div className="myFunds">Your Funds</div>
                     <Col lg={12} md={12} sm={12} xs={12}>
                         <Col lg={6} md={6} sm={6} xs={12} className="display-filter display-filter-padding">
-                            <span className="filter-icon"><i className="fa fa-filter" aria-hidden="true"></i></span>
-                            <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter ({this.state.filterState})<i className="fa fa-caret-down" aria-hidden="true"></i></span>
+                            {/* <span className="filter-icon"><i className="fa fa-filter" aria-hidden="true"></i></span> */}
+                            {/* <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter ({this.state.filterState})<i className="fa fa-caret-down" aria-hidden="true"></i></span> */}
                             <span className="search-icon"><i className="fa fa-search" aria-hidden="true"></i></span>
                             <FormControl type="text" placeholder="Search Funds" className="formFilterControl" />
                         </Col>
                         <Col lg={6} md={6} sm={6} xs={12} className="display-filter">
                             <div className="filter-right-block">
-                                <i className="fa fa-th-large thLarge" aria-hidden="true"></i>
-                                <span className="view-mode">View (Card)<i className="fa fa-caret-down caretDown" aria-hidden="true"></i></span>
+                                {/* <i className="fa fa-th-large thLarge" aria-hidden="true"></i> */}
+                                {/* <span className="view-mode">View (Card)<i className="fa fa-caret-down caretDown" aria-hidden="true"></i></span> */}
                                 <Button className="newFundButton"><i className="fa fa-plus"></i><a href="/createfund/step1">New Fund</a></Button>
                             </div>
                         </Col>

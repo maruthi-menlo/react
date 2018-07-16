@@ -82,7 +82,6 @@ class LoginComponent extends Component{
                 let loginObj = {username:username, password:password, rememberMe:loginRemember};
                 this.Fsnethttp.login(loginObj).then(result=>{
                     this.close();
-                    console.log(result);
                     if(result.data) {
                         reactLocalStorage.set('userData', JSON.stringify(result.data.user));
                         reactLocalStorage.set('token', JSON.stringify(result.data.token));
@@ -228,7 +227,7 @@ class LoginComponent extends Component{
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12} className="paddingLeft7">
                         <div className="formContainer">
-                            <p className="labelSignIn">Already Have an account? Sign In</p>
+                            <p className="labelSignIn">Welcome to Vanilla. Please log in.</p>
                             <div className="error marginLeft20">{this.state.loginErrorMsz}</div>
                             <Form horizontal id="loginForm">
                                 <FormGroup controlId="username">
@@ -241,9 +240,10 @@ class LoginComponent extends Component{
                                     <FormControl type="password" placeholder="Password" className={"formControl " + (this.state.passwordBorder ? 'inputError' : '')} inputRef={(input)=>{this.password = input}} onChange={(e)=> this.loginInputHandleEvent(e,'password')} onBlur={(e)=> this.loginInputHandleEvent(e,'password')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
                                     <div className="error">{this.state.passwordError}</div>
                                 </FormGroup>
-                                <CBox className="loginRemeberMe" onChange={(e) => this.loginInputHandleEvent(e,'isRememberMe')}>
-                                    &nbsp; Remember username?
+                                <CBox onChange={(e) => this.loginInputHandleEvent(e,'isRememberMe')}>
+                                    <span className="checkmark"></span>
                                 </CBox>
+                                <label className="remember-text">Remember username?</label>
                                 <Button ref={(button) => {this.login = button}} className={"signinBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid}  onClick={this.loginFn}>Sign In</Button>
                                 <div className="forgot-pwd"><a href="/forgot-password">Forgot password?</a></div>
                             </Form>

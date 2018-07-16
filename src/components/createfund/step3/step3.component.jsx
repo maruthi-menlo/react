@@ -27,7 +27,7 @@ class Step3Component extends Component {
                     <h1 className="titleChooseFile">Choose files to upload</h1>
                     <p className="titleChooseSubtext">Choose document files to upload. Accepted files information appears here.</p>
                     <div className="uplodFileContainer">
-                        <Button type="button" className="uploadFileBox">Upload File</Button>
+                        <Button type="button" className="uploadFileBox fsnetBtn ">Upload File</Button>
                         <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB.</span>
                     </div>
                 </div>

@@ -292,25 +292,47 @@ class RegisterComponent extends Component{
         let username = this.state.userName.trim();
         let userNameSpaceRegex = /^[a-zA-Z0-9]+$/;
         if(username !== null && username !== '') {
-            if(!userNameSpaceRegex.test(username)) {
-                this.setState({
-                    userNameExists: this.Constants.USERNAME_FORMAT
-                });
+            if(username.length >=5) {
+                if(!userNameSpaceRegex.test(username)) {
+                    this.setState({
+                        userNameExists: this.Constants.USERNAME_FORMAT
+                    });
+                } else {
+                    let obj = {username:username}
+                    this.Fsnethttp.checkUserName(obj).then(result=>{
+                        if(result && result.usernameAvaliable) {
+                            this.setState({
+                                userNameExists: '',
+                                isUserNameValid: true,
+                                userNameBorder: false,
+                            })
+                            let dataObj = {};
+                            dataObj ={
+                                isUserNameValid :true
+                            };
+                            this.updateStateParams(dataObj);
+                        }
+                    })
+                    .catch(error=>{
+                        if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                            this.setState({
+                                userNameExists: error.response.data.errors[0].msg,
+                                isUserNameValid: false,
+                                userNameBorder: true,
+                            });
+                            let dataObj = {};
+                            dataObj ={
+                                isUserNameValid :false
+                            };
+                            this.updateStateParams(dataObj);
+                        }
+                    });
+                }
             } else {
-                let obj = {username:username}
-                this.Fsnethttp.checkUserName(obj).then(result=>{
-                    if(result && result.usernameAvaliable) {
-                        this.setState({
-                            userNameExists: ''
-                        })
-                    }
-                })
-                .catch(error=>{
-                    if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
-                        this.setState({
-                            userNameExists: error.response.data.errors[0].msg,
-                        });
-                    }
+                this.setState({
+                    userNameExists: this.Constants.USERNAME_MIN_CHARCTERS,
+                    isUserNameValid: false,
+                    userNameBorder: true,
                 });
             }
             
@@ -575,14 +597,15 @@ class RegisterComponent extends Component{
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <input type="file" id="uploadBtn" className="hide" onChange={ (e) => this.handleChange(e) } />
-                                <Button className="uploadFile" onClick={this.uploadBtnClick}>Upload File</Button> <br/>
+                                <Button className="uploadFile fsnetBtn" onClick={this.uploadBtnClick}>Upload File</Button> <br/>
                                 <label className="removeBtn" onClick={this.removeImageBtn}>Remove</label>
                             </Col>
                         </Row>
-                        <CBox id="rememberme" checked={this.state.fsnetTermsandServices} className="cbRemeberMe" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
+                        <CBox checked={this.state.fsnetTermsandServices} className="" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
+                        <span className="checkmark"></span>
                         </CBox>
-                        <label className="rememberLabel">By checking this box you agree to  <a>FSNET&apos;s Terms of Service</a></label><br/>
-                        <span className="error">{this.state.termsandConditionsRequired}</span>
+                        <label className="rememberLabel remember-text">By checking this box you agree to  <a>FSNET&apos;s Terms of Service</a></label><br/>
+                        <div className="error marginTopminus10">{this.state.termsandConditionsRequired}</div>
                         <div className="error">{this.state.errorMessage}</div>
                         <Button className={"signupBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid} onClick={this.signUpFn}>Sign Up</Button>
                         <label className="signIn-text"> <a href="/login">Already have an account? Sign In</a></label>

@@ -4,6 +4,10 @@
 .content {
     width: 50%;
 }
+.logo a, .logo a:hover {
+    color: #39bcd5;
+    text-decoration: none !important;
+}
 .logo {
     width: 200px;
     height: 32px;

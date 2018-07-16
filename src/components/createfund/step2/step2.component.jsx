@@ -24,7 +24,6 @@ class Step2Component extends Component {
     }
 
     addGpDelegateBtn() {
-        console.log(this.state.showAddGpDelegateModal);
         let userObj = {name:'Maruthi', type: 'GP'};
         // this.props.gpData();
         this.setState({
@@ -39,11 +38,10 @@ class Step2Component extends Component {
     }
 
     componentWillUnmount () {
-        console.log(this.state.showAddGpDelegateModal)
+        // console.log(this.state.showAddGpDelegateModal)
     }
 
     render() {
-        console.log(this.state.showAddGpDelegateModal)
         return (
             <div className="GpDelegatesContainer">
                 <h1 className="assignGp">Assign GP Delegates</h1>
@@ -54,60 +52,7 @@ class Step2Component extends Component {
                     <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
                         <span className="Ben-Parker">Ben Parker</span>
                         <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                    <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Jeff Lynne</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Kaitlyn Lopez</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Larry Croft</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Samrutha Karujika</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Sarmad Ahallah</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Terrence Osborne</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Virginia Tang</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Xiao Pang</span>
-                        <CBox className="checkBoxBen">
-                        </CBox>
-                    </label>
-                    <label className="Rectangle-6">
-                        <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Zita Hoffenheimer</span>
-                        <CBox className="checkBoxBen">
+                            <span className="checkmark"></span>
                         </CBox>
                     </label>
                 </div>
