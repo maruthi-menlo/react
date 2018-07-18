@@ -93,7 +93,7 @@ select option {
 a:hover {
   text-decoration: underline !important;
 }
-.inputError {
+.inputFormControl.inputError {
   border-color: red !important;
 }
 .btn.disabled, .btn[disabled] {
@@ -112,7 +112,7 @@ a:hover {
 }
 
 .cancelBtn a:hover {
-  border: 1px solid #000000;
+  border: 1px solid #000000 !important;
   padding: 8px 60px;
   border-radius: 100px;
 }
@@ -150,13 +150,6 @@ a:hover {
   top: 0;
 }
 
-/* Hide the browser's default checkbox */
-.loginRemeberMe input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
@@ -166,11 +159,6 @@ a:hover {
   width: 22px;
   background-color: #ffffff;
   cursor: pointer;
-}
-
-/* On mouse-over, add a grey background color */
-.loginRemeberMe:hover input ~ .checkmark {
-  background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
@@ -208,10 +196,76 @@ input:checked ~ .checkmark:after {
 }
 /***********CHECKBOX STYLES END******************/
 
+/***********Radio button STYLES START******************/
 .radio-inline {
   width: 150px;
   margin-bottom: 10px !important;
 }
+
+/* The container */
+.radio-inline {
+  display: inline-block;
+  position: relative;
+  padding-left: 20px;
+  font-size: 16px !important;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top: 10px;
+}
+
+/* Hide the browser's default radio button */
+.radio-inline input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.radio-checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  border: 1px solid #00bcd4;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+
+/* When the radio button is checked, add a blue background */
+input:checked ~ .radio-checkmark {
+  background-color: #00bcd4;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radio-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+input:checked ~ .radio-checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio-checkmark:after {
+  top: 6px;
+  left: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+
+/***********Radio button STYLES End******************/
+
 .marginLeft15 {
   margin-left: 15px;
 }
@@ -225,18 +279,113 @@ select option {
 
 
 /*********Form Css **************/
-.fsnetInputFormControl {
+.inputFormControl {
   height: 40px;
   font-family: 'Open Sans';
-  font-size: 16px;
+  font-size: 16px !important;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 1.5;
+  line-height: 1.5 !important;
   letter-spacing: normal;
-  color: #2f4858;
-  border-radius: 3px;
+  color: #2f4858 !important;
+  border-radius: 3px !important;
   border: solid 1px #526173 !important;
   margin-top: 8px;
   box-shadow: initial !important;
+  padding: 8px;
+  width: 100%;
+}
+.title {
+  min-height: 32px;
+  height: auto;
+  font-family: 'Open Sans';
+  font-size: 20px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.subtext {
+  min-height: 20px;
+  height: auto;
+  opacity: 0.5;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.form-label {
+  min-height: 20px;
+  height: auto;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.fsnetButton {
+  height: 40px;
+  background-color: #39bcd5 !important;
+  font-family: 'Open Sans';
+  font-size: 16px !important;
+  font-weight: bold !important;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5 !important;
+  letter-spacing: normal;
+  color: #ffffff;
+  box-shadow: initial !important;
+  border-radius: 30px !important;
+}
+.fsnetCancelButton {
+    height: 48px;
+    font-family: 'Open Sans';
+    font-size: 20px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #2f4858;
+    width: 200px !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: initial !important;
+}
+.fsnetCancelButton:hover {
+  border: 1px solid #000000 !important;
+  border-radius: 30px;
+}
+.fsnetSubmitButton {
+  width: 290px;
+  border-radius: 30px !important;
+  height: 48px;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  line-height: 1.6 !important;
+  text-align: center;
+  color: #fff;
+  background-color: #bdbdbd;
+  -webkit-box-shadow: initial !important;
+  box-shadow: initial !important;
+}
+.margin20 {
+  margin: 20px;
+}
+.marginTop20 {
+  margin-top: 20px;
+}
+.marginBottom20 {
+  margin-bottom: 20px !important;
 }

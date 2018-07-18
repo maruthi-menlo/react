@@ -109,7 +109,7 @@ class ForgotPasswordComponent extends Component{
             case 'cellNumber':
                 if((event === '' || event === undefined) && this.state.email === '') {
                     this.setState({
-                        cellNumber: event.target.value,
+                        cellNumber: '',
                         isemailOrcellNumberValid: false
                     })
                     dataObj ={
@@ -451,7 +451,7 @@ class ForgotPasswordComponent extends Component{
                         <h1 className="forgot-text" hidden={this.state.showForgotScreen4}>Forgot password</h1>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen1}>Enter your email or phone below to receive instructions to reset your password.</div>
                         <div className="instructions-content marginBottom30" hidden={!this.state.showForgotScreen2}>Please enter the code we sent you.</div>
-                        <div className="instructions-content" hidden={!this.state.showForgotScreen3}>Create a new password. Password must contain 8 or more characters with a mix of letters, numbers & symbols</div>
+                        <div className="instructions-content" hidden={!this.state.showForgotScreen3}>Create a new password. Password must contain 8 or more characters with a mix of letters, numbers & symbols.</div>
                         <Row hidden={!this.state.showForgotScreen1}>
                             <Col lg={12} md={12} sm={12} xs={12} className="marginBot20">
                                 <label className="forgot-label-text">Email Address</label>

@@ -17,12 +17,18 @@
     margin-top: 3px;
    }
 
+.sidenav ul li a.active {
+    color: #39bcd5;
+    opacity: 1;
+    font-weight: bold;
+}
 .sidenav ul li a {
     padding: 10px 8px 10px 20px;
     text-decoration: none;
     color: #ffffff;
     font-size: 14px;
     display: block;
+    opacity: 0.75;
 }
 
 .sidenav h1 {
@@ -131,22 +137,6 @@
     text-decoration: none !important;
 }
 
-.main h2 {
-    margin: 20px 0 0 0px;
-    padding: 8px 0 8px 0;
-    color: #2f4858;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.main h4 {
-    margin: 6px 0 8px 0;
-    padding: 8px 0 8px 0;
-    color: rgba(47, 72, 88, 0.5);
-    font-size: 14px;
-    font-weight: bold;
-}
-
 .start-box {
     color: #ffffff;
     padding-top: 8px;
@@ -208,7 +198,11 @@
     float: right;
     margin-top: 5px;
 }
-.GpDelegatesContainer{
+#createFund .GpDelegatesContainer .error{
+    margin-left: 25px;
+    margin-bottom: 25px;
+}
+#createFund .GpDelegatesContainer{
     margin-left: 47px;
     width: 100%;
 }
@@ -238,7 +232,7 @@
     color: #2f4858;
     margin-bottom: 44px;
 }
-.gpDelegateButton {
+#createFund .gpDelegateButton {
     width: 210px;
     height: 40px;
     background-color: #39bcd5;
@@ -252,11 +246,31 @@
     letter-spacing: normal;
     color: #ffffff;
     padding: 8px 51px 8px 62px !important;
+    box-shadow: initial !important;
 }
-.lpDelegateButton{
+#createFund .lpDelegateButton .fa{
+    position: relative;
+    font-size: 18px;
+    top: 2px;
+    right: 16px;
+}
+#createFund .lpDelegateButton{
+    width: 210px;
     border: solid 1px #39bcd5 !important;
     color: #39bcd5 !important;
     background-color: white !important;
+    height: 40px;
+    border-radius: 30px !important;
+    font-family: 'Open Sans';
+    font-size: 16px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5 !important;
+    letter-spacing: normal;
+    color: #ffffff;
+    padding: 8px 40px 8px 30px;
+    box-shadow: initial !important;
 }
 .lpName {
     /*width: 100px;*/
@@ -368,9 +382,15 @@
 }
 
 #createFund #header-right {
-    max-width: 90%;
+    max-width: 100%;
     margin-top: 15px;
     height: 35px;
+}
+#createFund .header-right-row {
+    width: 512px;
+    float: left;
+    position: relative;
+    right: -48%;
 }
 .gpdelegateImg {
     width: 32px;
@@ -381,10 +401,7 @@
     margin-left: 13px;
   }
   /*for step-2 Modal Form =========*/
-  .addRoleModal {
-    max-width: 670px;
-    min-height: 496px!important;
-    height: auto!important;
+  #createFund .addRoleModal {
     opacity: 1!important;
     border-radius: 8px;
     position: absolute;
@@ -400,35 +417,16 @@
     padding-bottom: 15px;
     padding-top: 24px;
     padding-left: 31px;
+    width: 670px;
+    min-height: 496px;
+    height: auto;
 }
-/*.addRoleModalMargin{
-    margin-top: 24px;
-    margin-left: 31px;
-}*/
-.addGpDelegate{
-    width: 165px;
-    height: 32px;
-    font-family: 'Open Sans';
-    font-size: 20px;
-    font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.6;
-    letter-spacing: normal;
-    color: #2f4858;
+#createFund .form-main-div {
+    min-height: 280px;
 }
-.addGpSubtext {
-  width: 380px;
-  height: 40px;
-  opacity: 0.5;
-  font-family: 'Open Sans';
-  font-size: 14px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.43;
-  letter-spacing: normal;
-  color: #2f4858;
+#createFund .modal-subtext {
+    width: 448px;
+    margin-bottom: 20px;
 }
 .addGpFLName {
     width: 290px;
@@ -534,14 +532,17 @@
     color: #2f4858;
     margin-bottom: 46px;
 }
-.uplodFileContainer {
+#createFund .uplodFileContainer {
     width: 529px;
-    height: 88px;
+    height: 105px;
     border: dashed 2px #9b9b9b;
     padding-top: 24px;
     padding-left: 17px;
 }
-.uploadFileBox {
+#createFund .uploadFileBox:after {
+    content: 'Upload File'
+}
+#createFund .uploadFileBox {
     width: 142px;
     height: 36px;
     background-color: skyblue !important;
@@ -555,6 +556,30 @@
     color: #ffffff;
     padding: 8px 30px !important;
     border-radius: 30px !important;
+    margin-top: 10px;
+    box-shadow: initial !important;
+}
+#createFund .uploadFileBox:hover:after {
+    content: 'Drop Files Here to Upload'
+}
+#createFund .uploadFileBox:hover + span{
+    display: none;
+}
+#createFund .uploadFileBox:hover {
+    width: 496px;
+    height: 56px;
+    border-radius: 0px !important;
+    background-color: #39bcd5;
+    font-family: 'Open Sans' !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #ffffff !important;
+    margin-top: 0px !important;
+    box-shadow: initial !important;
 }
 .uploadFileSubtext {
     width: 348px;
@@ -584,7 +609,7 @@
 }
 
 #step1Form,.step1Form-row{
-    margin-top: 45px;
+    margin-top: 20px;
 }
 
 #yesCheckbox{
@@ -603,30 +628,9 @@
 }
 
 .form-label{    
-
     width: 290px;
-    height: 20px;
-    font-family: 'Open Sans';
-    font-size: 14px !important;
-    font-weight: normal !important;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.43;
-    letter-spacing: normal;
-    color: #2f4858;
-    margin-bottom: 8px !important;
-    margin-top: 8px !important;
+}
 
-  
-}
-#createFund .inputFormControl {
-    width: 256px;
-    height: 40px;
-    border-radius: 3px;
-    border: solid 1px #526173;
-    padding: 8px;
-    box-shadow: inherit;
-}
 #createFund .profile-text {
     width: 344px;
     height: 20px;
@@ -898,5 +902,114 @@ input[type=checkbox]{
     color: #2f4858;
      
 }
+#createFund .borderNone {
+    border: none !important;
+    width: 100% !important;
+    min-height: 50px !important;
+}
+#createFund .full-width {
+    width: 100% !important;
+}
+#createFund .fsnetButton {
+    width: 210px;
+}
+#createFund .fsnetButton .fa{
+    position: relative;
+    font-size: 18px;
+    top: 2px;
+    right: 6px;
+}
+#createFund .userRow {
+    height: 48px;
+    border-bottom: 1px solid #add8e6;
+    width: 100%;
+    line-height: 20px;
+}
+#createFund .user-image {
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+}
+#createFund .fund-user-name {
+    width: 300px;
+    min-height: 20px;
+    height: auto;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    padding-left: 20px;
+}
+#createFund .checkbox {
+    position: relative;
+    top: 4px;
+}
+#createFund .userContainer {
+    width: 400px;
+    min-height: 150px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
+    box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
+    border: 1px solid #add8e6;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
 
+#createFund .react-phone-number-input{
+    margin-top: 8px;
+}
+#createFund .dropFilesButton {
+    width: 496px;
+    height: 56px;
+    border-radius: 4px;
+    background-color: #39bcd5;
+    font-family: 'Open Sans';
+    font-size: 24px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #ffffff;
+}
+#createFund .width100 {
+    width: 100%
+  }
+  #createFund .checkIcon {
+    margin-right: 10px;
+    float: right;
+    color: #ffffff;
+    font-size: 10px;
+    margin-top: 6px;
+  }
+.fa-check:before {
+    content: "\f00c";
+    background: #1ADBB9;
+    border-radius: 50%;
+    padding: 2px;
+}
 
+ @media only screen and (max-width: 1180px) {
+  .contentWidth {
+      width: 900px !important;
+  }
+  #createFund .header-right-row {
+    width: 683px;
+    position: relative;
+}
+ }
+
+ @media only screen and (max-width: 780px){ 
+    #createFund .header-right-row {
+        width: 967px;
+        position: relative;
+    }
+
+ }

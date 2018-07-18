@@ -1,22 +1,261 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
-import { Button, Checkbox as CBox, Row, Col } from 'react-bootstrap';
+import { Button, Checkbox as CBox, Row, Col, FormControl } from 'react-bootstrap';
 import userDefaultImage from '../../../images/default_user.png';
+import { Fsnethttp } from '../../../services/fsnethttp';
+import {Constants} from '../../../constants/constants';
+import Loader from '../../../widgets/loader/loader.component';
+import { reactLocalStorage } from 'reactjs-localstorage';
+
+
 class Step2Component extends Component {
 
     constructor(props) {
         super(props);
+        this.Fsnethttp = new Fsnethttp();
+        this.Constants = new Constants();
         this.addGpDelegateBtn = this.addGpDelegateBtn.bind(this);
         this.closeGpDelegateModal = this.closeGpDelegateModal.bind(this);
         this.proceedToNext = this.proceedToNext.bind(this);
         this.proceedToBack = this.proceedToBack.bind(this);
+        this.addDelegateFn = this.addDelegateFn.bind(this);
+        this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
         this.state = {
             showAddGpDelegateModal: false,
+            getGpDelegatesList: [],
+            vcFirmId:2,
+            fundId:3,
+            isGpDelgateFormValid: false,
+            firstNameBorder: false,
+            firstNameMsz: '',
+            firstName: '',
+            firstNameValid: false,
+            lastNameBorder: false,
+            lastNameMsz: '',
+            lastName: '',
+            lastNameValid: false,
+            emailBorder: false,
+            emailMsz: '',
+            email: '',
+            emailValid: false,
+            gpDelegateErrorMsz: '',
+            gpDelegatesSelectedList:[],
+            gpDelegateScreenError:''
         }
     }
 
+
+    //Onchange event for all input text boxes.
+    handleInputChangeEvent(event,type, obj) {
+        let dataObj = {}; 
+        this.setState({
+            gpDelegateErrorMsz: ''
+        })
+        switch(type) {
+            case 'firstName':
+                if(event.target.value.trim() === '' || event.target.value === undefined) {
+                    this.setState({
+                        firstNameMsz: this.Constants.FIRST_NAME_REQUIRED,
+                        firstNameValid: false,
+                        firstNameBorder: true,
+                        firstName: ''
+                    })
+                    dataObj ={
+                        firstNameValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        firstName: event.target.value,
+                        firstNameMsz: '',
+                        firstNameValid: true,
+                        firstNameBorder: false,
+                    })
+                    dataObj ={
+                        firstNameValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
+                break;
+            case 'lastName':
+                if(event.target.value.trim() === '' || event.target.value === undefined) {
+                    this.setState({
+                        lastNameMsz: this.Constants.LAST_NAME_REQUIRED,
+                        lastNameValid: false,
+                        lastNameBorder: true,
+                        lastName: ''
+                    })
+                    dataObj ={
+                        lastNameValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        lastName: event.target.value,
+                        lastNameMsz: '',
+                        lastNameValid: true,
+                        lastNameBorder: false,
+                    })
+                    dataObj ={
+                        lastNameValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
+                break;
+            case 'email':
+                if(event.target.value.trim() === '' || event.target.value === undefined) {
+                    this.setState({
+                        emailMsz: this.Constants.VALID_EMAIL,
+                        emailValid: false,
+                        emailBorder: true,
+                        email: ''
+                    })
+                    dataObj ={
+                        emailValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        email: event.target.value,
+                        emailMsz: '',
+                        emailValid: true,
+                        emailBorder: false,
+                    })
+                    dataObj ={
+                        emailValid :true
+                    };
+                this.updateStateParams(dataObj);
+                }
+                break;
+            case 'user':
+                let getSelectedList = this.state.gpDelegatesSelectedList;
+                let selectedId = obj.record.id
+                if(event.target.checked) {
+                    if(getSelectedList.indexOf(selectedId) === -1) {
+                        getSelectedList.push(selectedId);
+                    }
+                } else {
+                    var index = getSelectedList.indexOf(selectedId);
+                    if (index !== -1) {
+                        getSelectedList.splice(index, 1);
+                    }
+                }
+                this.updateSelectedValueToList(obj.record.id,event.target.checked)
+                this.setState({
+                    gpDelegatesSelectedList: getSelectedList,
+                    gpDelegateScreenError:''
+                })
+                break;
+            default:
+                // do nothing
+                break;
+        }
+    }
+
+    addDelegateFn() {
+        let firstName = this.state.firstName;
+        let lastName = this.state.lastName;
+        let email = this.state.email;
+        let error = false;
+        let emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+        if(email !== '' && !emailRegex.test(email)) {
+            this.setState({
+                emailMsz: this.Constants.VALID_EMAIL,
+                emailBorder: true,
+            
+            })
+            error = true;
+        } 
+        
+        if(!error) {
+            let postObj = {firstName:firstName, lastName:lastName, email:email, fundId: this.state.fundId};
+            let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+            this.open()
+            this.Fsnethttp.addGpDelegate(postObj,headers).then(result=>{
+                this.close();
+                if(result.data) {
+                    //Get list of delegates
+                    let gpDelegateList = this.state.getGpDelegatesList;
+                    let data = result.data.data;
+                    //Add checked as true to auto select the user
+                    data['selected'] = true;
+                    gpDelegateList.push(data);
+                    //Get list of selected list of users
+                    let selectedList = this.state.gpDelegatesSelectedList;
+                    //Push the newly created gp delegate id to selected list of users
+                    selectedList.push(data.id);
+                    this.setState({
+                        getGpDelegatesList:gpDelegateList,
+                        showAddGpDelegateModal: false,
+                        gpDelegatesSelectedList: selectedList
+                    });
+                    this.clearFormFileds();
+                }
+            })
+            .catch(error=>{
+                this.close();
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                    this.setState({
+                        gpDelegateErrorMsz: error.response.data.errors[0].msg,
+                    });
+                } else {
+                    this.setState({
+                        gpDelegateErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                    });
+                }
+            });
+        }
+    }
+
+    //Clear the fileds
+    clearFormFileds() {
+        this.setState({
+            gpDelegateErrorMsz: '',
+            firstName: '',
+            lastName: '',
+            email:''
+        });
+    }
+
+
+    // Update state params values and login button visibility
+
+    updateStateParams(updatedDataObject){
+        this.setState(updatedDataObject, ()=>{
+            this.enableDisableSubmitButtion();
+        });
+    }
+
+    // Enable / Disble functionality of Submit Button
+    enableDisableSubmitButtion(){
+        let status = (this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid) ? true : false;
+        this.setState({
+            isGpDelgateFormValid : status
+        });
+    }
+
+    // ProgressLoader : close progress loader
+    close() {
+        this.setState({ showModal: false });
+    }
+
+    // ProgressLoader : show progress loade
+    open() {
+        this.setState({ showModal: true });
+    }
+
     proceedToNext() {
-        this.props.history.push('/createfund/step3');
+        this.open();
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        let delegateObj = {fundId:this.state.fundId, vcfirmId:this.state.vcFirmId, gpDelegates:this.state.gpDelegatesSelectedList }
+        this.Fsnethttp.assignDelegatesToFund(delegateObj, headers).then(result=>{
+            this.close();
+            this.props.history.push('/createfund/step3');
+        })
+        .catch(error=>{
+            this.close();
+            this.props.history.push('/createfund/step3');
+        });
     }
     
     proceedToBack() {
@@ -24,7 +263,7 @@ class Step2Component extends Component {
     }
 
     addGpDelegateBtn() {
-        let userObj = {name:'Maruthi', type: 'GP'};
+        // let userObj = {name:'Maruthi', type: 'GP'};
         // this.props.gpData();
         this.setState({
             showAddGpDelegateModal: true
@@ -35,61 +274,131 @@ class Step2Component extends Component {
         this.setState({
             showAddGpDelegateModal: false
         })
+        this.clearFormFileds();
     }
 
-    componentWillUnmount () {
-        // console.log(this.state.showAddGpDelegateModal)
+    selectedMembersPushToList() {
+        if(this.state.getGpDelegatesList.length >0) {
+            let list = this.state.gpDelegatesSelectedList;
+            for(let index of this.state.getGpDelegatesList) {
+                if(index['selected'] === true) {
+                    list.push(index['id'])
+                }
+                this.setState({
+                    gpDelegatesSelectedList: list
+                })
+            }
+        }
+    }
+
+    updateSelectedValueToList(id, value) {
+        if(this.state.getGpDelegatesList.length >0) {
+            let getList = this.state.getGpDelegatesList
+            for(let index of getList) {
+                if(index['id'] === id) {
+                    index['selected'] = value
+                }
+                this.setState({
+                    gpDelegatesSelectedList: getList
+                })
+            }
+        }
+    }
+
+    componentDidMount() { 
+        this.open();
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        let firmId = this.state.vcFirmId;
+        let fundId = this.state.fundId;
+        this.Fsnethttp.getGpDelegates(firmId, fundId, headers).then(result=>{
+            this.close();
+            if(result.data && result.data.data.length >0) {
+                this.setState({ getGpDelegatesList: result.data.data }, () => this.selectedMembersPushToList());
+            } else {
+                this.setState({
+                    getGpDelegatesList: []
+                })
+            }
+        })
+        .catch(error=>{
+                this.close();
+                this.setState({
+                    getGpDelegatesList: []
+                })
+           
+        });
     }
 
     render() {
         return (
-            <div className="GpDelegatesContainer">
-                <h1 className="assignGp">Assign GP Delegates</h1>
-                <p className="Subtext">Select GP Delegate(s) from the list below or add a new one.</p>
-                <Button className="gpDelegateButton" onClick={this.addGpDelegateBtn}>Gp Delegate</Button>
-                <div className="checkBoxGpContainer">
-                    <label className="Rectangle-6">
-                    <img src={userDefaultImage} alt="fund_image" className="gpdelegateImg" />
-                        <span className="Ben-Parker">Ben Parker</span>
-                        <CBox className="checkBoxBen">
-                            <span className="checkmark"></span>
-                        </CBox>
-                    </label>
+            <div className="width100">
+            <div className="GpDelegatesContainer" >
+                <h1 className="title">Assign GP Delegates</h1>
+                <p className="subtext">Select GP Delegate(s) from the list below or add a new one.</p>
+                <Button className="fsnetButton" onClick={this.addGpDelegateBtn}><i className="fa fa-plus"></i>Gp Delegate</Button>
+                <div className={"userContainer " + (this.state.getGpDelegatesList.length ===0 ? 'borderNone' : '')} >
+                    {this.state.getGpDelegatesList.length >0 ?
+                        this.state.getGpDelegatesList.map((record, index)=>{
+                            return(
+                                <div className="userRow" key={index}>
+                                    {
+                                        record['profilePic']  ?
+                                        <img src={record['profilePic']} alt="user_image" className="user-image" />
+                                         : <img src={userDefaultImage} alt="user_image" className="user-image" />
+                                    }
+                                    
+                                    <div className="fund-user-name">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                    <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e,'user',{record})}>
+                                        <span className="checkmark"></span>
+                                    </CBox>
+                                </div>
+                            );
+                        })
+                        :
+                        <div className="title margin20">You haven’t added any GP Delegates to this fund yet.</div>
+                    } 
                 </div>
+                <div className="error">{this.state.gpDelegateScreenError}</div>
                 <div className="addRoleModal" hidden={!this.state.showAddGpDelegateModal}>
                     
-                    <h3 className="addGpDelegate">Add GP Delegate</h3>
-                    <p className="addGpSubtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</p>                            
+                    <h3 className="title">Add GP Delegate</h3>
+                    <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</div>         <div className="form-main-div">                  
+                        <Row className="marginBot20">
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                                <label className="form-label">First Name*</label>
+                                <FormControl type="text" name="firstName" placeholder="Charles" className={"inputFormControl " + (this.state.firstNameBorder ? 'inputError' : '')} value= {this.state.firstName} onChange={(e) => this.handleInputChangeEvent(e,'firstName')} onBlur={(e) => this.handleInputChangeEvent(e,'firstName')}/>   
+                                <span className="error">{this.state.firstNameMsz}</span>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                                <label className="form-label">Last Name*</label>
+                                <FormControl type="text" name="lastName" placeholder="Xavier" className={"inputFormControl " + (this.state.lastNameBorder ? 'inputError' : '')} value= {this.state.lastName} onChange={(e) => this.handleInputChangeEvent(e,'lastName')} onBlur={(e) => this.handleInputChangeEvent(e,'lastName')}/>   
+                                <span className="error">{this.state.lastNameMsz}</span>
+                            </Col>
+                        </Row> 
+                        <Row className="marginBot20">
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                                <label className="form-label">Email Address*</label>
+                                <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} value= {this.state.email} onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email')}/>   
+                                <span className="error">{this.state.emailMsz}</span>            
+                            </Col>
+                        </Row> 
+                        <div className="error">{this.state.gpDelegateErrorMsz}</div>
+                    </div>
                     <Row>
                         <Col lg={6} md={6} sm={6} xs={12}>
-                            <label className="addGpFLName">First Name*</label>
-                            <input type="text" name="firstName" className="inputFormBox" placeholder="Charles"/>                    
+                        <Button type="button" className="fsnetCancelButton" onClick={this.closeGpDelegateModal}>Cancel</Button>
                         </Col>
                         <Col lg={6} md={6} sm={6} xs={12}>
-                            <label className="addGpFLName">Last Name*</label>
-                            <input type="text" name="lastName" className="inputFormBox" placeholder="Xavier"/>
+                        <Button className={"fsnetSubmitButton "+ (this.state.isGpDelgateFormValid ? 'btnEnabled' : '') } disabled={!this.state.isGpDelgateFormValid} onClick={this.addDelegateFn}>Submit</Button>
                         </Col>
                     </Row> 
-                    <Row>
-                        <Col lg={6} md={6} sm={6} xs={12}>
-                            <label className="addGpFLName">Email Address*</label>
-                            <input type="email" name="email" className="inputFormBox" placeholder="ProfessorX@gmail.com"/>                                
-                        </Col>
-                    </Row>  
-                    <Row className="cancelSubmitMargin">
-                        <Col lg={6} md={6} sm={6} xs={12}>
-                        <Button type="button" className="addGpCancelBox" onClick={this.closeGpDelegateModal}>Cancel</Button>
-                        </Col>
-                        <Col lg={6} md={6} sm={6} xs={12}>
-                        <Button type="button" className="addGpSubmitBox">Submit</Button>
-                        </Col>
-                    </Row> 
-                       
                 </div>
                 <div className="footer-nav">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
                 </div>
+                <Loader isShow={this.state.showModal}></Loader>
+            </div>
             </div>
         );
     }

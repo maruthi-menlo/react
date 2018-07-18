@@ -58,4 +58,46 @@ export class Fsnethttp{
         axios.defaults.headers.common['x-auth-token'] = headers.token;
         return axios.post(this.Constants.BASE_URL+'fund/store', obj);
     }
+
+    //Get list of gp delegates
+    getGpDelegates(firmId,fundId, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'fund/gpDelegateList/'+firmId+'/'+fundId);
+    }
+
+    //Get list of LP's
+    getLp(firmId,fundId, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'fund/lpDelegateList/'+firmId+'/'+fundId);
+    }
+
+    //Invite Gp Delegates to the fund
+    addGpDelegate(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/gpDelegate/invite', obj);
+    }
+
+    //Invite LP to the fund
+    addLp(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/lpDelegate/invite', obj);
+    }
+
+    //Assign GP delegates to the fund.
+    assignDelegatesToFund(obj,headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/asssingGpDelegate', obj);
+    }
+
+    //Assign LP to the fund.
+    assignLpToFund(obj,headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/asssingLpDelegate', obj);
+    }
+
+    //Get list of funds
+    getListOfAllFunds(headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'funds');
+    }
 }

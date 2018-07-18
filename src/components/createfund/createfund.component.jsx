@@ -5,11 +5,10 @@ import { Col, Row } from 'react-bootstrap';
 // import userDefaultImage from '../../images/default_user.png';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from '../../services/fsnetauth';
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import Step1Component from '../createfund/step1/step1.component';
 import Step2Component from '../createfund/step2/step2.component';
 import Step3Component from '../createfund/step3/step3.component';
-import Step4Component from '../createfund/step4/step4.component';
 import Step5Component from '../createfund/step5/step5.component';
 import Step6Component from '../createfund/step6/step6.component';
 import HeaderComponent from '../header/header.component';
@@ -22,102 +21,13 @@ class CreateFundComponent extends Component {
         this.FsnetAuth = new FsnetAuth();
         this.logout = this.logout.bind(this);
         this.state = {
-            loggedInUserObj: []
+            loggedInUserObj: [],
+            currentPage: 'step1',
+            currentPageNumber: 1,
+            totalPageCount: 5
         }
 
     }
-
-    // proceedToBack() {
-    //     let page = this.state.currentPage;
-    //     if (this.state.currentPage <= this.state.totalPageCount + 1 && this.state.currentPage >= 0) {
-    //         switch (page) {
-    //             case 2:
-    //                 this.setState({
-    //                     showStep2Page: false,
-    //                     showStep1Page: true,
-    //                     currentPage: page - 1,
-    //                 })
-    //                 break;
-    //             case 3:
-    //                 this.setState({
-    //                     showStep3Page: false,
-    //                     showStep2Page: true,
-    //                     currentPage: page - 1,
-    //                 })
-    //                 break;
-    //             case 4:
-    //                 this.setState({
-    //                     showStep3Page: true,
-    //                     showStep4Page: false,
-    //                     currentPage: page - 1,
-    //                 })
-    //                 break;
-    //             case 5:
-    //                 this.setState({
-    //                     showStep4Page: true,
-    //                     showStep5Page: false,
-    //                     currentPage: page - 1,
-    //                 })
-    //                 break;
-    //             case 6:
-    //                 this.setState({
-    //                     showStep5Page: true,
-    //                     showStep6Page: false,
-    //                     currentPage: page - 1,
-    //                 })
-    //                 break;
-    //             default:
-    //             //Do nothing
-    //         }
-    //     }
-    // }
-
-    // proceedToNext() {
-    //     let page = this.state.currentPage;
-    //     if (this.state.currentPage <= this.state.totalPageCount) {
-    //         switch (page) {
-    //             case 1:
-    //                 this.setState({
-    //                     showStep2Page: true,
-    //                     showStep1Page: false,
-    //                     currentPage: page + 1,
-    //                 })
-    //                 break;
-    //             case 2:
-    //                 this.setState({
-    //                     showStep3Page: true,
-    //                     showStep2Page: false,
-    //                     currentPage: page + 1,
-    //                 })
-    //                 break;
-    //             case 3:
-    //                 this.setState({
-    //                     showStep4Page: true,
-    //                     showStep3Page: false,
-    //                     currentPage: page + 1,
-    //                 })
-    //                 break;
-    //             case 4:
-    //                 this.setState({
-    //                     showStep5Page: true,
-    //                     showStep4Page: false,
-    //                     currentPage: page + 1,
-    //                 })
-    //                 break;
-    //             case 5:
-    //                 this.setState({
-    //                     showStep6Page: true,
-    //                     showStep5Page: false,
-    //                     currentPage: page + 1,
-    //                 })
-    //                 break;
-    //             default:
-    //             //Do nothing
-    //         }
-    //     }
-
-
-    // }
 
     logout() {
         reactLocalStorage.clear();
@@ -128,9 +38,13 @@ class CreateFundComponent extends Component {
         if (this.FsnetAuth.isAuthenticated()) {
             //Get user obj from local storage.
             let userObj = reactLocalStorage.getObject('userData');
+            let url = window.location.href;
+            let page = url.split('/createfund/');
+            this.getCurrentPageNumber();
             if (userObj) {
                 this.setState({
-                    loggedInUserObj: userObj
+                    loggedInUserObj: userObj,
+                    currentPage: page[1]
                 })
             }
         } else {
@@ -138,9 +52,30 @@ class CreateFundComponent extends Component {
         }
     }
 
-
-    childData() {
-        alert('jao');
+    getCurrentPageNumber(type, fundPage) {
+        let page;
+        if(type === 'sideNav') {
+            page = fundPage
+        } else {
+            let url = window.location.href;
+            page = url.split('/createfund/')[1];
+        }
+        let number;
+        if(page === 'step1') {
+            number = 1;
+        }else if(page === 'step2') {
+            number = 2;
+        }else if(page === 'step3') {
+            number = 3;
+        }else if(page === 'step5') {
+            number = 4;
+        }else if(page === 'step6') {
+            number = 5;
+        }
+        this.setState({
+            currentPageNumber: number,
+            currentPage: page
+        })
     }
     
     render() {
@@ -150,13 +85,13 @@ class CreateFundComponent extends Component {
                 <div className="sidenav">
                     <h1><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
                     <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; <a href="/dashboard">Dashboard</a></h2>
-                    <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">1/5</span></div>
+                    <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">{this.state.currentPageNumber}/{this.state.totalPageCount}</span></div>
                     <ul className="sidenav-menu">
-                        <li><a href="/createfund/step1">Fund Details</a></li>
-                        <li><a href="/createfund/step2">Assign GP Delegates</a></li>
-                        <li><a href="/createfund/step3">Partnership Agreement</a></li>
-                        <li><a href="/createfund/step5">Asign LP's to Fund</a></li>
-                        <li><a href="/createfund/step6">Review & Confirm</a></li>
+                        <li><Link to="/createfund/step1" onClick={(e) => this.getCurrentPageNumber('sideNav','step1')} className={(this.state.currentPage === 'step1' ? 'active' : '') }>Fund Details<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to="/createfund/step2" onClick={(e) => this.getCurrentPageNumber('sideNav','step2')} className={(this.state.currentPage === 'step2' ? 'active' : '') }>Assign GP Delegates<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to="/createfund/step3" onClick={(e) => this.getCurrentPageNumber('sideNav','step3')} className={(this.state.currentPage === 'step3' ? 'active' : '') }>Partnership Agreement<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to="/createfund/step5" onClick={(e) => this.getCurrentPageNumber('sideNav','step5')} className={(this.state.currentPage === 'step5' ? 'active' : '') }>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to="/createfund/step6" onClick={(e) => this.getCurrentPageNumber('sideNav','step6')} className={(this.state.currentPage === 'step6' ? 'active' : '') }>Review & Confirm<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
                     </ul>
 
                     <div className="start-box"><i className="fa fa-check" aria-hidden="true"></i>&nbsp;Start Fund</div>
@@ -181,9 +116,8 @@ class CreateFundComponent extends Component {
 
                 <div className="main">
                     <HeaderComponent ></HeaderComponent>
-                    <Col xs={6} md={12}>
+                    <div className="contentWidth">
                         <div className="main-heading"><span className="main-title">Create New Fund</span><a href="/dashboard" className="cancel-fund">Cancel</a></div>
-                    </Col>
                     {/* <div hidden={!this.state.showStep1Page}>
                         <Step1Component></Step1Component>
                     </div>
@@ -204,13 +138,13 @@ class CreateFundComponent extends Component {
                     </div> */}
                     <Row className="main-content">
                         <Route exact path={`${match.url}/step1`} component={Step1Component} />
-                        <Route exact path={`${match.url}/step2`} gpData={this.childData}  component={Step2Component} />
+                        <Route exact path={`${match.url}/step2`} component={Step2Component} />
                         <Route exact path={`${match.url}/step3`} component={Step3Component} />
-                        <Route exact path={`${match.url}/step4`} component={Step4Component} />
                         <Route exact path={`${match.url}/step5`} component={Step5Component} />
                         <Route exact path={`${match.url}/step6`} component={Step6Component} />
                     
                     </Row>
+
                     {/* <Col xs={6} md={12}>
                         <div className="footer-nav">
                             <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
@@ -220,6 +154,7 @@ class CreateFundComponent extends Component {
 
                     {/* </Grid> */}
                 </div>
+            </div>
             </div>
         );
     }

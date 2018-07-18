@@ -72,7 +72,7 @@ class HeaderComponent extends Component{
                         <div className={"user-name " + (this.state.showandhideUserDropdown ? '' : 'active')} onClick={this.userDropdownList}>{this.state.loggedInUserObj.firstName} {this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
                         <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
                         <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
-                        <span className="notification-count">3</span>
+                        {/* <span className="notification-count">3</span> */}
                         {/* <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i> */}
                     </Row>
                 </Col>

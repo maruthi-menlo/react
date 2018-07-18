@@ -2,11 +2,14 @@
 import React, { Component } from 'react';
 import './dashboard.component.css';
 import { FsnetAuth } from '../../services/fsnetauth';
-import { Row, Col, FormControl, Button, Tabs, Tab, Checkbox as CBox } from 'react-bootstrap';
+import { Row, Col, FormControl, Button } from 'react-bootstrap';
 import userDefaultImage from '../../images/default_user.png';
-import rightIcon from '../../images/success-icon.svg';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import HeaderComponent from '../header/header.component';
+import {Fsnethttp} from '../../services/fsnethttp';
+import {Constants} from '../../constants/constants';
+import Loader from '../../widgets/loader/loader.component';
+
 // import { DateRange } from 'react-date-range';
 
 class DashboardComponent extends Component {
@@ -14,14 +17,28 @@ class DashboardComponent extends Component {
     constructor(props) {
         super(props);
         this.FsnetAuth = new FsnetAuth();
+        this.Fsnethttp = new Fsnethttp();
+        this.Constants = new Constants();
         this.hideAndShowFilters = this.hideAndShowFilters.bind(this);
         this.showActivityFeed = this.showActivityFeed.bind(this);
         this.state = {
             isHide: true,
             rowData: 0,
-            filterState: 'Off'
+            filterState: 'Off',
+            allFundsList: []
         }
     }
+
+    // ProgressLoader : close progress loader
+    close() {
+        this.setState({ showModal: false });
+    }
+
+    // ProgressLoader : show progress loade
+    open() {
+        this.setState({ showModal: true });
+    }
+
     showActivityFeed() {
         this.setState({
             rowData: 1
@@ -35,6 +52,7 @@ class DashboardComponent extends Component {
             //Get user obj from local storage.
             let userObj = reactLocalStorage.getObject('userData');
             if(userObj) {
+                this.getFunds();
                 this.setState({
                     loggedInUserObj: userObj
                 }) 
@@ -42,6 +60,31 @@ class DashboardComponent extends Component {
         }else{
            this.props.history.push('/');
         }        
+    }
+
+    //Get list of funds
+    getFunds() {
+        this.open();
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        this.Fsnethttp.getListOfAllFunds(headers).then(result=>{
+            this.close();
+            if(result.data && result.data.data.length >0) {
+                this.setState({
+                    allFundsList: result.data.data
+                })
+            } else {
+                this.setState({
+                    allFundsList: []
+                })
+            }
+        })
+        .catch(error=>{
+            this.close();
+            this.setState({
+                allFundsList: []
+            })
+        });
+
     }
 
     //To show and hide filters
@@ -75,13 +118,13 @@ class DashboardComponent extends Component {
                 <Row className="dashboardMainRow fund-container">
                     <div className="myFunds">Your Funds</div>
                     <Col lg={12} md={12} sm={12} xs={12}>
-                        <Col lg={6} md={6} sm={6} xs={12} className="display-filter display-filter-padding">
+                        <Col lg={6} md={6} sm={6} xs={12} className="display-filter display-filter-padding display-left-filter">
                             {/* <span className="filter-icon"><i className="fa fa-filter" aria-hidden="true"></i></span> */}
                             {/* <span className="filter-mode" onClick={this.hideAndShowFilters}>Filter ({this.state.filterState})<i className="fa fa-caret-down" aria-hidden="true"></i></span> */}
                             <span className="search-icon"><i className="fa fa-search" aria-hidden="true"></i></span>
                             <FormControl type="text" placeholder="Search Funds" className="formFilterControl" />
                         </Col>
-                        <Col lg={6} md={6} sm={6} xs={12} className="display-filter">
+                        <Col lg={6} md={6} sm={6} xs={12} className="display-filter filter-right display-right-filter">
                             <div className="filter-right-block">
                                 {/* <i className="fa fa-th-large thLarge" aria-hidden="true"></i> */}
                                 {/* <span className="view-mode">View (Card)<i className="fa fa-caret-down caretDown" aria-hidden="true"></i></span> */}
@@ -89,7 +132,7 @@ class DashboardComponent extends Component {
                             </div>
                         </Col>
                     </Col>
-                    <Row className="rowFilters" hidden={this.state.isHide}>
+                    {/* <Row className="rowFilters" hidden={this.state.isHide}>
                         <Col lg={6} md={6} sm={12} xs={12} className="filtersHolder colEmpty">
                             <div className="filters">
                                 <Tabs defaultActiveKey={0} id="fsnet-tabs">
@@ -98,7 +141,6 @@ class DashboardComponent extends Component {
                                         <div className="fundStartContainer">
                                             <label className="fsDate">Fund Start Date</label>
                                             <FormControl type="text" placeholder="12/12/2017" className="drfStartDate" />
-                                            {/* <DateRange calendars="1"/> */}
                                             <label className="fsDate">Fund End Date</label>
                                             <FormControl type="text" placeholder="12/12/2017" className="drfStartDate drfEndDate" />
                                             <Button className="btnClearAll">Clear All</Button>
@@ -141,47 +183,59 @@ class DashboardComponent extends Component {
                         </Col>
                         <Col lg={6} md={6} className="colEmpty">
                         </Col>
-                    </Row>
+                    </Row> */}
                     {/* <Col lg={12} md={12} sm={12} xs={12}> */}
-                        <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
-                            {/* <div className={"fundBoxEdit " + (this.state.rowData === 0 ? 'show' : 'hidden')}> */}
-                            <div className="fundBoxEdit">
-                                <div className="fundImageEdit">
-                                    <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
-                                    <div className="Fund-Name">The Pheonician Investment Fund</div>
-                                    <i className="fa fa-bell-o bellO" onClick={this.showActivityFeed} aria-hidden="true"></i>
-                                    <span className="notificationCount">11</span>
-                                </div>
-                                <div>
-                                    <Button className="openEdit">Open</Button>
-                                    <Button className="actionRequired">Action Required</Button>
-                                </div>
-                                <div>
-                                    <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></span>
-                                    <span className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></span>
-                                </div>
-                                <div className="Line"></div>
-                                <div>
-                                    <span className="Invited">24</span>
-                                    <span className="Invited1">18</span>
-                                    <span className="Invited2">8</span>
-                                </div>
-                                <div>
-                                    <span className="labelInvited">Invited</span>
-                                    <span className="labelClosedReady">Close-Ready</span>
-                                    <span className="labelClosed">Closed</span>
-                                </div>
-                                <div className="Line"></div>
-                                <span className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</span>
-                                <div className="progress-bar"><span className="progress progress-yellow"></span></div>
-                                <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></span>
-                            </div>
-                            {/* <div className={"fundBoxEdit " + (this.state.rowData === 1 ? 'show' : 'hidden')}>
-                                
-                                
-                            </div> */}
-                        </Col>
-                        <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
+                        
+                        {this.state.allFundsList.length >0 ?
+                            this.state.allFundsList.map((record, index)=>{
+                                return(
+                                    <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container" key={index}>
+                                    <div className="fundBoxEdit">
+                                        <div className="fundImageEdit">
+                                            <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
+                                            <div className="Fund-Name">The Pheonician Investment Fund</div>
+                                            <i className="fa fa-bell-o bellO" onClick={this.showActivityFeed} aria-hidden="true"></i>
+                                            <span className="notificationCount">11</span>
+                                            <div className="invitedDivStyle">10 Invited</div>
+                                        </div>
+                                        <div>
+                                            {/* <Button className="openEdit">Open</Button> */}
+                                            <Button className="actionRequired">Action Required</Button>
+                                        </div>
+                                        {/* <div>
+                                            <span className="Fund-Start-Date">Fund Start Date <span className="text-style-1">:2/24/2018</span></span>
+                                            <span className="Fund-End-Date">Fund End Date <span className="text-style-1">:2/24/2018</span></span>
+                                        </div> */}
+                                        <div className="Line"></div>
+                                        <div>
+                                            <span className="Invited">24</span>
+                                            <span className="Invited1">18</span>
+                                            <span className="Invited2">8</span>
+                                        </div>
+                                        <div>
+                                            <span className="labelInvited">Invited</span>
+                                            <span className="labelClosedReady">Close-Ready</span>
+                                            <span className="labelClosed">Closed</span>
+                                        </div>
+                                        <div className="Line"></div>
+                                        {/* <span className="Hard-Cap-2000000">Hard Cap: $2,000,000,000</span> */}
+                                        <div className="progress-bar">
+                                            <span className="progress progress-white"></span>
+                                            <span className="progress progress-pink"></span>
+                                            <span className="progress progress-yellow"></span>
+                                            <span className="progress progress-green"></span>
+                                        </div>
+                                        {/* <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></span> */}
+                                    </div>
+                                </Col>
+                                );
+                            })
+                            :
+                            <Col lg={12} md={12} sm={12} xs={12}>
+                            <div className="title margin20 text-center marginTop50">You haven’t created any funds yet.</div>
+                            </Col>
+                        } 
+                        {/* <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
                             <div className="fundBoxEdit">
                                 <div className="fundImageEdit">
                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
@@ -279,7 +333,7 @@ class DashboardComponent extends Component {
                                 <div className="progress-bar"><span className="progress progress-green"></span></div>
                                 <span className="Dollars-Closed-17">Dollars Closed: <span className="text-style-1">$1,750,000,000</span></span>
                             </div>
-                        </Col>
+                        </Col> */}
                         {/* <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container">
                             <div className="fundBoxEdit fundBoxEditHelios">
                                 <div className="fundImageEdit heliosFundBox">
@@ -314,6 +368,7 @@ class DashboardComponent extends Component {
                         </Col> */}
                     {/* </Col> */}
                 </Row>
+                <Loader isShow={this.state.showModal}></Loader>
             </Row>
         );
     }

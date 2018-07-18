@@ -460,8 +460,8 @@ class RegisterComponent extends Component{
 
         //append all the errors to one string.
         if(errosArr.length >0) {
-            let idx = 1;
             let error = '';
+            let idx = 1;
             for(let index of errosArr) {
                 error = error+index+"\n";
                 idx++;

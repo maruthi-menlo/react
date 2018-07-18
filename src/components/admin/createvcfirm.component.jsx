@@ -180,7 +180,7 @@ class CreateVcFirmComponent extends Component{
             case 'cellNumber':
                 if(event === '' || event === undefined) {
                     this.setState({
-                        cellNumberMsz: this.Constants.VALID_EMAIL,
+                        cellNumberMsz: this.Constants.CELL_NUMBER_VALID,
                         cellNumber: '',
                         cellNumberBorder: true,
                         cellNumberValid: false
@@ -341,7 +341,7 @@ class CreateVcFirmComponent extends Component{
                         <Row className="marginBot20">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Email Address*</label>
-                                <FormControl type="text" name="firmName" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} maxLength="200" placeholder="Scale Investment Firm" onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email')}/>
+                                <FormControl type="text" name="firmName" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} maxLength="200" placeholder="EBenedict@gmail.com" onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email')}/>
                                 <span className="error">{this.state.emailMsz}</span>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
@@ -355,17 +355,21 @@ class CreateVcFirmComponent extends Component{
                         <div className="subText">Allow FSNET admin access to view and edit firm funds? This will allow an admin to impersonate a GP from firm and take actions on their behalf</div>
                         <Radio name="isImporsonatingAllowed" className="marginLeft15" inline onChange={(e) => this.handleInputChangeEvent('on','isImporsonatingAllowed')}>
                             On
+                            <span className="radio-checkmark"></span>
                         </Radio>
                         <Radio name="isImporsonatingAllowed" className="marginLeft15" inline onChange={(e) => this.handleInputChangeEvent('off','isImporsonatingAllowed')}>
                             Off
+                            <span className="radio-checkmark"></span>
                         </Radio>
                         <div className="subText">Allow GP delegates to sign documents on behalf of GP?</div>
                         <FormGroup>
                             <Radio name="allowGPdelegatesToSign" className="marginLeft15" inline onChange={(e) => this.handleInputChangeEvent('on','allowGPdelegatesToSign')}>
                                 On
+                                <span className="radio-checkmark"></span>
                             </Radio>
                             <Radio name="allowGPdelegatesToSign" className="marginLeft15" inline onChange={(e) => this.handleInputChangeEvent('off','allowGPdelegatesToSign')}>
                                 Off
+                                <span className="radio-checkmark"></span>
                             </Radio>
                         </FormGroup>
                         <div className="error marginLeft15">{this.state.vcFirmError}</div>

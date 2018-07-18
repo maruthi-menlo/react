@@ -119,6 +119,9 @@
         max-width: 350px !important;
     }
 }
+#addFirmContainer .radio-inline{
+    padding-left: 30px;
+}
 #addFirmContainer .radio-inline, #addFirmContainer .error {
     margin-bottom: 10px;
 }

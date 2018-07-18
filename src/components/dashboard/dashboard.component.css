@@ -48,7 +48,6 @@
     border-radius: 3px !important;
     border: solid 1px #526173 !important;
     box-shadow: initial !important;
-    opacity: 0.25;
     font-family: 'Open Sans';
     font-size: 16px;
     font-weight: normal;
@@ -56,13 +55,13 @@
     font-stretch: normal;
     line-height: 1.5;
     letter-spacing: normal;
-    color: #2f4858;
-    margin-left: 30px;
+    color: #2f4858 !important;
+    margin-left: 0px;
     padding-left: 30px !important;
 }
 .search-icon i {
     position: relative;
-    left: 50px;
+    left: 24px;
 }
 .fundBoxEdit{
     height: 288px;
@@ -129,6 +128,15 @@
     position: relative;
     top: -18px;
 }
+.invitedDivStyle {
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+    top: -16px;
+    left: 56px;
+    margin-bottom: -15px;
+    line-height: 1.5;
+}
 .openEdit {
     width: 41px;
     height: 24px;
@@ -153,8 +161,8 @@
 .actionRequired {
     width: 99px;
     height: 24px;
-    border-radius: 2px !important;     
-    border: solid 1px #ff3a3a !important;
+    border-radius: 2px !important;
+    border: solid 1.4px #ff3a3a !important;
     font-family: 'Open Sans';
     font-size: 10px !important;
     font-weight: bold !important;
@@ -164,9 +172,11 @@
     letter-spacing: normal;
     color: #2f4858;
     padding: 4px 9px 4px 10px !important;
-    margin-bottom: 31px;
+    margin-bottom: 20px;
+    margin-top: 6px;
     position: relative;
-    /*top: -7px;*/
+    left: 52px;
+    /* top: -7px; */
     background-color: white;
 }
 .closedReadyEdit img{
@@ -442,21 +452,40 @@
     left: -10px;
 }
 .progress-bar {
+    margin-top: 30px;
+    flex-direction: inherit !important;
     width: 260px;   
-    height: 12px;
+    width: 240px !important;
+    margin-left: 12px;
+    height: 20px;
     background-color: rgba(245, 245, 245, 0.3) !important;
-    border-radius: 20px;
-}
-.progress {
-    width:  80% !important;
-    background-color: #39bcd5 !important;
 }
 .progress-yellow{
-    background-color: yellow !important;
+    background-color: lightyellow !important;
+    width: 65% !important;
+    border: 1px solid #000;
+    border-radius: 0px !important;
+    border-right: none;
+}
+.progress-white {
+    background-color: #ffffff !important;
+    width: 10% !important;
+    border: 1px solid #000;
+    border-radius: 0px !important;
+    border-right: none;
+}
+.progress-pink {
+    background-color: pink !important;
+    width: 30% !important;
+    border: 1px solid #000;
+    border-radius: 0px !important;
+    border-right: none;
 }
 .progress-green{
     background-color: lightgreen !important;
-    width: 100% !important;
+    width: 25% !important;
+    border: 1px solid #000;
+    border-radius: 0px !important;
 }
 .progress-red{
     background-color: #ff3a3a !important;
@@ -471,6 +500,8 @@
 }
 .display-filter {
     display: inline-block;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
 .filter-right-block {
     float: right;
@@ -737,6 +768,9 @@
 .benParker{
     background-color: white !important;
 }
+.marginTop50 {
+    margin-top: 50px;
+}
 @media only screen and (max-width: 1180px) {
     .row.fund-container {
         width: 100%;
@@ -781,8 +815,17 @@
         margin-bottom: 20px;
         
     }
+    .filter-right {
+        margin-left: 0px;
+    }
+    .display-left-filter {
+        margin-left: 5px
+    }
+    .display-right-filter {
+        margin-left: -5px
+    }
     .filter-right-block{
-        left: 15px;
+        left: -60px;
     }
     .formFilterControl{
         width: 160px !important;
@@ -807,6 +850,6 @@
         margin-left: 35px !important;
     }
     .user-dropdown-list {
-        left: 0px !important;
+        left: 260px !important;
     }
 }

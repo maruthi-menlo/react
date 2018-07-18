@@ -19,6 +19,7 @@ class Step1Component extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
         this.removeImageBtn = this.removeImageBtn.bind(this);
+        this.convertToCurrency = this.convertToCurrency.bind(this);
         this.state = {
             isAllDelegateSignNeeded: 0,
             fundImageName: 'fund_Pic.jpg',
@@ -118,7 +119,6 @@ class Step1Component extends Component{
         formData.append("isAllDelegateSignNeeded", this.state.isAllDelegateSignNeeded);
         formData.append("fundImage", this.state.fundPicFile);
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        console.log(headers);
         this.Fsnethttp.fundStore(formData, headers).then(result=>{
             this.close();
             this.props.history.push('/createfund/step2');
@@ -141,27 +141,45 @@ class Step1Component extends Component{
     
     proceedToBack() {
         this.props.history.push('/createfund/step1');
+           
     }
+
+    convertToCurrency(e) {
+        let amount = e.target.value;
+        // Create our number formatter.
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+            // the default value for minimumFractionDigits depends on the currency
+            // and is usually already 2
+        });
+        
+        formatter.format(amount); 
+        console.log(formatter.format(amount));
+    }
+
+ 
 
 
     render(){
         return(
             <div className="step1FormClass">
                 <div className="form-grid">
-                    <h2>Fund Details</h2>
-                    <h4>Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
+                    <h2 className="title">Fund Details</h2>
+                    <h4 className="subtext">Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
                    
                     <div id="step1Form">
                         <Row className="step1Form-row">
-                            <Col xs={6} md={6} sm={6} xs={12}>
+                            <Col xs={6} md={6}>
                                 <label className="form-label">Legal Entity*</label>
                                 {/* <input type="text" className= "inputFormControl" placeholder="Helios" /> */}
                                 <FormControl type="text" placeholder="Helios" className="inputFormControl" inputRef={(input)=>{this.legalEntity = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'legalEntity')} autoComplete="off"/>
                             </Col>
-                            <Col xs={6} md={6} sm={6} xs={12}>
+                            <Col xs={6} md={6}>
                                 <label className="form-label">Hard cap</label>
                                 {/* <input type="text" className= "inputFormControl" placeholder="$15,000,000.00" /> */}
-                                <FormControl type="text" placeholder="$15,000,000.00" className="inputFormControl" inputRef={(input)=>{this.fundHardCap = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} autoComplete="off"/>
+                                <FormControl type="text" placeholder="$15,000,000.00" className="inputFormControl" inputRef={(input)=>{this.fundHardCap = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.convertToCurrency(e)}} autoComplete="off"/>
                             </Col>
                         </Row>
                         <Row className="step1Form-row">
@@ -176,18 +194,33 @@ class Step1Component extends Component{
                                 <FormControl type="text" placeholder="$20,000,000" className="inputFormControl" inputRef={(input)=>{this.fundTargetCommitment = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} autoComplete="off"/>
                             </Col>
                         </Row>
+                        <h2 className="title marginTop20">Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
+                        <h4 className="subtext">Fill in one. Minimum fund participation can be calculated based off on percentage participation.</h4>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">All delegates must sign fund:</label>
-                                <Radio name="radioGroup" inline id="yesCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededYes')}>&nbsp; Yes </Radio>
-                                <Radio name="radioGroup" inline id="noCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededNo')}>&nbsp; No </Radio>
+                                <label className="form-label marginBottom20">Minimum fund participation amount</label>
+                                <FormControl type="text" placeholder="$1,000,000.00" className="inputFormControl" autoComplete="off"/>
                             </Col>
+                            <Col xs={6} md={6}>
+                                <label className="form-label">Maximum amont of ERISA contributions accepted</label>
+                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" autoComplete="off"/>
+                            </Col>
+                        </Row>
+                        <Row className="step1Form-row">
                             <Col xs={6} md={6}>
                                 <label className="form-label">Capital commitment by fund manager*</label>
                                 {/* <input type="text" className= "inputFormControl" placeholder="$12,000.00" /> */}
                                 <FormControl type="text" placeholder="$12,000.00" className="inputFormControl" inputRef={(input)=>{this.capitalCommitmentByGP = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')} autoComplete="off"/>
                             </Col>
-                           
+                            <Col xs={6} md={6}>
+                                <label className="form-label">All delegates must sign fund:</label>
+                                <Radio name="radioGroup" inline id="yesCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededYes')}>&nbsp; Yes 
+                                <span className="radio-checkmark"></span>
+                                </Radio>
+                                <Radio name="radioGroup" inline id="noCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededNo')}>&nbsp; No 
+                                <span className="radio-checkmark"></span>
+                                </Radio>
+                            </Col>
                         </Row>
                         <label className="profile-text">Fund Image:(Image must not exceed 96x96)</label>
                         <Row className="profile-Row profileMargin">
