@@ -124,7 +124,7 @@
     margin-left: 20px;
 }
 #createFund a:not([href]):not([tabindex]) {
-    color: #ffffff !important;
+    color: #ffffff;
     cursor: pointer;
 }
 .cancel-fund {
@@ -532,9 +532,34 @@
     color: #2f4858;
     margin-bottom: 46px;
 }
+#createFund .filesize {
+    opacity: 0.5;
+    font-family: 'Open Sans';
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+#createFund .upload-doc-name {
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #2f4858 !important;
+    margin-left: 20px;
+    text-decoration: underline !important;
+}
 #createFund .uplodFileContainer {
     width: 529px;
-    height: 105px;
+    min-height: 105px;
     border: dashed 2px #9b9b9b;
     padding-top: 24px;
     padding-left: 17px;
@@ -609,7 +634,7 @@
 }
 
 #step1Form,.step1Form-row{
-    margin-top: 20px;
+    margin-top: 24px;
 }
 
 #yesCheckbox{
@@ -625,6 +650,19 @@
     width: 80px;
     height: 80px;
     border-radius: 40px;
+    margin-right: 10px;
+}
+.profilePicName {
+    position: absolute;
+    top: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    font-family: 'Open Sans';
 }
 
 .form-label{    
@@ -659,6 +697,7 @@
     letter-spacing: normal;
     color: #ffffff;
     border-radius: 20px !important;
+    box-shadow: initial !important;
 }
 .removeBtn {
     width: 59px;
@@ -713,7 +752,7 @@
 
 
 .col4 a{
-    color: #39bcd5;
+    color: #39bcd5 !important;
     font-family: 'Open Sans';
     font-size: 14px;
     font-weight: bold;
@@ -945,9 +984,71 @@ input[type=checkbox]{
     display: inline-block;
     padding-left: 20px;
 }
+#createFund .lp-name {
+    width: 215px;
+    min-height: 20px;
+    height: auto;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    padding-left: 20px;
+}
 #createFund .checkbox {
     position: relative;
-    top: 4px;
+    top: 8px;
+}
+#createFund .marginLeft75 {
+    margin-left: 75px;
+}
+#createFund .name-heading .fa{
+    position: relative;
+    left: 5px;
+    top: -2px;
+    font-size: 18px;
+}
+
+#createFund .name-heading {
+    width: 225px;
+    min-height: 16px;
+    opacity: 0.5;
+    font-family: 'Open Sans';
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    cursor: pointer;
+}
+#createFund .userContainer {
+    width: 400px;
+    min-height: 150px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
+    box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
+    border: 1px solid #add8e6;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+#createFund .userLPContainer {
+    width: 530px;
+    height: 250px;
+    /* max-height: 400px; */
+    overflow: hidden;
+    box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
+    box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
+    border: 1px solid #add8e6;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 #createFund .userContainer {
     width: 400px;
@@ -989,13 +1090,91 @@ input[type=checkbox]{
     font-size: 10px;
     margin-top: 6px;
   }
-.fa-check:before {
-    content: "\f00c";
+.faChk {
     background: #1ADBB9;
     border-radius: 50%;
     padding: 2px;
 }
+.lpNameWidth {
+    width: 35%;
+}
+.orgNameStyle {
+    padding-top: 30px !important;
+    width: 35%;
+    text-align: left;
+}
+.gpDelDiv {
+    max-height: 200px;
+    overflow-y: auto;
+}
+.gpDelegateInfo {
+    color: #fff;
+    height: 48px;
+    border-bottom: 1px solid #fff;
+    padding: 10px;
+}
+.dpDelImg {
+    width: 20%;
+    float: left;
+}
+.dpDelName {
+    width: 66%;
+    float: left;
+}
+.dpDelgDel {
 
+}
+.table1stColAlign {
+    margin-left: -36px;
+}
+.strtFndChk {
+    font-size: 20px;
+    font-weight: normal;
+    position: relative;
+    right: 4px;
+}
+.formGridDivMargin {
+    margin: 30px 0;
+}
+.width37 {
+    width: 37%;
+}
+
+.fa-sort-up:before, .fa-sort-asc:before {
+    content: "\f0de";
+    position: relative;
+    top: 8px;
+}
+.fa-chevron-right.disabled {
+    background: #DEE1E4 !important;
+    color: #fff !important;
+    border: 1px solid #DEE1E4 !important;
+    opacity: .65;
+    cursor: not-allowed;
+}
+.fa-chevron-right:hover {
+    background: #39bcd5;
+    color: #fff;
+}
+.fa-chevron-left:hover {
+    background: #39bcd5;
+    color: #fff;
+}
+.footerNavStep2 {
+    margin-left: -32px;
+}
+.croosMarkStyle {
+    text-align: right;
+    margin-top: -20px;
+    margin-right: 20px;
+    font-weight: bold;
+}
+.borderTopNone {
+    border-top: none !important;
+}
+.fa-trash:before {
+    font-size: 16px;
+}
  @media only screen and (max-width: 1180px) {
   .contentWidth {
       width: 900px !important;
@@ -1003,8 +1182,8 @@ input[type=checkbox]{
   #createFund .header-right-row {
     width: 683px;
     position: relative;
+  }
 }
- }
 
  @media only screen and (max-width: 780px){ 
     #createFund .header-right-row {

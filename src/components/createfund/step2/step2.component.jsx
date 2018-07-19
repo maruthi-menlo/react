@@ -24,7 +24,7 @@ class Step2Component extends Component {
             showAddGpDelegateModal: false,
             getGpDelegatesList: [],
             vcFirmId:2,
-            fundId:3,
+            fundId:null,
             isGpDelgateFormValid: false,
             firstNameBorder: false,
             firstNameMsz: '',
@@ -250,16 +250,16 @@ class Step2Component extends Component {
         let delegateObj = {fundId:this.state.fundId, vcfirmId:this.state.vcFirmId, gpDelegates:this.state.gpDelegatesSelectedList }
         this.Fsnethttp.assignDelegatesToFund(delegateObj, headers).then(result=>{
             this.close();
-            this.props.history.push('/createfund/step3');
+            this.props.history.push('/createfund/upload/'+this.state.fundId);
         })
         .catch(error=>{
             this.close();
-            this.props.history.push('/createfund/step3');
+            this.props.history.push('/createfund/upload/'+this.state.fundId);
         });
     }
     
     proceedToBack() {
-        this.props.history.push('/createfund/step1');
+        this.props.history.push('/createfund/funddetails/'+this.state.fundId);
     }
 
     addGpDelegateBtn() {
@@ -306,10 +306,15 @@ class Step2Component extends Component {
     }
 
     componentDidMount() { 
+        let url = window.location.href;
+        let page = url.split('/createfund/gpDelegate/');
+        let fundId = page[1];
+        this.setState({
+            fundId: fundId
+        })
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
         let firmId = this.state.vcFirmId;
-        let fundId = this.state.fundId;
         this.Fsnethttp.getGpDelegates(firmId, fundId, headers).then(result=>{
             this.close();
             if(result.data && result.data.data.length >0) {
@@ -331,7 +336,7 @@ class Step2Component extends Component {
 
     render() {
         return (
-            <div className="width100">
+            <div className="width100 marginTop30">
             <div className="GpDelegatesContainer" >
                 <h1 className="title">Assign GP Delegates</h1>
                 <p className="subtext">Select GP Delegate(s) from the list below or add a new one.</p>
@@ -355,13 +360,15 @@ class Step2Component extends Component {
                             );
                         })
                         :
-                        <div className="title margin20">You haven’t added any GP Delegates to this fund yet.</div>
+                        <div className="title margin20 text-center">You haven’t added any GP Delegates to this fund yet.</div>
                     } 
                 </div>
                 <div className="error">{this.state.gpDelegateScreenError}</div>
                 <div className="addRoleModal" hidden={!this.state.showAddGpDelegateModal}>
-                    
-                    <h3 className="title">Add GP Delegate</h3>
+                    <div>
+                        <div className="croosMarkStyle"><span className="cursor-pointer" onClick={this.closeGpDelegateModal}>x</span></div>
+                        <h3 className="title">Add GP Delegate</h3>
+                    </div>
                     <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</div>         <div className="form-main-div">                  
                         <Row className="marginBot20">
                             <Col lg={6} md={6} sm={6} xs={12}>
@@ -393,7 +400,7 @@ class Step2Component extends Component {
                         </Col>
                     </Row> 
                 </div>
-                <div className="footer-nav">
+                <div className="footer-nav footerNavStep2">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
                 </div>

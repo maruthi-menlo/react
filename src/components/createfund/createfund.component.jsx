@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import './createfund.component.css';
-import { Col, Row } from 'react-bootstrap';
-// import userDefaultImage from '../../images/default_user.png';
+import { Row } from 'react-bootstrap';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from '../../services/fsnetauth';
+import { Client } from '../../services/eventservice.component';
 import { Route, Link } from "react-router-dom";
 import Step1Component from '../createfund/step1/step1.component';
 import Step2Component from '../createfund/step2/step2.component';
@@ -12,19 +12,21 @@ import Step3Component from '../createfund/step3/step3.component';
 import Step5Component from '../createfund/step5/step5.component';
 import Step6Component from '../createfund/step6/step6.component';
 import HeaderComponent from '../header/header.component';
-
+import {EventEmitter} from 'fbemitter';
 
 class CreateFundComponent extends Component {
-
     constructor(props) {
         super(props);
         this.FsnetAuth = new FsnetAuth();
+        this.addEvent = this.addEvent.bind(this);
+        this.client = new Client();
         this.logout = this.logout.bind(this);
         this.state = {
             loggedInUserObj: [],
-            currentPage: 'step1',
+            currentPage: 'funddetails',
             currentPageNumber: 1,
-            totalPageCount: 5
+            totalPageCount: 5,
+            fundId: null
         }
 
     }
@@ -32,6 +34,14 @@ class CreateFundComponent extends Component {
     logout() {
         reactLocalStorage.clear();
         this.props.history.push('/');
+    }
+
+    componentWillMount() {
+        this.client.on('fundData', this.addEvent);
+    }
+
+    addEvent(data){
+        console.log("fsgkl")
     }
 
     componentDidMount() {
@@ -54,22 +64,22 @@ class CreateFundComponent extends Component {
 
     getCurrentPageNumber(type, fundPage) {
         let page;
-        if(type === 'sideNav') {
+        if (type === 'sideNav') {
             page = fundPage
         } else {
             let url = window.location.href;
-            page = url.split('/createfund/')[1];
+            page = url.split('/createfund/')[1].split('/')[0];
         }
         let number;
-        if(page === 'step1') {
+        if (page === 'funddetails') {
             number = 1;
-        }else if(page === 'step2') {
+        } else if (page === 'gpDelegate') {
             number = 2;
-        }else if(page === 'step3') {
+        } else if (page === 'upload') {
             number = 3;
-        }else if(page === 'step5') {
+        } else if (page === 'lp') {
             number = 4;
-        }else if(page === 'step6') {
+        } else if (page === 'review') {
             number = 5;
         }
         this.setState({
@@ -77,9 +87,9 @@ class CreateFundComponent extends Component {
             currentPage: page
         })
     }
-    
+
     render() {
-        const {match} = this.props;
+        const { match } = this.props;
         return (
             <div className="wrapper" id="createFund">
                 <div className="sidenav">
@@ -87,28 +97,47 @@ class CreateFundComponent extends Component {
                     <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; <a href="/dashboard">Dashboard</a></h2>
                     <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">{this.state.currentPageNumber}/{this.state.totalPageCount}</span></div>
                     <ul className="sidenav-menu">
-                        <li><Link to="/createfund/step1" onClick={(e) => this.getCurrentPageNumber('sideNav','step1')} className={(this.state.currentPage === 'step1' ? 'active' : '') }>Fund Details<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to="/createfund/step2" onClick={(e) => this.getCurrentPageNumber('sideNav','step2')} className={(this.state.currentPage === 'step2' ? 'active' : '') }>Assign GP Delegates<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to="/createfund/step3" onClick={(e) => this.getCurrentPageNumber('sideNav','step3')} className={(this.state.currentPage === 'step3' ? 'active' : '') }>Partnership Agreement<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to="/createfund/step5" onClick={(e) => this.getCurrentPageNumber('sideNav','step5')} className={(this.state.currentPage === 'step5' ? 'active' : '') }>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to="/createfund/step6" onClick={(e) => this.getCurrentPageNumber('sideNav','step6')} className={(this.state.currentPage === 'step6' ? 'active' : '') }>Review & Confirm<span className="checkIcon"><i className="fa fa-check" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to="/createfund/funddetails" onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to={"/createfund/gpDelegate/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to={"/createfund/upload/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to={"/createfund/lp/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to={"/createfund/review/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
                     </ul>
 
-                    <div className="start-box"><i className="fa fa-check" aria-hidden="true"></i>&nbsp;Start Fund</div>
+                    <div className="start-box"><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
 
                     <div className="section-head">GP Delegates<span className="btn-add pull-right">+</span></div>
                     <div className="section">
-                        <div className="user">
+                        {/* <div className="user">
                             <i className="fa fa-user fa-2x" aria-hidden="true"></i>
                             <p>You haven’t added any GP Delegates to this fund yet</p>
+                        </div> */}
+                        <div className="gpDelDiv">
+                            <div className="gpDelegateInfo">
+                                <div className="dpDelImg"><i className="fa fa-picture-o" aria-hidden="true"></i></div>
+                                <div className="dpDelName">Ben Parker</div>
+                                <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
+                            </div>
+                            <div className="gpDelegateInfo">
+                                <div className="dpDelImg"><i className="fa fa-picture-o" aria-hidden="true"></i></div>
+                                <div className="dpDelName">Ben Parker</div>
+                                <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
+                            </div>
                         </div>
                     </div>
 
                     <div className="section-head">LP's<span className="btn-add pull-right">+</span></div>
                     <div className="section">
-                        <div className="user">
+                        {/* <div className="user">
                             <i className="fa fa-user fa-2x" aria-hidden="true"></i>
                             <p>You haven’t added any LP’s to this fund yet</p>
+                        </div> */}
+                        <div className="gpDelDiv">
+                            <div className="gpDelegateInfo">
+                                <div className="dpDelImg"><i className="fa fa-picture-o" aria-hidden="true"></i></div>
+                                <div className="dpDelName">Ben Parker</div>
+                                <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
+                            </div>
                         </div>
                     </div>
 
@@ -118,43 +147,16 @@ class CreateFundComponent extends Component {
                     <HeaderComponent ></HeaderComponent>
                     <div className="contentWidth">
                         <div className="main-heading"><span className="main-title">Create New Fund</span><a href="/dashboard" className="cancel-fund">Cancel</a></div>
-                    {/* <div hidden={!this.state.showStep1Page}>
-                        <Step1Component></Step1Component>
+                        <Row className="main-content">
+                            <Route exact path={`${match.url}/funddetails`} component={Step1Component} />
+                            <Route exact path={`${match.url}/funddetails/:id`} component={Step1Component} />
+                            <Route exact path={`${match.url}/gpDelegate/:id`} component={Step2Component} />
+                            <Route exact path={`${match.url}/upload/:id`} component={Step3Component} />
+                            <Route exact path={`${match.url}/lp/:id`} component={Step5Component} />
+                            <Route exact path={`${match.url}/review/:id`} component={Step6Component} />
+                        </Row>
                     </div>
-                    <div hidden={!this.state.showStep2Page}>
-                        <Step2Component></Step2Component>
-                    </div>
-                    <div hidden={!this.state.showStep3Page}>
-                        <Step3Component></Step3Component>
-                    </div>
-                    <div hidden={!this.state.showStep4Page}>
-                        <Step4Component></Step4Component>
-                    </div>
-                    <div hidden={!this.state.showStep5Page}>
-                        <Step5Component></Step5Component>
-                    </div>
-                    <div hidden={!this.state.showStep6Page}>
-                        <Step6Component></Step6Component>
-                    </div> */}
-                    <Row className="main-content">
-                        <Route exact path={`${match.url}/step1`} component={Step1Component} />
-                        <Route exact path={`${match.url}/step2`} component={Step2Component} />
-                        <Route exact path={`${match.url}/step3`} component={Step3Component} />
-                        <Route exact path={`${match.url}/step5`} component={Step5Component} />
-                        <Route exact path={`${match.url}/step6`} component={Step6Component} />
-                    
-                    </Row>
-
-                    {/* <Col xs={6} md={12}>
-                        <div className="footer-nav">
-                            <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
-                            <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
-                        </div>
-                    </Col> */}
-
-                    {/* </Grid> */}
                 </div>
-            </div>
             </div>
         );
     }

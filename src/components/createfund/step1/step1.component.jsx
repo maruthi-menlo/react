@@ -4,8 +4,13 @@ import fundDefaultImage from '../../../images/profilePic.jpg';
 import { Button, Radio, Row, Col, FormControl } from 'react-bootstrap';
 import Loader from '../../../widgets/loader/loader.component';
 import {Fsnethttp} from '../../../services/fsnethttp';
+import {Client} from '../../../services/eventservice.component';
 import {Constants} from '../../../constants/constants';
+import {EventEmitter} from 'fbemitter';
+import {ee} from 'event-emitter';
+
 import { reactLocalStorage } from 'reactjs-localstorage';
+
 
 class Step1Component extends Component{
 
@@ -13,6 +18,7 @@ class Step1Component extends Component{
         super(props);
         this.Fsnethttp = new Fsnethttp();
         this.Constants = new Constants();
+        this.client = new Client();       
         this.proceedToNext = this.proceedToNext.bind(this);
         this.proceedToBack = this.proceedToBack.bind(this);
         this.fundDetailsInputHandleEvent = this.fundDetailsInputHandleEvent.bind(this);
@@ -25,22 +31,194 @@ class Step1Component extends Component{
             fundImageName: 'fund_Pic.jpg',
             currentFundImage : fundDefaultImage,
             fundPicFile: {},
-
+            fundDetailsPageValid: false,
+            legalEntity:'',
+            legalEntityValid:false,
+            legalEntityBorder: false,
+            legalEntityMsz:'',
+            fundManagerLegalEntityName:'',
+            fundManagerLegalEntityNameBorder:false,
+            fundManagerLegalEntityNameMsz:'',
+            fundManagerLegalEntityNameValid: false,
+            fundHardCap:'',
+            capitalCommitmentByGP:'',
+            percentageOfLPCommitment:'',
+            percentageOfLPAndGPAggregateCommitment:'',
+            aTextBoxDisabled: false,
+            bTextBoxDisabled: false,
+            cTextBoxDisabled: false,
+            fundDetailspageError:'',
+            createdFundData:[],
+            fundId:''
         }
+    }
+
+
+    componentDidMount() {
+        let url = window.location.href;
+        let page = url.split('/createfund/funddetails/');
+        let fundId = page[1];
+        console.log(fundId)
+        if(fundId != undefined) {
+            this.open();
+            let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+            this.Fsnethttp.getFund(fundId, headers).then(result=>{
+                this.close();
+                if(result.data) {
+                    this.setState({ createdFundData: result.data.data, fundId: fundId }, () => this.updateInputValues());
+                    let dataObj = {};
+                    dataObj ={
+                        fundManagerLegalEntityNameValid : true,
+                        legalEntityValid: true,
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        createdFundData: [],
+                    })
+                }
+            })
+            .catch(error=>{
+                this.close();
+                this.setState({
+                    createdFundData: []
+                })
+            });
+        }
+    }
+
+
+    updateInputValues() {
+        let obj = this.state.createdFundData;
+        this.setState({
+            legalEntity: obj.legalEntity || '',
+            fundHardCap: obj.fundHardCap || '',
+            fundManagerLegalEntityName: obj.fundManagerLegalEntityName || '',
+            capitalCommitmentByGP: obj.capitalCommitmentByGP || '',
+            percentageOfLPCommitment: obj.percentageOfLPCommitment || '',
+            percentageOfLPAndGPAggregateCommitment: obj.percentageOfLPAndGPAggregateCommitment || '',
+            fundImage: obj.fundImage || '',
+            isAllDelegateSignNeeded: obj.isAllDelegateSignNeeded || ''
+        })
+    }
+
+    // Update state params values and login button visibility
+
+    updateStateParams(updatedDataObject){
+        this.setState(updatedDataObject, ()=>{
+            this.enableDisableFundDetailsButton();
+        });
+    }
+
+    // Enable / Disble functionality of Login Button
+
+    enableDisableFundDetailsButton(){
+        let status = (this.state.legalEntityValid && this.state.fundManagerLegalEntityNameValid ) ? true : false;
+        this.setState({
+            fundDetailsPageValid : status
+        });
     }
 
     //Fund details input change event
     fundDetailsInputHandleEvent(event,type) {
+        let dataObj={};
         switch(type) {
             case 'legalEntity':
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        legalEntityMsz: this.Constants.LEGAL_ENTITY_REQUIRED,
+                        legalEntityValid: false,
+                        legalEntityBorder: true,
+                        legalEntity: ''
+                    })
+                    dataObj ={
+                        legalEntityValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        legalEntityMsz: '',
+                        legalEntityValid: true,
+                        legalEntityBorder: false,
+                        legalEntity: event.target.value
+                    })
+                    dataObj ={
+                        legalEntityValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
             case 'fundHardCap':
+                this.setState({
+                    fundHardCap: event.target.value
+                })
                 break;
             case 'fundManagerLegalEntityName':
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        fundManagerLegalEntityNameMsz: this.Constants.LEGAL_ENTITY_NAME_REQUIRED,
+                        fundManagerLegalEntityNameValid: false,
+                        fundManagerLegalEntityNameBorder: true,
+                        fundManagerLegalEntityName: ''
+                    })
+                    dataObj ={
+                        fundManagerLegalEntityNameValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        fundManagerLegalEntityNameMsz: '',
+                        fundManagerLegalEntityNameValid: true,
+                        fundManagerLegalEntityNameBorder: false,
+                        fundManagerLegalEntityName: event.target.value
+                    })
+                    dataObj ={
+                        fundManagerLegalEntityNameValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
+                this.setState({
+                    fundManagerLegalEntityName: event.target.value
+                })
                 break;
-            case 'fundTargetCommitment':
+            case 'percentageOfLPCommitment':
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        percentageOfLPCommitment: ''
+                    })
+                    this.enableAllTextBoxes()
+                } else {
+                    this.setState({
+                        percentageOfLPCommitment: event.target.value
+                    })
+                    this.disableBandCTextFields();
+                }
+                break;
+            case 'percentageOfLPAndGPAggregateCommitment':
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        percentageOfLPAndGPAggregateCommitment: ''
+                    })
+                    this.enableAllTextBoxes()
+                } else {
+                    this.setState({
+                        percentageOfLPAndGPAggregateCommitment: event.target.value
+                    })
+                    this.disableAandCTextFields()
+                }
                 break;
             case 'capitalCommitmentByGP':
+                if(event.target.value === '' || event.target.value === undefined) {
+                    this.setState({
+                        capitalCommitmentByGP: ''
+                    })
+                    this.enableAllTextBoxes()
+                } else {
+                    this.setState({
+                        capitalCommitmentByGP: event.target.value
+                    })
+                    this.disableAandEnableBTextFields()
+                }
                 break;
             case 'isAllDelegateSignNeededYes':
                 this.setState({
@@ -57,6 +235,38 @@ class Step1Component extends Component{
         }
     }
 
+    disableBandCTextFields() {
+        this.setState({
+            bTextBoxDisabled: true,
+            cTextBoxDisabled: true,
+            fundDetailspageError:''
+        })
+    }
+
+    disableAandCTextFields() {
+        this.setState({
+            aTextBoxDisabled: true,
+            cTextBoxDisabled: true,
+            fundDetailspageError:''
+        })
+    }
+
+    disableAandEnableBTextFields() {
+        this.setState({
+            aTextBoxDisabled: true,
+            bTextBoxDisabled: false,
+            fundDetailspageError:''
+        })
+    }
+
+    enableAllTextBoxes() {
+        this.setState({
+            aTextBoxDisabled: false,
+            bTextBoxDisabled: false,
+            cTextBoxDisabled: false,
+            fundDetailspageError:''
+        })
+    }
 
     //Clear the image when user click on remove button
     //Clear the image name from state
@@ -110,37 +320,69 @@ class Step1Component extends Component{
     }
 
     proceedToNext() {
-        var formData = new FormData();
-        formData.append("vcfirmId", 2);
-        formData.append("fundHardCap", this.fundHardCap.value);
-        formData.append("fundManagerLegalEntityName", this.fundManagerLegalEntityName.value);
-        formData.append("fundTargetCommitment", this.fundTargetCommitment.value);
-        formData.append("capitalCommitmentByGP", this.capitalCommitmentByGP.value);
-        formData.append("isAllDelegateSignNeeded", this.state.isAllDelegateSignNeeded);
-        formData.append("fundImage", this.state.fundPicFile);
-        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        this.Fsnethttp.fundStore(formData, headers).then(result=>{
-            this.close();
-            this.props.history.push('/createfund/step2');
-        })
-        .catch(error=>{
-            this.close();
-            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
-                // this.setState({
-                //     errorMessage: error.response.data.errors[0].msg,
-                // });
-            } else {
-                // this.setState({
-                //     errorMessage: this.Constants.INTERNAL_SERVER_ERROR,
-                // });
-
+        let error = false;
+        if(this.state.capitalCommitmentByGP === '' && this.state.percentageOfLPCommitment === '' && this.state.percentageOfLPAndGPAggregateCommitment === '') {
+            error = true;
+            this.setState({
+                fundDetailspageError: 'Please enter one minimum fund participation amount'
+            })
+        } 
+        if(this.state.capitalCommitmentByGP != '' && this.state.percentageOfLPAndGPAggregateCommitment === '') {
+            error = true;
+            this.setState({
+                fundDetailspageError: 'Please enter LP + GP Aggregate Commitment amount'
+            })
+        }
+        if(!error) {
+            this.open()
+            var formData = new FormData();
+            formData.append("vcfirmId", 2);
+            formData.append("legalEntity", this.state.legalEntity);
+            formData.append("fundHardCap", this.state.fundHardCap);
+            formData.append("fundManagerLegalEntityName", this.state.fundManagerLegalEntityName);
+            formData.append("isAllDelegateSignNeeded", this.state.isAllDelegateSignNeeded);
+            formData.append("fundImage", this.state.fundPicFile);
+            if(this.state.fundId != '') {
+                formData.append("fundId", this.state.fundId)
             }
-        });
-        //this.props.history.push('/createfund/step2');
+            if(this.state.capitalCommitmentByGP !== '') {
+                formData.append("capitalCommitmentByGP", this.state.capitalCommitmentByGP);
+            }
+            if(this.state.percentageOfLPCommitment !== '') {
+                formData.append("percentageOfLPCommitment", this.state.percentageOfLPCommitment);
+            }
+            if(this.state.percentageOfLPAndGPAggregateCommitment !== '') {
+                formData.append("percentageOfLPAndGPAggregateCommitment", this.state.percentageOfLPAndGPAggregateCommitment);
+            }
+            let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+            this.Fsnethttp.fundStore(formData, headers).then(result=>{
+                this.close();
+                this.setState({
+                    fundDetailsPageValid: true,
+                    createdFundData: result.data.data
+                })
+                // this.client.addListener('fundData', (...args) => {
+                // }); 
+                this.client.emit('fundData',{data:'sdfkjb'});
+                this.props.history.push('/createfund/gpDelegate/'+result.data.data.id);
+            })
+            .catch(error=>{
+                this.close();
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                    this.setState({
+                        fundDetailspageError: error.response.data.errors[0].msg,
+                    });
+                } else {
+                    this.setState({
+                        fundDetailspageError: this.Constants.INTERNAL_SERVER_ERROR,
+                    });
+                }
+            });
+        }
     }
     
     proceedToBack() {
-        this.props.history.push('/createfund/step1');
+        this.props.history.push('/createfund/funddetails');
            
     }
 
@@ -165,7 +407,7 @@ class Step1Component extends Component{
     render(){
         return(
             <div className="step1FormClass">
-                <div className="form-grid">
+                <div className="form-grid formGridDivMargin">
                     <h2 className="title">Fund Details</h2>
                     <h4 className="subtext">Enter the details for the fund below. Fields marked with an * are mandatory.</h4>
                    
@@ -173,44 +415,37 @@ class Step1Component extends Component{
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
                                 <label className="form-label">Legal Entity*</label>
-                                {/* <input type="text" className= "inputFormControl" placeholder="Helios" /> */}
-                                <FormControl type="text" placeholder="Helios" className="inputFormControl" inputRef={(input)=>{this.legalEntity = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'legalEntity')} autoComplete="off"/>
+                                <FormControl type="text" name="legalEntity" placeholder="Helios" className={"inputFormControl " + (this.state.legalEntityBorder ? 'inputError' : '')} value= {this.state.legalEntity}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'legalEntity')} onBlur={(e) => this.fundDetailsInputHandleEvent(e,'legalEntity')} autoComplete="off"/>
+                                <span className="error">{this.state.legalEntityMsz}</span>
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">Hard cap</label>
-                                {/* <input type="text" className= "inputFormControl" placeholder="$15,000,000.00" /> */}
-                                <FormControl type="text" placeholder="$15,000,000.00" className="inputFormControl" inputRef={(input)=>{this.fundHardCap = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.convertToCurrency(e)}} autoComplete="off"/>
+                                <FormControl type="text" value= {this.state.fundHardCap} placeholder="$15,000,000.00" className="inputFormControl" onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.convertToCurrency(e)}} autoComplete="off"/>
                             </Col>
                         </Row>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">Fund Manager (GP) Legal Entity Name*</label>
-                                {/* <input type="text" className= "inputFormControl" placeholder="Helios GP I,LLC" />    */}
-                                <FormControl type="text" placeholder="Helios GP I,LLC" className="inputFormControl" inputRef={(input)=>{this.fundManagerLegalEntityName = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundManagerLegalEntityName')} autoComplete="off"/>
-                            </Col>
-                            <Col xs={6} md={6}>
-                                <label className="form-label">Fund Target Commitment</label>
-                                {/* <input type="text" className= "inputFormControl" placeholder="$20,000,000" /> */}
-                                <FormControl type="text" placeholder="$20,000,000" className="inputFormControl" inputRef={(input)=>{this.fundTargetCommitment = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} autoComplete="off"/>
+                                <label className="form-label">Fund Manager (GP) Legal Entity Name*</label>                                
+                                <FormControl type="text" placeholder="Helios GP I,LLC" className={"inputFormControl " + (this.state.fundManagerLegalEntityNameBorder ? 'inputError' : '')} value= {this.state.fundManagerLegalEntityName}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundManagerLegalEntityName')} onBlur={(e) => this.fundDetailsInputHandleEvent(e,'fundManagerLegalEntityName')} autoComplete="off"/>
+                                <span className="error">{this.state.fundManagerLegalEntityNameMsz}</span>
                             </Col>
                         </Row>
                         <h2 className="title marginTop20">Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
-                        <h4 className="subtext">Fill in one. Minimum fund participation can be calculated based off on percentage participation.</h4>
+                        <h4 className="subtext">Fill in one. Minimum fund participation can be calculated based on percentage participation.</h4>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label marginBottom20">Minimum fund participation amount</label>
-                                <FormControl type="text" placeholder="$1,000,000.00" className="inputFormControl" autoComplete="off"/>
+                                <label className="form-label">% of LP Commitment </label>
+                                <FormControl type="text" placeholder="100.00%" className="inputFormControl" value={this.state.percentageOfLPCommitment} disabled={this.state.aTextBoxDisabled} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPCommitment')}  autoComplete="off"/>
                             </Col>
                             <Col xs={6} md={6}>
-                                <label className="form-label">Maximum amont of ERISA contributions accepted</label>
-                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" autoComplete="off"/>
+                                <label className="form-label">% of LP + GP Aggregate Commitment  </label>
+                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" disabled={this.state.bTextBoxDisabled} value={this.state.percentageOfLPAndGPAggregateCommitment} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPAndGPAggregateCommitment')}  autoComplete="off"/>
                             </Col>
                         </Row>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">Capital commitment by fund manager*</label>
-                                {/* <input type="text" className= "inputFormControl" placeholder="$12,000.00" /> */}
-                                <FormControl type="text" placeholder="$12,000.00" className="inputFormControl" inputRef={(input)=>{this.capitalCommitmentByGP = input}} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')} autoComplete="off"/>
+                                <label className="form-label">Capital commitment by fund manager</label>
+                                <FormControl type="text" placeholder="100.00%" className="inputFormControl" disabled={this.state.cTextBoxDisabled} value={this.state.capitalCommitmentByGP} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')} autoComplete="off"/>
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">All delegates must sign fund:</label>
@@ -222,7 +457,7 @@ class Step1Component extends Component{
                                 </Radio>
                             </Col>
                         </Row>
-                        <label className="profile-text">Fund Image:(Image must not exceed 96x96)</label>
+                        <label className="profile-text">Fund Image:(Image must not exceed 512x512)</label>
                         <Row className="profile-Row profileMargin">
                             <Col lg={6} md={6} sm={6} xs={12} >
                                 <img src={this.state.currentFundImage} alt="profile-pic" className="profile-pic"/>
@@ -234,13 +469,13 @@ class Step1Component extends Component{
                                 <label className="removeBtn" onClick={this.removeImageBtn}>Remove</label>
                             </Col>
                         </Row>
-                        
+                        <div className="marginTop20 error">{this.state.fundDetailspageError}</div>
                     </div>
                 </div>
                 
                 <div className="footer-nav">        
-                    <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
-                    <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
+                    {/* <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i> */}
+                    <i className={"fa fa-chevron-right " + (!this.state.fundDetailsPageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>
                 </div>
                 <Loader isShow={this.state.showModal}></Loader>
             </div>

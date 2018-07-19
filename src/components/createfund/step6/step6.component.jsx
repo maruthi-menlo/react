@@ -7,7 +7,10 @@ class Step6Component extends Component {
 
     constructor(props) {
         super(props);
-        this.proceedToNext = this.proceedToNext.bind(this);
+        this.state = {
+            fundId: null
+        }
+        // this.proceedToNext = this.proceedToNext.bind(this);
         this.proceedToBack = this.proceedToBack.bind(this);
         this.data=[
             {data1:"hello",data2:"Hello hi data1",data3:"Hello Hi data"},
@@ -26,55 +29,64 @@ class Step6Component extends Component {
         
     }
 
-    proceedToNext() {
-        this.props.history.push('/createfund/step6');
+    // proceedToNext() {
+    //     this.props.history.push('/createfund/step6');
+    // }
+
+    componentDidMount() { 
+        let url = window.location.href;
+        let page = url.split('/createfund/review/');
+        let fundId = page[1];
+        this.setState({
+            fundId: fundId
+        })
     }
     
     proceedToBack() {
-        this.props.history.push('/createfund/step5');
+        this.props.history.push('/createfund/lp/'+this.state.fundId);
     }
     
 
     render() {
-         var rowItems = this.staticDataFromRow2.map(function(dataObj) {
-           return (               
-                <Row className="step6-rows" >
-                    <Col md={3} sm={3} xs={6}>
-                        <span className="col1">{dataObj.header1}</span>                    
-                    </Col>
-                    <Col md={4} sm={4} xs={6}>
-                        <span className="col2">{dataObj.href1 ? <a className="col2-redirection" href="/createfund/step4">{dataObj.href1}</a> :dataObj.header2}</span>
-                    </Col>
-                    <Col md={3} sm={3} xs={6}>
-                        <span className="col3"></span>
-                    </Col>
-                    <Col md={2} sm={2} xs={6}>
-                        <span className="col4"><a href={dataObj.href?dataObj.href:dataObj.href2}>{dataObj.header3}</a></span>
-                    </Col>
-                </Row>
-            );
-        });
+        //  var rowItems = this.staticDataFromRow2.map(function(dataObj) {
+        //    return (               
+        //         <Row className="step6-rows" >
+        //             <Col md={3} sm={3} xs={6}>
+        //                 <span className="col1">{dataObj.header1}</span>                    
+        //             </Col>
+        //             <Col md={4} sm={4} xs={6}>
+        //                 <span className="col2">{dataObj.href1 ? <a className="col2-redirection" href="/createfund/step4">{dataObj.href1}</a> :dataObj.header2}</span>
+        //             </Col>
+        //             <Col md={3} sm={3} xs={6}>
+        //                 <span className="col3"></span>
+        //             </Col>
+        //             <Col md={2} sm={2} xs={6}>
+        //                 <span className="col4"><a href={dataObj.href?dataObj.href:dataObj.href2}>{dataObj.header3}</a></span>
+        //             </Col>
+        //         </Row>
+        //     );
+        // });
 
-        var tableRows = this.data.map(function(dataObj) {
-                return (
-                    <tr>
-                        <td className="tableCols">
-                            <div>
-                                <CBox>
-                                    <span className="checkmark"></span>
-                                </CBox>
-                                <span>{dataObj.data1}</span>
-                            </div>
-                        </td>
-                        <td className="tableCols">{dataObj.data2}</td>
-                        <td className="tableCols"><CBox><span className="checkmark"></span></CBox></td>
-                    </tr>
+        // var tableRows = this.data.map(function(dataObj) {
+        //         return (
+        //             <tr>
+        //                 <td className="tableCols">
+        //                     <div>
+        //                         <CBox>
+        //                             <span className="checkmark"></span>
+        //                         </CBox>
+        //                         <span>{dataObj.data1}</span>
+        //                     </div>
+        //                 </td>
+        //                 <td className="tableCols">{dataObj.data2}</td>
+        //                 <td className="tableCols"><CBox><span className="checkmark"></span></CBox></td>
+        //             </tr>
                     
-                );
-            });
+        //         );
+        //     });
         return (
             
-            <div className="step6Class">
+            <div className="step6Class marginTop30">
                 <div className="step6ClassAboveFooter">
                     <div className="staticContent">
                         <h2>Review & Confirm</h2>
@@ -101,22 +113,46 @@ class Step6Component extends Component {
                         </Col>
                     </Row>
                     {/* Remaining rows items============ */}
-                    {rowItems}
-                    <div className="staticTextAndTbl">
+                    <Row className="step6-rows" >
+                        <Col md={3} sm={3} xs={6}>
+                            <span className="col1">GP Delegates</span>                    
+                        </Col>
+                        <Col md={4} sm={4} xs={6}>
+                            <span className="col2">Review delegates in sidebar and add or remove as necessary</span>
+                        </Col>
+                        <Col md={3} sm={3} xs={6}>
+                            <span className="col3"></span>
+                        </Col>
+                        <Col md={2} sm={2} xs={6}>
+                            <span className="col4"><a>Change</a></span>
+                        </Col>
+                    </Row>
+                    <div className="staticTextAndTbl marginTop20">
                         <h2 className="staticText">Select which documents are required for which LPs (check all that apply)</h2>
                         <div className="table">
                             <table className="tableClass">
                                 <thead className="tableHeaderClass">
                                     <tr>
-                                        <th className="tableCaret">LP Name<i className="fa fa-caret-down"></i></th>
-                                        <th className="tableCaret">Organization<i className="fa fa-caret-down"></i></th>
-                                        <th>partnership...</th>
+                                        <th className="tableCaret borderTopNone">LP Name<i className="fa fa-caret-down"></i></th>
+                                        <th className="tableCaret borderTopNone">Organization<i className="fa fa-caret-down"></i></th>
+                                        <th className="borderTopNone">partnership...</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {tableRows}
                                     <tr>
-                                        <td className="outsideTableCols">
+                                        <td className="tableCols lpNameWidth text-left">
+                                            <div>
+                                                <CBox>
+                                                    <span className="checkmark"></span>
+                                                </CBox>
+                                                <span>hello</span>
+                                            </div>
+                                        </td>
+                                        <td className="tableCols orgNameStyle">Hello hi data1</td>
+                                        <td className="tableCols"><CBox><span className="checkmark"></span></CBox></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="outsideTableCols lpNameWidth text-left">
                                             <div>
                                                 <CBox>
                                                     <span className="checkmark"></span>

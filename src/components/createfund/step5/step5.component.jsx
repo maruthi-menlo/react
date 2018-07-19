@@ -7,8 +7,8 @@ import { Constants } from '../../../constants/constants';
 import Loader from '../../../widgets/loader/loader.component';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/rrui.css'
-import 'react-phone-number-input/style.css'
+import 'react-phone-number-input/rrui.css';
+import 'react-phone-number-input/style.css';
 
 class Step5Component extends Component {
 
@@ -20,13 +20,16 @@ class Step5Component extends Component {
         this.proceedToBack = this.proceedToBack.bind(this);
         this.addLpDelegateBtn = this.addLpDelegateBtn.bind(this);
         this.addLpFn = this.addLpFn.bind(this);
+        this.sortLp = this.sortLp.bind(this);
         this.closeLpDelegateModal = this.closeLpDelegateModal.bind(this);
         this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
         this.state = {
             showAddLpModal: false,
+            showNameAsc: true,
+            showOrgAsc : true,
             getLpList: [],
             vcFirmId:2,
-            fundId:3,
+            fundId:null,
             isLpFormValid: false,
             firstNameBorder: false,
             firstNameMsz: '',
@@ -46,7 +49,8 @@ class Step5Component extends Component {
             cellNumberValid: false,
             lpErrorMsz: '',
             lpSelectedList:[],
-            lpScreenError:''
+            lpScreenError:'',
+            orgName:''
         }
     }
 
@@ -150,10 +154,10 @@ class Step5Component extends Component {
         if(this.state.lpSelectedList.length > 0) {
             this.open();
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-            let lpObj = {fundId:this.state.fundId, vcfirmId:this.state.vcFirmId, lpDelegates:this.state.lpSelectedList }
+            let lpObj = {fundId:this.state.fundId, vcfirmId:this.state.vcFirmId, lpDelegates:this.state.lpSelectedList,organisationName:this.state.orgName }
             this.Fsnethttp.assignLpToFund(lpObj, headers).then(result=>{
                 this.close();
-                this.props.history.push('/createfund/step6');
+                this.props.history.push('/createfund/review/'+this.state.fundId);
             })
             .catch(error=>{
                 this.close();
@@ -166,7 +170,7 @@ class Step5Component extends Component {
     }
 
     proceedToBack() {
-        this.props.history.push('/createfund/step4');
+        this.props.history.push('/createfund/lp/'+this.state.fundId);
     }
 
     // Update state params values and login button visibility
@@ -267,6 +271,11 @@ class Step5Component extends Component {
                 this.updateStateParams(dataObj);
                 }
                 break;
+            case 'orgName':
+                this.setState({
+                    orgName: event.target.value
+                })
+                break;
             case 'cellNumber':
                 if(event === '' || event === undefined) {
                     this.setState({
@@ -332,10 +341,15 @@ class Step5Component extends Component {
     }
 
     componentDidMount() { 
+        let url = window.location.href;
+        let page = url.split('/createfund/lp/');
+        let fundId = page[1];
+        this.setState({
+            fundId: fundId
+        })
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
         let firmId = this.state.vcFirmId;
-        let fundId = this.state.fundId;
         this.Fsnethttp.getLp(firmId, fundId, headers).then(result=>{
             this.close();
             if(result.data && result.data.data.length >0) {
@@ -344,6 +358,56 @@ class Step5Component extends Component {
                 this.setState({
                     getLpList: []
                 })
+            }
+        })
+        .catch(error=>{
+                this.close();
+                this.setState({
+                    getLpList: []
+                })
+           
+        });
+    }
+
+
+
+    sortLp(e, colName, sortVal) { 
+        this.open();
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        let firmId = this.state.vcFirmId;
+        let fundId = this.state.fundId;
+        this.Fsnethttp.getLpSort(firmId, fundId, headers,colName,sortVal).then(result=>{
+            if(result.data && result.data.data.length >0) {
+                this.close();
+                this.setState({ getLpList: result.data.data }, () => this.selectedMembersPushToList());
+                if(colName == 'firstName') {
+                    if (sortVal == 'desc') {
+                        this.setState({
+                        showNameAsc : true
+                        })
+                    } else {
+                        this.setState({
+                            showNameAsc : false
+                        })
+                    }
+                 } else {
+                    if (sortVal == 'desc') {
+                        this.setState({
+                            showOrgAsc : true
+                        })
+                    } else {
+                        this.setState({
+                            showOrgAsc : false
+                        })
+                    }
+                }
+                
+            } else {
+                this.close();
+                this.setState({
+                    getLpList: [],
+                    showNameAsc : false
+                },)
             }
         })
         .catch(error=>{
@@ -371,26 +435,35 @@ class Step5Component extends Component {
 
     render() {
         return (
-                <div className="GpDelegatesContainer">
+                <div className="GpDelegatesContainer marginTop30">
                     <h1 className="assignGp">Assign LPs</h1>
                     <p className="Subtext">Select LPs from the list below or choose to add new LP to Fund.</p>
                     <Button className="lpDelegateButton" onClick={this.addLpDelegateBtn}><i className="fa fa-plus"></i>Limited Partner</Button>
                     {this.state.getLpList.length >0 ?
-                        <Row className="rowWidth">
-                            <Col lg={5} md={5} sm={5} xs={5}>
-                                <span className="lpNameHeading">LP Name</span>
-                                <i className="fa fa-sort-desc" aria-hidden="true"></i>
-                            </Col>
-                            <Col lg={7} md={7} sm={7} xs={7}>
-                                <span className="organizationHeading">Organization</span>
-                                <i className="fa fa-sort-desc" aria-hidden="true"></i>
-                            </Col>
+                        <Row className="full-width marginTop20 ">
+                            <div className="name-heading marginLeft75" hidden={!this.state.showNameAsc} onClick={(e) => this.sortLp(e,'firstName','asc')}>
+                                LP Name
+                                    <i className="fa fa-sort-asc"   aria-hidden="true"  ></i>
+                            </div>
+                            <div className="name-heading marginLeft75" onClick={(e) => this.sortLp(e,'firstName','desc')} hidden={this.state.showNameAsc}>
+                                LP Name
+                                <i className="fa fa-sort-desc"  aria-hidden="true"  ></i>
+                            </div>
+                            <div className="name-heading" onClick={(e) => this.sortLp(e,'organizationName','asc')} hidden={!this.state.showOrgAsc}>
+                                Organization
+                                <i className="fa fa-sort-asc"  aria-hidden="true"></i>
+                            </div>
+                            <div className="name-heading" onClick={(e) => this.sortLp(e,'organizationName','desc')} hidden={this.state.showOrgAsc}>
+                                Organization
+                                <i className="fa fa-sort-desc"  aria-hidden="true" ></i>
+                            </div>
                         </Row>:''
                     }
-                    <div className={"userContainer " + (this.state.getLpList.length ===0 ? 'borderNone' : '')}>
+                    <div className={"userLPContainer " + (this.state.getLpList.length ===0 ? 'borderNone' : 'marginTop10')}>
                         {this.state.getLpList.length >0 ?
                             this.state.getLpList.map((record, index) => {
                                 return (
+                                    
                                     <div className="userRow" key={index}>
                                         {
                                             record['profilePic'] ?
@@ -398,7 +471,8 @@ class Step5Component extends Component {
                                                 : <img src={userDefaultImage} alt="user_image" className="user-image" />
                                         }
 
-                                        <div className="fund-user-name">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                        <div className="lp-name">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                        <div className="lp-name">Organisation Name</div>
                                         <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e, 'user', { record })}>
                                             <span className="checkmark"></span>
                                         </CBox>
@@ -406,13 +480,16 @@ class Step5Component extends Component {
                                 );
                             })
                             :
-                            <div className="title margin20">You haven’t added any LP’s to this fund yet.</div>
+                            <div className="title margin20 text-center">You haven’t added any LP’s to this fund yet.</div>
                         }
                     </div>
                     <div className="error">{this.state.lpScreenError}</div>
                
                 <div className="addRoleModal" hidden={!this.state.showAddLpModal}>
-                <h3 className="title">Add GP Delegate</h3>
+                    <div>
+                        <div className="croosMarkStyle"><span className="cursor-pointer" onClick={this.closeLpDelegateModal}>x</span></div>
+                        <h3 className="title">Add LP</h3>
+                    </div>
                     <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</div>         <div className="form-main-div">   
                         <form>               
                             <Row className="marginBot20">
@@ -433,6 +510,12 @@ class Step5Component extends Component {
                                     <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} value= {this.state.email} onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email')}/>   
                                     <span className="error">{this.state.emailMsz}</span>            
                                 </Col>
+                                <Col lg={6} md={6} sm={6} xs={12}>
+                                    <label className="form-label">Organisation Name</label>
+                                    <FormControl type="text" name="orgName" placeholder="Organisation Name" className="inputFormControl" value= {this.state.orgName} onChange={(e) => this.handleInputChangeEvent(e,'orgName')}/>   
+                                </Col>
+                            </Row>
+                            <Row className="marginBot20">
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Phone Number (Main)*</label>
                                     <PhoneInput className={(this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')} />

@@ -33,5 +33,7 @@ export class Constants{
     USERNAME_MIN_CHARCTERS = 'Username should be 5 to 60 characters.';
     GP_DELEGATES_REQUIRED = 'Please select atleast one Gp Delegate for this fund.';
     LP_REQUIRED = 'Please select atleast one LP for this fund.';
+    LEGAL_ENTITY_REQUIRED = 'Please enter legal entity.';
+    LEGAL_ENTITY_NAME_REQUIRED = 'Please enter legal entity name.';
     
 }

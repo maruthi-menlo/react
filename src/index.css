@@ -17,7 +17,7 @@ body {
   font-size: 128px;
 } 
 .marginTop10 {
-  margin-top: 10px;
+  margin-top: 10px !important;
 }
 .marginBottom30{
   margin-bottom: 30px;
@@ -386,6 +386,26 @@ select option {
 .marginTop20 {
   margin-top: 20px;
 }
+.marginTop30 {
+  margin-top: 30px !important;
+}
 .marginBottom20 {
   margin-bottom: 20px !important;
+}
+.bold {
+  font-weight: bold;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.scroll .container {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: auto !important;
+}
+.scroll .vertical-bar {
+  color: #00bcd4 !important;
+}
+.marginBottom30 {
+  margin-bottom: 30px !important;
 }
