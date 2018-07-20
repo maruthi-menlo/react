@@ -23,7 +23,7 @@ class Step2Component extends Component {
         this.state = {
             showAddGpDelegateModal: false,
             getGpDelegatesList: [],
-            vcFirmId:2,
+            firmId:null,
             fundId:null,
             isGpDelgateFormValid: false,
             firstNameBorder: false,
@@ -247,7 +247,7 @@ class Step2Component extends Component {
     proceedToNext() {
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        let delegateObj = {fundId:this.state.fundId, vcfirmId:this.state.vcFirmId, gpDelegates:this.state.gpDelegatesSelectedList }
+        let delegateObj = {fundId:this.state.fundId, vcfirmId:this.state.firmId, gpDelegates:this.state.gpDelegatesSelectedList }
         this.Fsnethttp.assignDelegatesToFund(delegateObj, headers).then(result=>{
             this.close();
             this.props.history.push('/createfund/upload/'+this.state.fundId);
@@ -306,15 +306,17 @@ class Step2Component extends Component {
     }
 
     componentDidMount() { 
-        let url = window.location.href;
-        let page = url.split('/createfund/gpDelegate/');
-        let fundId = page[1];
+        let firmId = reactLocalStorage.getObject('firmId');
+        var url = window.location.href;
+        var parts = url.split("/");
+        var urlSplitFundId = parts[parts.length - 1];
+        let fundId = urlSplitFundId;
         this.setState({
-            fundId: fundId
+            fundId: fundId,
+            firmId: firmId
         })
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        let firmId = this.state.vcFirmId;
         this.Fsnethttp.getGpDelegates(firmId, fundId, headers).then(result=>{
             this.close();
             if(result.data && result.data.data.length >0) {
@@ -336,7 +338,7 @@ class Step2Component extends Component {
 
     render() {
         return (
-            <div className="width100 marginTop30">
+            <div className="step2Class marginTop30">
             <div className="GpDelegatesContainer" >
                 <h1 className="title">Assign GP Delegates</h1>
                 <p className="subtext">Select GP Delegate(s) from the list below or add a new one.</p>

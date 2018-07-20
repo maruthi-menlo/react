@@ -21,6 +21,7 @@ class DashboardComponent extends Component {
         this.Constants = new Constants();
         this.showActivityFeed = this.showActivityFeed.bind(this);
         this.searchInputChangeEvent = this.searchInputChangeEvent.bind(this);
+        this.navigateToCreateFund = this.navigateToCreateFund.bind(this);
         this.state = {
             isHide: true,
             rowData: 0,
@@ -44,6 +45,10 @@ class DashboardComponent extends Component {
         this.setState({
             rowData: 1
         })
+    }
+
+    navigateToCreateFund() {
+        this.props.history.push('/createfund/funddetails');
     }
 
     searchInputChangeEvent(e) {
@@ -132,7 +137,7 @@ class DashboardComponent extends Component {
                         </Col>
                         <Col lg={6} md={6} sm={6} xs={12} className="display-filter filter-right display-right-filter">
                             <div className="filter-right-block">
-                                <Button className="newFundButton"><i className="fa fa-plus"></i><a href="/createfund/funddetails">New Fund</a></Button>
+                                <Button className="newFundButton" onClick={this.navigateToCreateFund}><i className="fa fa-plus"></i>New Fund</Button>
                             </div>
                         </Col>
                     </Col>

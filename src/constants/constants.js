@@ -2,12 +2,14 @@ export class Constants{
 
     // Environments settings
 
-    // Develop
+    // Develop URL
+    // BASE_URL = `http://192.168.1.231:3000/api/v1/`;
 
-    BASE_URL = `http://192.168.1.231:3000/api/v1/`;
+    // Stage URL
+    // BASE_URL = `http://192.168.1.231:3000/api/v1/`;
     
-    //Stage URL
-    // BASE_URL = `http://137.116.56.150:3000/api/v1/`;
+    // QA URL
+    BASE_URL = `http://137.116.56.150:4000/api/v1/`;
 
     REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME = "Password and Password Confirm should be the same.";
     REQUIRED_PASSWORD_AGAINPASSWORD_SAME = "Password and Password again should be the same.";
@@ -35,5 +37,6 @@ export class Constants{
     LP_REQUIRED = 'Please select atleast one LP for this fund.';
     LEGAL_ENTITY_REQUIRED = 'Please enter legal entity.';
     LEGAL_ENTITY_NAME_REQUIRED = 'Please enter legal entity name.';
+    UPLOAD_DOC_REQUIRED = 'Please upload paternship document.';
     
 }

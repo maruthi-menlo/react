@@ -28,7 +28,7 @@ class Step5Component extends Component {
             showNameAsc: true,
             showOrgAsc : true,
             getLpList: [],
-            vcFirmId:2,
+            firmId:null,
             fundId:null,
             isLpFormValid: false,
             firstNameBorder: false,
@@ -50,7 +50,8 @@ class Step5Component extends Component {
             lpErrorMsz: '',
             lpSelectedList:[],
             lpScreenError:'',
-            orgName:''
+            orgName:'',
+            step5PageValid: false,
         }
     }
 
@@ -78,7 +79,7 @@ class Step5Component extends Component {
         }
         
         if(!error) {
-            let postObj = {firstName:firstName, lastName:lastName, email:email,cellNumber:cellNumber, fundId: this.state.fundId};
+            let postObj = {firstName:firstName, lastName:lastName, email:email,cellNumber:cellNumber, fundId: this.state.fundId, organizationName:this.state.orgName};
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
             this.open()
             this.Fsnethttp.addLp(postObj,headers).then(result=>{
@@ -97,7 +98,8 @@ class Step5Component extends Component {
                     this.setState({
                         getLpList:lpList,
                         showAddLpModal: false,
-                        lpSelectedList: selectedList
+                        lpSelectedList: selectedList,
+                        step5PageValid: true
                     });
                     this.clearFormFileds();
                 }
@@ -123,7 +125,9 @@ class Step5Component extends Component {
             lpErrorMsz: '',
             firstName: '',
             lastName: '',
-            email:''
+            email:'',
+            orgName: '',
+            cellNumber:''
         });
     }
 
@@ -148,13 +152,14 @@ class Step5Component extends Component {
         this.setState({
             showAddLpModal: false
         })
+        this.clearFormFileds();
     }
 
     proceedToNext() {
         if(this.state.lpSelectedList.length > 0) {
             this.open();
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-            let lpObj = {fundId:this.state.fundId, vcfirmId:this.state.vcFirmId, lpDelegates:this.state.lpSelectedList,organisationName:this.state.orgName }
+            let lpObj = {fundId:this.state.fundId, vcfirmId:this.state.firmId, lpDelegates:this.state.lpSelectedList }
             this.Fsnethttp.assignLpToFund(lpObj, headers).then(result=>{
                 this.close();
                 this.props.history.push('/createfund/review/'+this.state.fundId);
@@ -170,7 +175,7 @@ class Step5Component extends Component {
     }
 
     proceedToBack() {
-        this.props.history.push('/createfund/lp/'+this.state.fundId);
+        this.props.history.push('/createfund/upload/'+this.state.fundId);
     }
 
     // Update state params values and login button visibility
@@ -341,15 +346,17 @@ class Step5Component extends Component {
     }
 
     componentDidMount() { 
-        let url = window.location.href;
-        let page = url.split('/createfund/lp/');
-        let fundId = page[1];
+        let firmId = reactLocalStorage.getObject('firmId');
+        var url = window.location.href;
+        var parts = url.split("/");
+        var urlSplitFundId = parts[parts.length - 1];
+        let fundId = urlSplitFundId;
         this.setState({
-            fundId: fundId
+            fundId: fundId,
+            firmId:firmId
         })
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        let firmId = this.state.vcFirmId;
         this.Fsnethttp.getLp(firmId, fundId, headers).then(result=>{
             this.close();
             if(result.data && result.data.data.length >0) {
@@ -374,7 +381,7 @@ class Step5Component extends Component {
     sortLp(e, colName, sortVal) { 
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        let firmId = this.state.vcFirmId;
+        let firmId = this.state.firmId;
         let fundId = this.state.fundId;
         this.Fsnethttp.getLpSort(firmId, fundId, headers,colName,sortVal).then(result=>{
             if(result.data && result.data.data.length >0) {
@@ -427,7 +434,8 @@ class Step5Component extends Component {
                     list.push(index['id'])
                 }
                 this.setState({
-                    lpSelectedList: list
+                    lpSelectedList: list,
+                    step5PageValid: true
                 })
             }
         }
@@ -435,7 +443,7 @@ class Step5Component extends Component {
 
     render() {
         return (
-                <div className="GpDelegatesContainer marginTop30">
+                <div className="LpDelegatesContainer marginTop30">
                     <h1 className="assignGp">Assign LPs</h1>
                     <p className="Subtext">Select LPs from the list below or choose to add new LP to Fund.</p>
                     <Button className="lpDelegateButton" onClick={this.addLpDelegateBtn}><i className="fa fa-plus"></i>Limited Partner</Button>
@@ -472,7 +480,7 @@ class Step5Component extends Component {
                                         }
 
                                         <div className="lp-name">{record['firstName']}&nbsp;{record['lastName']}</div>
-                                        <div className="lp-name">Organisation Name</div>
+                                        <div className="lp-name">{record['organizationName']}</div>
                                         <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e, 'user', { record })}>
                                             <span className="checkmark"></span>
                                         </CBox>
@@ -537,7 +545,8 @@ class Step5Component extends Component {
                 </div>
                 <div className="footer-nav">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
-                    <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
+                    <i className={"fa fa-chevron-right " + (!this.state.step5PageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>
+                    
                 </div>
                 <Loader isShow={this.state.showModal}></Loader>
             </div>

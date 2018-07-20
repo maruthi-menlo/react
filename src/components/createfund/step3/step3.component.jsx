@@ -20,18 +20,23 @@ class Step3Component extends Component {
         this.state = {
             uploadDocFile: {},
             uploadFileName: '',
-            vcFirmId:2,
+            uploadDocSize:'',
+            firmId:null,
             fundId:null,
-            createdFundData:[]
+            createdFundData:[],
+            uploadFundPageValid: false,
         }
     }
 
-    componentDidMount() { 
-        let url = window.location.href;
-        let page = url.split('/createfund/upload/');
-        let fundId = page[1];
+    componentDidMount() {
+        let firmId = reactLocalStorage.getObject('firmId'); 
+        var url = window.location.href;
+        var parts = url.split("/");
+        var urlSplitFundId = parts[parts.length - 1];
+        let fundId = urlSplitFundId;
         this.setState({
-            fundId: fundId
+            fundId: fundId,
+            firmId:firmId
         })
 
         if(fundId != undefined) {
@@ -62,11 +67,12 @@ class Step3Component extends Component {
 
     updateDoc() {
         let data = this.state.createdFundData;
-        console.log(data);
-        if(data){
+        if(data.partnershipDocument){
             this.setState({
                 uploadFileName: data.partnershipDocument.filename,
-                uploadDocFile: data
+                uploadDocFile: data,
+                uploadDocSize: (data.partnershipDocument.size/ 1048576).toFixed(4),
+                uploadFundPageValid: true
             })
         }
     }
@@ -82,14 +88,32 @@ class Step3Component extends Component {
     }
 
     proceedToNext() {
-        if(this.state.uploadFileName !== '') {
-            this.open();
+        if(this.state.uploadFileName === '') {
+            this.setState({
+                errorMessage: this.Constants.UPLOAD_DOC_REQUIRED,
+            });
+        } else if(this.state.uploadFileName !== '') {
+            if(this.state.createdFundData.partnershipDocument) {
+                if(this.state.uploadFileName === this.state.createdFundData.partnershipDocument.filename) {
+                    this.props.history.push('/createfund/lp/'+this.state.fundId);
+                } else {
+                    this.uploadDocApi()
+                }
+            } else {
+                this.uploadDocApi()
+            }
+            
+        }
+    }
+
+    uploadDocApi() {
+        this.open();
             //call the upload doc api
             var formData = new FormData();
             formData.append("fundId", this.state.fundId);
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
             formData.append("fundDoc", this.state.uploadDocFile);
-            this.Fsnethttp.uploadDocumentToFund(this.state.vcFirmId,headers, formData).then(result=>{
+            this.Fsnethttp.uploadDocumentToFund(this.state.fundId,headers, formData).then(result=>{
                 this.close();
                 this.props.history.push('/createfund/lp/'+this.state.fundId);
             })
@@ -106,12 +130,6 @@ class Step3Component extends Component {
 
                 }
             });
-        } else {
-            this.setState({
-                errorMessage: this.Constants.INTERNAL_SERVER_ERROR,
-            });
-
-        }
     }
 
     deleteFile() {
@@ -120,13 +138,23 @@ class Step3Component extends Component {
             this.open()
             this.Fsnethttp.deleteFile(postObj,headers).then(result=>{
                 this.close();
-                if(result.data) {
-                  
+                document.getElementById('uploadBtn').value = "";
+                if(result) {
+                    this.setState({
+                        uploadDocFile: {},
+                        uploadFileName: '',
+                        uploadFundPageValid: false,
+                        errorMessage: ''
+                    })
                 }
             })
             .catch(error=>{
                 this.close();
-               
+                this.setState({
+                    uploadDocFile: {},
+                    uploadFileName: '',
+                    uploadFundPageValid: false
+                })
             });
     }
 
@@ -145,13 +173,23 @@ class Step3Component extends Component {
         let reader = new FileReader();
         if(event.target.files && event.target.files.length > 0) {
             this.uploadFile = event.target.files[0];
-            if(this.uploadFile.size <=16000000) {
+            let sFileName = event.target.files[0].name;
+            var sFileExtension = sFileName.split('.')[sFileName.split('.').length - 1].toLowerCase();
+            if(sFileExtension !== 'pdf' && sFileExtension !== 'docx') {
+                document.getElementById('uploadBtn').value = "";
+                alert('Patnership document should be pdf/docx only and less than 10MB size')
+                return true;
+            }
+            //File 10 MB limit
+            if(this.uploadFile.size <=1024000) {
                 this.setState({
                     uploadDocFile : event.target.files[0],
+                    uploadDocSize: (this.uploadFile.size / 1048576).toFixed(2)
                 });
                 reader.readAsDataURL(this.uploadFile);
                 this.setState({
-                    uploadFileName: event.target.files[0].name
+                    uploadFileName: event.target.files[0].name,
+                    uploadFundPageValid: true
                 });
                 // reader.onload = () => {
                 //     this.setState({
@@ -159,7 +197,8 @@ class Step3Component extends Component {
                 //     });
                 // }
             } else {
-               alert('Show error here')
+                document.getElementById('uploadBtn').value = "";
+               alert('Patnership document should be less than 10 MB')
             }
         }
     }
@@ -176,13 +215,13 @@ class Step3Component extends Component {
                         <Button className="uploadFileBox" onClick={this.uploadBtnClick}></Button>
                         <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB.</span>
                         <div><a className="upload-doc-name">{this.state.uploadFileName} </a> </div>
-                        <div className="filesize">1.4MB <i className="fa fa-trash cursor-pointer" onClick={this.deleteFile}></i></div>
+                        <div className="filesize" hidden={this.state.uploadFileName ===''}>{this.state.uploadDocSize} MB <i className="fa fa-trash cursor-pointer" onClick={this.deleteFile}></i></div>
                     </div>
                 </div>
                 <div className="error">{this.state.errorMessage}</div>
                 <div className="footer-nav">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
-                    <i className="fa fa-chevron-right" onClick={this.proceedToNext} aria-hidden="true"></i>
+                    <i className={"fa fa-chevron-right " + (!this.state.uploadFundPageValid ? 'disabled' : '')} onClick={this.proceedToNext}  aria-hidden="true"></i>
                 </div>
                 <Loader isShow={this.state.showModal}></Loader>
             </div>

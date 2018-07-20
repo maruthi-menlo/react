@@ -84,6 +84,7 @@ class LoginComponent extends Component{
                     this.close();
                     if(result.data) {
                         reactLocalStorage.set('userData', JSON.stringify(result.data.user));
+                        reactLocalStorage.set('firmId', JSON.stringify(result.data.user.vcfirmId));
                         reactLocalStorage.set('token', JSON.stringify(result.data.token));
                         this.props.history.push('/dashboard');
                     }

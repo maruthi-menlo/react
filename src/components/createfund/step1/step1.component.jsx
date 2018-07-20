@@ -4,13 +4,9 @@ import fundDefaultImage from '../../../images/profilePic.jpg';
 import { Button, Radio, Row, Col, FormControl } from 'react-bootstrap';
 import Loader from '../../../widgets/loader/loader.component';
 import {Fsnethttp} from '../../../services/fsnethttp';
-import {Client} from '../../../services/eventservice.component';
 import {Constants} from '../../../constants/constants';
-import {EventEmitter} from 'fbemitter';
-import {ee} from 'event-emitter';
-
 import { reactLocalStorage } from 'reactjs-localstorage';
-
+import { PubSub } from 'pubsub-js';
 
 class Step1Component extends Component{
 
@@ -18,7 +14,6 @@ class Step1Component extends Component{
         super(props);
         this.Fsnethttp = new Fsnethttp();
         this.Constants = new Constants();
-        this.client = new Client();       
         this.proceedToNext = this.proceedToNext.bind(this);
         this.proceedToBack = this.proceedToBack.bind(this);
         this.fundDetailsInputHandleEvent = this.fundDetailsInputHandleEvent.bind(this);
@@ -49,23 +44,32 @@ class Step1Component extends Component{
             cTextBoxDisabled: false,
             fundDetailspageError:'',
             createdFundData:[],
-            fundId:''
+            fundId:'',
+            firmId: null
         }
     }
 
 
     componentDidMount() {
-        let url = window.location.href;
-        let page = url.split('/createfund/funddetails/');
-        let fundId = page[1];
+        let firmId = reactLocalStorage.getObject('firmId');
+        this.setState({
+            firmId:firmId
+        })
+        var url = window.location.href;
+        var parts = url.split("/");
+        var urlSplitFundId = parts[parts.length - 1];
+        let fundId = urlSplitFundId;
         console.log(fundId)
-        if(fundId != undefined) {
+        if(fundId != undefined && fundId != 'funddetails') {
             this.open();
+            this.setState({
+                fundId: fundId
+            })
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
             this.Fsnethttp.getFund(fundId, headers).then(result=>{
                 this.close();
                 if(result.data) {
-                    this.setState({ createdFundData: result.data.data, fundId: fundId }, () => this.updateInputValues());
+                    this.setState({ createdFundData: result.data.data, fundId: fundId, firmId:firmId }, () => this.updateInputValues());
                     let dataObj = {};
                     dataObj ={
                         fundManagerLegalEntityNameValid : true,
@@ -90,16 +94,29 @@ class Step1Component extends Component{
 
     updateInputValues() {
         let obj = this.state.createdFundData;
-        this.setState({
+        this.setState({ 
             legalEntity: obj.legalEntity || '',
             fundHardCap: obj.fundHardCap || '',
             fundManagerLegalEntityName: obj.fundManagerLegalEntityName || '',
             capitalCommitmentByGP: obj.capitalCommitmentByGP || '',
             percentageOfLPCommitment: obj.percentageOfLPCommitment || '',
             percentageOfLPAndGPAggregateCommitment: obj.percentageOfLPAndGPAggregateCommitment || '',
-            fundImage: obj.fundImage || '',
+            currentFundImage: obj.fundImage? obj.fundImage.url: '',
+            fundImageName: obj.fundImage? obj.fundImage.originalname: '',
             isAllDelegateSignNeeded: obj.isAllDelegateSignNeeded || ''
-        })
+         }, () => this.disableFundParticipationFields());
+    }
+
+    disableFundParticipationFields() {
+        if(this.state.percentageOfLPCommitment == '' && this.state.percentageOfLPAndGPAggregateCommitment == '' && this.state.capitalCommitmentByGP == '') {
+            this.enableAllTextBoxes()
+        } else if(this.state.percentageOfLPCommitment != '') {
+            this.disableBandCTextFields();
+        } else if(this.state.percentageOfLPAndGPAggregateCommitment != '') {
+            this.disableAandCTextFields();
+        } else if(this.state.capitalCommitmentByGP != '') {
+            this.disableAandEnableBTextFields();
+        }
     }
 
     // Update state params values and login button visibility
@@ -320,6 +337,8 @@ class Step1Component extends Component{
     }
 
     proceedToNext() {
+        console.log('=== submitted====');
+        PubSub.publish('fundData', {key: 'hello world!'});
         let error = false;
         if(this.state.capitalCommitmentByGP === '' && this.state.percentageOfLPCommitment === '' && this.state.percentageOfLPAndGPAggregateCommitment === '') {
             error = true;
@@ -336,7 +355,7 @@ class Step1Component extends Component{
         if(!error) {
             this.open()
             var formData = new FormData();
-            formData.append("vcfirmId", 2);
+            formData.append("vcfirmId", this.state.firmId);
             formData.append("legalEntity", this.state.legalEntity);
             formData.append("fundHardCap", this.state.fundHardCap);
             formData.append("fundManagerLegalEntityName", this.state.fundManagerLegalEntityName);
@@ -361,9 +380,6 @@ class Step1Component extends Component{
                     fundDetailsPageValid: true,
                     createdFundData: result.data.data
                 })
-                // this.client.addListener('fundData', (...args) => {
-                // }); 
-                this.client.emit('fundData',{data:'sdfkjb'});
                 this.props.history.push('/createfund/gpDelegate/'+result.data.data.id);
             })
             .catch(error=>{
@@ -449,10 +465,10 @@ class Step1Component extends Component{
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">All delegates must sign fund:</label>
-                                <Radio name="radioGroup" inline id="yesCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededYes')}>&nbsp; Yes 
+                                <Radio name="radioGroup" checked={this.state.isAllDelegateSignNeeded} inline id="yesCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededYes')}>&nbsp; Yes 
                                 <span className="radio-checkmark"></span>
                                 </Radio>
-                                <Radio name="radioGroup" inline id="noCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededNo')}>&nbsp; No 
+                                <Radio name="radioGroup" inline id="noCheckbox" checked={!this.state.isAllDelegateSignNeeded} onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededNo')}>&nbsp; No 
                                 <span className="radio-checkmark"></span>
                                 </Radio>
                             </Col>

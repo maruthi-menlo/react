@@ -409,3 +409,9 @@ select option {
 .marginBottom30 {
   margin-bottom: 30px !important;
 }
+.borderRightNone {
+  border-right: none !important;
+}
+.borderLeftNone {
+  border-left: none !important;
+}

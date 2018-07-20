@@ -10,12 +10,15 @@
 }
 
 
+.sidenav h1 .fa-home{
+    margin-right: 15px;
+}
 .sidenav h1 i{
     float:left;
-    margin-right:20px;
-    margin-left:10px;
+    margin-right:10px;
+    margin-left:20px;
     margin-top: 3px;
-   }
+}
 
 .sidenav ul li a.active {
     color: #39bcd5;
@@ -68,8 +71,11 @@
 }
 
 
+.sidenav .active-item .fa{
+    margin-right: 15px;
+}
 .sidenav .active-item {
-    padding: 12px 10px 12px 20px;
+    padding: 12px 10px 12px 14px;
     background-color: #00bcd4;
     color: #ffffff;
     border-left: 8px solid #295170;
@@ -95,10 +101,10 @@
 }
 
 .main-heading {
-    width: 100%;
+    width: 98%;
     color: #2f4858;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
-    margin: 30px 20px 10px 0;
+    margin: 30px 20px 10px 4px;
     padding-bottom: 20px;
 }
 
@@ -203,8 +209,16 @@
     margin-bottom: 25px;
 }
 #createFund .GpDelegatesContainer{
-    margin-left: 47px;
-    width: 100%;
+    margin-left: 18px;
+    width: 98%;
+}
+#createFund .LpDelegatesContainer .error{
+    margin-left: 25px;
+    margin-bottom: 25px;
+}
+#createFund .LpDelegatesContainer{
+    margin-left: 51px;
+    width: 98%;
 }
 .assignGp {
     /*width: 201px;*/
@@ -388,7 +402,6 @@
 }
 #createFund .header-right-row {
     width: 512px;
-    float: left;
     position: relative;
     right: -48%;
 }
@@ -624,7 +637,7 @@
 }
 .chooseFileMargin{
     margin-left: 32px;
-    margin-bottom: 42%;
+    margin-bottom: 12%;
 }
 
 /* For step1 form =======================*/
@@ -716,8 +729,8 @@
 }
 
 /* step-3 styles================= */
-.step3Class{
-    margin-left: 30px;
+.step3Class, .step2Class{
+    margin-left: 20px;
     width: 100%;
 }
 
@@ -735,7 +748,7 @@
 /* Step-6 styles================== */
 
 .step6Class{
-    margin-left: 32px;
+    margin-left: 20px;
     width: 100%;
 }
 .step6ClassAboveFooter{
@@ -777,8 +790,8 @@
     padding: 0px;
 }
 
-#step6-rows1{
-    height: 190px ! important;
+#createFund #step6-rows1{
+    min-height: 190px;
     padding: 20px 0px 20px 0px;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
     /* width: 1000px; */
@@ -833,10 +846,11 @@
 .tableCols{
     text-align: center;
     border: 1px solid rgba(51, 101, 138, 0.25);
+    padding: 0 0 0 10px !important;
 }
 .outsideTableCols{
     text-align: center;
-
+    padding: 0 0 0 10px !important;
 }
 input[type=checkbox]{
     cursor: pointer;
@@ -848,11 +862,15 @@ input[type=checkbox]{
 } */
 .staticTextBelowTable{
     border-top: 2px solid rgba(51, 101, 138, 0.5);
-    padding: 40px 0px 65px 0px;
+    padding: 40px 0px 20px 0px;
     color: rgba(47, 72, 88, 0.5);
     font-size: 23px;
     font-weight: bold;
     width:970px;
+}
+.startFundButtonStyle {
+    text-align: center;
+    padding-bottom: 20px;
 }
 .tableCaret i{
     margin-left: 7px;
@@ -1001,7 +1019,7 @@ input[type=checkbox]{
 }
 #createFund .checkbox {
     position: relative;
-    top: 8px;
+    top: 4px;
 }
 #createFund .marginLeft75 {
     margin-left: 75px;
@@ -1049,6 +1067,7 @@ input[type=checkbox]{
     border: 1px solid #add8e6;
     margin-top: 30px;
     margin-bottom: 30px;
+    /* margin-left: 10px; */
 }
 #createFund .userContainer {
     width: 400px;
@@ -1099,7 +1118,7 @@ input[type=checkbox]{
     width: 35%;
 }
 .orgNameStyle {
-    padding-top: 30px !important;
+    padding-top: 18px !important;
     width: 35%;
     text-align: left;
 }
@@ -1107,15 +1126,22 @@ input[type=checkbox]{
     max-height: 200px;
     overflow-y: auto;
 }
+.cboxAlign {
+    top: 8px !important;
+}
 .gpDelegateInfo {
     color: #fff;
     height: 48px;
     border-bottom: 1px solid #fff;
-    padding: 10px;
+    padding: 10px 0;
 }
 .dpDelImg {
     width: 20%;
     float: left;
+    width: 20%;
+    float: left;
+    position: relative;
+    top: -4px;
 }
 .dpDelName {
     width: 66%;
@@ -1123,6 +1149,18 @@ input[type=checkbox]{
 }
 .dpDelgDel {
 
+}
+
+.gpDelDiv::-webkit-scrollbar {
+    width: 12px;
+}
+.gpDelDiv::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); ;
+    border-radius: 10px;
+}
+.gpDelDiv::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #318D9E;
 }
 .table1stColAlign {
     margin-left: -36px;
@@ -1161,7 +1199,7 @@ input[type=checkbox]{
     color: #fff;
 }
 .footerNavStep2 {
-    margin-left: -32px;
+    margin-left: -15px;
 }
 .croosMarkStyle {
     text-align: right;
@@ -1174,6 +1212,50 @@ input[type=checkbox]{
 }
 .fa-trash:before {
     font-size: 16px;
+}
+.cursorDisabled {
+    cursor: disabled;
+    pointer-events: none;
+}
+.pointerNone {
+    pointer-events: none;
+}
+#createFund .fundStartModal .subtext{
+    width: 448px;
+    height: 130px;
+}
+#createFund .patnership-link {
+    width: 156px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+#createFund .fundBtnRow {
+    margin-top: 20px;
+}
+#createFund .fundStartModal {
+    opacity: 1!important;
+    border-radius: 8px;
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+    left: 0;
+    top: 100px;
+    margin: auto;
+    background-color: #ffffff;
+    -webkit-box-shadow: -8px 8px 16px 0 rgba(82, 97, 115, 0.18);
+    box-shadow: -8px 8px 16px 0 rgba(82, 97, 115, 0.18);
+    border: solid 1px rgba(74, 74, 74, 0.25);
+    padding-bottom: 15px;
+    padding-top: 24px;
+    padding-left: 31px;
+    width: 670px;
+    height: 320px;
 }
  @media only screen and (max-width: 1180px) {
   .contentWidth {
@@ -1189,6 +1271,15 @@ input[type=checkbox]{
     #createFund .header-right-row {
         width: 967px;
         position: relative;
+    }
+
+ }
+
+ @media only screen and (min-width: 1450px){ 
+    #createFund .header-right-row {
+        width: 512px;
+        position: relative;
+        right: -60%;
     }
 
  }

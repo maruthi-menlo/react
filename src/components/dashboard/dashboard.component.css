@@ -508,6 +508,7 @@
     float: right;
     position: relative;
     left: -10px;
+    box-shadow: initial !important;
 }
 .caretDownAlign {
     float: right;
@@ -936,3 +937,13 @@
         left: 260px !important;
     }
 }
+@media only screen and (min-width: 1450px){ 
+    .filter-right-block {
+        float: right;
+        width: 250px;
+        position: relative;
+        top: 15px;
+        left: -52px;
+    }
+
+ }

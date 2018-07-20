@@ -125,10 +125,16 @@ export class Fsnethttp{
         return axios.get(this.Constants.BASE_URL+'funds/'+name);
     }
 
+    //Start Fund API
+    startFund(fundId, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/publish', fundId);
+    }
+
     //Upload patnership document
-    uploadDocumentToFund(firmId, headers, obj) {
+    uploadDocumentToFund(fundId, headers, obj) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
         axios.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-        return axios.post(this.Constants.BASE_URL+'fund/document/add/'+firmId, obj);
+        return axios.post(this.Constants.BASE_URL+'fund/document/add/'+fundId, obj);
     }
 }
