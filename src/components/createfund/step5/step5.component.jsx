@@ -9,6 +9,7 @@ import { reactLocalStorage } from 'reactjs-localstorage';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
+import { PubSub } from 'pubsub-js';
 
 class Step5Component extends Component {
 
@@ -52,6 +53,7 @@ class Step5Component extends Component {
             lpScreenError:'',
             orgName:'',
             step5PageValid: false,
+            createdFundData: {}
         }
     }
 
@@ -162,6 +164,7 @@ class Step5Component extends Component {
             let lpObj = {fundId:this.state.fundId, vcfirmId:this.state.firmId, lpDelegates:this.state.lpSelectedList }
             this.Fsnethttp.assignLpToFund(lpObj, headers).then(result=>{
                 this.close();
+                this.getFundDetails(this.state.fundId);
                 this.props.history.push('/createfund/review/'+this.state.fundId);
             })
             .catch(error=>{
@@ -359,6 +362,7 @@ class Step5Component extends Component {
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
         this.Fsnethttp.getLp(firmId, fundId, headers).then(result=>{
             this.close();
+            this.getFundDetails(fundId);
             if(result.data && result.data.data.length >0) {
                 this.setState({ getLpList: result.data.data }, () => this.selectedMembersPushToList());
             } else {
@@ -376,6 +380,27 @@ class Step5Component extends Component {
         });
     }
 
+    getFundDetails(fundId) {
+        this.open();
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        this.Fsnethttp.getFund(fundId, headers).then(result=>{
+            this.close();
+            if(result.data) {
+                this.setState({ createdFundData: result.data.data });
+                PubSub.publish('fundData', result.data.data);
+            } else {
+                this.setState({
+                    createdFundData: [],
+                })
+            }
+        })
+        .catch(error=>{
+            this.close();
+            this.setState({
+                createdFundData: []
+            })
+        });
+    }
 
 
     sortLp(e, colName, sortVal) { 
@@ -488,7 +513,7 @@ class Step5Component extends Component {
                                 );
                             })
                             :
-                            <div className="title margin20 text-center">You haven’t added any LP’s to this fund yet.</div>
+                            <div className="title margin20 text-center">You haven’t added any LP’s to this Fund yet.</div>
                         }
                     </div>
                     <div className="error">{this.state.lpScreenError}</div>
@@ -498,7 +523,7 @@ class Step5Component extends Component {
                         <div className="croosMarkStyle"><span className="cursor-pointer" onClick={this.closeLpDelegateModal}>x</span></div>
                         <h3 className="title">Add LP</h3>
                     </div>
-                    <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</div>         <div className="form-main-div">   
+                    <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the Fund. Fields marked with an * are required.</div>         <div className="form-main-div">   
                         <form>               
                             <Row className="marginBot20">
                                 <Col lg={6} md={6} sm={6} xs={12}>

@@ -6,6 +6,7 @@ import Loader from '../../../widgets/loader/loader.component';
 import { Fsnethttp } from '../../../services/fsnethttp';
 import {Constants} from '../../../constants/constants';
 import FileDrop from 'react-file-drop';
+import { PubSub } from 'pubsub-js';
 
 class Step3Component extends Component {
 
@@ -52,6 +53,7 @@ class Step3Component extends Component {
                 this.close();
                 if(result.data) {
                     this.setState({ createdFundData: result.data.data, fundId: result.data.data.id }, () => this.updateDoc());
+                    PubSub.publish('fundData', result.data.data);
                 } else {
                     this.setState({
                         createdFundData: [],
@@ -96,6 +98,7 @@ class Step3Component extends Component {
         } else if(this.state.uploadFileName !== '') {
             if(this.state.createdFundData.partnershipDocument) {
                 if(this.state.uploadFileName === this.state.createdFundData.partnershipDocument.filename) {
+                    this.getFundDetails(this.state.fundId);
                     this.props.history.push('/createfund/lp/'+this.state.fundId);
                 } else {
                     this.uploadDocApi()
@@ -140,6 +143,7 @@ class Step3Component extends Component {
             this.Fsnethttp.deleteFile(postObj,headers).then(result=>{
                 this.close();
                 document.getElementById('uploadBtn').value = "";
+                this.getFundDetails(this.state.fundId);
                 if(result) {
                     this.setState({
                         uploadDocFile: {},

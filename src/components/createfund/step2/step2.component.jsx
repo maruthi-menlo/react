@@ -362,7 +362,7 @@ class Step2Component extends Component {
                             );
                         })
                         :
-                        <div className="title margin20 text-center">You haven’t added any GP Delegates to this fund yet.</div>
+                        <div className="title margin20 text-center">You haven’t added any GP Delegates to this Fund yet.</div>
                     } 
                 </div>
                 <div className="error">{this.state.gpDelegateScreenError}</div>
@@ -371,7 +371,7 @@ class Step2Component extends Component {
                         <div className="croosMarkStyle"><span className="cursor-pointer" onClick={this.closeGpDelegateModal}>x</span></div>
                         <h3 className="title">Add GP Delegate</h3>
                     </div>
-                    <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the fund. Fields marked with an * are required.</div>         <div className="form-main-div">                  
+                    <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the Fund. Fields marked with an * are required.</div>         <div className="form-main-div">                  
                         <Row className="marginBot20">
                             <Col lg={6} md={6} sm={6} xs={12}>
                                 <label className="form-label">First Name*</label>

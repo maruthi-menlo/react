@@ -26,6 +26,7 @@ class CreateFundComponent extends Component {
         this.Constants = new Constants();
         this.FsnetAuth = new FsnetAuth();
         this.getGpDeligates = this.getGpDeligates.bind(this);
+        this.emitStartBtnModal = this.emitStartBtnModal.bind(this);
         this.getLp = this.getLp.bind(this);
         this.logout = this.logout.bind(this);
         this.state = {
@@ -45,6 +46,10 @@ class CreateFundComponent extends Component {
     logout() {
         reactLocalStorage.clear();
         this.props.history.push('/');
+    }
+
+    emitStartBtnModal() {
+        PubSub.publish('startBtnEmit', true);
     }
 
     componentDidMount() {
@@ -97,7 +102,6 @@ class CreateFundComponent extends Component {
             this.close();
             if(result.data && result.data.data.length >0) {
                 this.setState({ getGpDelegatesList: result.data.data });
-                console.log("123",this.state.getGpDelegatesList)
             } else {
                 this.setState({
                     getGpDelegatesList: []
@@ -186,10 +190,22 @@ class CreateFundComponent extends Component {
                         this.state.fundId?
                         <ul className="sidenav-menu">
                         <li><Link to={"/createfund/funddetails/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to={"/createfund/gpDelegate/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to={"/createfund/upload/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to={"/createfund/lp/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to={"/createfund/review/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm</Link></li>
+                        <li><Link to={"/createfund/gpDelegate/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon" hidden={this.state.createdFundDataObj.gps && this.state.createdFundDataObj.gps.length === 0}><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+
+
+
+                        <li><Link hidden={this.state.createdFundDataObj.partnershipDocument === null} to={"/createfund/upload/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link><a hidden={this.state.createdFundDataObj.partnershipDocument !== null}>Partnership Agreement</a></li>
+
+                        <li><Link hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0} to={"/createfund/lp/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link>
+                        <a hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0}>
+                        Assign LP's to Fund</a>
+                        </li>
+                        
+
+                        <li>
+                            <Link hidden={ (this.state.createdFundDataObj.partnershipDocument === null) || (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0) } to={"/createfund/review/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm</Link>
+                            <a hidden={(this.state.createdFundDataObj.partnershipDocument !== null) && (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0)}>Review & Confirm</a>
+                        </li>
                     </ul>
 
                         :
@@ -203,7 +219,8 @@ class CreateFundComponent extends Component {
                     }
                     
 
-                    <div className="start-box"><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
+                    <div className="start-box" hidden={this.state.currentPageNumber ===5 }><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
+                    <div className="start-fund" onClick={this.emitStartBtnModal} hidden={this.state.currentPageNumber  < 5}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
 
                     <div className="section-head">GP Delegates<span className="btn-add pull-right">+</span></div>
                     <div className="section">
@@ -227,7 +244,7 @@ class CreateFundComponent extends Component {
                             :
                             <div className="user">
                                 <i className="fa fa-user fa-2x" aria-hidden="true"></i>
-                                <p>You haven’t added any GP Delegates to this fund yet</p>
+                                <p>You haven’t added any GP Delegates to this Fund yet</p>
                             </div> 
                             } 
                         </div>
@@ -255,7 +272,7 @@ class CreateFundComponent extends Component {
                             :
                             <div className="user">
                                 <i className="fa fa-user fa-2x" aria-hidden="true"></i>
-                                <p>You haven’t added any LP’s to this fund yet</p>
+                                <p>You haven’t added any LP’s to this Fund yet</p>
                             </div>
                             } 
                         </div>

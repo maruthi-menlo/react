@@ -75,6 +75,7 @@ class Step1Component extends Component{
                 this.close();
                 if(result.data) {
                     this.setState({ createdFundData: result.data.data, fundId: fundId, firmId:firmId }, () => this.updateInputValues());
+                    PubSub.publish('fundData', result.data.data);
                     let dataObj = {};
                     dataObj ={
                         fundManagerLegalEntityNameValid : true,
@@ -526,7 +527,7 @@ class Step1Component extends Component{
                                 <span className="error">{this.state.legalEntityMsz}</span>
                             </Col>
                             <Col xs={6} md={6}>
-                                <label className="form-label">Hard cap</label>
+                                <label className="form-label">Hard Cap</label>
                                 <FormControl type="text" value= {this.state.fundHardCapCurrencyValue} placeholder="$15,000,000.00" className="inputFormControl" onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundHardCap')}} onFocus={(e)=>{this.handleinputFocus(e,'fundHardCap')}} autoComplete="off"/>
                             </Col>
                         </Row>
@@ -555,7 +556,7 @@ class Step1Component extends Component{
                         </Row>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">Capital commitment by fund manager</label>
+                                <label className="form-label">Capital commitment by Fund manager</label>
                                 <FormControl type="text" placeholder="100.00%" className="inputFormControl" disabled={this.state.cTextBoxDisabled} value={this.state.capitalCommitmentByGP} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')} autoComplete="off"/>
                             </Col>
                             <Col xs={6} md={6}>

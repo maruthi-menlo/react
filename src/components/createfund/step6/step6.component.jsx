@@ -6,6 +6,7 @@ import { Fsnethttp } from '../../../services/fsnethttp';
 import {Constants} from '../../../constants/constants';
 import Loader from '../../../widgets/loader/loader.component';
 import { reactLocalStorage } from 'reactjs-localstorage';
+import { PubSub } from 'pubsub-js';
 
 class Step6Component extends Component {
 
@@ -40,7 +41,10 @@ class Step6Component extends Component {
         this.setState({ 
             fundId: urlSplitFundId,
             firmId : firmId,
-        }, () => this.getFundDetails());        
+        }, () => this.getFundDetails());   
+        var token = PubSub.subscribe('startBtnEmit', (msg, data) => {
+            this.openStartFundModal();
+        });     
     }
 
     getFundDetails() {
@@ -49,7 +53,6 @@ class Step6Component extends Component {
     }
 
     openStartFundModal() {
-        window.scrollTo(300, 0)   
         this.setState({
             showStartFundModal: true,
             startFundErrorMsz:''
@@ -75,6 +78,7 @@ class Step6Component extends Component {
                     fundImage: result.data.data.fundImage ? result.data.data.fundImage.url: staticImage,
                     fundImageName: result.data.data.fundImage ? result.data.data.fundImage.originalname: 'Helios_Fund.jpg',
                 })
+                PubSub.publish('fundData', result.data.data);
             }
         })
         .catch(error=>{
@@ -202,7 +206,7 @@ class Step6Component extends Component {
                 <div className="step6ClassAboveFooter">
                     <div className="staticContent">
                         <h2 className="title">Review & Confirm</h2>
-                        <h4 className="subtext">Verify that everything looks correct before starting your fund</h4>
+                        <h4 className="subtext">Verify that everything looks correct before starting your Fund</h4>
                     </div>
                     <Row id="step6-rows1" >
                         <Col md={3} sm={3} xs={6}>
@@ -212,9 +216,10 @@ class Step6Component extends Component {
                             <div className="col2">Legal Entity:  {this.state.currentFundDataObj.legalEntity}</div>
                             <div className="col2">Hard cap: {this.state.currentFundDataObj.fundHardCap}</div>
                             <div className="col2">Fund Manager (GP) Legal Entity Name: {this.state.currentFundDataObj.fundManagerLegalEntityName}</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.fundTargetCommitment === null}>Fund Target Commitment: {this.state.currentFundDataObj.fundTargetCommitment}</div>
                             <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPCommitment === null}>% of LP Commitment: {this.state.currentFundDataObj.percentageOfLPCommitment}</div>
                             <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment === null}>% of LP + GP Aggregate Commitment: {this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment}</div>
-                            <div className="col2" hidden={this.state.currentFundDataObj.capitalCommitmentByGP ===  null}>Capital commitment by fund manager: {this.state.currentFundDataObj.capitalCommitmentByGP}</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.capitalCommitmentByFundManager ===  null}>Capital commitment by fund manager: {this.state.currentFundDataObj.capitalCommitmentByFundManager}</div>
                         </Col>
                         <Col md={2} sm={2} xs={6}>
                             <div className="col3">Fund Image:</div>
@@ -332,10 +337,10 @@ class Step6Component extends Component {
                         </div>
                         <Loader isShow={this.state.showModal}></Loader>
                     </div>
-                    <div className="staticTextBelowTable text-center">Once everything is confirmed correct, click the “Start Fund”.</div>
-                    <div className="startFundButtonStyle">
+                    <div className="staticTextBelowTable text-center">Once everything is confirmed correct, click the “Start Fund” button in the sidebar.</div>
+                    {/* <div className="startFundButtonStyle">
                         <Button className="fsnetButton" onClick={this.openStartFundModal}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</Button>                                    
-                    </div>
+                    </div> */}
 
                 </div>
                 <div className="footer-nav">
