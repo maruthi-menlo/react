@@ -338,11 +338,11 @@ class Step2Component extends Component {
 
     render() {
         return (
-            <div className="step2Class marginTop30">
+            <div className="step2Class marginTop15">
             <div className="GpDelegatesContainer" >
                 <h1 className="title">Assign GP Delegates</h1>
                 <p className="subtext">Select GP Delegate(s) from the list below or add a new one.</p>
-                <Button className="fsnetButton" onClick={this.addGpDelegateBtn}><i className="fa fa-plus"></i>Gp Delegate</Button>
+                <Button className="fsnetButton" onClick={this.addGpDelegateBtn}><i className="fa fa-plus"></i>GP Delegate</Button>
                 <div className={"userContainer " + (this.state.getGpDelegatesList.length ===0 ? 'borderNone' : '')} >
                     {this.state.getGpDelegatesList.length >0 ?
                         this.state.getGpDelegatesList.map((record, index)=>{

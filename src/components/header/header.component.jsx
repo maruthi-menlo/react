@@ -18,7 +18,8 @@ class HeaderComponent extends Component{
         this.logout = this.logout.bind(this);
         this.state = {
             loggedInUserObj: [],
-            showandhideUserDropdown: true
+            showandhideUserDropdown: true,
+            userImage: userDefaultImage
         }
     }
 
@@ -47,7 +48,8 @@ class HeaderComponent extends Component{
             let userObj = reactLocalStorage.getObject('userData');
             if(userObj) {
                 this.setState({
-                    loggedInUserObj: userObj
+                    loggedInUserObj: userObj,
+                    userImage: userObj.profilePic ? userObj.profilePic.url : userDefaultImage
                 }) 
             }
         }else{
@@ -70,7 +72,7 @@ class HeaderComponent extends Component{
                         </div>
                         
                         <div className={"user-name " + (this.state.showandhideUserDropdown ? '' : 'active')} onClick={this.userDropdownList}>{this.state.loggedInUserObj.firstName} {this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
-                        <img src={userDefaultImage} alt="profilePic" className="profilePic"/>
+                        <img src={this.state.userImage} alt="profilePic" className="profilePic"/>
                         <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
                         {/* <span className="notification-count">3</span> */}
                         {/* <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i> */}

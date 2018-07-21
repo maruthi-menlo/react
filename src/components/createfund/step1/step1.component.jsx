@@ -20,7 +20,8 @@ class Step1Component extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
         this.removeImageBtn = this.removeImageBtn.bind(this);
-        this.convertToCurrency = this.convertToCurrency.bind(this);
+        this.addCurrencyValueToInput = this.addCurrencyValueToInput.bind(this);
+        this.handleinputFocus = this.handleinputFocus.bind(this);
         this.state = {
             isAllDelegateSignNeeded: 0,
             fundImageName: 'fund_Pic.jpg',
@@ -36,6 +37,7 @@ class Step1Component extends Component{
             fundManagerLegalEntityNameMsz:'',
             fundManagerLegalEntityNameValid: false,
             fundHardCap:'',
+            fundTargetCommitment:'',
             capitalCommitmentByGP:'',
             percentageOfLPCommitment:'',
             percentageOfLPAndGPAggregateCommitment:'',
@@ -45,7 +47,10 @@ class Step1Component extends Component{
             fundDetailspageError:'',
             createdFundData:[],
             fundId:'',
-            firmId: null
+            firmId: null,
+            fundHardCapCurrencyValue:'',
+            fundTargetCommitmentCurrencyValue: '',
+            percentageOfLPAndGPAggregateCommitmentCurrencyValue: ''
         }
     }
 
@@ -97,9 +102,13 @@ class Step1Component extends Component{
         this.setState({ 
             legalEntity: obj.legalEntity || '',
             fundHardCap: obj.fundHardCap || '',
+            fundHardCapCurrencyValue: obj.fundHardCap ? this.convertToCurrency(obj.fundHardCap) : '',
+            fundTargetCommitmentCurrencyValue: obj.fundTargetCommitment? this.convertToCurrency(obj.fundTargetCommitment) : '',
+            percentageOfLPAndGPAggregateCommitmentCurrencyValue: obj.percentageOfLPAndGPAggregateCommitment? this.convertToCurrency(obj.percentageOfLPAndGPAggregateCommitment) : '',
             fundManagerLegalEntityName: obj.fundManagerLegalEntityName || '',
-            capitalCommitmentByGP: obj.capitalCommitmentByGP || '',
+            capitalCommitmentByGP: obj.capitalCommitmentByFundManager || '',
             percentageOfLPCommitment: obj.percentageOfLPCommitment || '',
+            fundTargetCommitment: obj.fundTargetCommitment || '',
             percentageOfLPAndGPAggregateCommitment: obj.percentageOfLPAndGPAggregateCommitment || '',
             currentFundImage: obj.fundImage? obj.fundImage.url: '',
             fundImageName: obj.fundImage? obj.fundImage.originalname: '',
@@ -136,9 +145,71 @@ class Step1Component extends Component{
         });
     }
 
+    addCurrencyValueToInput(event, type) {
+        switch(type) {
+            case 'fundHardCap':
+                if(event.target.value !== '') {
+                    let value = this.convertToCurrency(event.target.value);
+                    this.setState({
+                        fundHardCapCurrencyValue: value
+                    })
+                }
+                break;
+            case 'fundTargetCommitment':
+                if(event.target.value !== '') {
+                    let value = this.convertToCurrency(event.target.value);
+                    this.setState({
+                        fundTargetCommitmentCurrencyValue: value
+                    })
+                }
+                break;
+            case 'percentageOfLPAndGPAggregateCommitment':
+                if(event.target.value !== '') {
+                    let value = this.convertToCurrency(event.target.value);
+                    this.setState({
+                        percentageOfLPAndGPAggregateCommitmentCurrencyValue: value
+                    })
+                }
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    handleinputFocus(event, type) {
+        switch(type) {
+            case 'fundHardCap':
+                if(event.target.value !== '') {
+                    this.setState({
+                        fundHardCapCurrencyValue: this.state.fundHardCap
+                    })
+                }
+                break;
+            case 'fundTargetCommitment':
+                if(event.target.value !== '') {
+                    this.setState({
+                        fundTargetCommitmentCurrencyValue: this.state.fundTargetCommitment
+                    })
+                }
+                break;
+            case 'percentageOfLPAndGPAggregateCommitment':
+                if(event.target.value !== '') {
+                    this.setState({
+                        percentageOfLPAndGPAggregateCommitmentCurrencyValue: this.state.percentageOfLPAndGPAggregateCommitment
+                    })
+                }
+                break;
+            default:
+                break;
+        }
+
+    }
+ 
     //Fund details input change event
     fundDetailsInputHandleEvent(event,type) {
         let dataObj={};
+        const allowNumberRegex = /^[0-9\b]+$/;
         switch(type) {
             case 'legalEntity':
                 if(event.target.value === '' || event.target.value === undefined) {
@@ -166,9 +237,21 @@ class Step1Component extends Component{
                 }
                 break;
             case 'fundHardCap':
-                this.setState({
-                    fundHardCap: event.target.value
-                })
+                // if value is not blank, then test the regex
+                if (event.target.value === '' || allowNumberRegex.test(event.target.value)) {
+                    this.setState({
+                        fundHardCap: event.target.value,
+                        fundHardCapCurrencyValue: event.target.value
+                    })
+                }
+                break;
+            case 'fundTargetCommitment':
+                if (event.target.value === '' || allowNumberRegex.test(event.target.value)) {
+                    this.setState({
+                        fundTargetCommitment: event.target.value,
+                        fundTargetCommitmentCurrencyValue: event.target.value
+                    })
+                }
                 break;
             case 'fundManagerLegalEntityName':
                 if(event.target.value === '' || event.target.value === undefined) {
@@ -205,23 +288,29 @@ class Step1Component extends Component{
                     })
                     this.enableAllTextBoxes()
                 } else {
-                    this.setState({
-                        percentageOfLPCommitment: event.target.value
-                    })
-                    this.disableBandCTextFields();
+                    if ((event.target.value === '' || allowNumberRegex.test(event.target.value)) && (parseInt(event.target.value) >=0 && parseInt(event.target.value) <=100)) {
+                        this.setState({
+                            percentageOfLPCommitment: event.target.value
+                        })
+                        this.disableBandCTextFields();
+                    }
                 }
                 break;
             case 'percentageOfLPAndGPAggregateCommitment':
                 if(event.target.value === '' || event.target.value === undefined) {
                     this.setState({
-                        percentageOfLPAndGPAggregateCommitment: ''
+                        percentageOfLPAndGPAggregateCommitment: '',
+                        percentageOfLPAndGPAggregateCommitmentCurrencyValue: ''
                     })
                     this.enableAllTextBoxes()
                 } else {
-                    this.setState({
-                        percentageOfLPAndGPAggregateCommitment: event.target.value
-                    })
-                    this.disableAandCTextFields()
+                    if (event.target.value === '' || allowNumberRegex.test(event.target.value)) {
+                        this.setState({
+                            percentageOfLPAndGPAggregateCommitment: event.target.value,
+                            percentageOfLPAndGPAggregateCommitmentCurrencyValue: event.target.value
+                        })
+                        this.disableAandCTextFields()
+                    }
                 }
                 break;
             case 'capitalCommitmentByGP':
@@ -231,10 +320,12 @@ class Step1Component extends Component{
                     })
                     this.enableAllTextBoxes()
                 } else {
-                    this.setState({
-                        capitalCommitmentByGP: event.target.value
-                    })
-                    this.disableAandEnableBTextFields()
+                    if ((event.target.value === '' || allowNumberRegex.test(event.target.value)) && (parseInt(event.target.value) >=0 && parseInt(event.target.value) <=100)) {
+                        this.setState({
+                            capitalCommitmentByGP: event.target.value
+                        })
+                        this.disableAandEnableBTextFields()
+                    }
                 }
                 break;
             case 'isAllDelegateSignNeededYes':
@@ -337,8 +428,6 @@ class Step1Component extends Component{
     }
 
     proceedToNext() {
-        console.log('=== submitted====');
-        PubSub.publish('fundData', {key: 'hello world!'});
         let error = false;
         if(this.state.capitalCommitmentByGP === '' && this.state.percentageOfLPCommitment === '' && this.state.percentageOfLPAndGPAggregateCommitment === '') {
             error = true;
@@ -358,6 +447,7 @@ class Step1Component extends Component{
             formData.append("vcfirmId", this.state.firmId);
             formData.append("legalEntity", this.state.legalEntity);
             formData.append("fundHardCap", this.state.fundHardCap);
+            formData.append("fundTargetCommitment", this.state.fundTargetCommitment);
             formData.append("fundManagerLegalEntityName", this.state.fundManagerLegalEntityName);
             formData.append("isAllDelegateSignNeeded", this.state.isAllDelegateSignNeeded);
             formData.append("fundImage", this.state.fundPicFile);
@@ -365,7 +455,7 @@ class Step1Component extends Component{
                 formData.append("fundId", this.state.fundId)
             }
             if(this.state.capitalCommitmentByGP !== '') {
-                formData.append("capitalCommitmentByGP", this.state.capitalCommitmentByGP);
+                formData.append("capitalCommitmentByFundManager", this.state.capitalCommitmentByGP);
             }
             if(this.state.percentageOfLPCommitment !== '') {
                 formData.append("percentageOfLPCommitment", this.state.percentageOfLPCommitment);
@@ -380,6 +470,7 @@ class Step1Component extends Component{
                     fundDetailsPageValid: true,
                     createdFundData: result.data.data
                 })
+                PubSub.publish('fundData', result.data.data);
                 this.props.history.push('/createfund/gpDelegate/'+result.data.data.id);
             })
             .catch(error=>{
@@ -402,19 +493,19 @@ class Step1Component extends Component{
            
     }
 
-    convertToCurrency(e) {
-        let amount = e.target.value;
-        // Create our number formatter.
-        var formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            // the default value for minimumFractionDigits depends on the currency
-            // and is usually already 2
-        });
-        
-        formatter.format(amount); 
-        console.log(formatter.format(amount));
+    convertToCurrency(value) {
+        let amount = value;
+        if(amount !== '') {
+            // Create our number formatter.
+            var formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                // the default value for minimumFractionDigits depends on the currency
+                // and is usually already 2
+            });
+            return formatter.format(amount); 
+        }
     }
 
  
@@ -436,7 +527,7 @@ class Step1Component extends Component{
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">Hard cap</label>
-                                <FormControl type="text" value= {this.state.fundHardCap} placeholder="$15,000,000.00" className="inputFormControl" onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.convertToCurrency(e)}} autoComplete="off"/>
+                                <FormControl type="text" value= {this.state.fundHardCapCurrencyValue} placeholder="$15,000,000.00" className="inputFormControl" onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundHardCap')}} onFocus={(e)=>{this.handleinputFocus(e,'fundHardCap')}} autoComplete="off"/>
                             </Col>
                         </Row>
                         <Row className="step1Form-row">
@@ -444,6 +535,10 @@ class Step1Component extends Component{
                                 <label className="form-label">Fund Manager (GP) Legal Entity Name*</label>                                
                                 <FormControl type="text" placeholder="Helios GP I,LLC" className={"inputFormControl " + (this.state.fundManagerLegalEntityNameBorder ? 'inputError' : '')} value= {this.state.fundManagerLegalEntityName}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundManagerLegalEntityName')} onBlur={(e) => this.fundDetailsInputHandleEvent(e,'fundManagerLegalEntityName')} autoComplete="off"/>
                                 <span className="error">{this.state.fundManagerLegalEntityNameMsz}</span>
+                            </Col>
+                            <Col xs={6} md={6}>
+                                <label className="form-label">Fund Target Commitment</label>
+                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" value= {this.state.fundTargetCommitmentCurrencyValue}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundTargetCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'fundTargetCommitment')}} autoComplete="off"/>
                             </Col>
                         </Row>
                         <h2 className="title marginTop20">Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
@@ -455,7 +550,7 @@ class Step1Component extends Component{
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">% of LP + GP Aggregate Commitment  </label>
-                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" disabled={this.state.bTextBoxDisabled} value={this.state.percentageOfLPAndGPAggregateCommitment} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPAndGPAggregateCommitment')}  autoComplete="off"/>
+                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" disabled={this.state.bTextBoxDisabled} value={this.state.percentageOfLPAndGPAggregateCommitmentCurrencyValue} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPAndGPAggregateCommitment')}  onBlur={(e)=>{this.addCurrencyValueToInput(e,'percentageOfLPAndGPAggregateCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'percentageOfLPAndGPAggregateCommitment')}} autoComplete="off"/>
                             </Col>
                         </Row>
                         <Row className="step1Form-row">

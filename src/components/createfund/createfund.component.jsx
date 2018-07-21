@@ -36,7 +36,8 @@ class CreateFundComponent extends Component {
             currentPageNumber: 1,
             totalPageCount: 5,
             fundId: null,
-            firmId : null
+            firmId : null,
+            createdFundDataObj: {}
         }
 
     }
@@ -67,6 +68,10 @@ class CreateFundComponent extends Component {
         }
         var token = PubSub.subscribe('fundData', (msg, data) => {
             console.log('bhjsdjlahdls:', msg, data);
+            this.setState({
+                createdFundDataObj: data,
+                fundId: data.id
+            })
         });
         var url = window.location.href;
         var parts = url.split("/");
@@ -177,14 +182,26 @@ class CreateFundComponent extends Component {
                     <h1><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
                     <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; <a href="/dashboard">Dashboard</a></h2>
                     <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">{this.state.currentPageNumber}/{this.state.totalPageCount}</span></div>
-                    <ul className="sidenav-menu">
-                        <li hidden={this.state.fundId === null}><Link to={"/createfund/funddetails/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li hidden={this.state.fundId !== null}><Link to="/createfund/funddetails" onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                    {
+                        this.state.fundId?
+                        <ul className="sidenav-menu">
+                        <li><Link to={"/createfund/funddetails/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
                         <li><Link to={"/createfund/gpDelegate/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
                         <li><Link to={"/createfund/upload/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
                         <li><Link to={"/createfund/lp/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to={"/createfund/review/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                        <li><Link to={"/createfund/review/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm</Link></li>
                     </ul>
+
+                        :
+                        <ul className="sidenav-menu">
+                            <li><a className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details</a></li>
+                            <li><a>Assign GP Delegates</a></li>
+                            <li><a>Partnership Agreement</a></li>
+                            <li><a>Assign LP's to Fund</a></li>
+                            <li><a>Review & Confirm</a></li>
+                        </ul>
+                    }
+                    
 
                     <div className="start-box"><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
 

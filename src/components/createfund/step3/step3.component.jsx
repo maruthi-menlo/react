@@ -5,6 +5,7 @@ import { reactLocalStorage } from 'reactjs-localstorage';
 import Loader from '../../../widgets/loader/loader.component';
 import { Fsnethttp } from '../../../services/fsnethttp';
 import {Constants} from '../../../constants/constants';
+import FileDrop from 'react-file-drop';
 
 class Step3Component extends Component {
 
@@ -169,11 +170,17 @@ class Step3Component extends Component {
     }
 
     //Upload patnership document.
-    handleChange(event) {
+    handleChange(event, type) {
+        let obj;
+        if(type=== 'drop') {
+            obj = event;
+        } else {
+            obj = event.target.files
+        }
         let reader = new FileReader();
-        if(event.target.files && event.target.files.length > 0) {
-            this.uploadFile = event.target.files[0];
-            let sFileName = event.target.files[0].name;
+        if(obj && obj.length > 0) {
+            this.uploadFile = obj[0];
+            let sFileName = obj[0].name;
             var sFileExtension = sFileName.split('.')[sFileName.split('.').length - 1].toLowerCase();
             if(sFileExtension !== 'pdf' && sFileExtension !== 'docx') {
                 document.getElementById('uploadBtn').value = "";
@@ -181,14 +188,15 @@ class Step3Component extends Component {
                 return true;
             }
             //File 10 MB limit
-            if(this.uploadFile.size <=1024000) {
+            console.log(this.uploadFile.size)
+            if(this.uploadFile.size <=10485760) {
                 this.setState({
-                    uploadDocFile : event.target.files[0],
+                    uploadDocFile : obj[0],
                     uploadDocSize: (this.uploadFile.size / 1048576).toFixed(2)
                 });
                 reader.readAsDataURL(this.uploadFile);
                 this.setState({
-                    uploadFileName: event.target.files[0].name,
+                    uploadFileName: obj[0].name,
                     uploadFundPageValid: true
                 });
                 // reader.onload = () => {
@@ -205,17 +213,20 @@ class Step3Component extends Component {
 
     render() {
         return (
-            <div className="step3Class marginTop30">
+            <div className="step3Class marginTop15">
                 <h1 className="uploadFundDocument">Upload Fund Documents</h1>
                 <div className="chooseFileMargin">
                     <h1 className="title">Choose files to upload</h1>
                     <div className="subtext">Choose document files to upload. Accepted files information appears here.</div>
                     <div className="uplodFileContainer marginTop20" >
                         <input type="file" id="uploadBtn" className="hide" onChange={ (e) => this.handleChange(e) } />
-                        <Button className="uploadFileBox" onClick={this.uploadBtnClick}></Button>
-                        <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB.</span>
+                        <FileDrop onDrop={(e) => this.handleChange(e, 'drop')}>
+                            <Button className="uploadFileBox" onClick={this.uploadBtnClick}></Button>
+                            <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB.</span>
+                        </FileDrop>
                         <div><a className="upload-doc-name">{this.state.uploadFileName} </a> </div>
                         <div className="filesize" hidden={this.state.uploadFileName ===''}>{this.state.uploadDocSize} MB <i className="fa fa-trash cursor-pointer" onClick={this.deleteFile}></i></div>
+                        
                     </div>
                 </div>
                 <div className="error">{this.state.errorMessage}</div>

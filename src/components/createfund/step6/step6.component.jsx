@@ -198,11 +198,11 @@ class Step6Component extends Component {
 
     render() {
         return (
-            <div className="step6Class marginTop30">
+            <div className="step6Class marginTop15">
                 <div className="step6ClassAboveFooter">
                     <div className="staticContent">
-                        <h2>Review & Confirm</h2>
-                        <h4>Verify that everything looks correct before starting your fund</h4>
+                        <h2 className="title">Review & Confirm</h2>
+                        <h4 className="subtext">Verify that everything looks correct before starting your fund</h4>
                     </div>
                     <Row id="step6-rows1" >
                         <Col md={3} sm={3} xs={6}>
@@ -240,7 +240,7 @@ class Step6Component extends Component {
                             <span className="col4"><a href={"/createfund/gpDelegate/"+this.state.fundId}>Change</a></span>
                         </Col>
                     </Row>
-                    <Row className="step6-rows" >
+                    <Row className="step6-rows height80" >
                         <Col md={3} sm={3} xs={6}>
                             <span className="col1">Partnership Agreement</span>                 
                         </Col>

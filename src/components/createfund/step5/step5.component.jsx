@@ -443,7 +443,7 @@ class Step5Component extends Component {
 
     render() {
         return (
-                <div className="LpDelegatesContainer marginTop30">
+                <div className="LpDelegatesContainer marginTop15">
                     <h1 className="assignGp">Assign LPs</h1>
                     <p className="Subtext">Select LPs from the list below or choose to add new LP to Fund.</p>
                     <Button className="lpDelegateButton" onClick={this.addLpDelegateBtn}><i className="fa fa-plus"></i>Limited Partner</Button>

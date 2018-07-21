@@ -10,7 +10,7 @@
 }
 
 
-.sidenav h1 .fa-home{
+.sidenav .fa-home{
     margin-right: 15px;
 }
 .sidenav h1 i{
@@ -32,6 +32,7 @@
     font-size: 14px;
     display: block;
     opacity: 0.75;
+    outline: none !important;
 }
 
 .sidenav h1 {
@@ -597,13 +598,13 @@
     margin-top: 10px;
     box-shadow: initial !important;
 }
-#createFund .uploadFileBox:hover:after {
+#createFund .uploadFileBox:hover:after, #createFund .file-drop-dragging-over-frame .uploadFileBox:after {
     content: 'Drop Files Here to Upload'
 }
-#createFund .uploadFileBox:hover + span{
+#createFund .uploadFileBox:hover + span, #createFund .file-drop-dragging-over-frame .uploadFileBox + span{
     display: none;
 }
-#createFund .uploadFileBox:hover {
+#createFund .uploadFileBox:hover, #createFund .file-drop-dragging-over-frame .uploadFileBox{
     width: 496px;
     height: 56px;
     border-radius: 0px !important;
@@ -791,8 +792,8 @@
 }
 
 #createFund #step6-rows1{
-    min-height: 190px;
-    padding: 20px 0px 20px 0px;
+    min-height: 170px;
+    padding: 20px 0px 15px 0px;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
     /* width: 1000px; */
     width: 970px;
@@ -800,11 +801,14 @@
 }
 
 .step6-rows{
-    height: 120px;
-    padding: 35px 0px 35px 0px;
+    height: 90px;
+    padding: 20px 0px 0px 0px;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
     width: 970px;
     margin:0px !important;
+}
+.height80{
+    height: 80px !important;
 }
 
 .step6-rows .col2-redirection{
@@ -1172,7 +1176,7 @@ input[type=checkbox]{
     right: 4px;
 }
 .formGridDivMargin {
-    margin: 30px 0;
+    margin: 15px 0;
 }
 .width37 {
     width: 37%;
@@ -1189,6 +1193,7 @@ input[type=checkbox]{
     border: 1px solid #DEE1E4 !important;
     opacity: .65;
     cursor: not-allowed;
+    pointer-events: none;
 }
 .fa-chevron-right:hover {
     background: #39bcd5;
