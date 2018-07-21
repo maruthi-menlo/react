@@ -418,3 +418,12 @@ select option {
 .borderLeftNone {
   border-left: none !important;
 }
+.fade.in {
+  opacity: 1 !important;
+}
+.modal {
+  top: 150px !important;
+}
+.modal-open .modal {
+  overflow: hidden !important;
+}

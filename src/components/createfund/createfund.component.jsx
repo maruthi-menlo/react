@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import './createfund.component.css';
-import { Row } from 'react-bootstrap';
+import { Row, Modal, Button } from 'react-bootstrap';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from '../../services/fsnetauth';
 import { Route, Link } from "react-router-dom";
@@ -14,7 +14,7 @@ import HeaderComponent from '../header/header.component';
 import { Fsnethttp } from '../../services/fsnethttp';
 import userDefaultImage from '../../images/default_user.png';
 import Loader from '../../widgets/loader/loader.component';
-import {Constants} from '../../constants/constants';
+import { Constants } from '../../constants/constants';
 import { PubSub } from 'pubsub-js';
 
 
@@ -27,18 +27,21 @@ class CreateFundComponent extends Component {
         this.FsnetAuth = new FsnetAuth();
         this.getGpDeligates = this.getGpDeligates.bind(this);
         this.emitStartBtnModal = this.emitStartBtnModal.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.getLp = this.getLp.bind(this);
         this.logout = this.logout.bind(this);
         this.state = {
             loggedInUserObj: [],
             getGpDelegatesList: [],
-            getLpList:[],
+            getLpList: [],
             currentPage: 'funddetails',
             currentPageNumber: 1,
             totalPageCount: 5,
             fundId: null,
-            firmId : null,
-            createdFundDataObj: {}
+            firmId: null,
+            createdFundDataObj: {},
+            show: false
         }
 
     }
@@ -65,7 +68,7 @@ class CreateFundComponent extends Component {
                 this.setState({
                     loggedInUserObj: userObj,
                     currentPage: urlSplitFundId,
-                    firmId:firmId
+                    firmId: firmId
                 })
             }
         } else {
@@ -82,25 +85,25 @@ class CreateFundComponent extends Component {
         var parts = url.split("/");
         var urlSplitFundId = parts[parts.length - 1];
         let fundId = urlSplitFundId;
-        if(fundId != 'funddetails') {
+        if (fundId != 'funddetails') {
             this.setState({ fundId: fundId }, () => this.getLPandGP());
         }
     }
 
     getLPandGP() {
-        if(this.state.fundId) {
+        if (this.state.fundId) {
             this.getGpDeligates();
             this.getLp();
         }
     }
     getGpDeligates() {
         this.open();
-        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
         let firmId = this.state.firmId;
         let fundId = this.state.fundId
-        this.Fsnethttp.getGpDelegates(firmId, fundId, headers).then(result=>{
+        this.Fsnethttp.getGpDelegates(firmId, fundId, headers).then(result => {
             this.close();
-            if(result.data && result.data.data.length >0) {
+            if (result.data && result.data.data.length > 0) {
                 this.setState({ getGpDelegatesList: result.data.data });
             } else {
                 this.setState({
@@ -108,24 +111,24 @@ class CreateFundComponent extends Component {
                 })
             }
         })
-        .catch(error=>{
+            .catch(error => {
                 this.close();
                 this.setState({
                     getGpDelegatesList: []
                 })
-           
-        });
+
+            });
 
     }
 
     getLp() {
         this.open();
-        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
         let firmId = this.state.firmId;
         let fundId = this.state.fundId
-        this.Fsnethttp.getLp(firmId, fundId, headers).then(result=>{
+        this.Fsnethttp.getLp(firmId, fundId, headers).then(result => {
             this.close();
-            if(result.data && result.data.data.length >0) {
+            if (result.data && result.data.data.length > 0) {
                 this.setState({ getLpList: result.data.data });
             } else {
                 this.setState({
@@ -133,14 +136,24 @@ class CreateFundComponent extends Component {
                 })
             }
         })
-        .catch(error=>{
+            .catch(error => {
                 this.close();
                 this.setState({
                     getLpList: []
-            })
-           
-        });
+                })
+
+            });
     }
+
+
+    handleClose() {
+        this.setState({ show: false });
+      }
+    
+      handleShow() {
+        this.setState({ show: true });
+      }
+
 
     // ProgressLoader : close progress loader
     close() {
@@ -187,94 +200,94 @@ class CreateFundComponent extends Component {
                     <h2><i className="fa fa-home" aria-hidden="true"></i>&nbsp; <a href="/dashboard">Dashboard</a></h2>
                     <div className="active-item"><i className="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Create New Fund <span className="fsbadge">{this.state.currentPageNumber}/{this.state.totalPageCount}</span></div>
                     {
-                        this.state.fundId?
-                        <ul className="sidenav-menu">
-                        <li><Link to={"/createfund/funddetails/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
-                        <li><Link to={"/createfund/gpDelegate/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon" hidden={this.state.createdFundDataObj.gps && this.state.createdFundDataObj.gps.length === 0}><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                        this.state.fundId ?
+                            <ul className="sidenav-menu">
+                                <li><Link to={"/createfund/funddetails/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
+                                <li><Link to={"/createfund/gpDelegate/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon" hidden={this.state.createdFundDataObj.gps && this.state.createdFundDataObj.gps.length === 0}><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link></li>
 
 
 
-                        <li><Link hidden={this.state.createdFundDataObj.partnershipDocument === null} to={"/createfund/upload/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link><a hidden={this.state.createdFundDataObj.partnershipDocument !== null}>Partnership Agreement</a></li>
+                                <li><Link hidden={this.state.createdFundDataObj.partnershipDocument === null} to={"/createfund/upload/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link><a hidden={this.state.createdFundDataObj.partnershipDocument !== null}>Partnership Agreement</a></li>
 
-                        <li><Link hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0} to={"/createfund/lp/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link>
-                        <a hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0}>
-                        Assign LP's to Fund</a>
-                        </li>
-                        
+                                <li><Link hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0} to={"/createfund/lp/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LP's to Fund<span className="checkIcon"><i className="fa fa-check faChk" aria-hidden="true"></i></span></Link>
+                                    <a hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0}>
+                                        Assign LP's to Fund</a>
+                                </li>
 
-                        <li>
-                            <Link hidden={ (this.state.createdFundDataObj.partnershipDocument === null) || (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0) } to={"/createfund/review/"+this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm</Link>
-                            <a hidden={(this.state.createdFundDataObj.partnershipDocument !== null) && (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0)}>Review & Confirm</a>
-                        </li>
-                    </ul>
 
-                        :
-                        <ul className="sidenav-menu">
-                            <li><a className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details</a></li>
-                            <li><a>Assign GP Delegates</a></li>
-                            <li><a>Partnership Agreement</a></li>
-                            <li><a>Assign LP's to Fund</a></li>
-                            <li><a>Review & Confirm</a></li>
-                        </ul>
+                                <li>
+                                    <Link hidden={(this.state.createdFundDataObj.partnershipDocument === null) || (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0)} to={"/createfund/review/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm</Link>
+                                    <a hidden={(this.state.createdFundDataObj.partnershipDocument !== null) && (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0)}>Review & Confirm</a>
+                                </li>
+                            </ul>
+
+                            :
+                            <ul className="sidenav-menu">
+                                <li><a className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details</a></li>
+                                <li><a>Assign GP Delegates</a></li>
+                                <li><a>Partnership Agreement</a></li>
+                                <li><a>Assign LP's to Fund</a></li>
+                                <li><a>Review & Confirm</a></li>
+                            </ul>
                     }
-                    
 
-                    <div className="start-box" hidden={this.state.currentPageNumber ===5 }><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
-                    <div className="start-fund" onClick={this.emitStartBtnModal} hidden={this.state.currentPageNumber  < 5}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
 
-                    <div className="section-head">GP Delegates<span className="btn-add pull-right">+</span></div>
+                    <div className="start-box" hidden={this.state.currentPageNumber === 5}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
+                    <div className="start-fund" onClick={this.emitStartBtnModal} hidden={this.state.currentPageNumber < 5}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</div>
+
+                    <div className="section-head">GP Delegates<span className="btn-add pull-right" onClick={this.handleShow}>+</span></div>
                     <div className="section">
                         <div className="gpDelDiv">
-                            {this.state.getGpDelegatesList.length >0 ?
-                            this.state.getGpDelegatesList.map((record, index)=>{
-                                return(
-                                <div className="gpDelegateInfo" key={index}>
-                                <div className="dpDelImg">
-                                {
-                                    record['profilePic']  ?
-                                    <img src={record['profilePic']} alt="user_image" className="user-image" />
-                                        : <img src={userDefaultImage} alt="user_image" className="user-image" />
-                                }
+                            {this.state.getGpDelegatesList.length > 0 ?
+                                this.state.getGpDelegatesList.map((record, index) => {
+                                    return (
+                                        <div className="gpDelegateInfo" key={index}>
+                                            <div className="dpDelImg">
+                                                {
+                                                    record['profilePic'] ?
+                                                        <img src={record['profilePic']} alt="user_image" className="user-image" />
+                                                        : <img src={userDefaultImage} alt="user_image" className="user-image" />
+                                                }
+                                            </div>
+                                            <div className="dpDelName">{record['firstName']}</div>
+                                            <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
+                                        </div>
+                                    );
+                                })
+                                :
+                                <div className="user">
+                                    <i className="fa fa-user fa-2x" aria-hidden="true"></i>
+                                    <p>You haven’t added any GP Delegates to this Fund yet</p>
                                 </div>
-                                    <div className="dpDelName">{record['firstName']}</div>
-                                    <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
-                                </div>
-                                );
-                            })
-                            :
-                            <div className="user">
-                                <i className="fa fa-user fa-2x" aria-hidden="true"></i>
-                                <p>You haven’t added any GP Delegates to this Fund yet</p>
-                            </div> 
-                            } 
+                            }
                         </div>
                     </div>
 
                     <div className="section-head">LPs<span className="btn-add pull-right">+</span></div>
                     <div className="section">
                         <div className="gpDelDiv">
-                            {this.state.getLpList.length >0 ?
-                            this.state.getLpList.map((record, index)=>{
-                                return(
-                                <div className="gpDelegateInfo" key={index}>
-                                <div className="dpDelImg">
-                                {
-                                    record['profilePic']  ?
-                                    <img src={record['profilePic']} alt="user_image" className="user-image" />
-                                        : <img src={userDefaultImage} alt="user_image" className="user-image" />
-                                }
+                            {this.state.getLpList.length > 0 ?
+                                this.state.getLpList.map((record, index) => {
+                                    return (
+                                        <div className="gpDelegateInfo" key={index}>
+                                            <div className="dpDelImg">
+                                                {
+                                                    record['profilePic'] ?
+                                                        <img src={record['profilePic']} alt="user_image" className="user-image" />
+                                                        : <img src={userDefaultImage} alt="user_image" className="user-image" />
+                                                }
+                                            </div>
+                                            <div className="dpDelName">{record['firstName']}</div>
+                                            <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
+                                        </div>
+                                    );
+                                })
+                                :
+                                <div className="user">
+                                    <i className="fa fa-user fa-2x" aria-hidden="true"></i>
+                                    <p>You haven’t added any LP’s to this Fund yet</p>
                                 </div>
-                                    <div className="dpDelName">{record['firstName']}</div>
-                                    <div className="dpDelgDel"><i className="fa fa-minus"></i></div>
-                                </div>
-                                );
-                            })
-                            :
-                            <div className="user">
-                                <i className="fa fa-user fa-2x" aria-hidden="true"></i>
-                                <p>You haven’t added any LP’s to this Fund yet</p>
-                            </div>
-                            } 
+                            }
                         </div>
                     </div>
 
@@ -297,6 +310,26 @@ class CreateFundComponent extends Component {
                     </div>
                     <Loader isShow={this.state.showModal}></Loader>
                 </div>
+
+
+
+
+
+
+
+
+
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h4>Text in a modal</h4>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleClose}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }
