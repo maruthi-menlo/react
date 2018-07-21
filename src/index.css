@@ -25,6 +25,9 @@ body {
 .marginBot20{
   margin-bottom: 20px;
 }
+.marginBottom2{
+  margin-bottom: 2px;
+}
 .marginBotNone {
   margin-bottom: 0px !important;
 }
@@ -386,11 +389,17 @@ select option {
 .marginTop20 {
   margin-top: 20px;
 }
+.marginTop24{
+  margin-top: 24px;
+}
 .marginTop30 {
   margin-top: 30px !important;
 }
 .marginTop15 {
   margin-top: 15px !important;
+}
+.marginTop6{
+  margin-top: 6px;
 }
 .marginBottom20 {
   margin-bottom: 20px !important;

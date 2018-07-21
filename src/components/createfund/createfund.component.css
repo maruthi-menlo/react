@@ -106,7 +106,7 @@
     color: #2f4858;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
     margin: 30px 20px 10px 4px;
-    padding-bottom: 20px;
+    padding-bottom: 24px;
 }
 
 .footer-nav {
@@ -787,6 +787,7 @@
     cursor:pointer;
     text-decoration: none;
     padding: 0px;
+    margin-left: 70%;
 }
 
 .col4 a:hover {
@@ -802,24 +803,29 @@
     font-size: 14px;
     font-weight: bold;
     line-height: 25px;
-    padding: 0px;
+    padding: 0px;    
 }
 
 #createFund #step6-rows1{
     min-height: 170px;
-    padding: 20px 0px 15px 0px;
+    padding: 20px 0px 24px 0px;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
     /* width: 1000px; */
-    width: 970px;
+    width: 850px;
     margin:0px !important;
 }
-
+#createFund #step6-rows1 .step6-col-pad{
+    padding: 0px;
+} 
 .step6-rows{
     height: 90px;
-    padding: 20px 0px 0px 0px;
+    padding: 24px 0px 0px 0px;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
-    width: 970px;
+    width: 850px;
     margin:0px !important;
+}
+.step6-rows .step-col-pad{
+    padding: 0px;
 }
 .height80{
     height: 80px !important;
@@ -880,11 +886,26 @@ input[type=checkbox]{
 } */
 .staticTextBelowTable{
     border-top: 2px solid rgba(51, 101, 138, 0.5);
-    padding: 40px 0px 20px 0px;
+    padding: 32px 0px 64px 0px;
     color: rgba(47, 72, 88, 0.5);
     font-size: 23px;
     font-weight: bold;
-    width:970px;
+    width:850px;
+}
+.staticTextBelowTable .staticTextBelowText{
+    
+        width: 600px;
+        height: 64px;
+        opacity: 0.5;
+        font-family: OpenSans;
+        font-size: 20px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.6;
+        letter-spacing: normal;
+        color: #2f4858;
+    
 }
 .startFundButtonStyle {
     text-align: center;
@@ -1063,6 +1084,9 @@ input[type=checkbox]{
     color: #2f4858;
     cursor: pointer;
 }
+#createFund .lpName_pad{
+    padding-left: 45px;
+}
 #createFund .userContainer {
     width: 400px;
     min-height: 150px;
@@ -1139,6 +1163,7 @@ input[type=checkbox]{
     padding-top: 18px !important;
     width: 35%;
     text-align: left;
+    padding-left: 13px !important;
 }
 .gpDelDiv {
     max-height: 200px;

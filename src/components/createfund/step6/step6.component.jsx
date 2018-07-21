@@ -202,14 +202,14 @@ class Step6Component extends Component {
 
     render() {
         return (
-            <div className="step6Class marginTop15">
+            <div className="step6Class marginTop6">
                 <div className="step6ClassAboveFooter">
                     <div className="staticContent">
-                        <h2 className="title">Review & Confirm</h2>
-                        <h4 className="subtext">Verify that everything looks correct before starting your Fund</h4>
+                        <h2 className="title marginBottom2">Review & Confirm</h2>
+                        <h4 className="subtext marginBottom30">Verify that everything looks correct before starting your Fund</h4>
                     </div>
                     <Row id="step6-rows1" >
-                        <Col md={3} sm={3} xs={6}>
+                        <Col md={3} sm={3} xs={6} className="step6-col-pad">
                             <span className="col1">Fund Details</span>                    
                         </Col>
                         <Col md={5} sm={5} xs={6}>
@@ -232,7 +232,7 @@ class Step6Component extends Component {
                     </Row>
                     {/* Remaining rows items============ */}
                     <Row className="step6-rows" >
-                        <Col md={3} sm={3} xs={6}>
+                        <Col md={3} sm={3} xs={6} className="step-col-pad">
                             <span className="col1">GP Delegates</span>                    
                         </Col>
                         <Col md={4} sm={4} xs={6}>
@@ -246,7 +246,7 @@ class Step6Component extends Component {
                         </Col>
                     </Row>
                     <Row className="step6-rows height80" >
-                        <Col md={3} sm={3} xs={6}>
+                        <Col md={3} sm={3} xs={6} className="step-col-pad">
                             <span className="col1">Partnership Agreement</span>                 
                         </Col>
                         <Col md={4} sm={4} xs={6}>
@@ -260,7 +260,7 @@ class Step6Component extends Component {
                         </Col>
                     </Row>
                     <Row className="step6-rows" >
-                        <Col md={3} sm={3} xs={6}>
+                        <Col md={3} sm={3} xs={6} className="step-col-pad">
                             <span className="col1">Limited Partners</span>                    
                         </Col>
                         <Col md={4} sm={4} xs={6}>
@@ -273,14 +273,14 @@ class Step6Component extends Component {
                             <span className="col4"><a href={"/createfund/lp/"+this.state.fundId}>Change</a></span>
                         </Col>
                     </Row>
-                    <div className="staticTextAndTbl marginTop20">
+                    <div className="staticTextAndTbl marginTop24">
                         <h2 className="staticText">Select which documents are required for which LPs (check all that apply)</h2>
                         <div className="table">
                             <table className="tableClass">
                                 <thead className="tableHeaderClass">
                                     <tr>
 
-                                        <th className="name-heading marginLeft75 borderTopNone text-left" hidden={!this.state.showNameAsc} onClick={(e) => this.sortLp(e,'firstName','asc')}>
+                                        <th className="name-heading lpName_pad marginLeft75 borderTopNone text-left" hidden={!this.state.showNameAsc} onClick={(e) => this.sortLp(e,'firstName','asc')}>
                                             LP Name
                                                 <i className="fa fa-sort-asc"   aria-hidden="true"  ></i>
                                         </th>
@@ -337,7 +337,11 @@ class Step6Component extends Component {
                         </div>
                         <Loader isShow={this.state.showModal}></Loader>
                     </div>
-                    <div className="staticTextBelowTable text-center">Once everything is confirmed correct, click the “Start Fund” button in the sidebar.</div>
+                    <div className="staticTextBelowTable">
+                    <div className="staticTextBelowText">
+                        Once everything is confirmed correct, click the “Start Fund” button in the sidebar.
+                    </div>                            
+                    </div>
                     {/* <div className="startFundButtonStyle">
                         <Button className="fsnetButton" onClick={this.openStartFundModal}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</Button>                                    
                     </div> */}
