@@ -542,7 +542,7 @@ class Step1Component extends Component{
                                 <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" value= {this.state.fundTargetCommitmentCurrencyValue}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundTargetCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'fundTargetCommitment')}} autoComplete="off"/>
                             </Col>
                         </Row>
-                        <h2 className="title marginTop20">Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
+                        <h2 className="title marginTop40">Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
                         <h4 className="subtext">Fill in one. Minimum fund participation can be calculated based on percentage participation.</h4>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
@@ -570,7 +570,7 @@ class Step1Component extends Component{
                             </Col>
                         </Row>
                         <label className="profile-text">Fund Image:(Image must not exceed 512x512)</label>
-                        <Row className="profile-Row profileMargin">
+                        <Row className="profile-Row profileMargin marginBottom68">
                             <Col lg={6} md={6} sm={6} xs={12} >
                                 <img src={this.state.currentFundImage} alt="profile-pic" className="profile-pic"/>
                                 <span className="profilePicName">{this.state.fundImageName}</span>

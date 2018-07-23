@@ -468,12 +468,12 @@ class Step5Component extends Component {
 
     render() {
         return (
-                <div className="LpDelegatesContainer marginTop15">
+                <div className="LpDelegatesContainer marginTop6">
                     <h1 className="assignGp">Assign LPs</h1>
                     <p className="Subtext">Select LPs from the list below or choose to add new LP to Fund.</p>
                     <Button className="lpDelegateButton" onClick={this.addLpDelegateBtn}><i className="fa fa-plus"></i>Limited Partner</Button>
                     {this.state.getLpList.length >0 ?
-                        <Row className="full-width marginTop20 ">
+                        <Row className="full-width marginTop30">
                             <div className="name-heading marginLeft75" hidden={!this.state.showNameAsc} onClick={(e) => this.sortLp(e,'firstName','asc')}>
                                 LP Name
                                     <i className="fa fa-sort-asc"   aria-hidden="true"  ></i>
@@ -505,7 +505,7 @@ class Step5Component extends Component {
                                         }
 
                                         <div className="lp-name">{record['firstName']}&nbsp;{record['lastName']}</div>
-                                        <div className="lp-name">{record['organizationName']}</div>
+                                        <div className="lp-name lp-name-pad">{record['organizationName']}</div>
                                         <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e, 'user', { record })}>
                                             <span className="checkmark"></span>
                                         </CBox>

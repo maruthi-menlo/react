@@ -217,12 +217,12 @@ class Step3Component extends Component {
 
     render() {
         return (
-            <div className="step3Class marginTop15">
+            <div className="step3Class marginTop6">
                 <h1 className="uploadFundDocument">Upload Fund Documents</h1>
                 <div className="chooseFileMargin">
                     <h1 className="title">Choose files to upload</h1>
                     <div className="subtext">Choose document files to upload. Accepted files information appears here.</div>
-                    <div className="uplodFileContainer marginTop20" >
+                    <div className="uplodFileContainer marginTop46" >
                         <input type="file" id="uploadBtn" className="hide" onChange={ (e) => this.handleChange(e) } />
                         <FileDrop onDrop={(e) => this.handleChange(e, 'drop')}>
                             <Button className="uploadFileBox" onClick={this.uploadBtnClick}></Button>

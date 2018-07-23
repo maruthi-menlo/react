@@ -389,6 +389,9 @@ select option {
 .marginTop20 {
   margin-top: 20px;
 }
+.marginTop40 {
+  margin-top: 40px;
+}
 .marginTop24{
   margin-top: 24px;
 }
@@ -401,8 +404,17 @@ select option {
 .marginTop6{
   margin-top: 6px;
 }
+.marginTop46{
+  margin-top: 46px;
+}
 .marginBottom20 {
   margin-bottom: 20px !important;
+}
+.marginBottom68 {
+  margin-bottom: 68px;
+}
+.marginBottom44 {
+  margin-bottom: 44px;
 }
 .bold {
   font-weight: bold;
