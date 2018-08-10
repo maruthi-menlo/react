@@ -1,0 +1,470 @@
+.lpSubFormStyle .fund-left-pic-label {
+    background-color: #00BCD4;
+}
+.lpSubFormStyle .fund-left-pic-label img {
+    width: 18px;
+    height: 20px;
+    margin-left: 0px;
+}
+.lpSubFormStyle .header-right-row {
+    margin-top: 15px;
+}
+.lpSubFormStyle .contentWidth {
+    clear: both;
+}
+.lpSubFormStyle .sidenav .left-nav-fund-name {
+    padding-left: 0px !important;
+}
+.lpSubFormStyle .sidenav ul li a {
+    padding: 10px 0px 10px 2px !important;
+}
+.agrementTxtStyle{
+    width: 210px !important;
+    margin-left: 16px !important;
+}
+.agreementTxtAlign {
+    margin-left: -4px !important;
+}
+.titleDiv {
+    padding-bottom: 26px;
+}
+.sign-box {
+    height: 23px;
+    opacity: 0.5;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #ffffff;
+    font-family: 'OpenSans-Bold';
+    text-align: left;
+    margin-left: 16px;
+    margin-top: 10px;
+}
+.titleOptDiv {
+    width: 129px;
+    height: 16px;
+    font-family: 'OpenSans-Bold';
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #39bcd5;
+  
+}
+.lpAlign {
+    margin-left: 6px;
+}
+.handShakeImageStyle {
+    width: 26px;
+    height: 24px;
+    position: relative;
+    top: -2px;
+    left: 14px;
+}
+.dashboardTxtAlign {
+    padding-left: 0px !important;
+    margin-left: -3px !important;
+}
+.lpDashAlign {
+    margin-left: 16px !important;
+}
+.successImgAlign {
+    margin-left: 20px;
+}
+.parnershipAgrementStyle {
+    line-height: 48px;
+    vertical-align: middle;
+    background-color: #0288d1;
+}
+.ptrSuccessImage {
+    position: relative;
+}
+
+
+#alertModal {
+    position: absolute;
+    right: 0;
+    min-height: 148vh;
+    width: 305px;
+    box-shadow: 0 1px 12px 0 rgba(155, 155, 155, 0.5);
+    float: left
+}
+.alert-title .fa{
+    color: #ffffff;
+    margin-top: 7px;
+    float: right;
+    cursor: pointer;
+}
+.alert-title {
+    width: 304px;
+    height: 104px;
+    background-color: #212121;
+    padding: 20px;
+}
+.alert-label {
+    width: 86px;
+    height: 32px;
+    font-family: 'OpenSans Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #ffffff;
+}
+.alert-section {
+    padding-left: 10px;
+}
+.alert-heading {
+    width: 215px;
+    height: 32px;
+    opacity: 0.5;
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-top: 20px;
+}
+.alert-content {
+    margin-top: 20px;
+    width: 280px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.individualForm {
+    width: 100%;
+}
+.lpSubFormStyle .navbar {
+    float: left;
+    margin-bottom: 30px;
+}
+.mainTextBlock {
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+}
+.width58 {
+    width: 58%;
+    margin-left: 286px; 
+    margin-left: 8px;
+    float: left;
+}
+.width75 {
+    margin-left: 286px; 
+    max-width: 75%;
+}
+.radioTxtWidth {
+    width: 200px !important;
+}
+.radioSmallTxtWidth {
+    width: 100px !important;
+}
+.selectFormControl  {
+    height: 40px !important;
+    margin-top: 8px;
+}
+.height38 {
+    height: 38px;
+}
+
+.formGridDivMargins{
+    margin: 15px 30px;
+}
+.footerDivAlign {
+    margin-left: 18px;
+}
+.companiesActRadio {
+    width: 100% !important;
+    display: block !important;
+}
+.subAgrmnt {
+    width: 170px !important;
+    margin-left: -8px !important;
+}
+.fsbadgeAlign {
+    margin-top: 2px !important;
+}
+@media(max-width:767px) {
+    .width75 {
+        margin-left: 0px; 
+        max-width: 75%;
+    }
+    .headerAlign {
+        float: none !important;
+    }
+    .lpHeader {
+        width: 100% !important;
+        float: none !important;
+        margin-top: 0px !important;
+    }
+    .ProgressBarDiv {
+        float: left !important;
+        margin-top: -100px !important;
+    }
+    .tooltip, .right {
+        width: 180px !important;
+    }
+    .tooltip-inner {
+        max-width: 180px !important;
+    }
+}
+
+/* confirmation modal css */
+#confirmInvestorModal .confirmInvestorDialog {
+    display: block; 
+    max-width: 500px !important;
+    width: 500px !important;
+}
+#confirmInvestorModal .fundBtnRow {
+    margin: 0;
+}
+.modal .btnEnabled{
+    width: 100%;
+    background-color: #00bcd4 !important;
+    border: 1px solid #00bcd4 !important;
+    border-radius: 30px !important;
+    color: #FFF !important;
+}
+.modal .btnEnabled:hover {
+    background-color: #4ab8c6 !important;
+}
+#confirmInvestorModal .modal-header {
+    border-bottom: none;
+}
+#confirmInvestorModal button.close {
+    margin-top: 10px !important;
+    position: relative;
+    top: 20px;
+    z-index: 99999;
+}
+#confirmInvestorModal .subtext {
+    /* height: 120px;
+    width: 70%; */
+    height: 62px;
+    text-align: center;
+}
+#confirmInvestorModal .modal-body {
+    margin-left: 14px;
+}
+
+/* Review form css for subscriptions*/
+#subscriptionReview #step6-row1{
+    min-height: 170px;
+    padding: 20px 0 24px;
+    border-bottom: 2px solid rgba(51,101,138,.5);
+    width: 850px;
+    margin: 0!important;
+}
+#subscriptionReview .step6-row{
+    min-height: 90px;
+    padding: 24px 0;
+    border-bottom: 2px solid rgba(51,101,138,.5);
+    width: 850px;
+    margin: 0!important;
+}
+
+#subscriptionReview .staticTextBelowTable{
+    border-top: 0;
+}
+.successImg {
+    float: right;
+    right: 9px;
+    top: 3px;
+}
+.pencilAlign {
+    margin-left: -4px;
+    margin-right: 4px;
+}
+.statusTxtStyle {
+    margin-left: 10px;
+    background-color: #03a9f4;
+    padding: 5px;
+    border-radius: 4px;
+    font-family: 'Open Sans';
+    font-size: 10px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+    position: relative;
+    bottom: 6px;
+}
+.lpHeader {
+    width: 50%;
+    float: left;
+    margin-top: -45px;
+}
+.progressBarAlign {
+    height: 20px !important;
+    background-color: #CAF1F4 !important;
+    padding: 3px;
+    border-radius: 20px !important;
+    width: 325px;
+    transition: width .6s ease;
+    -webkit-transition: width .6s ease;
+    margin-left: 12px;
+    margin-top: 18px;
+    border: 1px solid #39bcd5;
+}
+.ProgressBarDiv {
+    float: right;
+    margin-top: -100px;
+}
+.ProgressBarDiv .progress-bar {
+    display: inline-block !important;
+}
+.progressColor {
+    width: 60%;
+    background-color: #5CE2CB !important;
+    height: 12px !important;
+    border-radius: 20px !important;
+}
+.progressDetailsStyle {
+    font-family: 'Open Sans';
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-left: 15px;
+    margin-top: 4px;
+}
+.progressTxtAlign {
+    float: right;
+    margin-right: 10px;
+}
+.helpImgAlign {
+    float: right;
+    margin-top: 10px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    margin-right: 16px;
+}
+.toolTipIconAlign {
+    /* float: right; */
+    color: #00BCD4;
+    cursor: pointer;
+}
+.lpSubFormStyle .step1Form-row span:not(.error), .lpSubFormStyle .step1Form-row span:not(.error):hover {
+    color: #2f4858;
+    text-decoration: underline;
+}
+.tooltip {
+    width: 600px !important;
+}
+.tooltip-inner {
+    max-width: 600px !important;
+    background-color: #39bcd5 !important
+}
+.helpWord{
+    cursor: pointer;
+}
+#tooltip-2{
+    position: absolute !important;
+    top: 150px !important;
+    /* left: 800px !important; */
+}
+.header-fund-image {
+    height: 60px;
+    width: 60px;
+}
+
+.lpSubFormStyle .main-title {
+    margin-left: 10px;
+}
+/* .lpSubFormStyle .form-label {
+    font-size: 16px;
+    font-weight: bold !important;
+    font-family: 'OpenSans-Bold' !important;
+} */
+.lpSubFormStyle .header-right-row{
+    display: flex;
+    justify-content: flex-end;
+}
+.mainHead .progressBarPosition{
+    float: right;
+}
+.mainHeading{
+    color: #2f4858;
+    border-bottom: 2px solid rgba(51, 101, 138, 0.5);
+    margin: 0px 20px 10px 4px;
+    padding-bottom: 24px;
+    padding-top: 30px;
+}
+.mainHead{
+    margin-left: 286px; 
+    max-width: 75%;
+    min-width: 320px;
+}
+.height45{
+    height: 45px;
+}
+@media(max-width:767px) {
+    .mainHead{
+        margin-left: 0px !important; 
+        max-width: 100% !important;
+    }
+    .progressBarAlign{
+        width: 100% !important;
+    }
+    .mainHeading{
+        margin-left: 20px !important;
+    }
+    .mainHead .progressBarPosition{
+        float: none !important;
+    }
+}
+.checkBoxText{
+    margin-left: 24px;
+}
+.marginForInput{
+    margin: 18px 0 0 24px;
+}
+.radioText{
+    margin-left: 16px;
+}
+.height37{
+    height: 37px;
+}
+.margin18{
+    margin-top: 18px;
+    margin-bottom: 10px !important
+}
+.marginLeft6{
+    margin-left: 6px;
+}
+.checkBoxText .radio-checkmark {
+    margin-top: 2px;
+}

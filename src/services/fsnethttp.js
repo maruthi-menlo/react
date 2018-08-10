@@ -74,13 +74,13 @@ export class Fsnethttp{
     //Get list of LP's
     getLp(firmId,fundId, headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
-        return axios.get(this.Constants.BASE_URL+'fund/lpDelegateList/'+firmId+'/'+fundId);
+        return axios.get(this.Constants.BASE_URL+'fund/lpList/'+firmId+'/'+fundId);
     }
 
     //Get LP's Sort
     getLpSort(firmId,fundId, headers,colName,sortVal) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
-        return axios.get(this.Constants.BASE_URL+'fund/lpDelegateList/'+firmId+'/'+fundId+ '/'+colName+'/'+sortVal);
+        return axios.get(this.Constants.BASE_URL+'fund/lpList/'+firmId+'/'+fundId+ '/'+colName+'/'+sortVal);
     }
 
     //Invite Gp Delegates to the fund
@@ -92,7 +92,19 @@ export class Fsnethttp{
     //Invite LP to the fund
     addLp(obj, headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
-        return axios.post(this.Constants.BASE_URL+'fund/lpDelegate/invite', obj);
+        return axios.post(this.Constants.BASE_URL+'fund/add/lp', obj);
+    }
+
+    //Remove LP to the fund
+     removeLp(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/removeLp', obj);
+    }
+
+    //Remove LP to the fund
+    removeGp(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/removeFundGpDeleate', obj);
     }
 
     //Assign GP delegates to the fund.
@@ -104,7 +116,7 @@ export class Fsnethttp{
     //Assign LP to the fund.
     assignLpToFund(obj,headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
-        return axios.post(this.Constants.BASE_URL+'fund/asssingLpDelegate', obj);
+        return axios.post(this.Constants.BASE_URL+'fund/asssinglp', obj);
     }
 
     //Get list of funds
@@ -137,4 +149,49 @@ export class Fsnethttp{
         axios.defaults.headers.common['Content-Type'] = 'multipart/form-data';
         return axios.post(this.Constants.BASE_URL+'fund/document/add/'+fundId, obj);
     }
+
+    /************LP Subscription API Calls Start***************/
+    //Get LP funds
+    getListOfLpFunds(headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'lp/fund/list');
+    }
+    //Get LP Subscription details
+    getLpSubscriptionDetails(id, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'lp/subscription/'+id);
+    }
+
+    //Update LP Subscription details
+    updateLpSubscriptionDetails(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'lp/subscription', obj);
+    }
+
+    //Reject Fund
+    rejectGPInvitedFund(headers, obj) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        axios.defaults.headers.common['Content-Type'] = 'application/json';
+        return axios.post(this.Constants.BASE_URL+'lp/fund/reject', obj);
+    }
+    
+    //Accept Fund
+    acceptGPInvitedFund(headers, obj) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        axios.defaults.headers.common['Content-Type'] = 'application/json';
+        return axios.post(this.Constants.BASE_URL+'lp/fund/accept', obj);
+    }
+
+    //Get Investor Sub Types
+    getInvestorSubTypes(headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'getInvestorSubType/LLC');
+    }
+
+    //Get Jurisdiction Types
+    getJurisdictionTypes(headers, url) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+url);
+    }
+    /************LP Subscription API Calls End****************/
 }

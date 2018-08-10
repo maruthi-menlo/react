@@ -7,7 +7,9 @@ import DashboardComponent from '../components/dashboard/dashboard.component';
 import TermsAndConditionsComponent from '../components/termsandconditions/termsandconditions.component';
 import ForgotPasswordComponent from '../components/forgotpassword/forgotpassword.component';
 import CreateFundComponent from '../components/createfund/createfund.component';
+import editFundComponent from '../components/editfund/editfund.component';
 import CreateVcFirmComponent from '../components/admin/createvcfirm.component';
+import LpSubscriptionFormComponent from '../components/lp/lpsubscriptionform.component';
 
 class FsnetRouter extends Component{
 
@@ -25,6 +27,8 @@ class FsnetRouter extends Component{
                         <Route path='/forgot-password' component={ForgotPasswordComponent}/>
                         <Route path='/createfund' component={CreateFundComponent}/>
                         <Route path='/admin' component={CreateVcFirmComponent}/>
+                        <Route path='/lp' component={LpSubscriptionFormComponent}/>
+                        <Route path='/editfund' component={editFundComponent}/>
                         <Redirect from='*' to='/404'/>
                     </Switch>
                 </div>

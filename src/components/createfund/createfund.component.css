@@ -21,18 +21,19 @@
 }
 
 .sidenav ul li a.active {
-    color: #39bcd5;
+    color: #39bcd5 !important;
     opacity: 1;
-    font-weight: bold;
+    font-family: 'OpenSans-Bold';
 }
 .sidenav ul li a {
-    padding: 10px 8px 10px 20px;
+    padding: 10px 0px 10px 20px;
     text-decoration: none;
     color: #ffffff;
     font-size: 14px;
     display: block;
     opacity: 0.75;
     outline: none !important;
+    font-family: 'Open Sans';
 }
 
 .sidenav h1 {
@@ -40,11 +41,38 @@
     font-size: 20px;
     display: block;
     font-weight: bold;
+    font-family: 'OpenSans-Bold';
     text-transform: uppercase;
 }
 .sidenav h2 a {
     color: #ffffff !important;
-    text-decoration: none !important;
+    position: relative;
+    top: 3px;
+    padding-left: 7px;
+}
+.fund-left-pic-label {
+    background-color: #ffffff;
+    border-radius: 30px;
+    position: relative;
+    left: -5px;
+    width: 24px;
+    height: 24px;
+    /* top: -10px; */
+}
+.fund-left-pic-label img {
+    width: 14.9px;
+    height: 14.9px;
+    margin-left: 5px;
+    margin-top: -2px;
+}
+.sidenav .left-nav-fund-name {
+    display: inline-block;
+    width: 150px;
+    font-family: 'OpenSans-Bold';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    padding-left: 7px;
 }
 .sidenav h2 {
     color: #ffffff;
@@ -53,6 +81,13 @@
     margin-left: 20px;
     margin-top: 70px;
     margin-bottom: 20px;
+    font-family: 'Open Sans';
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+}
+.navbar-collapse.collapse {
+    display: block!important;
 }
 
 .sidenav .section-head {
@@ -60,10 +95,19 @@
     color: #ffffff;
     padding-left: 10px;
     margin-top: 20px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    height: 24px;
 }
 
 .sidenav .section {
     padding: 20px 0;
+    min-height: 170px;
 }
 
 .header-container {
@@ -89,7 +133,7 @@
 .btn-add {
     margin-right: 10px;
     font-size: 26px;
-    margin-top: -10px;
+    margin-top: -8px;
     cursor: pointer;
 }
 
@@ -99,6 +143,7 @@
 }
 #createFund .radio-inline {
     width: 105px;
+    margin-top: 15px;
 }
 
 .main-heading {
@@ -111,7 +156,9 @@
 .main-content{
     min-height: 600px;
 }
-
+.disabledAddIcon {
+    pointer-events: none;
+}
 .footer-nav {
     width: 100%;
     color: #39bcd5;
@@ -132,6 +179,7 @@
     font-size: 26px;
     font-weight: bold;
     margin-left: 20px;
+    font-family: 'OpenSans-Bold';
 }
 #createFund a:not([href]):not([tabindex]) {
     color: #ffffff;
@@ -145,6 +193,7 @@
     margin-top: 8px;
     color: #2f4858 !important;
     text-decoration: none !important;
+    font-family: 'OpenSans-Bold';
 }
 
 .start-box {
@@ -156,9 +205,10 @@
     width: 232px;
     height: 40px;
     background-color: rgba(245, 245, 245, 0.3);
-    border-radius: 20px;
+    border-radius: 100px;
     text-align: center;
     margin-left: 9px;
+    font-family: 'OpenSans-Bold';
 }
 
 .start-fund {
@@ -169,15 +219,15 @@
     width: 232px;
     height: 40px;
     background-color: #39bcd5;
-    border-radius: 20px;
+    border-radius: 100px;
     text-align: center;
     margin-left: 9px;
     cursor: pointer;
+    font-family: 'OpenSans-Bold';
 }
-
 .form-grid {
     padding: 0 30px 0 30px;
-    width: 610px;
+    width: 700px;
   }
 
   .form-row{
@@ -202,6 +252,15 @@
 .user p {
     text-align: center;
     color: #ffffff;
+    opacity: 0.75;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    margin-top: 10px;
 }
 
 .header-right {
@@ -221,10 +280,9 @@
     border-radius: 9px;
     float: right;
     margin-top: 5px;
+    font-family: 'OpenSans-Bold';
 }
 #createFund .GpDelegatesContainer .error{
-    margin-left: 25px;
-    margin-bottom: 25px;
 }
 #createFund .GpDelegatesContainer{
     margin-left: 18px;
@@ -241,7 +299,7 @@
 .assignGp {
     /*width: 201px;*/
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -249,12 +307,13 @@
     line-height: 1.6;
     letter-spacing: normal;
     color: #2f4858;
+
 }
 .Subtext {
     /*width: 410px;*/
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -269,7 +328,7 @@
     height: 40px;
     background-color: #39bcd5;
     border-radius: 30px !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 16px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -293,7 +352,7 @@
     background-color: white !important;
     height: 40px;
     border-radius: 30px !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 16px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -304,10 +363,14 @@
     padding: 8px 40px 8px 30px;
     box-shadow: initial !important;
 }
+/* #createFund .lpDelegateButton:hover{
+    background-color: #4ab8c6 !important;
+    color: #ffffff !important;
+} */
 .lpName {
     /*width: 100px;*/
     height: 20px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -319,7 +382,7 @@
 .organizationName {
     width: 117px;
     height: 16px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 12px;
     font-weight: bold;
     font-style: normal;
@@ -347,7 +410,7 @@
     width: 54px;
     height: 16px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 12px;
     font-weight: bold;
     font-style: normal;
@@ -362,7 +425,7 @@
     width: 78px;
     height: 16px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 12px;
     font-weight: bold;
     font-style: normal;
@@ -391,7 +454,7 @@
 }
 .Ben-Parker {
     height: 20px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -415,13 +478,13 @@
 
 #createFund #header-right {
     max-width: 100%;
-    margin-top: 15px;
+    padding-top: 15px;
     height: 35px;
 }
 #createFund .header-right-row {
-    width: 512px;
+    /* width: 563px; */
     position: relative;
-    right: -48%;
+    right: -46%;
 }
 .gpdelegateImg {
     width: 32px;
@@ -462,7 +525,7 @@
 .addGpFLName {
     width: 290px;
     height: 20px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -492,7 +555,7 @@
     width: 290px;
     height: 48px;
     border-radius: 24px !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -507,7 +570,7 @@
     width: 290px;
     height: 48px;
     background-color: skyblue !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -526,7 +589,7 @@
     width: 253px;
     height: 24px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 16px;
     font-weight: bold;
     font-style: normal;
@@ -540,7 +603,7 @@
 .titleChooseFile {
     width: 220px;
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -553,7 +616,7 @@
     width: 522px;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -577,7 +640,7 @@
     margin-bottom: 10px;
 }
 #createFund .upload-doc-name {
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -587,6 +650,11 @@
     color: #2f4858 !important;
     margin-left: 20px;
     text-decoration: underline !important;
+    width: 450px;
+}
+#createFund .docContainer {
+    width: 500px;
+    word-wrap: break-word;
 }
 #createFund .uplodFileContainer {
     width: 529px;
@@ -602,7 +670,7 @@
     width: 142px;
     height: 36px;
     background-color: skyblue !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -612,7 +680,7 @@
     color: #ffffff;
     padding: 8px 30px !important;
     border-radius: 30px !important;
-    margin-top: 10px;
+    margin-top: 20px;
     box-shadow: initial !important;
 }
 #createFund .uploadFileBox:hover:after, #createFund .file-drop-dragging-over-frame .uploadFileBox:after {
@@ -626,7 +694,7 @@
     height: 56px;
     border-radius: 0px !important;
     background-color: #39bcd5;
-    font-family: 'Open Sans' !important;
+    font-family: 'OpenSans-Bold' !important;
     font-size: 24px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -637,11 +705,15 @@
     margin-top: 0px !important;
     box-shadow: initial !important;
 }
+#createFund .file-drop {
+    margin-bottom: 8px;
+    min-height: 75px;
+}
 .uploadFileSubtext {
     width: 348px;
     height: 40px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -651,6 +723,7 @@
     color: #2f4858;
     float: right;
     position: relative;
+    padding-top: 8px;
     /*left: -20px;*/
 }
 .chooseFileMargin{
@@ -693,7 +766,7 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #2f4858;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
 }
 
 .form-label{    
@@ -704,7 +777,7 @@
     width: 344px;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -719,7 +792,7 @@
     width: 142px;
     height: 36px;
     background-color: #39bcd5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -734,7 +807,7 @@
     width: 59px;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -784,7 +857,7 @@
 
 .col4 a{
     color: #39bcd5 !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     cursor:pointer;
@@ -802,7 +875,7 @@
 .col1,.col2,.col3{
     word-wrap: break-word;  
     color: #2f4858;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     line-height: 25px;
@@ -821,7 +894,7 @@
     padding: 0px;
 } 
 .step6-rows{
-    height: 90px;
+    min-height: 90px;
     padding: 24px 0px 0px 0px;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
     width: 850px;
@@ -836,7 +909,7 @@
 
 .step6-rows .col2-redirection{
     color: #2f4858;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
@@ -844,7 +917,7 @@
 }
 .step6-rows .col2-redirection a:hover{
     color: #2f4858;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
@@ -854,7 +927,7 @@
 
 .staticTextAndTbl .staticText{
     margin-bottom: 20px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
 
@@ -869,6 +942,7 @@
     color: rgba(47, 72, 88, 0.5);
     font-size: 14px;
     font-weight: bold;
+    font-family: 'OpenSans-Bold';
 }
 .tableCols{
     text-align: center;
@@ -889,18 +963,17 @@ input[type=checkbox]{
 } */
 .staticTextBelowTable{
     border-top: 2px solid rgba(51, 101, 138, 0.5);
-    padding: 32px 0px 64px 0px;
+    padding: 32px 0px 10px 0px;
     color: rgba(47, 72, 88, 0.5);
     font-size: 23px;
     font-weight: bold;
     width:850px;
+    font-family: 'OpenSans-Bold';
 }
 .staticTextBelowTable .staticTextBelowText{
-    
-        width: 600px;
-        height: 64px;
+        height: 50px;
         opacity: 0.5;
-        font-family: OpenSans;
+        font-family: 'OpenSans-Bold';
         font-size: 20px;
         font-weight: bold;
         font-style: normal;
@@ -908,7 +981,6 @@ input[type=checkbox]{
         line-height: 1.6;
         letter-spacing: normal;
         color: #2f4858;
-    
 }
 .startFundButtonStyle {
     text-align: center;
@@ -926,7 +998,7 @@ input[type=checkbox]{
 .viewApproveForm {
     width: 238px;
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -939,7 +1011,7 @@ input[type=checkbox]{
     width: 250px;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -953,7 +1025,7 @@ input[type=checkbox]{
     height: 36px;
     background-color: skyblue;
     border-radius: 30px  !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -969,7 +1041,7 @@ input[type=checkbox]{
     height: 36px;
     background-color: skyblue;
     border-radius: 30px !important;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -1019,7 +1091,7 @@ input[type=checkbox]{
     right: 6px;
 }
 #createFund .userRow {
-    height: 48px;
+    min-height: 48px;
     border-bottom: 1px solid #add8e6;
     width: 100%;
     line-height: 20px;
@@ -1029,11 +1101,18 @@ input[type=checkbox]{
     height: 32px;
     margin-left: 10px;
 }
+#createFund .user-review-image {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    position: relative;
+    top: -5px;
+}
 #createFund .fund-user-name {
     width: 300px;
     min-height: 20px;
     height: auto;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -1043,12 +1122,25 @@ input[type=checkbox]{
     color: #2f4858;
     display: inline-block;
     padding-left: 20px;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+#createFund .review-name {
+    font-family: 'OpenSans-Bold';
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+
 }
 #createFund .lp-name {
     width: 215px;
     min-height: 20px;
     height: auto;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -1058,9 +1150,13 @@ input[type=checkbox]{
     color: #2f4858;
     display: inline-block;
     padding-left: 20px;
+    word-wrap: break-word;
+    vertical-align: middle;
 }
 #createFund .lp-name-pad{
     padding-left: 28px;
+    word-wrap: break-word;
+    vertical-align: middle;
 }
 #createFund .checkbox {
     position: relative;
@@ -1080,7 +1176,7 @@ input[type=checkbox]{
     width: 225px;
     min-height: 16px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 12px;
     font-weight: bold;
     font-style: normal;
@@ -1094,7 +1190,7 @@ input[type=checkbox]{
     padding-left: 45px;
 }
 #createFund .userContainer {
-    width: 400px;
+    width: 392px;
     min-height: 150px;
     max-height: 400px;
     overflow-y: auto;
@@ -1109,25 +1205,13 @@ input[type=checkbox]{
     width: 530px;
     height: 250px;
     /* max-height: 400px; */
-    overflow: hidden;
+    overflow: auto;
     box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
     box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
     border: 1px solid #add8e6;
     margin-top: 30px;
     margin-bottom: 30px;
     /* margin-left: 10px; */
-}
-#createFund .userContainer {
-    width: 400px;
-    min-height: 150px;
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
-    box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
-    border: 1px solid #add8e6;
-    margin-top: 30px;
-    margin-bottom: 30px;
 }
 
 #createFund .react-phone-number-input{
@@ -1138,7 +1222,7 @@ input[type=checkbox]{
     height: 56px;
     border-radius: 4px;
     background-color: #39bcd5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 24px;
     font-weight: bold;
     font-style: normal;
@@ -1176,7 +1260,15 @@ input[type=checkbox]{
     overflow-y: auto;
 }
 .cboxAlign {
-    top: 8px !important;
+    top: 6px !important;
+}
+.reviewLpName {
+    position: relative;
+    bottom: 4px !important;
+}
+.reviewOrgName {
+    position: relative;
+    bottom: -3px !important;
 }
 .gpDelegateInfo {
     color: #fff;
@@ -1195,9 +1287,21 @@ input[type=checkbox]{
 .dpDelName {
     width: 66%;
     float: left;
+    height: 20px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #ffffff;
+    padding-top: 4px;
+    text-align: left;
+    padding-left: 5px;
 }
 .dpDelgDel {
-
+    padding-top: 2px;
 }
 
 .gpDelDiv::-webkit-scrollbar {
@@ -1211,6 +1315,33 @@ input[type=checkbox]{
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px #318D9E;
 }
+#createFund .userContainer::-webkit-scrollbar {
+    width: 12px;
+}
+#createFund .userContainer::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); ;
+    border-radius: 10px;
+}
+#createFund .userContainer::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #318D9E;
+}
+#createFund .userLPContainer::-webkit-scrollbar {
+    width: 12px;
+}
+#createFund .userLPContainer::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); ;
+    border-radius: 10px;
+}
+#createFund .userLPContainer::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #318D9E;
+}
+
+
+
+
+
 .table1stColAlign {
     margin-left: -36px;
 }
@@ -1232,7 +1363,7 @@ input[type=checkbox]{
     position: relative;
     top: 8px;
 }
-.fa-chevron-right.disabled {
+.fa-chevron-right.disabled, .fa-chevron-left.disabled {
     background: #DEE1E4 !important;
     color: #fff !important;
     border: 1px solid #DEE1E4 !important;
@@ -1256,9 +1387,11 @@ input[type=checkbox]{
     margin-top: -20px;
     margin-right: 20px;
     font-weight: bold;
+    font-family: 'OpenSans-Bold';
 }
 .borderTopNone {
     border-top: none !important;
+    border-bottom: none !important;
 }
 .fa-trash:before {
     font-size: 16px;
@@ -1276,17 +1409,19 @@ input[type=checkbox]{
 }
 #createFund .patnership-link {
     width: 156px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
     letter-spacing: normal;
-    color: #2f4858;
+    color: #2f4858 !important;
+    text-decoration: underline !important;
 }
 #createFund .fundBtnRow {
     margin-top: 20px;
+    margin-bottom: 15px;
 }
 #createFund .fundStartModal {
     opacity: 1!important;
@@ -1312,14 +1447,14 @@ input[type=checkbox]{
       width: 900px !important;
   }
   #createFund .header-right-row {
-    width: 683px;
+    /* width: 683px; */
     position: relative;
   }
 }
 
  @media only screen and (max-width: 780px){ 
     #createFund .header-right-row {
-        width: 967px;
+        /* width: 967px; */
         position: relative;
     }
 
@@ -1327,9 +1462,400 @@ input[type=checkbox]{
 
  @media only screen and (min-width: 1450px){ 
     #createFund .header-right-row {
-        width: 512px;
+        /* width: 512px; */
         position: relative;
         right: -60%;
     }
 
  }
+
+ /*Modal Styles*/
+
+ #LPModal .modal-header {
+    height: 100px;
+    border-bottom: none;
+    margin-top: 80px;
+ }
+ #LPModal .react-phone-number-input {
+     width: 278px;
+ }
+ #LPModal .modal-content {
+    padding-left: 6px !important;
+ }
+ #LPModal .modal-body {
+    margin-left: 8px;
+ }
+ #LPModal {
+    margin-top: -80px !important;
+ }
+ #LPModal button.close {
+    margin-top: 20px !important;
+ }
+#LPModal .modal-title {
+    margin-top: -47px;
+    text-align: left;
+    padding-left: 23px;
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+ }
+ #LPModal .LPModalDialog {
+    display: block; 
+    max-width: 670px !important;
+    width: 670px !important;
+}
+#LPModal .modal-footer {
+    border-top: none;
+}
+#LPModal .subtext {
+    width: 60%;
+    margin-bottom: 32px;
+}
+
+
+
+#GPModal .modal-header {
+    height: 100px;
+    border-bottom: none;
+    margin-top: 80px;
+ }
+ #GPModal .react-phone-number-input {
+     width: 278px !important;
+ }
+ #GPModal .modal-content {
+    padding-left: 6px !important;
+ }
+ #GPModal .modal-body {
+    margin-left: 8px;
+ }
+ #GPModal {
+    margin-top: -80px !important;
+ }
+ #GPModal button.close {
+    margin-top: 20px !important;
+ }
+#GPModal .modal-title {
+    margin-top: -47px;
+    text-align: left;
+    padding-left: 23px;
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+ }
+ #GPModal .GPModalDialog {
+    display: block; 
+    max-width: 670px !important;
+    width: 670px !important;
+}
+#GPModal .modal-footer {
+    border-top: none;
+}
+#GPModal .subtext {
+    width: 60%;
+    margin-bottom: 32px;
+}
+
+
+#LPDelModal .modal-header {
+    height: 100px;
+    border-bottom: none;
+    margin-top: -10px;
+ }
+ #LPDelModal .modal-content {
+    padding-left: 6px !important;
+ }
+ #LPDelModal .modal-body {
+    margin-left: 8px;
+ }
+ #LPDelModal button.close {
+    margin-top: 20px !important;
+ }
+#LPDelModal .modal-title {
+    margin-top: -47px;
+    text-align: left;
+    padding-left: 23px;
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+ }
+#LPDelModal .subtext {
+    color: #000;
+    opacity: 1;
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+#GPDelModal .modal-header {
+    height: 100px;
+    border-bottom: none;
+    margin-top: -10px;
+ }
+ #GPDelModal .modal-content {
+    padding-left: 6px !important;
+ }
+ #GPDelModal .modal-body {
+    margin-left: 8px;
+ }
+ #GPDelModal button.close {
+    margin-top: 20px !important;
+ }
+#GPDelModal .modal-title {
+    margin-top: -47px;
+    text-align: left;
+    padding-left: 23px;
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
+ }
+#GPDelModal .subtext {
+    color: #000;
+    opacity: 1;
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+.fa-minus {
+    cursor: pointer;
+}
+
+#confirmFundModal .confirmFundDialog {
+    display: block; 
+    max-width: 670px !important;
+    width: 670px !important;
+}
+.modal .btnEnabled{
+    background-color: #00bcd4 !important;
+    border: 1px solid #00bcd4 !important;
+    border-radius: 30px !important;
+    color: #FFF !important;
+}
+.modal .btnEnabled:hover {
+    background-color: #4ab8c6 !important;
+}
+#confirmFundModal .modal-header {
+    border-bottom: none;
+}
+#confirmFundModal button.close {
+    margin-top: 20px !important;
+    position: relative;
+    top: 30px;
+    z-index: 99999;
+}
+#confirmFundModal .subtext {
+    height: 120px;
+    width: 70%;
+}
+#confirmFundModal .modal-body {
+    margin-left: 14px;
+}
+.patnerCheckbox {
+    left: 60px;
+}
+.sectionHeadTxt {
+    position: relative;
+    top: 2px;
+}
+input:checked ~ .radio-checkmark {
+    background-color: #fff !important;
+}
+.radio-checkmark:after {
+    background: #00bcd4 !important;
+}
+.sidenav-menu {
+    list-style-type: none;
+    text-align: left;
+}
+.sidenav-menu li {
+    height: 44px;
+}
+
+
+.navbar-custom {
+    background: #212121;
+    color: #fff;
+    font-size: 13px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    width: 256px;
+    float: left;
+}
+.navbar-toggle .icon-bar {
+    background: white;
+}
+.navbar-collapse-custom {
+    padding: 0;
+    height: 100% !important;
+    width: 100% !important;
+}
+.navbar-toggle {
+    display: block;
+}
+.navList {
+    width: 168px;
+    height: 88px;
+    font-size: 16px;
+    background: #fafafa;
+    position: absolute;
+    left: 15px;
+    top: 75px;
+}
+.navbar-collapse.collapse {
+    display: block !important;
+}
+
+.navbar-toggle .icon-bar {
+    width: 22px;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  
+@media(max-width:767px) {
+.main {
+    margin-left: 0px !important;
+}
+body {
+    width: 100%;
+}
+/* .header-right-row {
+    width: 500px !important;
+} */
+.main-heading{
+    width: 370px !important;
+}
+.navbar-custom {
+    height: auto;
+    clear: both;
+    width: 100%;
+    float: none
+}
+.contentWidth {
+    width: 370px !important;
+}
+.form-grid {
+    width: 321px !important;
+}
+.cancel-fund {
+    margin-right: 0px !important;
+}
+.sidenav {
+    width: 100% !important;
+    position: relative !important;
+}
+.navbar-collapse-custom ul.mainMenu {
+    width: 100%;
+}
+li:last-child ul.sub-menu {
+    top: 100%;
+}
+.sub-menu {
+    left: 35%;
+    top: 100%;
+}
+.navList {
+    left:38%;
+}
+.navbar-nav .open .dropdown-menu {
+    position: static;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.dropdown-menu > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+.navbar-header {
+    float: none;
+}
+.navbar-toggle {
+    display: block;
+}
+.navbar-collapse.collapse {
+    display: none!important;
+}
+.logoHamburger {
+    display: none !important;
+}
+
+
+.navbar-text {
+    float: none;
+    margin: 15px 0;
+}
+/* since 3.1.0 */
+.navbar-collapse.collapse.in { 
+    display: block !important;
+}
+.collapsing {
+    overflow: hidden !important;
+}
+#GPModal .GPModalDialog {
+    max-width: 390px !important;
+    width: 390px !important;
+    margin-top: 46px;
+}
+#LPModal .LPModalDialog {
+    max-width: 390px !important;
+    width: 390px !important;
+    margin-top: 88px;
+}
+#createFund .userContainer {
+    width: 392px;
+}
+#createFund .uplodFileContainer {
+    width: 362px;
+}
+.docNameDivAlign {
+    margin-top: 60px;
+    display: inline-flex;
+    word-wrap: break-word;
+}
+#confirmFundModal .confirmFundDialog {
+    max-width: 390px !important;
+    width: 390px !important;
+    margin-top: 68px;
+}
+#createFund #step6-rows1{
+    width: 360px !important;
+}
+.step6-rows{
+    width: 360px !important;
+}
+}
+.hidden {
+    display: none;
+}

@@ -7,6 +7,7 @@ import { FsnetAuth } from'../../services/fsnetauth';
 import profileImage from '../../images/key.svg';
 import backImage from '../../images/back.svg';
 import editImage from '../../images/edit.svg';
+import notificationImage from '../../images/notifications.png';
 
 class HeaderComponent extends Component{
 
@@ -28,6 +29,12 @@ class HeaderComponent extends Component{
         this.setState({
             showandhideUserDropdown: !value,
         })
+        setTimeout(() => {
+            this.setState({
+                showandhideUserDropdown: value,
+            })
+        }, 3000);
+
 
     }
 
@@ -60,20 +67,29 @@ class HeaderComponent extends Component{
 
     render(){
         return(
-            
-                <Col lg={6} md={6} sm={6} xs={12} id="header-right">
-                    <Row className="header-right-row">
+                <Col className="headers">
+                    <Row className="rightHeader">
                         <div className="user-dropdown-list" hidden={this.state.showandhideUserDropdown}>
                             <ul>
-                                <li><img src={editImage} alt="edit-profile" /><a href="edit-profile">Edit Profile</a></li>
-                                <li><img src={profileImage} alt="change-password" /><a href="/change-password">Change Password</a></li>
-                                <li onClick={this.logout}><img src={backImage} alt="logout" /><a href="/">Log Out</a></li>
+                                <li><img src={editImage} alt="edit-profile" className="dropDownImg" /><a href="edit-profile">Edit Profile</a></li>
+                                <li><img src={profileImage} alt="change-password" className="dropDownImg" /><a href="/change-password">Change Password</a></li>
+                                <li onClick={this.logout}><img src={backImage} alt="logout" className="dropDownImg" /><a href="/">Log Out</a></li>
                             </ul>    
                         </div>
-                        
-                        <div className={"user-name " + (this.state.showandhideUserDropdown ? '' : 'active')} onClick={this.userDropdownList}>{this.state.loggedInUserObj.firstName} {this.state.loggedInUserObj.lastName} <i className="fa fa-caret-down" aria-hidden="true"></i></div>
-                        <img src={this.state.userImage} alt="profilePic" className="profilePic"/>
-                        <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i>
+                        <Col xs={8} className="" onClick={this.userDropdownList}>
+                            <div className={"user-name " + (this.state.showandhideUserDropdown ? '' : 'active')} >{this.state.loggedInUserObj.firstName} {this.state.loggedInUserObj.lastName}
+                            </div>
+                        </Col>
+                        <Col xs={1} className="downArrowIcon" onClick={this.userDropdownList}>
+                            <i className="fa fa-chevron-down"></i>
+                        </Col>
+                        <Col xs={2} className="">
+                            <img src={this.state.userImage} alt="profilePic" className="profilePic"/>
+                        </Col>
+                        <Col xs={1} className="">
+                            <img src={notificationImage} alt="notification-icon" className="notification-icon"/>
+                        </Col>
+                        {/* <i className="fa fa-bell-o notification-icon" aria-hidden="true"></i> */}
                         {/* <span className="notification-count">3</span> */}
                         {/* <i className="fa fa-ellipsis-h ellipsisH" aria-hidden="true"></i> */}
                     </Row>

@@ -18,6 +18,7 @@ class Step3Component extends Component {
         this.proceedToBack = this.proceedToBack.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
+        this.openDocument = this.openDocument.bind(this);
         this.deleteFile = this.deleteFile.bind(this);
         this.state = {
             uploadDocFile: {},
@@ -27,7 +28,9 @@ class Step3Component extends Component {
             fundId:null,
             createdFundData:[],
             uploadFundPageValid: false,
+            documentLink: ''
         }
+        PubSub.publish('pageNumber', {type:'sideNav', page: 'upload'});
     }
 
     componentDidMount() {
@@ -40,20 +43,22 @@ class Step3Component extends Component {
             fundId: fundId,
             firmId:firmId
         })
-
-        if(fundId != undefined) {
+        if(fundId !== undefined) {
             this.getFundDetails(fundId);
         }
     }
 
+    openDocument() {
+        window.open(this.state.documentLink, '_blank', 'width = 1000px, height = 600px')
+    }
     getFundDetails(fundId) {
         this.open();
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
             this.Fsnethttp.getFund(fundId, headers).then(result=>{
                 this.close();
+                PubSub.publish('fundData', result.data.data);
                 if(result.data) {
                     this.setState({ createdFundData: result.data.data, fundId: result.data.data.id }, () => this.updateDoc());
-                    PubSub.publish('fundData', result.data.data);
                 } else {
                     this.setState({
                         createdFundData: [],
@@ -72,10 +77,11 @@ class Step3Component extends Component {
         let data = this.state.createdFundData;
         if(data.partnershipDocument){
             this.setState({
-                uploadFileName: data.partnershipDocument.filename,
+                uploadFileName: data.partnershipDocument.originalname,
                 uploadDocFile: data,
-                uploadDocSize: (data.partnershipDocument.size/ 1048576).toFixed(4),
-                uploadFundPageValid: true
+                uploadDocSize: (data.partnershipDocument.size/ 1048576).toFixed(4)+' MB',
+                uploadFundPageValid: true,
+                documentLink: data.partnershipDocument.url
             })
         }
     }
@@ -96,15 +102,19 @@ class Step3Component extends Component {
                 errorMessage: this.Constants.UPLOAD_DOC_REQUIRED,
             });
         } else if(this.state.uploadFileName !== '') {
-            if(this.state.createdFundData.partnershipDocument) {
-                if(this.state.uploadFileName === this.state.createdFundData.partnershipDocument.filename) {
-                    this.getFundDetails(this.state.fundId);
-                    this.props.history.push('/createfund/lp/'+this.state.fundId);
+            if(this.state.createdFundData.status === 'New-Draft') {
+                if(this.state.createdFundData.partnershipDocument) {
+                    if(this.state.uploadFileName === this.state.createdFundData.partnershipDocument.originalname) {
+                        this.getFundDetails(this.state.fundId);
+                        this.props.history.push('/createfund/lp/'+this.state.fundId);
+                    } else {
+                        this.uploadDocApi()
+                    }
                 } else {
                     this.uploadDocApi()
                 }
             } else {
-                this.uploadDocApi()
+                this.props.history.push('/createfund/lp/'+this.state.fundId);
             }
             
         }
@@ -188,15 +198,14 @@ class Step3Component extends Component {
             var sFileExtension = sFileName.split('.')[sFileName.split('.').length - 1].toLowerCase();
             if(sFileExtension !== 'pdf' && sFileExtension !== 'docx') {
                 document.getElementById('uploadBtn').value = "";
-                alert('Patnership document should be pdf/docx only and less than 10MB size')
+                alert('Partnership document should be in a pdf/docx format only and smaller than 10MB in size.')
                 return true;
             }
             //File 10 MB limit
-            console.log(this.uploadFile.size)
             if(this.uploadFile.size <=10485760) {
                 this.setState({
                     uploadDocFile : obj[0],
-                    uploadDocSize: (this.uploadFile.size / 1048576).toFixed(2)
+                    uploadDocSize: (this.uploadFile.size / 1048576).toFixed(2)+' MB'
                 });
                 reader.readAsDataURL(this.uploadFile);
                 this.setState({
@@ -210,7 +219,7 @@ class Step3Component extends Component {
                 // }
             } else {
                 document.getElementById('uploadBtn').value = "";
-               alert('Patnership document should be less than 10 MB')
+               alert('Patnership document should be less than 10 MB.')
             }
         }
     }
@@ -222,16 +231,17 @@ class Step3Component extends Component {
                 <div className="chooseFileMargin">
                     <h1 className="title">Choose files to upload</h1>
                     <div className="subtext">Choose document files to upload. Accepted files information appears here.</div>
-                    <div className="uplodFileContainer marginTop46" >
+                    <div className="uplodFileContainer marginTop46" hidden={this.state.createdFundData.status !== 'New-Draft'}>
                         <input type="file" id="uploadBtn" className="hide" onChange={ (e) => this.handleChange(e) } />
                         <FileDrop onDrop={(e) => this.handleChange(e, 'drop')}>
                             <Button className="uploadFileBox" onClick={this.uploadBtnClick}></Button>
-                            <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB.</span>
+                            <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB and should be of type pdf/docx only.</span>
                         </FileDrop>
-                        <div><a className="upload-doc-name">{this.state.uploadFileName} </a> </div>
-                        <div className="filesize" hidden={this.state.uploadFileName ===''}>{this.state.uploadDocSize} MB <i className="fa fa-trash cursor-pointer" onClick={this.deleteFile}></i></div>
+                        <div className="docNameDivAlign"><a className="upload-doc-name">{this.state.uploadFileName} </a> </div>
+                        <div className="filesize" hidden={this.state.uploadFileName ===''}>{this.state.uploadDocSize}  <i className="fa fa-trash cursor-pointer" onClick={this.deleteFile}></i></div>
                         
                     </div>
+                    <div className="docContainer marginTop50" hidden={this.state.createdFundData.status === 'New-Draft'}><a onClick={this.openDocument} className="upload-doc-name">{this.state.uploadFileName} </a> {this.state.uploadDocSize}</div>
                 </div>
                 <div className="error">{this.state.errorMessage}</div>
                 <div className="footer-nav">

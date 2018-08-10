@@ -68,7 +68,7 @@ class LoginComponent extends Component{
     
     loginFn() {
         if(this.state.loginUserName.trim() && this.state.loginPassword.trim()) {
-            // let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+            // let passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[?\{\}\|\(\)\`~!@#\$%\^&\*\[\]"\';:_\-<>\., =\+\/\\]).{8,}$/;
             // //Check password contains min 8 letters with letters, numbers and symbols.
             // if(!passwordRegex.test(this.state.loginPassword.trim())) {
             //     this.setState({
@@ -156,7 +156,7 @@ class LoginComponent extends Component{
         switch(type) {
             case 'username':
                 //Add username value to state
-                if(event.target.value === '' || event.target.value === undefined) {
+                if(event.target.value.trim() === '' || event.target.value.trim() === undefined) {
                     this.setState({
                         userNameError: this.Constants.LOGIN_USER_NAME_REQUIRED,
                         userNameValid: false,
@@ -182,7 +182,7 @@ class LoginComponent extends Component{
                 break;
             case 'password':
                 //Add password value to state
-                if(event.target.value === '' || event.target.value === undefined) {
+                if(event.target.value.trim() === '' || event.target.value.trim() === undefined) {
                     this.setState({
                         passwordError: this.Constants.LOGIN_PASSWORD_REQUIRED,
                         passwordValid: false,
@@ -233,12 +233,12 @@ class LoginComponent extends Component{
                             <Form horizontal id="loginForm">
                                 <FormGroup controlId="username">
                                     <ControlLabel className="labelFormControl">Username</ControlLabel>
-                                    <FormControl type="text" placeholder="Username" className={"formControl " + (this.state.userNameBorder ? 'inputError' : '')} inputRef={(input)=>{this.userName = input}} onChange={(e)=> this.loginInputHandleEvent(e,'username')} onBlur={(e)=> this.loginInputHandleEvent(e,'username')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
+                                    <FormControl type="text" placeholder="Username" className={"formControl " + (this.state.userNameBorder ? 'inputError' : '')} inputRef={(input)=>{this.userName = input}} onChange={(e)=> this.loginInputHandleEvent(e,'username')} onBlur={(e)=> this.loginInputHandleEvent(e,'username')} onKeyPress={this.autoLoginOnEnterKey} />
                                     <div className="error">{this.state.userNameError}</div>
                                 </FormGroup>
                                 <FormGroup controlId="password">
                                     <ControlLabel className="labelFormControl">Password</ControlLabel>
-                                    <FormControl type="password" placeholder="Password" className={"formControl " + (this.state.passwordBorder ? 'inputError' : '')} inputRef={(input)=>{this.password = input}} onChange={(e)=> this.loginInputHandleEvent(e,'password')} onBlur={(e)=> this.loginInputHandleEvent(e,'password')} onKeyPress={this.autoLoginOnEnterKey} autoComplete="off"/>
+                                    <FormControl type="password" placeholder="Password" className={"formControl " + (this.state.passwordBorder ? 'inputError' : '')} inputRef={(input)=>{this.password = input}} onChange={(e)=> this.loginInputHandleEvent(e,'password')} onBlur={(e)=> this.loginInputHandleEvent(e,'password')} onKeyPress={this.autoLoginOnEnterKey} />
                                     <div className="error">{this.state.passwordError}</div>
                                 </FormGroup>
                                 <CBox onChange={(e) => this.loginInputHandleEvent(e,'isRememberMe')}>
@@ -246,7 +246,11 @@ class LoginComponent extends Component{
                                 </CBox>
                                 <label className="remember-text">Remember username?</label>
                                 <Button ref={(button) => {this.login = button}} className={"signinBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid}  onClick={this.loginFn}>Sign In</Button>
-                                <div className="forgot-pwd"><a href="/forgot-password">Forgot password?</a></div>
+                                <div>
+                                    <span className="forgot-pwd paddingLeft15"><a href="/forgot-password">Forgot password?</a></span>
+                                    <span className="forgot-pwd padding15">|</span>
+                                    <span className="forgot-pwd"><a href="mailto:jsilber@cooley.com" target="_top">Contact Us</a></span>
+                                </div>
                             </Form>
                         </div>
                         <Loader isShow={this.state.showModal}></Loader>

@@ -6,7 +6,7 @@ import { Fsnethttp } from '../../../services/fsnethttp';
 import {Constants} from '../../../constants/constants';
 import Loader from '../../../widgets/loader/loader.component';
 import { reactLocalStorage } from 'reactjs-localstorage';
-
+import { PubSub } from 'pubsub-js';
 
 class Step2Component extends Component {
 
@@ -40,8 +40,14 @@ class Step2Component extends Component {
             emailValid: false,
             gpDelegateErrorMsz: '',
             gpDelegatesSelectedList:[],
-            gpDelegateScreenError:''
+            gpDelegateScreenError:'',
+            noDelegatesMsz:'',
+            fundObj: {}
         }
+        PubSub.subscribe('fundData', (msg, data) => {
+            this.updateGps(data)
+        });
+        PubSub.publish('pageNumber', {type:'sideNav', page: 'gpDelegate'});
     }
 
 
@@ -263,11 +269,7 @@ class Step2Component extends Component {
     }
 
     addGpDelegateBtn() {
-        // let userObj = {name:'Maruthi', type: 'GP'};
-        // this.props.gpData();
-        this.setState({
-            showAddGpDelegateModal: true
-        })
+        PubSub.publish('openGpModal', this.state.fundObj);
     }
 
     closeGpDelegateModal() {
@@ -279,7 +281,7 @@ class Step2Component extends Component {
 
     selectedMembersPushToList() {
         if(this.state.getGpDelegatesList.length >0) {
-            let list = this.state.gpDelegatesSelectedList;
+            let list = [];
             for(let index of this.state.getGpDelegatesList) {
                 if(index['selected'] === true) {
                     list.push(index['id'])
@@ -314,26 +316,39 @@ class Step2Component extends Component {
         this.setState({
             fundId: fundId,
             firmId: firmId
+        },()=>{
+            this.getGpListFromApi(fundId)
         })
+    }
+
+    getGpListFromApi(fundId) {
         this.open();
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        this.Fsnethttp.getGpDelegates(firmId, fundId, headers).then(result=>{
+        this.Fsnethttp.getFund(fundId, headers).then(result=>{
             this.close();
-            if(result.data && result.data.data.length >0) {
-                this.setState({ getGpDelegatesList: result.data.data }, () => this.selectedMembersPushToList());
-            } else {
-                this.setState({
-                    getGpDelegatesList: []
-                })
-            }
+            PubSub.publish('fundData', result.data.data);
+            this.updateGps(result.data.data)
         })
         .catch(error=>{
                 this.close();
                 this.setState({
-                    getGpDelegatesList: []
+                    getGpDelegatesList: [],
+                    noDelegatesMsz: this.Constants.NO_GP_DELEGATES
                 })
            
         });
+    }
+
+    updateGps(data) {
+        if(data && data.gpDelegates.length >0) {
+            this.setState({ fundObj:data, getGpDelegatesList: data.gpDelegates }, () => this.selectedMembersPushToList());
+        } else {
+            this.setState({
+                getGpDelegatesList: [],
+                fundObj:data,
+                noDelegatesMsz: this.Constants.NO_GP_DELEGATES
+            })
+        }
     }
 
     render() {
@@ -350,8 +365,8 @@ class Step2Component extends Component {
                                 <div className="userRow" key={index}>
                                     {
                                         record['profilePic']  ?
-                                        <img src={record['profilePic']} alt="user_image" className="user-image" />
-                                         : <img src={userDefaultImage} alt="user_image" className="user-image" />
+                                        <img src={record['profilePic']} alt="img" className="user-image" />
+                                         : <img src={userDefaultImage} alt="img" className="user-image" />
                                     }
                                     
                                     <div className="fund-user-name">{record['firstName']}&nbsp;{record['lastName']}</div>
@@ -362,7 +377,7 @@ class Step2Component extends Component {
                             );
                         })
                         :
-                        <div className="title margin20 text-center">You haven’t added any GP Delegates to this Fund yet.</div>
+                        <div className="title margin20 text-center">{this.state.noDelegatesMsz}</div>
                     } 
                 </div>
                 <div className="error">{this.state.gpDelegateScreenError}</div>

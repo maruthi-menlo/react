@@ -10,6 +10,7 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/rrui.css'
 import 'react-phone-number-input/style.css'
 import successImage from '../../images/success.png';
+import { reactLocalStorage } from 'reactjs-localstorage';
 
 class RegisterComponent extends Component{
 
@@ -431,7 +432,7 @@ class RegisterComponent extends Component{
             })
         }
 
-        let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+        let passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[?\{\}\|\(\)\`~!@#\$%\^&\*\[\]"\';:_\-<>\., =\+\/\\]).{8,}$/;
         //Check password and confirm password is same.
         //If both passwords are not same then show the error.
         if((this.state.password.trim() !== '' && this.state.confirmPassword.trim() !== '') &&(this.state.password !== this.state.confirmPassword)) {
@@ -498,6 +499,8 @@ class RegisterComponent extends Component{
         //If id is not present in url then redirect to 404.
         if(userAccessId) {
             this.Fsnethttp.getInviationData(userAccessId).then(result=>{
+                //Clear the local storage
+                reactLocalStorage.clear();
                 if(result.data) {
                     this.setState({
                         email:result.data.data.email,
@@ -533,6 +536,7 @@ class RegisterComponent extends Component{
         this.setState({
             userImageName: 'Profile_Pic.jpg',
             currentUserImage : userDefaultImage,
+            profilePicFile:{}
         });
         document.getElementById('uploadBtn').value = "";
     }
@@ -555,6 +559,8 @@ class RegisterComponent extends Component{
                     <div className="parentDiv">
                         <h1 className="register-text">FSNET Account registration</h1>
                         <div className="mandatory-content">Fill in the form below to register for your account. Fields marked with an * are mandatory.</div>
+                        <div className="mandatory-content">Password should contain a minimum of eight characters with at least one letter, one number, and one special character.</div>
+                        <form>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Username*</label>
@@ -609,6 +615,7 @@ class RegisterComponent extends Component{
                         <div className="error">{this.state.errorMessage}</div>
                         <Button className={"signupBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid} onClick={this.signUpFn}>Sign Up</Button>
                         <label className="signIn-text"> <a href="/login">Already have an account? Sign In</a></label>
+                        </form>
                     </div>
                     <div className="topBorder bottomBorder"></div>
                     <Loader isShow={this.state.showModal}></Loader>

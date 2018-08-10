@@ -20,7 +20,7 @@
 #registerContainer .mandatory-content {
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -32,7 +32,7 @@
 }
 #registerContainer .register-text {
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -71,7 +71,7 @@
     width: 344px;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -86,7 +86,7 @@
     width: 142px;
     height: 36px;
     background-color: #39bcd5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px !important;
     font-weight: bold !important;
     font-style: normal;
@@ -100,7 +100,7 @@
     width: 59px;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -113,7 +113,7 @@
 }
 #registerContainer .profilePicName {
     height: 20px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -145,7 +145,7 @@
     width: 290px;
     height: 48px;
     background-color:  #bdbdbd;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
@@ -199,7 +199,7 @@
 
 #registerContainer .register-success-text {
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -215,7 +215,7 @@
     display: block;
     height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -229,7 +229,7 @@
     width: 290px;
     height: 48px;
     background-color: #00bcd4;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px !important;
     font-weight: bold !important;
     font-style: normal;

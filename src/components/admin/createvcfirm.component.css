@@ -11,7 +11,7 @@
 #addFirmContainer .firm-add {
     width: 146px;
     height: 36px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 24px;
     font-weight: bold;
     font-style: normal;
@@ -27,7 +27,7 @@
 #addFirmContainer .firm-cancel {
     width: 200px;
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -48,7 +48,7 @@
 }
 #addFirmContainer .label-header {
     height: 32px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;
@@ -84,7 +84,7 @@
     width: 532px;
     min-height: 20px;
     opacity: 0.5;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 14px;
     font-weight: bold;
     font-style: normal;
@@ -98,7 +98,7 @@
 #addFirmContainer .submitBtn {
     width: 210px;
     height: 48px;
-    font-family: 'Open Sans';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
     font-weight: bold;
     font-style: normal;

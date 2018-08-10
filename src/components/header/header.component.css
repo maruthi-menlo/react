@@ -2,8 +2,8 @@
     margin: 20px !important
 }
 .user-name {
-  height: 24px;
-  font-family: 'Open Sans';
+  min-height: 24px;
+  font-family: 'OpenSans-Bold';
   font-size: 16px;
   font-weight: bold;
   font-style: normal;
@@ -12,7 +12,8 @@
   letter-spacing: normal;
   color: #2f4858;
   cursor: pointer;
-  width: 84%;
+  /* width: 84%; */
+  word-break: break-all;
   text-align: right;
 }
 .user-name.active, .user-name.active .fa {
@@ -23,7 +24,7 @@
     cursor: pointer;
 }
 .header-right-row {
-    width: 512px;
+    /* width: 512px; */
     float: left;
     position: relative;
     right: -15%;
@@ -33,6 +34,7 @@
     margin-right: 10px;
 } 
 .user-name i {
+    font-size: 14px;
     width: 10px;
     height: 6px;
     color: #2f4858;
@@ -78,6 +80,10 @@
     top: 5px;
     font-size: 20px;
 }
+.dropDownImg {
+    height: 24px;
+    width: 24px;
+}
 .user-dropdown-list {
     width: 264px;
     height: 136px;
@@ -87,18 +93,23 @@
     position: absolute;
     z-index: 9999;
     top: 30px;
-    left: 140px;
+    right: 85px;
+}
+#header-right {
+    float: right;
+    margin-right: 50px;
 }
 .user-dropdown-list ul {
     list-style-type: none;
     padding-left: 15px !important;
 }
 .user-dropdown-list ul li img {
-    padding-right: 10px !important;
+    margin-right: 10px !important;
 }
 .user-dropdown-list ul li a {
     color: #2f4858 !important;
-    text-decoration: none !important
+    text-decoration: none !important;
+    line-height: 1.5 !important;
 }
 .user-dropdown-list ul li {
     width: 168px;
@@ -113,6 +124,9 @@
     color: #2f4858;
     cursor: pointer;
 }
+.individualForm .formGridDivMargin {
+    min-height: 450px;
+}
 @media only screen and (max-width: 480px) {
     .row.dashboardMainRow {
         margin: 20px 0px !important;
@@ -121,5 +135,117 @@
         margin-top: 25px;
         float: left !important;
         right: 68% !important;
+    }
+}
+.rightHeader{
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    top: 12px;
+    margin-bottom: 10px;
+}
+.userName{
+    /* width: 80%;
+    padding: 0; */
+    width: 70%;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+.profileImage{
+    width: 15%;
+    padding: 0;
+    -ms-flex-pack: end;
+    justify-content: space-around;
+    display: flex;
+}
+.bellIcon{
+    width: 5%;
+    padding: 0;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+/* .headers .rightHeader{
+    margin: 0 !important;
+} */
+.downArrowIcon{
+    margin: 0 10px;
+    cursor: pointer;
+}
+@media only screen and (max-width: 320px) {
+    .profileImage{
+        width: 25% !important;
+    }
+    .user-dropdown-list {
+        top: 36px !important;
+        right: -6px !important;
+    }
+    .userName{
+        width: 50% !important;
+        margin-left: 5px;
+        display: flex;
+        justify-content: space-around !important;
+    }
+    .bellIcon{
+        width: 5% !important;
+    }
+    .headers .rightHeader{
+        margin-left: 12px;
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+    .user-dropdown-list {
+        top: 36px !important;
+        right: 0 !important;
+    }
+    .userName{
+        width: 54% !important;
+        float: none;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .bellIcon{
+        width: 10% !important;
+    }
+    .headers .rightHeader{
+        margin-left: 12px;
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 376px) and (max-width: 767px) {
+    .user-dropdown-list {
+        top: 36px !important;
+        right: 0 !important;
+    }
+    .userName{
+        width: 56% !important;
+        float: none;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .bellIcon{
+        width: 10% !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .headers .rightHeader{
+        margin-left: 12px;
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .mainHeading{
+        padding: 0 30px 0 30px !important;
+        width: 700px !important;
+    }
+    .userName{
+        width: 63% !important;
     }
 }

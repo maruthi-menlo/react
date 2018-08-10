@@ -70,15 +70,14 @@ class CreateVcFirmComponent extends Component{
 
     //Onchange event for all input text boxes.
     handleInputChangeEvent(event,type) {
-        console.log(type)
-        console.log(event)
         let dataObj = {}; 
         this.setState({
             vcFirmError: ''
         })
         switch(type) {
             case 'firmname':
-                if(event.target.value === '' || event.target.value === undefined) {
+                let firstNameValue = event.target.value.trim()
+                if( firstNameValue === '' || firstNameValue === undefined) {
                     this.setState({
                         firmNameMsz: this.Constants.FIRM_NAME_REQUIRED,
                         firmName: '',
@@ -92,7 +91,7 @@ class CreateVcFirmComponent extends Component{
                 } else {
                     this.setState({
                         firmNameMsz: '',
-                        firmName: event.target.value,
+                        firmName: firstNameValue,
                         firmNameBorder: false,
                         firmNameValid: true
                     })
@@ -103,7 +102,8 @@ class CreateVcFirmComponent extends Component{
                 }
                 break;
             case 'firmFirstName':
-                if(event.target.value === '' || event.target.value === undefined) {
+                let firmFirstNameValue = event.target.value.trim()
+                if(firmFirstNameValue === '' || firmFirstNameValue === undefined) {
                     this.setState({
                         firmFirstNameMsz: this.Constants.FIRST_NAME_REQUIRED,
                         firmFirstName: '',
@@ -117,7 +117,7 @@ class CreateVcFirmComponent extends Component{
                 } else {
                     this.setState({
                         firmFirstNameMsz: '',
-                        firmFirstName: event.target.value,
+                        firmFirstName: firmFirstNameValue,
                         firmFirstNameBorder: false,
                         firmFirstNameValid: true
                     })
@@ -128,7 +128,8 @@ class CreateVcFirmComponent extends Component{
                 }
                 break;
             case 'firmLastName':
-                if(event.target.value === '' || event.target.value === undefined) {
+                let firmLastNameValue = event.target.value.trim()
+                if(firmLastNameValue === '' || firmLastNameValue === undefined) {
                     this.setState({
                         firmLastNameMsz: this.Constants.LAST_NAME_REQUIRED,
                         firmLastName: '',
@@ -142,7 +143,7 @@ class CreateVcFirmComponent extends Component{
                 } else {
                     this.setState({
                         firmLastNameMsz: '',
-                        firmLastName: event.target.value,
+                        firmLastName: firmLastNameValue,
                         firmLastNameBorder: false,
                         firmLastNameValid: true
                     })
@@ -153,7 +154,8 @@ class CreateVcFirmComponent extends Component{
                 }
                 break;
             case 'email':
-                if(event.target.value === '' || event.target.value === undefined) {
+                let emailValue = event.target.value.trim()
+                if(emailValue === '' || emailValue === undefined) {
                     this.setState({
                         emailMsz: this.Constants.VALID_EMAIL,
                         email: '',
@@ -167,7 +169,7 @@ class CreateVcFirmComponent extends Component{
                 } else {
                     this.setState({
                         emailMsz: '',
-                        email: event.target.value,
+                        email: emailValue,
                         emailBorder: false,
                         emailValid: true
                     })
@@ -304,6 +306,7 @@ class CreateVcFirmComponent extends Component{
                     {/* <HeaderComponent ></HeaderComponent> */}
                 </Row>
                 <Row className="addFirmRow">
+                    
                     <Row id="firm-header">
                         <Col lg={6} md={6} sm={6} xs={6}>
                             <div className="firm-add">Add Firm</div>
@@ -312,6 +315,7 @@ class CreateVcFirmComponent extends Component{
                             <div className="firm-cancel"><a href="/login">Cancel</a></div>
                         </Col>
                     </Row>
+                    
                     <div className="topBorder"></div>
                     <div className="parentDiv">
                         <label className="label-header">Firm Details</label>
@@ -344,11 +348,13 @@ class CreateVcFirmComponent extends Component{
                                 <FormControl type="text" name="firmName" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} maxLength="200" placeholder="EBenedict@gmail.com" onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email')}/>
                                 <span className="error">{this.state.emailMsz}</span>
                             </Col>
+                            <form>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="label-text">Phone Number*</label>
                                 <PhoneInput className={(this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')} />
                                 <span className="error">{this.state.cellNumberMsz}</span>
                             </Col>
+                            </form>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40"></Col>
                         </Row>
                         <label className="label-header">Privacy Options</label>

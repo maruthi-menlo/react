@@ -75,6 +75,14 @@ body {
   font-family: 'Open Sans';
   src: url('./fonts/OpenSans-Regular.ttf');
 }
+@font-face {
+  font-family: 'OpenSans-Bold';
+  src: url('./fonts/OpenSans-Bold.ttf');
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('./fonts/Lato-Bold.ttf');
+}
 body {
   font-family: 'Open Sans';
 }
@@ -96,7 +104,7 @@ select option {
 a:hover {
   text-decoration: underline !important;
 }
-.inputFormControl.inputError {
+.selectFormControl.inputError, .inputFormControl.inputError, .react-phone-number-input.inputError {
   border-color: red !important;
 }
 .btn.disabled, .btn[disabled] {
@@ -110,10 +118,9 @@ a:hover {
   background-color: #00bcd4 !important;
 }
 
-.btnEnabled:hover, .fsnetBtn:hover {
+.btnEnabled:hover, .fsnetBtn:hover, .fsnetButton:hover, .uploadFile:hover,.start-fund:hover {
   background-color: #4ab8c6 !important;
 }
-
 .cancelBtn a:hover {
   border: 1px solid #000000 !important;
   padding: 8px 60px;
@@ -124,6 +131,9 @@ a:hover {
   color: red;
   font-size: 12px;
   font-family: 'Open Sans';
+}
+.marginleft25 {
+  margin-left: 25px;
 }
 
 .marginTopminus10 {
@@ -162,6 +172,13 @@ a:hover {
   width: 22px;
   background-color: #ffffff;
   cursor: pointer;
+}
+.accreditedInvestor .checkmark {
+  margin-top: 5px !important;
+}
+
+.checkbox-checkmark {
+  border: 1px solid #00bcd4 !important;  
 }
 
 /* When the checkbox is checked, add a blue background */
@@ -205,6 +222,11 @@ input:checked ~ .checkmark:after {
   margin-bottom: 10px !important;
 }
 
+.checkbox-inline {
+  width: 150px;
+  margin-bottom: 14px !important;
+}
+
 /* The container */
 .radio-inline {
   display: inline-block;
@@ -218,6 +240,25 @@ input:checked ~ .checkmark:after {
   -ms-user-select: none;
   user-select: none;
   margin-top: 10px;
+}
+.checkbox-inline {
+  display: inline-block;
+  position: relative;
+  padding-left: 20px;
+  font-size: 16px !important;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top: 10px;
+}
+
+.checkbox-inline input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
 /* Hide the browser's default radio button */
@@ -238,6 +279,8 @@ input:checked ~ .checkmark:after {
   background-color: #ffffff;
   border-radius: 50%;
 }
+
+
 
 /* When the radio button is checked, add a blue background */
 input:checked ~ .radio-checkmark {
@@ -302,7 +345,7 @@ select option {
 .title {
   min-height: 32px;
   height: auto;
-  font-family: 'Open Sans';
+  font-family: 'OpenSans-Bold';
   font-size: 20px;
   font-weight: bold;
   font-style: normal;
@@ -315,7 +358,7 @@ select option {
   min-height: 20px;
   height: auto;
   opacity: 0.5;
-  font-family: 'Open Sans';
+  font-family: 'OpenSans-Bold';
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
@@ -418,6 +461,7 @@ select option {
 }
 .bold {
   font-weight: bold;
+  font-family: 'OpenSans-Bold';
 }
 .cursor-pointer {
   cursor: pointer;
@@ -447,4 +491,67 @@ select option {
 }
 .modal-open .modal {
   overflow: hidden !important;
+}
+button.close {
+  outline: none !important;
+}
+.opacity75 {
+  opacity: 0.75;
+}
+.paddingLeft15 {
+  padding-left: 15px;
+}
+.clear-both {
+  clear: both;
+}
+.padding15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.marginTop50 {
+  margin-top: 50px;
+}
+.form-control:disabled, .form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+    border-color: #e9ecef !important;
+}
+.form-control {
+  box-shadow: initial !important;
+}
+.padding15 {
+  padding: 15px;
+}
+.width100 {
+  width: 100% !important;
+}  
+.padding-left-0 {
+  padding-left: 0px !important;
+}
+.min-height-400 {
+  min-height: 400px;
+}
+.inputWidth290 {
+  width: 290px !important;
+}
+.cBoxFullAlign {
+  display: block !important;
+  width: 100% !important;
+  padding-left: 30px !important;
+  margin-left: 24px;
+}
+.marginTop24 {
+  margin-top: 24px;
+}
+.margin-Left-5 {
+  margin-left: 5px;
+}
+.height100 {
+  height: 100px;
+}
+.height140 {
+  height: 140px;
+}
+.minHeight150 {
+  min-height: 150px;
 }
