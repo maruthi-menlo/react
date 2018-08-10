@@ -271,7 +271,7 @@
 /* Review form css for subscriptions*/
 #subscriptionReview #step6-row1{
     min-height: 170px;
-    padding: 20px 0 24px;
+    padding: 0px 0 24px;
     border-bottom: 2px solid rgba(51,101,138,.5);
     width: 850px;
     margin: 0!important;

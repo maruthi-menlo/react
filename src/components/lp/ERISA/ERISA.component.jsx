@@ -60,6 +60,14 @@ class ERISAComponent extends Component {
                     this.setState({
                         getInvestorObj: result.data.data,
                         investorType: result.data.data.investorType,
+                        employeeBenefitPlan:result.data.data.employeeBenefitPlan,
+                        planAsDefinedInSection4975e1:result.data.data.planAsDefinedInSection4975e1,
+                        benefitPlanInvestor:result.data.data.benefitPlanInvestor,
+                        aggrement1: result.data.data.aggrement1,
+                        aggrement2: result.data.data.aggrement2,
+                        fiduciaryEntityIvestment:result.data.data.fiduciaryEntityIvestment,
+                        entityDecisionToInvestInFund:result.data.data.entityDecisionToInvestInFund,
+                        totalValueOfEquityInterests: result.data.data.totalValueOfEquityInterests,
                         
                     },()=>{
                         this.updateInvestorInputFields(this.state.getInvestorObj)

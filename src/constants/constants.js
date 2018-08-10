@@ -9,7 +9,7 @@ export class Constants{
     // BASE_URL = `http://137.116.56.150:3000/api/v1/`;
     
     // QA URL
-    BASE_URL = `http://137.116.56.150:4000/api/v1/`;
+    BASE_URL = `http://137.116.56.150:8000/api/v1/`;
 
     REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME = "Password and Password Confirm should be the same.";
     REQUIRED_PASSWORD_AGAINPASSWORD_SAME = "Password and Password again should be the same.";
