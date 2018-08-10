@@ -304,9 +304,11 @@ class ModalComponent extends Component {
                 }
                 break;
             case 'orgName':
-                this.setState({
-                    orgName: event.target.value.trim()
-                })
+                if(event.target.value.trim() !== '') {
+                    this.setState({
+                        orgName: event.target.value.trim()
+                    })
+                }
                 break;
             case 'cellNumber':
                 if(event === '' || event === undefined) {

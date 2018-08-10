@@ -99,6 +99,17 @@ class ERISAComponent extends Component {
         let dataObj = {};
         switch(type) {
             case 'totalValueOfEquityInterests':
+                const re = /^[0-9]*\.?[0-9]*$/;
+                if (!re.test(value.trim())) {
+                    this.setState({
+                        [key]:this.state.totalValueOfEquityInterests?this.state.totalValueOfEquityInterests:''
+                    })
+                    return true;
+                } else {
+                    if(parseInt(value) < 0 || parseInt(value) >100) {
+                        return true;
+                    }
+                }
                 if(value === '' || value === undefined) {
                     this.setState({
                         [key+'Msz']: this.Constants[radioTypeName],

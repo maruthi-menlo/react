@@ -349,8 +349,8 @@ class DashboardComponent extends Component {
                                                 </div>
                                                 <div className="fundImageEdit" hidden={record['subscriptionStatus']['name'] ==='Open'}>
                                                     {
-                                                    record['fundImage']?
-                                                    <img src={record['fundImage']['url']} alt="img" className="Fund-Image" />: 
+                                                    record['fund']['fundImage']?
+                                                    <img src={record['fund']['fundImage']['url']} alt="img" className="Fund-Image" />: 
                                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
                                                     }
                                                     <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')}>{record['fund']['legalEntity']}</div>
@@ -364,11 +364,11 @@ class DashboardComponent extends Component {
                                                     View Participation Document
                                                 </div>
                                                 <div className="fund-user-details" hidden={record['subscriptionStatus']['name'] ==='Open'}>
-                                                    <label>GP Name: <span>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</span></label> 
-                                                    <label>Phone Number: <span>{record['fund']['gp']['cellNumber']}</span></label> 
-                                                    <label hidden={record['fund']['gp']['city'] === null}>City: <span>{record['fund']['gp']['city']}</span></label> 
-                                                    <label hidden={record['fund']['gp']['state'] === null}>State: <span>{record['fund']['gp']['state']}</span></label> 
-                                                    <label hidden={record['fund']['gp']['country'] === null}>Country: <span>{record['fund']['gp']['country']}</span></label> 
+                                                    <div><label>GP Name: </label> <span>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</span></div>
+                                                    <div><label>Phone Number: </label> <span>{record['fund']['gp']['cellNumber']}</span></div>
+                                                    <div><label hidden={record['fund']['gp']['city'] === null}>City: </label> <span>{record['fund']['gp']['city']}</span></div>
+                                                    <div><label hidden={record['fund']['gp']['state'] === null}>State: </label><span>{record['fund']['gp']['state']}</span> </div>
+                                                    <div><label hidden={record['fund']['gp']['country'] === null}>Country: </label><span>{record['fund']['gp']['country']}</span> </div>
                                                 </div>
                                                 <div className="Line" hidden={record['subscriptionStatus']['name'] !='Open'}></div>
                                                 <div className="interested marginAlign" hidden={record['subscriptionStatus']['name'] !='Open'} onClick={()=>this.acceptFund(record['id'])}>Yes, I am interested</div>

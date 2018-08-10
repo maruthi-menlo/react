@@ -394,21 +394,10 @@
 #tooltip-2{
     position: absolute !important;
     top: 150px !important;
-    /* left: 800px !important; */
 }
-.header-fund-image {
-    height: 60px;
-    width: 60px;
-}
-
 .lpSubFormStyle .main-title {
     margin-left: 10px;
 }
-/* .lpSubFormStyle .form-label {
-    font-size: 16px;
-    font-weight: bold !important;
-    font-family: 'OpenSans-Bold' !important;
-} */
 .lpSubFormStyle .header-right-row{
     display: flex;
     justify-content: flex-end;
@@ -467,4 +456,8 @@
 }
 .checkBoxText .radio-checkmark {
     margin-top: 2px;
+}
+.lpSubFormStyle .header-fund-image {
+    height: 60px;
+    width: 60px;
 }

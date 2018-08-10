@@ -13,6 +13,7 @@ import signFundImg from '../../images/edit-grey.svg';
 import copyImage from '../../images/copy_img.svg';
 import handShakeImage from '../../images/handshake.svg';
 import { Route, Link } from "react-router-dom";
+import userDefaultImage from '../../images/fund-default.png';
 import { PubSub } from 'pubsub-js';
 import InvestorInformationComponent from '../lp/Investor-Information/investorinformation.component';
 import LlcFormComponent from '../lp/llc/llc.component';
@@ -393,6 +394,11 @@ class LpSubscriptionFormComponent extends Component {
                         <div className="mainHeading">
                             <Row className="">
                                 <Col lg={6} md={6} sm={6} xs={12} id="">
+                                            {
+                                                this.state.lpsubscriptionObj['fund']?
+                                                <img src={this.state.lpsubscriptionObj['fund']['fundImage']['url']} alt="img" className="header-fund-image"/>: 
+                                                <img src={userDefaultImage} alt="fund_image" className="header-fund-image"/>
+                                            }
                                     <span className="main-title">{this.state.legalEntity}</span><span className="statusTxtStyle">{this.state.status}</span>
                                 </Col>
                                 <Col lg={6} md={6} sm={6} xs={12}>
