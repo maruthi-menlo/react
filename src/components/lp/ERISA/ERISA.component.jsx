@@ -22,12 +22,12 @@ class ERISAComponent extends Component {
         this.proceedToBack = this.proceedToBack.bind(this);
         this.state = {
             showModal: false,
-            investorType: '',
+            investorType: 'LLC',
             erisaPageValid:false,
             getInvestorObj:{},
-            employeeBenefitPlan:'',
-            planAsDefinedInSection4975e1:'',
-            benefitPlanInvestor:'',
+            employeeBenefitPlan:false,
+            planAsDefinedInSection4975e1:false,
+            benefitPlanInvestor:false,
             aggrement1: '',
             aggrement2: '',
             fiduciaryEntityIvestment:'',
@@ -36,6 +36,7 @@ class ERISAComponent extends Component {
             totalValueOfEquityInterestsValid:false,
             totalValueOfEquityInterestsMsz: '',
             totalValueOfEquityInterestsBorder:false,
+            erisaErrorMsz:'',
         }
 
     }
@@ -59,10 +60,10 @@ class ERISAComponent extends Component {
                     PubSub.publish('investorData',obj );
                     this.setState({
                         getInvestorObj: result.data.data,
-                        investorType: result.data.data.investorType,
-                        employeeBenefitPlan:result.data.data.employeeBenefitPlan,
-                        planAsDefinedInSection4975e1:result.data.data.planAsDefinedInSection4975e1,
-                        benefitPlanInvestor:result.data.data.benefitPlanInvestor,
+                        investorType: result.data.data.investorType?result.data.data.investorType:'LLC',
+                        employeeBenefitPlan:result.data.data.employeeBenefitPlan?result.data.data.employeeBenefitPlan:false,
+                        planAsDefinedInSection4975e1:result.data.data.planAsDefinedInSection4975e1?result.data.data.planAsDefinedInSection4975e1:false,
+                        benefitPlanInvestor:result.data.data.benefitPlanInvestor?result.data.data.benefitPlanInvestor:false,
                         aggrement1: result.data.data.aggrement1,
                         aggrement2: result.data.data.aggrement2,
                         fiduciaryEntityIvestment:result.data.data.fiduciaryEntityIvestment,
@@ -81,7 +82,18 @@ class ERISAComponent extends Component {
     }
 
     updateInvestorInputFields(data) {
-       
+       let fields = ['employeeBenefitPlan', 'planAsDefinedInSection4975e1', 'benefitPlanInvestor'];
+       for(let index of fields){
+            if(this.state[index] !== null && this.state[index] !== undefined && this.state[index] !== '') {
+                this.setState({
+                    erisaPageValid: true
+                })
+            } else {
+                this.setState({
+                    erisaPageValid: false
+                })
+            }
+        }
     }
 
     close() {
@@ -99,7 +111,7 @@ class ERISAComponent extends Component {
         let dataObj = {};
         switch(type) {
             case 'totalValueOfEquityInterests':
-                const re = /^[0-9]*\.?[0-9]*$/;
+                const re = /^[0-9]{0,3}\.?[0-9]{0,2}$/;
                 if (!re.test(value.trim())) {
                     this.setState({
                         [key]:this.state.totalValueOfEquityInterests?this.state.totalValueOfEquityInterests:''
@@ -173,7 +185,7 @@ class ERISAComponent extends Component {
     // Enable / Disble functionality of Investor Details next Button
     enableDisableInvestorDetailsButton(){
         let status;
-        status = (this.state.employeeBenefitPlan !==null) ? true : false;
+        status = (this.state.employeeBenefitPlan !==null && this.state.planAsDefinedInSection4975e1 !== null && this.state.benefitPlanInvestor !==null) ? true : false;
         this.setState({
             erisaPageValid : status,
         });
@@ -200,7 +212,15 @@ class ERISAComponent extends Component {
         })
         .catch(error => {
             this.close();
-            this.props.history.push('/lp/review/'+this.state.getInvestorObj.id);
+            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                this.setState({
+                    erisaErrorMsz: error.response.data.errors[0].msg,
+                });
+            } else {
+                this.setState({
+                    erisaErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                });
+            }
         });
         
     }
@@ -214,19 +234,19 @@ class ERISAComponent extends Component {
             <div className="accreditedInvestor width100">
                 <div className="formGridDivMargins min-height-400">
                     {/* llc investor type block starts */}
-                    <div className="title">Erisa (7/7)</div>
+                    <div className="title">ERISA</div>
                     <Row className="" hidden={this.state.investorType !== 'LLC'}>
                         <Col xs={12} md={12}>
-                            <label className="subtext margin18">Please check the appropriate true or false response to the following statements regarding the Entity proposing to subscribe for an investment in the fund:</label>
+                            <label className="form-label width100">Please check the appropriate true or false response to the following statements regarding the Look-Through Issues to subscribe for an investment in the fund:</label>
                         </Col>
                         <Col xs={12} md={12}>
                             <label className="form-label width100">The Entity is an “employee benefit plan,” as defined in Section 3(3) of ERISA, that is subject to the provisions of Part 4 of Title I of ERISA.    </label>
                             <div className="checkBoxText">
-                                <Radio name="employeeBenefitPlan" inline checked={this.state.employeeBenefitPlan === true} onChange={(e) => this.erisaChangeEvent(e, 'radio', true, 'employeeBenefitPlan')}>
+                                <Radio name="employeeBenefitPlan" disabled={this.state.planAsDefinedInSection4975e1 === true || this.state.benefitPlanInvestor === true} inline checked={this.state.employeeBenefitPlan === true} onChange={(e) => this.erisaChangeEvent(e, 'radio', true, 'employeeBenefitPlan')}>
                                     <span className="radio-checkmark"></span>
                                     <div className="radioText">True</div>
                                 </Radio>
-                                <Radio name="employeeBenefitPlan" inline checked={this.state.employeeBenefitPlan === false} onChange={(e) => this.erisaChangeEvent(e, 'radio', false, 'employeeBenefitPlan')}>
+                                <Radio name="employeeBenefitPlan" disabled={this.state.planAsDefinedInSection4975e1 === true || this.state.benefitPlanInvestor === true} inline checked={this.state.employeeBenefitPlan === false} onChange={(e) => this.erisaChangeEvent(e, 'radio', false, 'employeeBenefitPlan')}>
                                     <span className="radio-checkmark"></span>
                                     <div className="radioText">False</div>
                                 </Radio>
@@ -235,11 +255,11 @@ class ERISAComponent extends Component {
                         <Col xs={12} md={12}>
                             <label className="form-label width100"> The Entity is a “plan,” as defined in Section 4975(e)(1) of the Code, that is subject to Section 4975 of the Code (including, by way of example only, an individual retirement account).</label>
                             <div className="checkBoxText">
-                                <Radio name="planAsDefinedInSection4975e1" inline checked={this.state.planAsDefinedInSection4975e1 === true} onChange={(e) => this.erisaChangeEvent(e, 'radio', true, 'planAsDefinedInSection4975e1')}>
+                                <Radio name="planAsDefinedInSection4975e1" disabled={this.state.employeeBenefitPlan === true || this.state.benefitPlanInvestor === true} inline checked={this.state.planAsDefinedInSection4975e1 === true} onChange={(e) => this.erisaChangeEvent(e, 'radio', true, 'planAsDefinedInSection4975e1')}>
                                     <span className="radio-checkmark"></span>
                                     <div className="radioText">True</div>
                                 </Radio>
-                                <Radio name="planAsDefinedInSection4975e1" inline checked={this.state.planAsDefinedInSection4975e1 === false} onChange={(e) => this.erisaChangeEvent(e, 'radio', false, 'planAsDefinedInSection4975e1')}>
+                                <Radio name="planAsDefinedInSection4975e1" disabled={this.state.employeeBenefitPlan === true || this.state.benefitPlanInvestor === true} inline checked={this.state.planAsDefinedInSection4975e1 === false} onChange={(e) => this.erisaChangeEvent(e, 'radio', false, 'planAsDefinedInSection4975e1')}>
                                     <span className="radio-checkmark"></span>
                                     <div className="radioText">False</div>
                                 </Radio>
@@ -248,11 +268,11 @@ class ERISAComponent extends Component {
                         <Col xs={12} md={12}>
                             <label className="form-label width100">The Investor is an entity that is deemed to be a “benefit plan investor” under the Plan Asset Regulation, as amended and as modified by Section 3(42) of ERISA, because its underlying assets include “plan assets” by reason of a plan’s investment in the entity (including, by way of example only, a partnership or other entity:  (A) in which twenty-five percent (25%) or more of each class of equity interests is owned by one or more “employee benefit plans” or “plans” described above or by one or more other entities described in this paragraph, applying for this purpose the proportional ownership rule set forth in the final sentence of Section 3(42) of ERISA, and (B) that does not qualify as a “venture capital operating company” or “real estate operating company” under the Plan Asset Regulation).  </label>
                             <div className="checkBoxText">
-                                <Radio name="benefitPlanInvestor" inline checked={this.state.benefitPlanInvestor === true} onChange={(e) => this.erisaChangeEvent(e, 'radio', true, 'benefitPlanInvestor')}>
+                                <Radio name="benefitPlanInvestor" inline disabled={this.state.planAsDefinedInSection4975e1 === true || this.state.employeeBenefitPlan === true} checked={this.state.benefitPlanInvestor === true} onChange={(e) => this.erisaChangeEvent(e, 'radio', true, 'benefitPlanInvestor')}>
                                     <span className="radio-checkmark"></span>
                                     <div className="radioText">True</div>
                                 </Radio>
-                                <Radio name="benefitPlanInvestor" inline checked={this.state.benefitPlanInvestor === false} onChange={(e) => this.erisaChangeEvent(e, 'radio', false, 'benefitPlanInvestor')}>
+                                <Radio name="benefitPlanInvestor" inline disabled={this.state.planAsDefinedInSection4975e1 === true || this.state.employeeBenefitPlan === true} checked={this.state.benefitPlanInvestor === false} onChange={(e) => this.erisaChangeEvent(e, 'radio', false, 'benefitPlanInvestor')}>
                                     <span className="radio-checkmark"></span>
                                     <div className="radioText">False</div>
                                 </Radio>
@@ -261,7 +281,7 @@ class ERISAComponent extends Component {
 
                         <div hidden={this.state.benefitPlanInvestor !== true}>
                             <Col xs={12} md={12}>
-                                <label className="subtext">Please input the total value of equity interests in the Trust is held by “benefit plan investors”</label>
+                                <label className="form-label width100">Please input the total value of equity interests in the Trust is held by “benefit plan investors”</label>
                             </Col>
                             <Col xs={12} md={12}>
                                 <FormControl type="text" placeholder="Enter number" className={"inputFormControl inputWidth290 marginForInput " + (this.state.totalValueOfEquityInterestsBorder ? 'inputError' : '')} value= {this.state.totalValueOfEquityInterests}  onChange={(e) => this.erisaChangeEvent(e,'totalValueOfEquityInterests', 'TOTAL_VALUE_REQUIRED')} onBlur={(e) => this.erisaChangeEvent(e,'totalValueOfEquityInterests','TOTAL_VALUE_REQUIRED')}/>
@@ -270,7 +290,7 @@ class ERISAComponent extends Component {
                         </div>
 
                         <Col xs={12} md={12} className="marginTop10">
-                            <label className="subtext width100">Please confirm the following representations to continue:</label>
+                            <label className="form-label width100">Please confirm the following representations to continue:</label>
                             <CBox inline className="cBoxFullAlign" checked={this.state.fiduciaryEntityIvestment === true} onChange={(e) => this.erisaChangeEvent(e, 'fiduciaryEntityIvestment', 1)}>
                                 <span className="checkbox-checkmark checkmark"></span>
                                 <div className="marginLeft6">The person executing this agreement is a fiduciary of the Entity making the investment.</div>
@@ -283,7 +303,7 @@ class ERISAComponent extends Component {
 
                         {/* <Row className="step1Form-row"> */}
                             <Col xs={12} md={12} className="step1Form-row" hidden={this.state.employeeBenefitPlan !== true}>
-                                <label className="title width100">The person executing this agreement is one of the following:</label>
+                                <label className="form-label width100">The person executing this agreement is one of the following:</label>
                                 <div className="checkBoxText">
                                     <Radio name="aggrement1" className="width100" inline checked={this.state.aggrement1 === 1} onChange={(e) => this.erisaChangeEvent(e, 'radio',  1, 'aggrement1')}>
                                         <span className="radio-checkmark"></span>
@@ -318,7 +338,7 @@ class ERISAComponent extends Component {
                         {/* </Row> */}
                         {/* <Row className="step1Form-row"> */}
                             <Col xs={12} md={12} className="step1Form-row" hidden={this.state.planAsDefinedInSection4975e1 !== true}>
-                                <label className="title width100">The person executing this agreement is one of the following:</label>      
+                                <label className="form-label width100">The person executing this agreement is one of the following:</label>      
                                 <div className="checkBoxText">
                                     <Radio name="aggrement2" className="width100" inline checked={this.state.aggrement2 === 1} onChange={(e) => this.erisaChangeEvent(e,'radio', 1,'aggrement2')} >
                                         <span className="radio-checkmark"></span>
@@ -351,7 +371,7 @@ class ERISAComponent extends Component {
                     <Row className="step1Form-row" hidden={this.state.investorType !== 'revocableTrust'}>
                     <div className="col-md-12 col-xs-12 title"></div>
                         <Col xs={12} md={12}>
-                            <label className="subtext margin18">Please check the appropriate true or false response to the following statements regarding the Entity proposing to subscribe for an investment in the fund:</label>
+                            <label className="form-label width100">Please check the appropriate true or false response to the following statements regarding the Look-Through Issues to subscribe for an investment in the fund:</label>
                         </Col>
                         <Col xs={12} md={12}>
                             <label className="form-label width100">The Trust is an “employee benefit plan,” as defined in Section 3(3) of ERISA, that is subject to the provisions of Part 4 of Title I of ERISA.    </label>
@@ -453,7 +473,7 @@ class ERISAComponent extends Component {
                     <Row className="step1Form-row" hidden={this.state.investorType !== 'iRevocableTrust'}>
                     <div className="col-md-12 col-xs-12 title"></div>
                         <Col xs={12} md={12}>
-                            <label className="subtext margin18">Please check the appropriate true or false response to the following statements regarding the Entity proposing to subscribe for an investment in the fund:</label>
+                            <label className="subtext margin18">Please check the appropriate true or false response to the following statements regarding the Look-Through Issues to subscribe for an investment in the fund:</label>
                         </Col>
                         <Col xs={12} md={12}>
                             <label className="form-label width100">The Trust is an “employee benefit plan,” as defined in Section 3(3) of ERISA, that is subject to the provisions of Part 4 of Title I of ERISA.     </label>
@@ -554,7 +574,7 @@ class ERISAComponent extends Component {
                     {/* iRevocableTrust investor type block ends */}
                    
                 </div>
-
+                <div className="margin30 error">{this.state.erisaErrorMsz}</div>
                 <div className="footer-nav footerDivAlign">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className={"fa fa-chevron-right " + (!this.state.erisaPageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>

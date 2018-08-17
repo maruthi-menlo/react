@@ -9,6 +9,7 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
 import Loader from '../../widgets/loader/loader.component';
+import vanillaLogo from '../../images/Vanilla.png';
 
 class CreateVcFirmComponent extends Component{
 
@@ -297,11 +298,9 @@ class CreateVcFirmComponent extends Component{
     render(){
         return(
             <div id="addFirmContainer">
-                <Row className="dashboardMainRow">
+                <Row>
                     <Col lg={5} md={6} sm={6} xs={12}>
-                        <Row>
-                            <div className="fsnet-logo" onClick={this.redirectHome}>FSNET LOGO</div>    
-                        </Row>
+                        <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginLeft30" onClick={this.redirectHome}/>  
                     </Col>
                     {/* <HeaderComponent ></HeaderComponent> */}
                 </Row>

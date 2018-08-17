@@ -493,7 +493,7 @@ class Step5Component extends Component {
         return (
             <div className="LpDelegatesContainer marginTop6">
                 <h1 className="assignGp">Assign LPs</h1>
-                <p className="Subtext">Select LPs from the list below or choose to add new LP to Fund.</p>
+                <p className="Subtext">Select LPs from the list below or choose to add new LPs to Fund.</p>
                 <Button className="lpDelegateButton" onClick={this.addLpDelegateBtn}><i className="fa fa-plus"></i>Limited Partner</Button>
                 {this.state.getLpList.length > 0 ?
                     <Row className="full-width marginTop30">
@@ -523,7 +523,7 @@ class Step5Component extends Component {
                                 <div className="userRow" key={index}>
                                     {
                                         record['profilePic'] ?
-                                            <img src={record['profilePic']} alt="img" className="user-image" />
+                                            <img src={record['profilePic']['url']} alt="img" className="user-image" />
                                             : <img src={userDefaultImage} alt="img" className="user-image" />
                                     }
 

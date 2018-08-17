@@ -30,14 +30,14 @@ class InvestorInformationComponent extends Component {
             showModal: false,
             showConfirmationModal: false,
             email: '',
-            investorType: '',
+            investorType: 'LLC',
             mailingAddressPhoneNumber: '',
             cellNumberBorder:false,
             cellNumberMsz:'',
             mailingAddressPhoneNumberValid: false,
-            areYouSubscribingAsJointIndividual: null,
+            areYouSubscribingAsJointIndividual: false,
             investorPageValid: false,
-            name:null,
+            name:'',
             nameBorder:false,
             nameMsz:'',
             nameValid: false,
@@ -58,13 +58,13 @@ class InvestorInformationComponent extends Component {
             zipMsz:'',
             mailingAddressZipValid: false,
             spouseName:'',
-            typeOfLegalOwnership: null,
+            typeOfLegalOwnership: '',
             showIndividualStep1: true,
             lpsubscriptionTotalObj: {},
             typeOfLegalOwnershipValid: false,
             areYouSubscribingAsJointIndividualValid: false,
             enableLeftIcon: false,
-            typeOfLegalOwnershipName: null,
+            typeOfLegalOwnershipName: '',
             showLLCInvestorInfoPage1: true,
             showInvestorType: true,
             investorSubTypes:[],
@@ -84,16 +84,17 @@ class InvestorInformationComponent extends Component {
             investorSubTypeBorder:false,
             investorSubTypeMsz:'',
             investorSubTypeValid: false,
-            otherInvestorSubType:null,
+            otherInvestorSubType:'',
             otherInvestorSubTypeBorder:false,
             otherInvestorSubTypeMsz:'',
             otherInvestorSubTypeValid: false,
-            jurisdictionEntityLegallyRegistered: null,
+            jurisdictionEntityLegallyRegistered: '',
             jurisdictionEntityLegallyRegisteredBorder: false,
             jurisdictionEntityLegallyRegisteredValid: false,
-            jurisdictionEntityLegallyRegisteredMsz: null,
+            jurisdictionEntityLegallyRegisteredMsz: '',
             investorJurisdictionTypes:[],
-            isEntityUS501c3Msz: ''
+            isEntityUS501c3Msz: '',
+            investorInfoErrorMsz:''
         }
     }
 
@@ -154,7 +155,9 @@ class InvestorInformationComponent extends Component {
                 this.close();
                 if (result.data) {
                     this.setState({
-                        lpsubscriptionTotalObj:result.data.data
+                        lpsubscriptionTotalObj:result.data.data,
+                        email: result.data.data.email,
+                        investorType: result.data.data.investorType?result.data.data.investorType:'LLC',
                     })
                     if(result.data.data.investorType === 'Individual') {
                         this.updateIndividualData(result.data.data)
@@ -180,8 +183,8 @@ class InvestorInformationComponent extends Component {
         PubSub.publish('investorData',obj );
         this.setState({
             lpsubscriptionTotalObj: data,
-            investorType: data.investorType
         },()=>{
+            this.checkInvestorSubType(this.state.lpsubscriptionTotalObj)
             this.updateInvestorInputFields(this.state.lpsubscriptionTotalObj)
         })
     }
@@ -196,7 +199,6 @@ class InvestorInformationComponent extends Component {
         PubSub.publish('investorData',obj );
         this.setState({
             lpsubscriptionTotalObj: data,
-            investorType: data.investorType
         },()=>{
             this.checkInvestorSubType(this.state.lpsubscriptionTotalObj)
             this.updateInvestorInputFields(this.state.lpsubscriptionTotalObj)
@@ -232,6 +234,11 @@ class InvestorInformationComponent extends Component {
                     this.setState({
                         [idx]: data[idx]
                     },()=>{
+                        if(this.state.otherInvestorSubType !== null && this.state.otherInvestorSubType !== undefined) {
+                            this.setState({
+                                investorSubType:'otherEntity'
+                            })
+                        }
                         this.enableNextButtonStep1();
                     })
                 }
@@ -337,9 +344,17 @@ class InvestorInformationComponent extends Component {
         }
         
         if(blur !== 'cellNumberBlur') {
-            key === 'mailingAddressPhoneNumber' ? value = event : value = event.target.value.trim()
+            if(key === 'mailingAddressPhoneNumber') {
+                value = event
+            } else {
+                if(event.target.value.trim() === '') {
+                    value = event.target.value.trim()
+                } else {
+                    value = event.target.value
+                }
+            }
         } else {
-            value = event.target.value.trim()
+            value = event.target.value
         }
         let dataObj = {};
         switch(type) {
@@ -362,12 +377,24 @@ class InvestorInformationComponent extends Component {
                 }
                 this.setState({
                     [blur]: radioTypeName,
+                },()=>{
+                    if(blur === 'investorType') {
+                        this.enableNextButtonStep1();
+                        this.enableDisableInvestorDetailsButton();
+                        let name = blur+'Valid'
+                        dataObj ={
+                            [name] :true
+                        };
+                        this.updateStateParams(dataObj);
+                    }
                 })
-                let name = blur+'Valid'
-                dataObj ={
-                    [name] :true
-                };
-                this.updateStateParams(dataObj);
+                if(blur !== 'investorType') {
+                    let name = blur+'Valid'
+                    dataObj ={
+                        [name] :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
                 break;
             case 'spouseName': 
                 this.setState({
@@ -478,7 +505,15 @@ class InvestorInformationComponent extends Component {
             })
             .catch(error => {
                 this.close();
-                this.props.history.push('/lp/AccreditedInvestor/'+this.state.lpsubscriptionTotalObj.id);
+                if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                    this.setState({
+                        investorInfoErrorMsz: error.response.data.errors[0].msg,
+                    });
+                } else {
+                    this.setState({
+                        investorInfoErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                    });
+                }
             });
             
         }
@@ -517,6 +552,8 @@ class InvestorInformationComponent extends Component {
         let postInvestorObj = {subscriptonId:this.state.lpsubscriptionTotalObj.id, step:1,fundId: this.state.fundId, investorType: this.state.investorType,investorSubType:this.state.investorSubType, jurisdictionEntityLegallyRegistered:this.state.jurisdictionEntityLegallyRegistered, entityName:this.state.entityName,isEntityTaxExemptForUSFederalIncomeTax:this.state.isEntityTaxExemptForUSFederalIncomeTax, istheEntityFundOfFundsOrSimilarTypeVehicle:this.state.istheEntityFundOfFundsOrSimilarTypeVehicle, releaseInvestmentEntityRequired:this.state.releaseInvestmentEntityRequired}
         if(this.state.investorSubType === 'otherEntity') {
             postInvestorObj['otherInvestorSubType'] = this.state.otherInvestorSubType;
+        } else {
+            postInvestorObj['otherInvestorSubType'] = null;
         }
         if(this.state.isEntityTaxExemptForUSFederalIncomeTax === true) {
             postInvestorObj['isEntityUS501c3'] = this.state.isEntityUS501c3;
@@ -633,29 +670,29 @@ class InvestorInformationComponent extends Component {
                         {
                             this.state.showInvestorType ?
                             <div>
-                            <div className="title">Investor Information (1/7)</div>
+                            <div className="title">Investor Information</div>
                                 <Row className="step1Form-row">
                                     <Col xs={12} md={12}>
-                                        <label className="form-label width100">Investor Type*</label>
-                                        <Radio name="investorType" inline checked={this.state.investorType === 'Individual'} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', 'Individual', 'investorType')}>&nbsp; Individual
-                                        <span className="radio-checkmark"></span>
-                                        </Radio>
+                                        <label className="form-label width100">Investor Type</label>
                                         <Radio name="investorType"  inline checked={this.state.investorType === 'LLC'} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', 'LLC', 'investorType')}>&nbsp; Entity
                                         <span className="radio-checkmark"></span>
                                         </Radio>
-                                        {/* <Radio name="investorType" inline checked={this.state.investorType === 'trust'} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', 'trust', 'investorType')}>&nbsp; Trust
+                                        <Radio name="investorType" className="marginRight10" inline checked={this.state.investorType === 'Individual'} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', 'Individual', 'investorType')}>&nbsp; Individual or Joint Individual
                                         <span className="radio-checkmark"></span>
-                                        </Radio> */}
+                                        </Radio>
+                                        <Radio name="investorType" inline checked={this.state.investorType === 'trust'} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', 'trust', 'investorType')}>&nbsp; Trust
+                                        <span className="radio-checkmark"></span>
+                                        </Radio>
                                     </Col>
                                 </Row>
                                 <div className="individual" hidden={this.state.investorType !== 'Individual'}>
                                     <Row className="step1Form-row">
                                         <Col lg={6} md={6} sm={6} xs={12}>
-                                            <label className="form-label">Email Address*</label>
+                                            <label className="form-label">Email Address</label>
                                             <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className="inputFormControl" readOnly value={this.state.email} />
                                         </Col>
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Enter your name* &nbsp;
+                                            <label className="form-label">Enter your name &nbsp;
                                             <span>
                                                 <LinkWithTooltip tooltip="Please use your full legal name.  This name will appear in the Fund’s records and on tax reporting information" href="#" id="tooltip-1">
                                                 <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
@@ -668,7 +705,7 @@ class InvestorInformationComponent extends Component {
                                     </Row>
                                     <Row className="step1Form-row">
                                         <Col xs={12} md={12}>
-                                            <label className="form-label width100">Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment?*</label>
+                                            <label className="form-label width100">Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment?</label>
                                             <Radio name="jointIndividual" inline checked={this.state.areYouSubscribingAsJointIndividual === true} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', true, 'areYouSubscribingAsJointIndividual')}>&nbsp; Yes
                                             <span className="radio-checkmark"></span>
                                             </Radio>
@@ -689,9 +726,9 @@ class InvestorInformationComponent extends Component {
                                             <FormControl type="text" defaultValue=""  value={this.state.spouseName} onChange={(e) => this.investorHandleChangeEvent(e,'spouseName')}placeholder="Enter Your Spouse’s Name" className="inputFormControl"/>
                                         </Col>
                                     </Row>
-                                    <Row className="step1Form-row">
+                                    <Row className="step1Form-row" hidden={this.state.areYouSubscribingAsJointIndividual !== true}>
                                         <Col xs={12} md={12}>
-                                            <label className="form-label width100">Indicate The Type of Legal Ownership Desired*</label>
+                                            <label className="form-label width100">Indicate The Type of Legal Ownership Desired</label>
                                             <Radio name="ownershipType" className="radioTxtWidth" inline checked={this.state.typeOfLegalOwnership === 'communityProperty'} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', 'communityProperty', 'typeOfLegalOwnership')}>&nbsp; Community Property
                                             <span className="radio-checkmark"></span>
                                             </Radio>
@@ -714,31 +751,31 @@ class InvestorInformationComponent extends Component {
                                     </Row>
                                     <Row className="marginTop10">
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Street*</label>
+                                            <label className="form-label">Street</label>
                                             <FormControl type="text" placeholder="Street" className={"inputFormControl " + (this.state.streetBorder ? 'inputError' : '')} value= {this.state.mailingAddressStreet}   onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressStreet', 'STREET_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressStreet','STREET_REQUIRED')} />
                                             <span className="error">{this.state.streetMsz}</span>
                                         </Col>
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">City*</label>
+                                            <label className="form-label">City</label>
                                             <FormControl type="text" placeholder="City" className={"inputFormControl " + (this.state.cityBorder ? 'inputError' : '')} value= {this.state.mailingAddressCity}   onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressCity', 'CITY_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressCity','CITY_REQUIRED')} />
                                             <span className="error">{this.state.cityMsz}</span>
                                         </Col>
                                     </Row>
                                     <Row className="step1Form-row">
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">State*</label>
+                                            <label className="form-label">State</label>
                                             <FormControl type="text" placeholder="State" className={"inputFormControl " + (this.state.stateBorder ? 'inputError' : '')} value= {this.state.mailingAddressState}   onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressState', 'STATE_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressState','STATE_REQUIRED')} />
                                             <span className="error">{this.state.stateMsz}</span>
                                         </Col>
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Zip*</label>
+                                            <label className="form-label">Zip</label>
                                             <FormControl type="text" placeholder="Zip" className={"inputFormControl " + (this.state.zipBorder ? 'inputError' : '')} value= {this.state.mailingAddressZip} onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressZip', 'ZIP_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressZip','ZIP_REQUIRED')}/>
                                             <span className="error">{this.state.zipMsz}</span>
                                         </Col>
                                     </Row>  
                                     <Row className="step1Form-row">
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Enter Your Phone Number*</label>
+                                            <label className="form-label">Enter Your Phone Number</label>
                                             <form>
                                                 <PhoneInput className={"marginTop10 "+ (this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.mailingAddressPhoneNumber } country="US" onChange={phone => this.investorHandleChangeEvent(phone,'mailingAddressPhoneNumber', 'CELL_NUMBER_REQUIRED')} onBlur={phone => this.investorHandleChangeEvent(phone,'mailingAddressPhoneNumber', 'CELL_NUMBER_REQUIRED', 'cellNumberBlur')} />
                                             </form>
@@ -755,8 +792,8 @@ class InvestorInformationComponent extends Component {
                             <div hidden={!this.state.showLLCInvestorInfoPage1}>
                                 <Row className="step1Form-row">
                                     <Col lg={6} md={6} sm={6} xs={12}>
-                                        <label className="form-label">Investor Sub Type:*{this.state.investorSubType}</label>
-                                        <FormControl value={this.state.investorSubType} componentClass="select" placeholder="Select Investor Sub Type" className={"selectFormControl " + (this.state.investorSubTypeBorder ? 'inputError' : '')} onChange={(e) => this.investorHandleChangeEvent(e, 'investorSubType',  'INVESTOR_SUB_TYPE_REQUIRED')}>
+                                        <label className="form-label">Investor Sub Type:</label>
+                                        <FormControl defaultValue="0" value={this.state.investorSubType} componentClass="select" placeholder="Select Investor Sub Type" className={"selectFormControl " + (this.state.investorSubTypeBorder ? 'inputError' : '')} onChange={(e) => this.investorHandleChangeEvent(e, 'investorSubType',  'INVESTOR_SUB_TYPE_REQUIRED')}>
                                             <option value="0">Select Investor Sub Type</option>
                                             {this.state.investorSubTypes.map((record, index) => {
                                                 return (
@@ -768,7 +805,7 @@ class InvestorInformationComponent extends Component {
                                         <span className="error">{this.state.investorSubTypeMsz}</span>           
                                     </Col>
                                     <Col xs={6} md={6} hidden={this.state.investorSubType !=='otherEntity'}>
-                                        <label className="form-label">Enter the Entity Type:*   
+                                        <label className="form-label">Enter the Entity Type:   
                                         </label>
                                         <FormControl type="text" placeholder="Enter the Entity Type" className={"inputFormControl " + (this.state.otherInvestorSubTypeBorder ? 'inputError' : '')} value= {this.state.otherInvestorSubType} onChange={(e) => this.investorHandleChangeEvent(e,'otherInvestorSubType', 'ENTITY_TYPE_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'otherInvestorSubType','ENTITY_TYPE_REQUIRED')} />
                                         <span className="error">{this.state.otherInvestorSubTypeMsz}</span>
@@ -777,8 +814,8 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">In what jurisdiction is the Entity legally registered?*</label> 
-                                        <FormControl value={this.state.jurisdictionEntityLegallyRegistered} componentClass="select"  placeholder="Select Jurisdiction" className={"selectFormControl " + (this.state.jurisdictionEntityLegallyRegisteredBorder ? 'inputError' : '')} onChange={(e) => this.investorHandleChangeEvent(e, 'jurisdictionEntityLegallyRegistered',  'JURIDICTION_REQUIRED')}>
+                                        <label className="form-label">In what jurisdiction is the Entity legally registered?</label> 
+                                        <FormControl defaultValue="0" value={this.state.jurisdictionEntityLegallyRegistered} componentClass="select"  placeholder="Select Jurisdiction" className={"selectFormControl " + (this.state.jurisdictionEntityLegallyRegisteredBorder ? 'inputError' : '')} onChange={(e) => this.investorHandleChangeEvent(e, 'jurisdictionEntityLegallyRegistered',  'JURIDICTION_REQUIRED')}>
                                             <option value="0">Select Jurisdiction</option>
                                             {this.state.investorJurisdictionTypes.map((record, index) => {
                                                 return (
@@ -789,14 +826,14 @@ class InvestorInformationComponent extends Component {
                                         <span className="error">{this.state.jurisdictionEntityLegallyRegisteredMsz}</span>                                 
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label height37">Email Address*</label>
+                                        <label className="form-label ">Email Address</label>
                                         <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className="inputFormControl" readOnly value= {this.state.email}/>   
                                         <span className="error"></span>      
                                     </Col>
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label height38">Enter the Entity’s Name:* &nbsp;
+                                        <label className="form-label ">Enter the Entity’s Name: &nbsp;
                                         <span>
                                             <LinkWithTooltip tooltip="Please use the exact, complete legal name of the investing Entity.  This name will appear in the Fund’s records and on tax reporting information." href="#" id="tooltip-1">
                                             <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
@@ -807,7 +844,7 @@ class InvestorInformationComponent extends Component {
                                         <span className="error">{this.state.entityNameMsz}</span>
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?*</label>
+                                        <label className="form-label block">Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?</label>
                                         <Radio name="taxExempt" className="radioSmallTxtWidth" inline checked={this.state.isEntityTaxExemptForUSFederalIncomeTax === true} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', true, 'isEntityTaxExemptForUSFederalIncomeTax')}>&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -818,7 +855,7 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6} hidden={this.state.isEntityTaxExemptForUSFederalIncomeTax !== true}>
-                                        <label className="form-label height38">Is the Entity a U.S. 501(c)(3)?*</label>
+                                        <label className="form-label block">Is the Entity a U.S. 501(c)(3)?</label>
                                         <Radio name="isEntityUS501c3" className="radioSmallTxtWidth" inline checked={this.state.isEntityUS501c3 === true} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', true, 'isEntityUS501c3')}>&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -828,7 +865,7 @@ class InvestorInformationComponent extends Component {
                                         <div className="error">{this.state.isEntityUS501c3Msz}</div>
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label height38">Is the Entity a fund-of-funds or a similar type vehicle?*</label>
+                                        <label className="form-label block">Is the Entity a fund-of-funds or a similar type vehicle?</label>
                                         <Radio name="istheEntityFundOfFundsOrSimilarTypeVehicle" className="radioSmallTxtWidth" inline checked={this.state.istheEntityFundOfFundsOrSimilarTypeVehicle === true} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', true, 'istheEntityFundOfFundsOrSimilarTypeVehicle')}>&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -841,7 +878,7 @@ class InvestorInformationComponent extends Component {
                                     <Col xs={12} md={12}>
                                         <label className="form-label width100">Is the Entity required, if requested, under United States or other federal, state, 
                                             local or non-United States similar regulations to release investment information? For example under the United 
-                                            States Freedom of Information Act (“FOIA”) or any similar statues anywhere else worldwide?*</label>
+                                            States Freedom of Information Act (“FOIA”) or any similar statues anywhere else worldwide?</label>
                                         <Radio name="releaseInvestmentEntityRequired" className="radioSmallTxtWidth" inline checked={this.state.releaseInvestmentEntityRequired === true} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', true, 'releaseInvestmentEntityRequired')}>&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -859,31 +896,31 @@ class InvestorInformationComponent extends Component {
                                     </Row>
                                     <Row className="marginTop10">
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Street*</label>
+                                            <label className="form-label">Street</label>
                                             <FormControl type="text" placeholder="Street" className={"inputFormControl " + (this.state.streetBorder ? 'inputError' : '')} value= {this.state.mailingAddressStreet}   onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressStreet', 'STREET_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressStreet','STREET_REQUIRED')} />
                                             <span className="error">{this.state.streetMsz}</span>
                                         </Col>
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">City*</label>
+                                            <label className="form-label">City</label>
                                             <FormControl type="text" placeholder="City" className={"inputFormControl " + (this.state.cityBorder ? 'inputError' : '')} value= {this.state.mailingAddressCity}   onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressCity', 'CITY_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressCity','CITY_REQUIRED')} />
                                             <span className="error">{this.state.cityMsz}</span>
                                         </Col>
                                     </Row>
                                     <Row className="step1Form-row">
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">State*</label>
+                                            <label className="form-label">State</label>
                                             <FormControl type="text" placeholder="State" className={"inputFormControl " + (this.state.stateBorder ? 'inputError' : '')} value= {this.state.mailingAddressState}   onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressState', 'STATE_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressState','STATE_REQUIRED')} />
                                             <span className="error">{this.state.stateMsz}</span>
                                         </Col>
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Zip*</label>
+                                            <label className="form-label">Zip</label>
                                             <FormControl type="text" placeholder="Zip" className={"inputFormControl " + (this.state.zipBorder ? 'inputError' : '')} value= {this.state.mailingAddressZip} onChange={(e) => this.investorHandleChangeEvent(e,'mailingAddressZip', 'ZIP_REQUIRED')} onBlur={(e) => this.investorHandleChangeEvent(e,'mailingAddressZip','ZIP_REQUIRED')}/>
                                             <span className="error">{this.state.zipMsz}</span>
                                         </Col>
                                     </Row>  
                                     <Row className="step1Form-row">
                                         <Col xs={6} md={6}>
-                                            <label className="form-label">Enter Your Phone Number*</label>
+                                            <label className="form-label">Enter Your Phone Number</label>
                                             <form>
                                                 <PhoneInput className={"marginTop10 "+ (this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.mailingAddressPhoneNumber } country="US" onChange={phone => this.investorHandleChangeEvent(phone,'mailingAddressPhoneNumber', 'CELL_NUMBER_REQUIRED')} onBlur={phone => this.investorHandleChangeEvent(phone,'mailingAddressPhoneNumber', 'CELL_NUMBER_REQUIRED', 'cellNumberBlur')} />
                                             </form>
@@ -896,7 +933,7 @@ class InvestorInformationComponent extends Component {
                         <div className="trust" hidden={this.state.investorType !== 'trust'}>
                             <Row className="step1Form-row">
                                 <Col lg={6} md={6} sm={6} xs={12}>
-                                    <label className="form-label">Investor Sub Type:*</label>
+                                    <label className="form-label">Investor Sub Type:</label>
                                     <FormControl defaultValue="0" className="selectFormControl"  componentClass="select" placeholder="Select Investor Sub Type">
                                         <option value={0}>Select Investor Sub Type</option>
                                         <option value="UsCCorp">Revocable Trust</option>
@@ -907,12 +944,12 @@ class InvestorInformationComponent extends Component {
                             <div id="RecoverableTrust">
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Enter the number of Grantors of the Trust*</label>
+                                        <label className="form-label">Enter the number of Grantors of the Trust</label>
                                         <FormControl type="text" placeholder="Enter number of Grantors" className="inputFormControl" />
                                         <span className="error"></span>     
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label ">Email Address*</label>
+                                        <label className="form-label ">Email Address</label>
                                         <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className="inputFormControl"/>   
                                         <span className="error"></span>      
                                     </Col>
@@ -920,7 +957,7 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label ">Enter the Entity’s Name:* &nbsp;
+                                        <label className="form-label ">Enter the Entity’s Name: &nbsp;
                                         <span>
                                             <LinkWithTooltip tooltip="Please use the entire legal name of the Revocable Trust (the “Trust”).  This name will appear in the Fund’s records and on tax reporting information.  Your estate planning advisor should have supplied you with the exact legal wording to use for this purpose.  Most revocable trusts hold title through the trustee(s), such as: “John Smith, Trustee of the John and Linda Smith Revocable Trust Dated January 1, 2000”.  Accordingly, most commonly entries such as “The John and Linda Smith Revocable Trust” will not be correct.  If you have questions about the correct legal title, contact your estate planning advisor." href="#" id="tooltip-1">
                                             <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
@@ -931,7 +968,7 @@ class InvestorInformationComponent extends Component {
                                         <span className="error"></span>
                                     </Col>
                                     <Col lg={6} md={6} sm={6} xs={12}>
-                                        <label className="form-label">Where is the Trust legally domiciled?* &nbsp;
+                                        <label className="form-label">Where is the Trust legally domiciled? &nbsp;
                                         <span>
                                             <LinkWithTooltip tooltip="Your estate planning adviser should have supplied you with this information.  If you are unsure of this answer, contact your estate planning adviser." href="#" id="tooltip-1">
                                             <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
@@ -945,7 +982,7 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?*</label>
+                                        <label className="form-label">Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?</label>
                                         <Radio name="taxExempt" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -954,7 +991,7 @@ class InvestorInformationComponent extends Component {
                                         </Radio>
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label height38">Is the Entity a U.S. 501(c)(3)?*</label>
+                                        <label className="form-label ">Is the Entity a U.S. 501(c)(3)?</label>
                                         <Radio name="entity501" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -966,7 +1003,7 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label height38">Is the Entity a fund-of-funds or a similar type vehicle?</label>
+                                        <label className="form-label ">Is the Entity a fund-of-funds or a similar type vehicle?</label>
                                         <Radio name="entityFunds" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -979,7 +1016,7 @@ class InvestorInformationComponent extends Component {
                                     <Col xs={12} md={12}>
                                         <label className="form-label width100">Is the Entity required, if requested, under United States or other federal, state, 
                                             local or non-United States similar regulations to release investment information? For example under the United 
-                                            States Freedom of Information Act (“FOIA”) or any similar statues anywhere else worldwide?*</label>
+                                            States Freedom of Information Act (“FOIA”) or any similar statues anywhere else worldwide?</label>
                                         <Radio name="taxExempt" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -993,25 +1030,25 @@ class InvestorInformationComponent extends Component {
                                     <label className="title">Enter Your Mailing Address</label>                                                         
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Street*</label>
+                                        <label className="form-label">Street</label>
                                         <FormControl type="text" placeholder="Street" className="inputFormControl"  />
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">City*</label>
+                                        <label className="form-label">City</label>
                                         <FormControl type="text" placeholder="City" className="inputFormControl"  />
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">State*</label>
+                                        <label className="form-label">State</label>
                                         <FormControl type="text" placeholder="State" className="inputFormControl"  />
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Zip*</label>
+                                        <label className="form-label">Zip</label>
                                         <FormControl type="text" placeholder="Zip" className="inputFormControl"  />
                                     </Col>
                                 </Row>  
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Enter Your Phone Number*</label>
+                                        <label className="form-label">Enter Your Phone Number</label>
                                         <PhoneInput value={ this.state.cellNumber } onChange={phone => this.investorHandleChangeEvent(phone,'cellNumber')}  maxLength="14" placeholder="(123) 456-7890"  country="US" />
                                     </Col>
                                 </Row>
@@ -1030,7 +1067,7 @@ class InvestorInformationComponent extends Component {
                                         <span className="error"></span>     
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Email Address*</label>
+                                        <label className="form-label">Email Address</label>
                                         <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className="inputFormControl"/>   
                                         <span className="error"></span>      
                                     </Col>
@@ -1038,7 +1075,7 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label ">Enter the Entity’s Name:* &nbsp;
+                                        <label className="form-label ">Enter the Entity’s Name: &nbsp;
                                         <span>
                                             <LinkWithTooltip tooltip="Please use the entire legal name of the Revocable Trust (the “Trust”).  This name will appear in the Fund’s records and on tax reporting information.  Your estate planning advisor should have supplied you with the exact legal wording to use for this purpose.  Most revocable trusts hold title through the trustee(s), such as: “John Smith, Trustee of the John and Linda Smith Revocable Trust Dated January 1, 2000”.  Accordingly, most commonly entries such as “The John and Linda Smith Revocable Trust” will not be correct.  If you have questions about the correct legal title, contact your estate planning advisor." href="#" id="tooltip-1">
                                             <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
@@ -1049,7 +1086,7 @@ class InvestorInformationComponent extends Component {
                                         <span className="error"></span>
                                     </Col>
                                     <Col lg={6} md={6} sm={6} xs={12}>
-                                        <label className="form-label">Where is the Trust legally domiciled?* &nbsp;
+                                        <label className="form-label">Where is the Trust legally domiciled? &nbsp;
                                         <span>
                                             <LinkWithTooltip tooltip="Your estate planning adviser should have supplied you with this information.  If you are unsure of this answer, contact your estate planning adviser. " href="#" id="tooltip-1">
                                             <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
@@ -1063,7 +1100,7 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?*</label>
+                                        <label className="form-label">Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?</label>
                                         <Radio name="taxExempt" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -1072,7 +1109,7 @@ class InvestorInformationComponent extends Component {
                                         </Radio>
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label height38">Is the Entity a U.S. 501(c)(3)?*</label>
+                                        <label className="form-label ">Is the Entity a U.S. 501(c)(3)?</label>
                                         <Radio name="entity501" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -1086,7 +1123,7 @@ class InvestorInformationComponent extends Component {
                                     <Col xs={12} md={12}>
                                         <label className="form-label width100">Is the Entity required, if requested, under United States or other federal, state, 
                                             local or non-United States similar regulations to release investment information? For example under the United 
-                                            States Freedom of Information Act (“FOIA”) or any similar statues anywhere else worldwide?*</label>
+                                            States Freedom of Information Act (“FOIA”) or any similar statues anywhere else worldwide?</label>
                                         <Radio name="taxExempt" className="radioSmallTxtWidth" inline id="yesCheckbox">&nbsp; Yes
                                         <span className="radio-checkmark"></span>
                                         </Radio>
@@ -1100,26 +1137,26 @@ class InvestorInformationComponent extends Component {
                                     <label className="title">Enter Your Mailing Address</label>                                                         
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Street*</label>
+                                        <label className="form-label">Street</label>
                                         <FormControl type="text" placeholder="Street" className="inputFormControl"  />
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">City*</label>
+                                        <label className="form-label">City</label>
                                         <FormControl type="text" placeholder="City" className="inputFormControl"  />
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">State*</label>
+                                        <label className="form-label">State</label>
                                         <FormControl type="text" placeholder="State" className="inputFormControl"  />
                                     </Col>
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Zip*</label>
+                                        <label className="form-label">Zip</label>
                                         <FormControl type="text" placeholder="Zip" className="inputFormControl"  />
                                     </Col>
                                 </Row>  
                                 <Row className="step1Form-row">
                                     <Col xs={12} md={12}>
                                         <label className="form-label width100">Please input the exact legal title designation you would like used by the 
-                                            fund to hold the Trust’s interest.*</label>
+                                            fund to hold the Trust’s interest.</label>
                                             <Col xs={6} md={6} className="padding-left-0">
                                                 <FormControl type="text" placeholder="Legal Title" className="inputFormControl"  />
                                             </Col>
@@ -1127,20 +1164,37 @@ class InvestorInformationComponent extends Component {
                                 </Row>
                                 <Row className="step1Form-row">
                                     <Col xs={6} md={6}>
-                                        <label className="form-label">Enter Your Phone Number*</label>
+                                        <label className="form-label">Enter Your Phone Number</label>
                                         <PhoneInput value={ this.state.cellNumber } onChange={phone => this.investorHandleChangeEvent(phone,'cellNumber')}  maxLength="14" placeholder="(123) 456-7890"  country="US" />
                                     </Col>
                                 </Row>
                            </div>
-                            <div className="marginTop20 error"></div>
                         </div>
                     </div>
                 </div>
-
+                <div className="margin30 error">{this.state.investorInfoErrorMsz}</div>
                 <div className="footer-nav footerDivAlign">
                     <i className={"fa fa-chevron-left " + (!this.state.enableLeftIcon ? 'disabled' : '')} onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className={"fa fa-chevron-right " + (!this.state.investorPageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>
                 </div>
+                <Modal id="confirmInvestorModal" show={this.state.showConfirmationModal}  onHide={this.closeConfirmationModal} dialogClassName="confirmInvestorDialog">
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h1 className="title" hidden={this.state.areYouSubscribingAsJointIndividual === false}>Based on your input, the fund will hold your interest in the following name: {this.state.name} and {this.state.spouseName},    {this.state.typeOfLegalOwnershipName} </h1>
+                        <h1 className="title" hidden={this.state.areYouSubscribingAsJointIndividual === true}>Based on your input, the fund will hold your interest in the following name:        {this.state.name}, {this.state.typeOfLegalOwnershipName} </h1>
+                        <div className="subtext">Is this acceptable?</div>
+                        <div className="error">{this.state.startFundErrorMsz}</div>
+                        <Row className="fundBtnRow">
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                                <Button type="button" onClick={this.submitInvestorInfoStep1Details} className="fsnetSubmitButton btnEnabled" >Yes</Button>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                                <Button type="button" className="fsnetSubmitButton btnEnabled" onClick={this.closeConfirmationModal}>No</Button>
+                            </Col>
+                        </Row>   
+                    </Modal.Body>
+                </Modal>
                 <Loader isShow={this.state.showModal}></Loader>
             </div>
         );

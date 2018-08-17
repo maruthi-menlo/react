@@ -40,7 +40,6 @@
     color: #ffffff;
     font-size: 20px;
     display: block;
-    font-weight: bold;
     font-family: 'OpenSans-Bold';
     text-transform: uppercase;
 }
@@ -70,7 +69,6 @@
     width: 150px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     padding-left: 7px;
 }
@@ -177,7 +175,6 @@
 
 .main-title {
     font-size: 26px;
-    font-weight: bold;
     margin-left: 20px;
     font-family: 'OpenSans-Bold';
 }
@@ -187,7 +184,6 @@
 }
 .cancel-fund {
     font-size: 20px;
-    font-weight: bold;
     float: right;
     margin-right: 135px;
     margin-top: 8px;
@@ -201,7 +197,6 @@
     opacity: 0.5;
     padding-top: 8px;
     font-size: 16px;
-    font-weight: bold;
     width: 232px;
     height: 40px;
     background-color: rgba(245, 245, 245, 0.3);
@@ -215,7 +210,6 @@
     color: #ffffff;
     padding-top: 8px;
     font-size: 16px;
-    font-weight: bold;
     width: 232px;
     height: 40px;
     background-color: #39bcd5;
@@ -271,7 +265,6 @@
 .fsbadge {
     padding: 1px 9px 2px;
     font-size: 10px;
-    font-weight: bold;
     white-space: nowrap;
     color: #ffffff;
     background-color: #03a9f4;
@@ -301,7 +294,6 @@
     height: 32px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -315,7 +307,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -330,7 +321,6 @@
     border-radius: 30px !important;
     font-family: 'OpenSans-Bold';
     font-size: 16px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5 !important;
@@ -354,7 +344,6 @@
     border-radius: 30px !important;
     font-family: 'OpenSans-Bold';
     font-size: 16px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5 !important;
@@ -372,7 +361,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -384,7 +372,6 @@
     height: 16px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -412,7 +399,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -427,7 +413,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -456,7 +441,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -527,7 +511,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -557,7 +540,6 @@
     border-radius: 24px !important;
     font-family: 'OpenSans-Bold';
     font-size: 20px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6 !important;
@@ -572,7 +554,6 @@
     background-color: skyblue !important;
     font-family: 'OpenSans-Bold';
     font-size: 20px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6 !important;
@@ -591,7 +572,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 16px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -605,7 +585,6 @@
     height: 32px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -618,7 +597,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -642,7 +620,6 @@
 #createFund .upload-doc-name {
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
@@ -672,7 +649,6 @@
     background-color: skyblue !important;
     font-family: 'OpenSans-Bold';
     font-size: 14px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43 !important;
@@ -696,7 +672,6 @@
     background-color: #39bcd5;
     font-family: 'OpenSans-Bold' !important;
     font-size: 24px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -715,7 +690,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -760,7 +734,6 @@
     position: absolute;
     top: 7px;
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -769,7 +742,7 @@
     font-family: 'OpenSans-Bold';
 }
 
-.form-label{    
+#createFund .form-label{    
     width: 290px;
 }
 
@@ -779,7 +752,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -794,7 +766,6 @@
     background-color: #39bcd5;
     font-family: 'OpenSans-Bold';
     font-size: 14px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43 !important;
@@ -809,7 +780,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -859,7 +829,6 @@
     color: #39bcd5 !important;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     cursor:pointer;
     text-decoration: none;
     padding: 0px;
@@ -877,7 +846,6 @@
     color: #2f4858;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     line-height: 25px;
     padding: 0px;    
 }
@@ -911,7 +879,6 @@
     color: #2f4858;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     text-decoration: none;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
 }
@@ -919,7 +886,6 @@
     color: #2f4858;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     text-decoration: none;
     border-bottom: 2px solid rgba(51, 101, 138, 0.5);
 
@@ -929,7 +895,6 @@
     margin-bottom: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
 
 }
 
@@ -941,7 +906,6 @@
     text-align: center;
     color: rgba(47, 72, 88, 0.5);
     font-size: 14px;
-    font-weight: bold;
     font-family: 'OpenSans-Bold';
 }
 .tableCols{
@@ -966,21 +930,19 @@ input[type=checkbox]{
     padding: 32px 0px 10px 0px;
     color: rgba(47, 72, 88, 0.5);
     font-size: 23px;
-    font-weight: bold;
     width:850px;
     font-family: 'OpenSans-Bold';
 }
 .staticTextBelowTable .staticTextBelowText{
-        height: 50px;
-        opacity: 0.5;
-        font-family: 'OpenSans-Bold';
-        font-size: 20px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.6;
-        letter-spacing: normal;
-        color: #2f4858;
+    min-height: 50px;
+    opacity: 0.5;
+    font-family: 'OpenSans-Bold';
+    font-size: 20px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #2f4858;
 }
 .startFundButtonStyle {
     text-align: center;
@@ -1000,7 +962,6 @@ input[type=checkbox]{
     height: 32px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -1013,7 +974,6 @@ input[type=checkbox]{
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43 !important;
@@ -1027,7 +987,6 @@ input[type=checkbox]{
     border-radius: 30px  !important;
     font-family: 'OpenSans-Bold';
     font-size: 14px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43 !important;
@@ -1043,7 +1002,6 @@ input[type=checkbox]{
     border-radius: 30px !important;
     font-family: 'OpenSans-Bold';
     font-size: 14px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43 !important;
@@ -1096,10 +1054,11 @@ input[type=checkbox]{
     width: 100%;
     line-height: 20px;
 }
-#createFund .user-image {
+.user-image {
     width: 32px;
     height: 32px;
     margin-left: 10px;
+    border-radius: 50%;
 }
 #createFund .user-review-image {
     width: 32px;
@@ -1107,6 +1066,7 @@ input[type=checkbox]{
     margin-right: 10px;
     position: relative;
     top: -5px;
+    border-radius: 50%;
 }
 #createFund .fund-user-name {
     width: 300px;
@@ -1114,7 +1074,6 @@ input[type=checkbox]{
     height: auto;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -1128,7 +1087,6 @@ input[type=checkbox]{
 #createFund .review-name {
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -1142,7 +1100,6 @@ input[type=checkbox]{
     height: auto;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -1178,7 +1135,6 @@ input[type=checkbox]{
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -1224,7 +1180,6 @@ input[type=checkbox]{
     background-color: #39bcd5;
     font-family: 'OpenSans-Bold';
     font-size: 24px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -1386,7 +1341,6 @@ input[type=checkbox]{
     text-align: right;
     margin-top: -20px;
     margin-right: 20px;
-    font-weight: bold;
     font-family: 'OpenSans-Bold';
 }
 .borderTopNone {
@@ -1411,7 +1365,6 @@ input[type=checkbox]{
     width: 156px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -1497,7 +1450,6 @@ input[type=checkbox]{
     padding-left: 23px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -1545,7 +1497,6 @@ input[type=checkbox]{
     padding-left: 23px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -1586,7 +1537,6 @@ input[type=checkbox]{
     padding-left: 23px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -1621,7 +1571,6 @@ input[type=checkbox]{
     padding-left: 23px;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;

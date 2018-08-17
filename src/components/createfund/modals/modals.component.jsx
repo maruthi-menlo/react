@@ -304,9 +304,13 @@ class ModalComponent extends Component {
                 }
                 break;
             case 'orgName':
-                if(event.target.value.trim() !== '') {
+                if(event.target.value.trim() === '') {
                     this.setState({
                         orgName: event.target.value.trim()
+                    })
+                } else {
+                    this.setState({
+                        orgName: event.target.value
                     })
                 }
                 break;

@@ -356,7 +356,7 @@ class Step2Component extends Component {
             <div className="step2Class marginTop6">
             <div className="GpDelegatesContainer" >
                 <h1 className="title">Assign GP Delegates</h1>
-                <p className="subtext marginBottom44">Select GP Delegate(s) from the list below or add a new one.</p>
+                <p className="subtext marginBottom44">Add new GP Delegates below.  Once added, as GP’s account holder you may unselect one or more GP Delegates which will cause them to be disassociated with this Fund.  You are required to select certain attributes about each GP Delegate as indicated below.  You may change these attributes at any time by returning to this screen.</p>
                 <Button className="fsnetButton" onClick={this.addGpDelegateBtn}><i className="fa fa-plus"></i>GP Delegate</Button>
                 <div className={"userContainer " + (this.state.getGpDelegatesList.length ===0 ? 'borderNone' : '')} >
                     {this.state.getGpDelegatesList.length >0 ?
@@ -365,7 +365,7 @@ class Step2Component extends Component {
                                 <div className="userRow" key={index}>
                                     {
                                         record['profilePic']  ?
-                                        <img src={record['profilePic']} alt="img" className="user-image" />
+                                        <img src={record['profilePic']['url']} alt="img" className="user-image" />
                                          : <img src={userDefaultImage} alt="img" className="user-image" />
                                     }
                                     

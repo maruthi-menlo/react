@@ -16,6 +16,7 @@ import { Route, Link } from "react-router-dom";
 import { PubSub } from 'pubsub-js';
 import { FsnetUtil } from '../../util/util';
 import { reactLocalStorage } from 'reactjs-localstorage';
+import vanillaLogo from '../../images/Vanilla.png';
 
 var investor = {};
 class editFundComponent extends Component {
@@ -76,12 +77,12 @@ class editFundComponent extends Component {
                 <nav className="navbar navbar-custom">
                     <div className="navbar-header">
                         <div className="sidenav">
-                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; FSNET LOGO</h1>
+                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
                         </div>
                     </div>
                     <div className="text-center navbar-collapse-custom" id="navbar-collapse" hidden={!this.state.showSideNav}>
                         <div className="sidenav">
-                            <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
+                            <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
                             <h2 className="text-left lpDashAlign"><img src={homeImage} alt="home_image" className="" />&nbsp; <Link to="/dashboard" className="dashboardTxtAlign">Dashboard</Link></h2>
                             {
                                 <ul className="sidenav-menu">

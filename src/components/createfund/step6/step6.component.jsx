@@ -201,13 +201,13 @@ class Step6Component extends Component {
                         </Col>
                         <Col md={5} sm={5} xs={6}>
                             <div className="col2">Legal Entity:  {this.state.currentFundDataObj.legalEntity}</div>
-                            <div className="col2" hidden={this.state.currentFundDataObj.fundHardCap === null}>Hard cap: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.fundHardCap)}</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.fundHardCap === null}>Hard Cap: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.fundHardCap)}</div>
                             <div className="col2">Fund Manager (GP) Legal Entity Name:</div>
                             <div className="col2">{this.state.currentFundDataObj.fundManagerLegalEntityName}</div>
                             <div className="col2" hidden={this.state.currentFundDataObj.fundTargetCommitment === null}>Fund Target Commitment: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.fundTargetCommitment)}</div>
                             <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPCommitment === null}>% of LP Commitment: {this.state.currentFundDataObj.percentageOfLPCommitment}</div>
                             <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment === null}>% of LP + GP Aggregate Commitment: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment)}</div>
-                            <div className="col2" hidden={this.state.currentFundDataObj.capitalCommitmentByFundManager === null}>Capital commitment by Fund manager: {this.state.currentFundDataObj.capitalCommitmentByFundManager}</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.capitalCommitmentByFundManager === null}>Capital commitment by Fund Manager: {this.state.currentFundDataObj.capitalCommitmentByFundManager}</div>
                         </Col>
                         <Col md={2} sm={2} xs={6}>
                             <div className="col3">Fund Image:</div>
@@ -256,7 +256,7 @@ class Step6Component extends Component {
                             <span className="col1">Limited Partners</span>
                         </Col>
                         <Col md={7} sm={7} xs={6}>
-                            <span className="col2">Review LPs in sidebard and add or remove as necessary</span>
+                            <span className="col2">Review LPs in sidebar and add or remove as necessary</span>
                         </Col>
                         {/* <Col md={3} sm={3} xs={6}>
                             <span className="col3"></span>
@@ -304,7 +304,7 @@ class Step6Component extends Component {
                                                             </CBox>
                                                             {
                                                                 record['profilePic'] ?
-                                                                <img src={record['profilePic'].url} alt="user-image" className="user-review-image" />
+                                                                <img src={record['profilePic']['url']} alt="user-image" className="user-review-image" />
                                                                 :
                                                                 <img src={userDefaultImage} alt="user-image" className="user-review-image" />
                                                             }

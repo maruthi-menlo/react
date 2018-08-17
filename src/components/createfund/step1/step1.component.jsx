@@ -58,6 +58,7 @@ class Step1Component extends Component{
             fundHardCapValid: true,
             fundHardCapBorder: false,
             fundHardCapMsz: '',
+            imageRemoved: true
         }
     }
 
@@ -484,7 +485,8 @@ class Step1Component extends Component{
         this.setState({
             fundImageName: 'fund_Pic.jpg',
             currentFundImage : FundImage,
-            fundPicFile: {}
+            fundPicFile: {},
+            imageRemoved: true
         });
         document.getElementById('uploadBtn').value = "";
     }
@@ -505,7 +507,8 @@ class Step1Component extends Component{
                     });
                 reader.readAsDataURL(this.imageFile);
                 this.setState({
-                    fundImageName: event.target.files[0].name
+                    fundImageName: event.target.files[0].name,
+                    imageRemoved: false
                 });
                 reader.onload = () => {
                     this.setState({
@@ -540,7 +543,7 @@ class Step1Component extends Component{
         if(this.state.capitalCommitmentByGP === '' && this.state.percentageOfLPAndGPAggregateCommitment !== '') {
             error = true;
             this.setState({
-                fundDetailspageError: 'Please enter Capital commitment by Fund manager.'
+                fundDetailspageError: 'Please enter Capital commitment by Fund Manager.'
             })
         }
         if(!error) {
@@ -552,6 +555,11 @@ class Step1Component extends Component{
             formData.append("fundTargetCommitment", this.state.fundTargetCommitment? this.state.fundTargetCommitment : 0);
             formData.append("fundManagerLegalEntityName", this.state.fundManagerLegalEntityName);
             formData.append("isAllDelegateSignNeeded", this.state.isAllDelegateSignNeeded);
+            if(Object.keys(this.state.fundPicFile).length === 0 && this.state.fundPicFile.constructor === Object && this.state.imageRemoved){
+                formData.append("requestContainImage", false);
+            } else {
+                formData.append("requestContainImage", true);
+            }
             formData.append("fundImage", this.state.fundPicFile);
             if(this.state.fundId !== '') {
                 formData.append("fundId", this.state.fundId)
@@ -646,7 +654,7 @@ class Step1Component extends Component{
                                 <FormControl type="text" placeholder="100.00%" className="inputFormControl" value={this.state.percentageOfLPCommitment} disabled={this.state.aTextBoxDisabled} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPCommitment')}  />
                             </Col>
                             <Col xs={6} md={6}>
-                                <label className="form-label">Capital commitment by Fund manager  </label>
+                                <label className="form-label">Capital commitment by Fund Manager  </label>
                                 <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" disabled={this.state.bTextBoxDisabled} value={this.state.capitalCommitmentByGPCurrencyValue}  onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')}  onBlur={(e)=>{this.addCurrencyValueToInput(e,'capitalCommitmentByGP')}} onFocus={(e)=>{this.handleinputFocus(e,'capitalCommitmentByGP')}} />
                             </Col>
                         </Row>

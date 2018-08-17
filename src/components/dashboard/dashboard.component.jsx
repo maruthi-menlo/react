@@ -12,6 +12,7 @@ import { FsnetUtil } from '../../util/util';
 import Loader from '../../widgets/loader/loader.component';
 import boxNotificationImage from '../../images/boxNotiImage.svg';
 import plusImg from '../../images/plus.svg';
+import vanillaLogo from '../../images/Vanilla.png';
 
 class DashboardComponent extends Component {
 
@@ -246,9 +247,7 @@ class DashboardComponent extends Component {
             <Row className="dashboardContainer" id="MainDashboard">
                 <Row className="dashboardMainRow">
                     <Col lg={5} md={6} sm={6} xs={12}>
-                        <Row>
-                            <div className="fsnet-logo">FSNET LOGO</div>
-                        </Row>
+                        <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginLeft30"/>
                     </Col>
                     <Col lg={7} md={6} sm={6} xs={12}>
                         <HeaderComponent ></HeaderComponent>
@@ -364,11 +363,11 @@ class DashboardComponent extends Component {
                                                     View Participation Document
                                                 </div>
                                                 <div className="fund-user-details" hidden={record['subscriptionStatus']['name'] ==='Open'}>
-                                                    <div><label>GP Name: </label> <span>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</span></div>
-                                                    <div><label>Phone Number: </label> <span>{record['fund']['gp']['cellNumber']}</span></div>
-                                                    <div><label hidden={record['fund']['gp']['city'] === null}>City: </label> <span>{record['fund']['gp']['city']}</span></div>
-                                                    <div><label hidden={record['fund']['gp']['state'] === null}>State: </label><span>{record['fund']['gp']['state']}</span> </div>
-                                                    <div><label hidden={record['fund']['gp']['country'] === null}>Country: </label><span>{record['fund']['gp']['country']}</span> </div>
+                                                    <div className="gp-details"><label>GP Name: </label> <div>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</div></div>
+                                                    <div className="gp-details"><label>Phone Number: </label> <div>{record['fund']['gp']['cellNumber']}</div></div>
+                                                    <div className="gp-details"><label hidden={record['fund']['gp']['city'] === null}>City: </label> <div>{record['fund']['gp']['city']}</div></div>
+                                                    <div className="gp-details"><label hidden={record['fund']['gp']['state'] === null}>State: </label><div>{record['fund']['gp']['state']}</div> </div>
+                                                    <div className="gp-details"><label hidden={record['fund']['gp']['country'] === null}>Country: </label><div>{record['fund']['gp']['country']}</div> </div>
                                                 </div>
                                                 <div className="Line" hidden={record['subscriptionStatus']['name'] !='Open'}></div>
                                                 <div className="interested marginAlign" hidden={record['subscriptionStatus']['name'] !='Open'} onClick={()=>this.acceptFund(record['id'])}>Yes, I am interested</div>
@@ -401,11 +400,11 @@ class DashboardComponent extends Component {
                                                     <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')}>{record['fund']['legalEntity']}</div>
                                                 </div>
                                                 <div className="fund-user-details">
-                                                    <label>GP Name: <span>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</span></label> 
-                                                    <label>Phone Number: <span>{record['fund']['gp']['cellNumber']}</span></label> 
-                                                    <label hidden={record['fund']['gp']['city'] === null}>City: <span>{record['fund']['gp']['city']}</span></label> 
-                                                    <label hidden={record['fund']['gp']['state'] === null}>State: <span>{record['fund']['gp']['state']}</span></label> 
-                                                    <label hidden={record['fund']['gp']['country'] === null}>Country: <span>{record['fund']['gp']['country']}</span></label> 
+                                                    <div className="gp-details"><label>GP Name: </label> <div>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</div></div>
+                                                    <div className="gp-details"><label>Phone Number: </label> <div>{record['fund']['gp']['cellNumber']}</div></div>
+                                                    <div className="gp-details"><label hidden={record['fund']['gp']['city'] === null}>City: </label> <div>{record['fund']['gp']['city']}</div></div>
+                                                    <div className="gp-details"><label hidden={record['fund']['gp']['state'] === null}>State: </label><div>{record['fund']['gp']['state']}</div> </div>
+                                                    <div className="gp-details"><label hidden={record['fund']['gp']['country'] === null}>Country: </label><div>{record['fund']['gp']['country']}</div> </div>
                                                 </div>
                                             </div>
                                         </Col>

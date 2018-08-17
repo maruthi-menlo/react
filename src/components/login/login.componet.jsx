@@ -6,6 +6,7 @@ import {Constants} from '../../constants/constants';
 import {Fsnethttp} from '../../services/fsnethttp';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetAuth } from'../../services/fsnetauth';
+import vanillaLogo from '../../images/Vanilla.png';
 import ReactDOM from 'react-dom';
 
 class LoginComponent extends Component{
@@ -86,7 +87,9 @@ class LoginComponent extends Component{
                         reactLocalStorage.set('userData', JSON.stringify(result.data.user));
                         reactLocalStorage.set('firmId', JSON.stringify(result.data.user.vcfirmId));
                         reactLocalStorage.set('token', JSON.stringify(result.data.token));
-                        this.props.history.push('/dashboard');
+                        setTimeout(() => {
+                            this.props.history.push('/dashboard');
+                        }, 200);
                     }
                 })
                 .catch(error=>{
@@ -219,7 +222,7 @@ class LoginComponent extends Component{
         return(
             <Row id="loginContainer">                    
                 <Row className="mainContainer">
-                    <div className="fsnet-logo">FSNET LOGO</div>
+                    <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginLeft30"/>
                 </Row>
                 <Row className="loginContainer">
                     <Col lg={6} md={6} sm={6} xs={12}>

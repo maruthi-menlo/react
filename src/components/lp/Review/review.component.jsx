@@ -21,8 +21,10 @@ class reviewComponent extends Component {
         this.proceedToBack = this.proceedToBack.bind(this);
         this.state = {
             showModal: false,
-            investorType: null,
-            lpObj:{}
+            investorType: 'LLC',
+            lpObj:{},
+            investorSubTypeName:'',
+            jurisdictionEntityLegallyRegisteredName:''
         }
 
     }
@@ -40,6 +42,9 @@ class reviewComponent extends Component {
             this.Fsnethttp.getLpSubscriptionDetails(id, headers).then(result => {
                 this.close();
                 if (result.data) {
+                    this.setState({
+                        investorType: result.data.data.investorType? result.data.data.investorType:'LLC',
+                    })
                     if(result.data.data.investorType === 'Individual') {
                         this.updateIndividualData(result.data.data);
                     } else if(result.data.data.investorType === 'LLC') {
@@ -61,7 +66,6 @@ class reviewComponent extends Component {
         PubSub.publish('investorData',obj );
         this.setState({
             lpObj: data,
-            investorType: data.investorType
         })
     }
 
@@ -73,7 +77,8 @@ class reviewComponent extends Component {
         PubSub.publish('investorData',obj );
         this.setState({
             lpObj: data,
-            investorType: data.investorType
+        },()=>{
+            this.investorSubTypes();
         })
     }
 
@@ -94,6 +99,57 @@ class reviewComponent extends Component {
         this.setState({ showModal: true });
     }
 
+    //Call investor sub types
+    investorSubTypes() {
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+        this.open();
+        this.Fsnethttp.getInvestorSubTypes(headers).then(result => {
+            this.close();
+            let id = parseInt(this.state.lpObj.investorSubType);
+            if (result.data) {
+                for(let index of result.data) {
+                    if(index['id'] === id) {
+                        this.setState({
+                            investorSubTypeName: index['name']
+                        })
+                        this.jurisdictionTypes(index['isUS'],index['id'] )
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            this.close();
+        });
+    }
+
+    //Get countries or states based on sub types selection
+    //ISUS value is taken to check whether investor sub type belongs to US or  nonUS
+    jurisdictionTypes(isUs, value) {
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+        let url = 'getAllCountires'
+        if(value === 'otherEntity') {
+            url = 'getAllCountires/1'
+        }
+        if(isUs === '0') {
+            url = 'getUSStates'
+        }
+        this.Fsnethttp.getJurisdictionTypes(headers,url).then(result => {
+            if (result.data) {
+                let id = parseInt(this.state.lpObj.jurisdictionEntityLegallyRegistered);
+                for(let index of result.data) {
+                    if(index['id'] === id) {
+                        this.setState({
+                            jurisdictionEntityLegallyRegisteredName: index['name']
+                        })
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            this.close();
+        });
+    }
+
     render() {
         return (
             <div className="accreditedInvestor width100" id="subscriptionReview">
@@ -111,8 +167,9 @@ class reviewComponent extends Component {
                             <Col md={7} sm={7} xs={6}>
                                 <div className="col2">Investor Type: {this.state.lpObj.investorType}</div>
                                 <div className="col2">your name: {this.state.lpObj.name}</div>
-                                <div className="col2">Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment? : {this.state.lpObj.areYouSubscribingAsJointIndividual}</div>
-                                <div className="col2" hidden={this.state.lpObj.areYouSubscribingAsJointIndividual === 'No'}>Spouse’s Name: {this.state.lpObj.spouseName}</div>
+                                <div className="col2" hidden={!this.state.lpObj.areYouSubscribingAsJointIndividual}>Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment? : Yes</div>
+                                <div className="col2" hidden={this.state.lpObj.areYouSubscribingAsJointIndividual}>Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment? : No</div>
+                                <div className="col2" hidden={this.state.lpObj.areYouSubscribingAsJointIndividual === false}>Spouse’s Name: {this.state.lpObj.spouseName}</div>
                                 <div className="col2">Indicate The Type of Legal Ownership Desired: {this.state.lpObj.typeOfLegalOwnership}</div>
                                 <div className="col2">Street: {this.state.lpObj.mailingAddressStreet}</div>
                                 <div className="col2">City: {this.state.lpObj.mailingAddressCity}</div>
@@ -127,10 +184,13 @@ class reviewComponent extends Component {
 
                         <Row className="step6-row" >
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
-                                <span className="col1">Accredited Invesestor</span>
+                                <span className="col1">Accredited Investor</span>
                             </Col>
-                            <Col md={7} sm={7} xs={6}>
-                                <span className="col2">Are you  an “accredited investor” within the meaning of Rule 501 under the Securities Act?: {this.state.lpObj.areYouAccreditedInvestor}</span>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouAccreditedInvestor === true}>
+                                <span className="col2">Are you  an “accredited investor” within the meaning of Rule 501 under the Securities Act?: Yes</span>
+                            </Col>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouAccreditedInvestor === false}>
+                                <span className="col2">Are you  an “accredited investor” within the meaning of Rule 501 under the Securities Act?: No</span>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
                                 <span className="col4"><Link to={"/lp/AccreditedInvestor/"+this.state.lpObj.id}>Change</Link></span>
@@ -141,20 +201,26 @@ class reviewComponent extends Component {
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
                                 <span className="col1">Qualified Purchaser</span>
                             </Col>
-                            <Col md={7} sm={7} xs={6}>
-                                <span className="col2">Are you an “qualified purchaser” within the meaning of Section 2(a)(51) under the Companies Act, as amended?: {this.state.lpObj.areYouQualifiedPurchaser}</span>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedPurchaser === true}>
+                                <span className="col2">Are you an “qualified purchaser” within the meaning of Section 2(a)(51) under the Companies Act, as amended?: Yes</span>
+                            </Col>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedPurchaser === false}>
+                                <span className="col2">Are you an “qualified purchaser” within the meaning of Section 2(a)(51) under the Companies Act, as amended?: No</span>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
                                 <span className="col4"><Link to={"/lp/qualifiedPurchaser/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
-                        <Row className="step6-row" hidden={this.state.lpObj.areYouQualifiedPurchaser === 'No'}>
+                        <Row className="step6-row" hidden={this.state.lpObj.areYouQualifiedPurchaser === false}>
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
                                 <span className="col1">Qualified Client</span>
                             </Col>
-                            <Col md={7} sm={7} xs={6}>
-                                <span className="col2">Are you a “qualified client” within the meaning of Rule 205-3 under the Advisers Act?: {this.state.lpObj.areYouQualifiedClient}</span>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedClient}>
+                                <span className="col2">Are you a “qualified client” within the meaning of Rule 205-3 under the Advisers Act?: Yes</span>
+                            </Col>
+                            <Col md={7} sm={7} xs={6} hidden={!this.state.lpObj.areYouQualifiedClient}>
+                                <span className="col2">Are you a “qualified client” within the meaning of Rule 205-3 under the Advisers Act?: No</span>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
                                 <span className="col4"><Link to={"/lp/qualifiedPurchaser/"+this.state.lpObj.id}>Change</Link></span>
@@ -169,10 +235,12 @@ class reviewComponent extends Component {
                             </Col>
                             <Col md={7} sm={7} xs={6}>
                                 <div className="col2">Investor Type:  {this.state.lpObj.investorType}</div>
-                                <div className="col2">Investor Sub Type: {this.state.lpObj.investorSubType}</div>
+                                <div className="col2" hidden={this.state.investorSubTypeName === ''}>Investor Sub Type: {this.state.investorSubTypeName}</div>
+                                <div className="col2" hidden={this.state.lpObj.otherInvestorSubType === null}>Investor Sub Type: Other Entity</div>
+                                <div className="col2" hidden={this.state.lpObj.otherInvestorSubType === null}>Enter the Entity Type: {this.state.lpObj.otherInvestorSubType}</div>
                                 <div className="col2">Email Address: {this.state.lpObj.email}</div>
                                 <div className="col2">Entity’s Name: {this.state.lpObj.entityName}</div>
-                                <div className="col2">In what jurisdiction is the Entity legally registered?: {this.state.lpObj.jurisdictionEntityLegallyRegistered}</div>
+                                <div className="col2">In what jurisdiction is the Entity legally registered?: {this.state.jurisdictionEntityLegallyRegisteredName}</div>
                                 <div className="col2" hidden={this.state.lpObj.isEntityTaxExemptForUSFederalIncomeTax !== true}>Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?: Yes</div>
                                 <div className="col2" hidden={this.state.lpObj.isEntityTaxExemptForUSFederalIncomeTax !== false}>Is the Entity Tax Exempt for U.S. Federal Income Tax Purposes?: No</div>
                                 <div className="col2" hidden={this.state.lpObj.isEntityTaxExemptForUSFederalIncomeTax !== true || this.state.lpObj.isEntityTaxExemptForUSFederalIncomeTax !== true}>Is the Entity a U.S. 501(c)(3)?: Yes</div>
@@ -186,13 +254,13 @@ class reviewComponent extends Component {
                                 <div className="col2">Phone Number: {this.state.lpObj.mailingAddressPhoneNumber}</div>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
-                                <span className="col4"><Link to={"personaldetails"}>Change</Link></span>
+                                <span className="col4"><Link to={"/lp/personaldetails/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
                         <Row className="step6-row" >
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
-                                <span className="col1">Accredited Invesestor</span>
+                                <span className="col1">Accredited Investor</span>
                             </Col>
                             <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouAccreditedInvestor !== true}>
                                 <span className="col2"> Is the Entity an “accredited investor” within the meaning of Rule 501 under the Securities Act?: Yes</span>
@@ -201,7 +269,7 @@ class reviewComponent extends Component {
                                 <span className="col2"> Is the Entity an “accredited investor” within the meaning of Rule 501 under the Securities Act?: No</span>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
-                                <span className="col4"><Link to={"AccreditedInvestor"}>Change</Link></span>
+                                <span className="col4"><Link to={"/lp/AccreditedInvestor/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
@@ -220,14 +288,14 @@ class reviewComponent extends Component {
                             </Col>
                         </Row>
 
-                        <Row className="step6-row" hidden={this.state.lpObj.areYouQualifiedPurchaser === 'No'}>
+                        <Row className="step6-row" hidden={this.state.lpObj.areYouQualifiedPurchaser}>
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
                                 <span className="col1">Qualified Client</span>
                             </Col>
-                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedPurchaser !== true}>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedClient !== true}>
                                 <span className="col2">Is your Entity considered a “qualified client” within the meaning of Rule 205-3 under the Advisers Act?: Yes</span>
                             </Col>
-                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedPurchaser !== false}>
+                            <Col md={7} sm={7} xs={6} hidden={this.state.lpObj.areYouQualifiedClient !== false}>
                                 <span className="col2">Is your Entity considered a “qualified client” within the meaning of Rule 205-3 under the Advisers Act?: No</span>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
@@ -246,7 +314,7 @@ class reviewComponent extends Component {
                                 <div className="col2" hidden={this.state.lpObj.companiesAct !== '4'}>Please respond in one of the ways below regarding whether the Entity is an  “investment company” pursuant to the Companies Act.*: The Entity is an “investment company” pursuant to the Companies Act, not relying on any exemption from treatment as such.</div>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
-                                <span className="col4"><Link to={"companiesAct"}>Change</Link></span>
+                                <span className="col4"><Link to={"/lp/companiesAct/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
@@ -261,13 +329,13 @@ class reviewComponent extends Component {
                                 <div className="col2" hidden={this.state.lpObj.existingOrProspectiveInvestorsOfTheFund !== true}>Existing or prospective investors: {this.state.lpObj.numberOfexistingOrProspectives}</div>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
-                                <span className="col4"><Link to={"equityOwners"}>Change</Link></span>
+                                <span className="col4"><Link to={"/lp/equityOwners/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
                         <Row className="step6-row" >
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
-                                <span className="col1">Entity proposing</span>
+                                <span className="col1">Look-Through Issues</span>
                             </Col>
                             <Col md={7} sm={7} xs={6}>
                                 <div className="col2" hidden={this.state.lpObj.entityProposingAcquiringInvestment !== true}>The Entity was not organized for the purpose of acquiring the investment: True</div>
@@ -280,25 +348,42 @@ class reviewComponent extends Component {
                                 <div className="col2" hidden={this.state.lpObj.partnershipWillNotConstituteMoreThanFortyPercent !== false}>The Entity’s investment in the Partnership will not constitute more than forty percent (40%) of the Entity’s assets (including for this purpose any committed capital for an Entity that is an investment fund): False</div>
                                 <div className="col2" hidden={this.state.lpObj.beneficialInvestmentMadeByTheEntity !== true}>The governing documents of the Entity require that each beneficial owner of the Entity, including, but not limited to, shareholders, partners and beneficiaries, participate through such beneficial owner’s interest in the Entity in all of the Entity’s investments and that the profits and losses from each such investment are shared among such beneficial owners in the same proportions as all other investments of the Entity. No such beneficial owner may vary such beneficial owner’s share of the profits and losses or the amount of such beneficial owner’s contribution for any investment made by the Entity: True</div>
                                 <div className="col2" hidden={this.state.lpObj.beneficialInvestmentMadeByTheEntity !== false}>The governing documents of the Entity require that each beneficial owner of the Entity, including, but not limited to, shareholders, partners and beneficiaries, participate through such beneficial owner’s interest in the Entity in all of the Entity’s investments and that the profits and losses from each such investment are shared among such beneficial owners in the same proportions as all other investments of the Entity. No such beneficial owner may vary such beneficial owner’s share of the profits and losses or the amount of such beneficial owner’s contribution for any investment made by the Entity: False</div>
+                                
                             </Col>
                             <Col md={2} sm={2} xs={6}>
-                                <span className="col4"><Link to={"entityProposing"}>Change</Link></span>
+                                <span className="col4"><Link to={"/lp/entityProposing/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
                         <Row className="step6-row" >
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
-                                <span className="col1">Erisa</span>
+                                <span className="col1">ERISA</span>
                             </Col>
                             <Col md={7} sm={7} xs={6}>
-                                <div className="col2">The Trust is an “employee benefit plan,” as defined in Section 3(3) of ERISA, that is subject to the provisions of Part 4 of Title I of ERISA:</div>
-                                <div className="col2">The Trust is a “plan,” as defined in Section 4975(e)(1) of the Code, that is subject to Section 4975 of the Code (including, by way of example only, an individual retirement account):</div>
-                                <div className="col2">The Trust is an entity that is deemed to be a “benefit plan investor” under the Plan Asset Regulation, as amended and as modified by Section 3(42) of ERISA, because its underlying assets include “plan assets” by reason of a plan’s investment in the entity (including, by way of example only, a partnership or other entity: (A) in which twenty-five percent (25%) or more of each class of equity interests is owned by one or more “employee benefit plans” or “plans” described above or by one or more other entities described in this paragraph, applying for this purpose the proportional ownership rule set forth in the final sentence of Section 3(42) of ERISA, and (B) that does not qualify as a “venture capital operating company” or “real estate operating company” under the Plan Asset Regulation):</div>
-                                <div className="col2">The person executing the agreement:</div>
-                                <div className="col2">The person executing the agreement:</div>
+                                <div className="col2" hidden={this.state.lpObj.employeeBenefitPlan !== true}>The Entity is an “employee benefit plan,” as defined in Section 3(3) of ERISA, that is subject to the provisions of Part 4 of Title I of ERISA: True</div>
+                                <div className="col2" hidden={this.state.lpObj.employeeBenefitPlan !== false}>The Entity is an “employee benefit plan,” as defined in Section 3(3) of ERISA, that is subject to the provisions of Part 4 of Title I of ERISA: False</div><br/>
+                                <div className="col2" hidden={this.state.lpObj.planAsDefinedInSection4975e1 !== true}>The Entity is a “plan,” as defined in Section 4975(e)(1) of the Code, that is subject to Section 4975 of the Code (including, by way of example only, an individual retirement account): True</div>
+                                <div className="col2" hidden={this.state.lpObj.planAsDefinedInSection4975e1 !== false}>The Entity is a “plan,” as defined in Section 4975(e)(1) of the Code, that is subject to Section 4975 of the Code (including, by way of example only, an individual retirement account): False</div><br/>
+                                <div className="col2" hidden={this.state.lpObj.benefitPlanInvestor !== true}>The Investor is an entity that is deemed to be a “benefit plan investor” under the Plan Asset Regulation, as amended and as modified by Section 3(42) of ERISA, because its underlying assets include “plan assets” by reason of a plan’s investment in the entity (including, by way of example only, a partnership or other entity: (A) in which twenty-five percent (25%) or more of each class of equity interests is owned by one or more “employee benefit plans” or “plans” described above or by one or more other entities described in this paragraph, applying for this purpose the proportional ownership rule set forth in the final sentence of Section 3(42) of ERISA, and (B) that does not qualify as a “venture capital operating company” or “real estate operating company” under the Plan Asset Regulation): True</div>
+                                <div className="col2" hidden={this.state.lpObj.benefitPlanInvestor !== false}>The Investor is an entity that is deemed to be a “benefit plan investor” under the Plan Asset Regulation, as amended and as modified by Section 3(42) of ERISA, because its underlying assets include “plan assets” by reason of a plan’s investment in the entity (including, by way of example only, a partnership or other entity: (A) in which twenty-five percent (25%) or more of each class of equity interests is owned by one or more “employee benefit plans” or “plans” described above or by one or more other entities described in this paragraph, applying for this purpose the proportional ownership rule set forth in the final sentence of Section 3(42) of ERISA, and (B) that does not qualify as a “venture capital operating company” or “real estate operating company” under the Plan Asset Regulation): False</div><br/>
+                                <div className="col2" hidden={this.state.lpObj.benefitPlanInvestor !== true}>Please input the total value of equity interests in the Trust is held by “benefit plan investors”: {this.state.lpObj.totalValueOfEquityInterests}</div><br/>
+                                <div className="col2" hidden={this.state.lpObj.fiduciaryEntityIvestment === false && this.state.lpObj.entityDecisionToInvestInFund === false}>Please confirm the following representations to continue:</div>
+                                <div className="col2" hidden={this.state.lpObj.fiduciaryEntityIvestment !== true}>The person executing this agreement is a fiduciary of the Entity making the investment.</div>
+                                <div className="col2" hidden={this.state.lpObj.entityDecisionToInvestInFund !== true}>The Entity’s decision to invest in the fund was made by the person executing this agreement and such person (i) is a fiduciary under ERISA or Section 4975 of the Code, or both, with respect to the Entity’s decision to invest in the fund; (ii) is responsible for exercising independent judgment in evaluating the investment in the fund; (iii) is independent of the fund, its general partner or similar manager and any and all affiliates of the preceding; and (iv) is capable of evaluating investment risks independently, both in general and with regard to particular transactions and investment strategies, including the decision on behalf of the Entity to invest in the fund.</div><br/>
+                                <div className="col2" hidden={this.state.lpObj.aggrement1 ===null}>The person executing this agreement is one of the following:</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement1 !==1}>An independent fiduciary that holds, or has under management or control, total assets of at least $50,000,000;</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement1 !==2}>A bank as defined in section 202 of the Advisers Act or similar institution that is regulated and supervised and subject to periodic examination by a State or Federal agency;</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement1 !==3}>An insurance carrier which is qualified under the laws of more than one state to perform the services of managing, acquiring or disposing of assets of a plan;</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement1 !==4}>An investment adviser that is registered under the Advisers Act or, if not registered under the Advisers Act by reason of paragraph (1) of section 203A of such Act, that is registered as an investment adviser under the laws of the State in which it maintains its principal office and place of business; or</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement1 !==5}>A broker-dealer that is registered under the Exchange Act.</div><br/>
+                                <div className="col2" hidden={this.state.lpObj.aggrement2 ===null}>The person executing this agreement is one of the following:</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement2 !==1}>A bank as defined in section 202 of the Advisers Act or similar institution that is regulated and supervised and subject to periodic examination by a State or Federal agency;</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement2 !==2}>An insurance carrier which is qualified under the laws of more than one state to perform the services of managing, acquiring or disposing of assets of a plan;</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement2 !==3}>An investment adviser that is registered under the Advisers Act or, if not registered under the Advisers Act by reason of paragraph (1) of section 203A of such Act, that is registered as an investment adviser under the laws of the State in which it maintains its principal office and place of business; or</div>
+                                <div className="col2" hidden={this.state.lpObj.aggrement2 !==4}>A broker-dealer that is registered under the Exchange Act.</div>
                             </Col>
                             <Col md={2} sm={2} xs={6}>
-                                <span className="col4"><Link to={"erisa"}>Change</Link></span>
+                                <span className="col4"><Link to={"/lp/erisa/"+this.state.lpObj.id}>Change</Link></span>
                             </Col>
                         </Row>
 
@@ -345,7 +430,7 @@ class reviewComponent extends Component {
 
                         <Row className="step6-row" >
                             <Col md={3} sm={3} xs={6} className="step-col-pad">
-                                <span className="col1">Accredited Invesestor</span>
+                                <span className="col1">Accredited Investor</span>
                             </Col>
                             <Col md={7} sm={7} xs={6}>
                                 <span className="col2">Is the Trust an “accredited investor” within the meaning of Rule 501 under the Securities Act?:</span>
@@ -495,7 +580,7 @@ class reviewComponent extends Component {
 
                     <div className="staticTextBelowTable">
                         <div className="staticTextBelowText">
-                            Once everything is confirmed correct, click the “Sign Fund” button in the sidebar.
+                            Once everything is confirmed correct, click the “Partnership Agreement” button in the sidebar.
                         </div>
                     </div>
 

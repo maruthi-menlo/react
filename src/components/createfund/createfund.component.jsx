@@ -20,7 +20,7 @@ import successImage from '../../images/success-small.png';
 import Loader from '../../widgets/loader/loader.component';
 import { Constants } from '../../constants/constants';
 import { PubSub } from 'pubsub-js';
-
+import vanillaLogo from '../../images/Vanilla.png';
 
 class CreateFundComponent extends Component {
 
@@ -266,12 +266,12 @@ class CreateFundComponent extends Component {
                         <nav className="navbar navbar-custom">
                         <div className="navbar-header">
                         <div className="sidenav">
-                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; FSNET LOGO</h1>
+                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
                         </div>
                         </div>
                         <div className="text-center navbar-collapse-custom" id="navbar-collapse" hidden={!this.state.showSideNav}>
                         <div className="sidenav">
-                        <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
+                        <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
                         <h2 className="text-left"><img src={homeImage} alt="home_image" className="" />&nbsp; <Link to="/dashboard">Dashboard</Link></h2>
                         <div className="active-item text-left"><label className="fund-left-pic-label"><img src={this.state.fundImage} alt="fund_image" /></label>&nbsp;<div className="left-nav-fund-name text-left">{this.state.fundName}</div> <span className="fsbadge">{this.state.currentPageNumber}/{this.state.totalPageCount}</span></div>
                         {
@@ -334,7 +334,7 @@ class CreateFundComponent extends Component {
                                             <div className="dpDelImg">
                                                 {
                                                     record['profilePic'] ?
-                                                        <img src={record['profilePic']} alt="img" className="user-image" />
+                                                        <img src={record['profilePic']['url']} alt="img" className="user-image" />
                                                         : <img src={userDefaultImage} alt="img" className="user-image" />
                                                 }
                                             </div>
@@ -362,7 +362,7 @@ class CreateFundComponent extends Component {
                                             <div className="dpDelImg">
                                                 {
                                                     record['profilePic'] ?
-                                                        <img src={record['profilePic']} alt="img" className="user-image" />
+                                                        <img src={record['profilePic']['url']} alt="img" className="user-image" />
                                                         : <img src={userDefaultImage} alt="img" className="user-image" />
                                                 }
                                             </div>

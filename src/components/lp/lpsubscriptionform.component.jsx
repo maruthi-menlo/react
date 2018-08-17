@@ -13,7 +13,8 @@ import signFundImg from '../../images/edit-grey.svg';
 import copyImage from '../../images/copy_img.svg';
 import handShakeImage from '../../images/handshake.svg';
 import { Route, Link } from "react-router-dom";
-import userDefaultImage from '../../images/fund-default.png';
+import fundDefaultImage from '../../images/fund-default.png';
+import userDefaultImage from '../../images/default_user.png';
 import { PubSub } from 'pubsub-js';
 import InvestorInformationComponent from '../lp/Investor-Information/investorinformation.component';
 import LlcFormComponent from '../lp/llc/llc.component';
@@ -29,8 +30,9 @@ import reviewComponent from '../lp/Review/review.component';
 import LpModalComponent from '../lp/lpmodals/lpmodals.component';
 import { FsnetUtil } from '../../util/util';
 import { reactLocalStorage } from 'reactjs-localstorage';
+import vanillaLogo from '../../images/Vanilla.png';
 
-var investor = {};
+var investor = {}, addLpDelegate={}, removeDelegate={};
 class LpSubscriptionFormComponent extends Component {
 
     constructor(props) {
@@ -42,7 +44,9 @@ class LpSubscriptionFormComponent extends Component {
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.hamburgerClick = this.hamburgerClick.bind(this);
+        this.deleteLpDelegate = this.deleteLpDelegate.bind(this);
         this.handleLpShow = this.handleLpShow.bind(this);
+        this.openPatnershipDocument = this.openPatnershipDocument.bind(this);
         this.state = {
             showModal: false,
             show: false,
@@ -51,7 +55,7 @@ class LpSubscriptionFormComponent extends Component {
             lpsubscriptionObj: {},
             currentPage: null,
             currentPageCount:1,
-            totalPageCount:3,
+            totalPageCount:7,
             currentInvestorInfoPageNumber: 1,
             investorInfoValid: false,
             qualifiedPurchaserValid: false,
@@ -64,11 +68,13 @@ class LpSubscriptionFormComponent extends Component {
             pagesCompleted:0,
             status: 'Open',
             currentFundImage : FundImage,
+            lpDelegatesList:[]
         }
+        
         //Get the data from other steps
         investor = PubSub.subscribe('investorData', (msg, data) => {
             this.setState({
-                investorType: 'LLC',
+                investorType: data.investorType? data.investorType:'LLC',
                 lpsubscriptionObj: data,
                 currentInvestorInfoPageNumber: data.currentInvestorInfoPageNumber,
                 currentPage: data.currentPage,
@@ -85,11 +91,28 @@ class LpSubscriptionFormComponent extends Component {
                 }
             })
         });
+
+        //Add LP Delegate to the list when we add from modal
+        addLpDelegate = PubSub.subscribe('lpDelegate', (msg, data) => {
+            let delegatesList = this.state.lpDelegatesList;
+            delegatesList.push(data);
+            this.setState({
+                lpDelegatesList: delegatesList
+            })
+        });
+
+        //Remove LP Delegate to the list when we add from modal
+        removeDelegate = PubSub.subscribe('removeLpDelegate', (msg, data) => {
+            this.lpDelegates(this.state.lpsubscriptionObj.id);
+        });
+        
     }
 
     //Unsuscribe the pubsub
     componentWillUnmount() {
         PubSub.unsubscribe(investor);
+        PubSub.unsubscribe(addLpDelegate);
+        PubSub.unsubscribe(removeDelegate);
     }
 
     //Get current page
@@ -111,6 +134,7 @@ class LpSubscriptionFormComponent extends Component {
             let id = this.FsnetUtil.getLpFundId();
             this.getPage();
             this.getSubscriptionDetails(id);
+            this.lpDelegates(id);
         }
     }
 
@@ -124,7 +148,7 @@ class LpSubscriptionFormComponent extends Component {
                 if (result.data) {
                     this.setState({
                         lpsubscriptionObj: result.data.data,
-                        investorType: 'LLC',
+                        investorType: result.data.data.investorType? result.data.data.investorType:'LLC',
                         legalEntity: result.data.data.fund.legalEntity,
                         status: result.data.data.subscriptionStatus.name,
                         currentFundImage: result.data.data.fund.fundImage? result.data.data.fund.fundImage.url: FundImage
@@ -163,7 +187,7 @@ class LpSubscriptionFormComponent extends Component {
 
     //Open the modal
     handleLpShow() {
-        PubSub.publish('openModal',true);
+        PubSub.publish('openModal',this.state.lpsubscriptionObj);
     }
 
     // ProgressLoader : close progress loader
@@ -202,7 +226,6 @@ class LpSubscriptionFormComponent extends Component {
         if(valid){
             this.setState({
                 investorInfoValid: true,
-                pagesCompleted:1
             })
         } else {
             this.setState({
@@ -216,11 +239,14 @@ class LpSubscriptionFormComponent extends Component {
         if((this.state.lpsubscriptionObj.areYouQualifiedPurchaser === false && this.state.lpsubscriptionObj.areYouQualifiedClient !== null) || (this.state.lpsubscriptionObj.areYouQualifiedPurchaser === true)) {
             this.setState({
                 qualifiedPurchaserValid: true,
-                pagesCompleted:3
+            },()=>{
+                this.stepsCompleted();
             })
         } else {
             this.setState({
                 qualifiedPurchaserValid: false
+            },()=>{
+                this.stepsCompleted();
             })
         }
     }
@@ -230,7 +256,6 @@ class LpSubscriptionFormComponent extends Component {
         if(this.state.lpsubscriptionObj.areYouAccreditedInvestor!== null && this.state.lpsubscriptionObj.areYouAccreditedInvestor!== undefined) {
             this.setState({
                 accreditedInvestorValid: true,
-                pagesCompleted:2
             })
         } else {
             this.setState({
@@ -244,7 +269,6 @@ class LpSubscriptionFormComponent extends Component {
         if(this.state.lpsubscriptionObj.companiesAct!== null && this.state.lpsubscriptionObj.companiesAct!== undefined) {
             this.setState({
                 companiesActValid: true,
-                pagesCompleted:4
             })
         } else {
             this.setState({
@@ -258,7 +282,6 @@ class LpSubscriptionFormComponent extends Component {
         if(this.state.lpsubscriptionObj.numberOfDirectEquityOwners && this.state.lpsubscriptionObj.existingOrProspectiveInvestorsOfTheFund!== null) {
             this.setState({
                 equityOwnersValid: true,
-                pagesCompleted:5
             })
         } else {
             this.setState({
@@ -267,12 +290,11 @@ class LpSubscriptionFormComponent extends Component {
         }
     }
 
-    //Check entity proposing page is valid
+    //Check Look-Through Issues page is valid
     enitityProposingPageValid() {
         if((this.state.lpsubscriptionObj.entityProposingAcquiringInvestment!== null && this.state.lpsubscriptionObj.entityProposingAcquiringInvestment!== undefined) && this.state.lpsubscriptionObj.anyOtherInvestorInTheFund!== null && this.state.lpsubscriptionObj.entityHasMadeInvestmentsPriorToThedate!== null && this.state.lpsubscriptionObj.partnershipWillNotConstituteMoreThanFortyPercent!== null && this.state.lpsubscriptionObj.beneficialInvestmentMadeByTheEntity!== null) {
             this.setState({
                 entityProposingValid: true,
-                pagesCompleted:6
             })
         } else {
             this.setState({
@@ -283,15 +305,37 @@ class LpSubscriptionFormComponent extends Component {
 
     //Check Erisa page is valid
     erisaPageValid() {
-        if((this.state.lpsubscriptionObj.employeeBenefitPlan!==null && this.state.lpsubscriptionObj.employeeBenefitPlan!==undefined) && this.state.lpsubscriptionObj.planAsDefinedInSection4975e1!==null && this.state.lpsubscriptionObj.benefitPlanInvestor!==null ) {
+        if((this.state.lpsubscriptionObj.employeeBenefitPlan!==null && this.state.lpsubscriptionObj.employeeBenefitPlan!==undefined) && (this.state.lpsubscriptionObj.planAsDefinedInSection4975e1!==null && this.state.lpsubscriptionObj.planAsDefinedInSection4975e1!==undefined) && (this.state.lpsubscriptionObj.benefitPlanInvestor!==null && this.state.lpsubscriptionObj.benefitPlanInvestor!==undefined) ) {
             this.setState({
                 erisaValid: true,
-                pagesCompleted:7
+            },()=>{
+                this.stepsCompleted();
             })
         } else {
             this.setState({
                 erisaValid: false
+            },()=>{
+                this.stepsCompleted();
             })
+        }
+    }
+
+    //Check how many pages completed
+    stepsCompleted() {
+        let pages = [];
+        if(this.state.investorType === 'Individual') {
+            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid'];
+        } else if(this.state.investorType === 'LLC') {
+            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid', 'companiesActValid', 'equityOwnersValid', 'entityProposingValid', 'erisaValid'];
+        }
+        let idx = 0;
+        for(let index of pages){
+            if(this.state[index] === true) {
+                idx = idx+1
+                this.setState({
+                    pagesCompleted: idx
+                })
+            };
         }
     }
 
@@ -312,7 +356,6 @@ class LpSubscriptionFormComponent extends Component {
         this.companiesActPageValid();
         this.equityOwnersPageValid();
         this.enitityProposingPageValid();
-        this.erisaPageValid();
     }
 
     //Redirect to login
@@ -323,6 +366,44 @@ class LpSubscriptionFormComponent extends Component {
         this.props.history.push('/login');
     }
 
+
+    //Get LP Delegates
+    lpDelegates(id) {
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+        if (id) {
+            this.open();
+            this.Fsnethttp.getLpDelegates(id, headers).then(result => {
+                this.close();
+                if (result.data) {
+                    this.setState({
+                        lpDelegatesList: result.data.data
+                    })
+                }
+            })
+            .catch(error => {
+                this.close();
+                if(error.response && error.response.status === 401) {
+                    this.redirectToLogin();
+                } else {
+                    this.setState({
+                        lpDelegatesList: []
+                    })
+                }
+            });
+        }
+    }
+
+    //Delete LP Delegate
+    deleteLpDelegate(e, id) {
+        PubSub.publish('openLpDelModal', { data: this.state.lpsubscriptionObj, delegateId: id });
+    }
+
+    openPatnershipDocument() {
+        if(this.state.lpsubscriptionObj.fund.partnershipDocument) {
+            window.open(this.state.lpsubscriptionObj.fund.partnershipDocument.url, '_blank', 'width = 1000px, height = 600px')
+        }
+    }
+
     render() {
         const { match } = this.props;
         return (
@@ -330,12 +411,12 @@ class LpSubscriptionFormComponent extends Component {
                 <nav className="navbar navbar-custom">
                     <div className="navbar-header">
                         <div className="sidenav">
-                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; FSNET LOGO</h1>
+                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
                         </div>
                     </div>
                     <div className="text-center navbar-collapse-custom" id="navbar-collapse" hidden={!this.state.showSideNav}>
                         <div className="sidenav">
-                            <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; FSNET LOGO</h1>
+                            <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
                             <h2 className="text-left lpDashAlign"><img src={homeImage} alt="home_image" className="" />&nbsp; <Link to="/dashboard" className="dashboardTxtAlign">Dashboard</Link></h2>
                             <div className="active-item text-left"><label className="fund-left-pic-label"><img src={copyImage} alt="image" /></label>&nbsp;<div className="left-nav-fund-name text-left subAgrmnt">Subscription Agreement</div> <span className="fsbadge fsbadgeAlign">{this.state.currentPageCount}/{this.state.totalPageCount}</span></div>
                             {
@@ -356,7 +437,7 @@ class LpSubscriptionFormComponent extends Component {
                                     <li hidden={this.state.investorType !== 'LLC'}>
                                         <Link to={"/lp/equityOwners/"+this.state.lpsubscriptionObj.id}>Equity owners<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.equityOwnersValid === false}/></Link></li>
                                     <li hidden={this.state.investorType !== 'LLC'}>
-                                        <Link to={"/lp/entityProposing/"+this.state.lpsubscriptionObj.id}>Entity proposing<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.entityProposingValid === false}/></Link>
+                                        <Link to={"/lp/entityProposing/"+this.state.lpsubscriptionObj.id}>Look-Through Issues<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.entityProposingValid === false}/></Link>
                                     </li>
                                     <li hidden={this.state.investorType === 'Individual'}>
                                         <Link to={"/lp/erisa/"+this.state.lpsubscriptionObj.id}>ERISA<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.erisaValid === false}/></Link>
@@ -371,17 +452,35 @@ class LpSubscriptionFormComponent extends Component {
                                     </li>
                                 </ul>
                             }
-                            <div className="text-left parnershipAgrementStyle"><label className=""><img src={handShakeImage} alt="image" className="handShakeImageStyle" /></label>&nbsp;<div className="left-nav-fund-name text-left agrementTxtStyle"><span className="agreementTxtAlign">Partnership Agreement</span>
+                            <div className="text-left parnershipAgrementStyle"><label className=""><img src={handShakeImage} alt="image" className="handShakeImageStyle" /></label>&nbsp;<div className="left-nav-fund-name text-left agrementTxtStyle"><span className="agreementTxtAlign" onClick={this.openPatnershipDocument}>Partnership Agreement</span>
                             {/* <span className="successImgAlign"><img src={successImage} alt="successImage" className="ptrSuccessImage margin-Left-5" /></span> */}
                             </div></div>                            
                             <div><div className="sign-box"><img src={signFundImg} alt="successImage" className="pencilAlign" />&nbsp;<span className="signFundAlign">Sign and Submit Documents</span></div></div>
                             <div className="section-head text-left"><span className="sectionHeadTxt lpAlign">LP Delegates</span><span className="btn-add pull-right" onClick={this.handleLpShow}>+</span></div>
                             <div className="section">
                                 <div className="gpDelDiv">
-                                    <div className="user">
-                                        <i className="fa fa-user fa-2x" aria-hidden="true"></i>
-                                        <p className="opacity75">You haven’t added any LP Delegates to this Fund yet</p>
-                                    </div>
+                                {this.state.lpDelegatesList.length > 0 ?
+                                this.state.lpDelegatesList.map((record, index) => {
+                                    return (
+                                        <div className="gpDelegateInfo" key={index}>
+                                            <div className="dpDelImg">
+                                                {
+                                                    record['profilePic'] ?
+                                                        <img src={record['profilePic']} alt="img" className="user-image" />
+                                                        : <img src={userDefaultImage} alt="img" className="user-image" />
+                                                }
+                                            </div>
+                                            <div className="dpDelName">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                            <div className="dpDelgDel"><i className="fa fa-minus" onClick={(e) => this.deleteLpDelegate(e, record['id'])}></i></div>
+                                        </div>
+                                    );
+                                })
+                                :
+                                <div className="user">
+                                    <i className="fa fa-user fa-2x" aria-hidden="true"></i>
+                                    <p className="opacity75">You haven’t added any LP Delegates to this Fund yet.</p>
+                                </div>
+                            }
                                 </div>
                             </div>
                         </div>
@@ -395,11 +494,12 @@ class LpSubscriptionFormComponent extends Component {
                             <Row className="">
                                 <Col lg={6} md={6} sm={6} xs={12} id="">
                                             {
-                                                this.state.lpsubscriptionObj['fund']?
+                                                this.state.lpsubscriptionObj['fund'] && this.state.lpsubscriptionObj['fund']['fundImage'] ?
                                                 <img src={this.state.lpsubscriptionObj['fund']['fundImage']['url']} alt="img" className="header-fund-image"/>: 
-                                                <img src={userDefaultImage} alt="fund_image" className="header-fund-image"/>
+                                                <img src={fundDefaultImage} alt="fund_image" className="header-fund-image"/>
                                             }
-                                    <span className="main-title">{this.state.legalEntity}</span><span className="statusTxtStyle">{this.state.status}</span>
+                                    <span className="main-title">{this.state.legalEntity}</span>
+                                    {/* <span className="statusTxtStyle">{this.state.status}</span> */}
                                 </Col>
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <HeaderComponent ></HeaderComponent>

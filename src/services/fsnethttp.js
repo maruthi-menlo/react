@@ -193,5 +193,23 @@ export class Fsnethttp{
         axios.defaults.headers.common['x-auth-token'] = headers.token;
         return axios.get(this.Constants.BASE_URL+url);
     }
+
+    //Invite Gp Delegates to the fund
+    addLpDelegate(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/lpDelegate/invite', obj);
+    }
+
+    //Get LP Delegates
+    getLpDelegates(id,headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'fund/lpDelegateList/'+id);
+    }
+
+    //Remove LP Delegate
+    removeLpDelegate(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/removeFundLpDeleate', obj);
+    }
     /************LP Subscription API Calls End****************/
 }

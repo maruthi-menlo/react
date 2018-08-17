@@ -22,7 +22,7 @@ class QualifiedClientComponent extends Component {
         this.proceedToBack = this.proceedToBack.bind(this);
         this.state = {
             showModal: false,
-            investorType: '',
+            investorType: 'LLC',
             investorObj: {},
             areYouQualifiedClient: null,
             qualifiedClientPageValid: false

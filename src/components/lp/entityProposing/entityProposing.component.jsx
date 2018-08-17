@@ -30,6 +30,7 @@ class entityProposingComponent extends Component {
             entityHasMadeInvestmentsPriorToThedate: '',
             partnershipWillNotConstituteMoreThanFortyPercent: '',
             beneficialInvestmentMadeByTheEntity: '',
+            entityProposingErrorMsz:''
         }
 
     }
@@ -53,7 +54,7 @@ class entityProposingComponent extends Component {
                     PubSub.publish('investorData',obj );
                     this.setState({
                         getInvestorObj: result.data.data,
-                        investorType: result.data.data.investorType,
+                        investorType: result.data.data.investorType?result.data.data.investorType:'LLC',
                         entityProposingAcquiringInvestment: result.data.data.entityProposingAcquiringInvestment,
                         anyOtherInvestorInTheFund: result.data.data.anyOtherInvestorInTheFund,
                         entityHasMadeInvestmentsPriorToThedate: result.data.data.entityHasMadeInvestmentsPriorToThedate,
@@ -138,7 +139,15 @@ class entityProposingComponent extends Component {
         })
         .catch(error => {
             this.close();
-            this.props.history.push('/lp/erisa/'+this.state.getInvestorObj.id);
+            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                this.setState({
+                    entityProposingErrorMsz: error.response.data.errors[0].msg,
+                });
+            } else {
+                this.setState({
+                    entityProposingErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                });
+            }
         });
         
     }
@@ -152,10 +161,10 @@ class entityProposingComponent extends Component {
             <div className="accreditedInvestor width100">
                 <div className="formGridDivMargins min-height-400">
                     {/* llc investor type block starts */}
-                    <div className="title">Entity Proposing (6/7)</div>
+                    <div className="title">Look-Through Issues</div>
                     <Row className="step1Form-row" hidden={this.state.investorType !== 'LLC'}>
                         <Col xs={12} md={12}>
-                            <label className="title">Please check the appropriate true or false response to the following statements regarding the Entity proposing to subscribe for an investment in the fund:</label>
+                            <label className="form-label width100">Please check the appropriate true or false response to the following statements regarding the Look-Through Issues to subscribe for an investment in the fund:</label>
                         </Col>
                         <Col xs={12} md={12}>
                             <label className="form-label width100">The Entity was not organized for the purpose of acquiring the investment.</label>
@@ -207,7 +216,7 @@ class entityProposingComponent extends Component {
                     {/* llc investor type block ends */}
                    
                 </div>
-
+                <div className="margin30 error">{this.state.entityProposingErrorMsz}</div>
                 <div className="footer-nav footerDivAlign">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className={"fa fa-chevron-right " + (!this.state.equityProposingPageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>

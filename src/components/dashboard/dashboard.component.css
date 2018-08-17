@@ -12,7 +12,6 @@
     height: 36px;
     font-family: 'OpenSans-Bold';
     font-size: 24px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -25,7 +24,6 @@
 .rejectedFunds {
     font-family: 'OpenSans-Bold';
     font-size: 24px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -43,7 +41,6 @@
     height: 17px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: 600;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
@@ -113,8 +110,7 @@
     width: 152px;
     min-height: auto;
     font-family: 'OpenSans-Bold';
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -148,7 +144,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -161,7 +156,6 @@
 }
 .invitedDivStyle {
     font-size: 12px;
-    font-weight: bold;
     position: relative;
     font-family: 'OpenSans-Bold';
     top: -16px;
@@ -197,7 +191,6 @@
     border: solid 1.4px #ff3a3a !important;
     font-family: 'OpenSans-Bold';
     font-size: 10px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6 !important;
@@ -266,7 +259,6 @@
     height: 16px;
     font-family: 'OpenSans-Bold';
     font-size: 10px;
-    font-weight: 600;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -286,7 +278,6 @@
     height: 16px;
     font-family: 'OpenSans-Bold';
     font-size: 10px;
-    font-weight: 600;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -311,7 +302,6 @@
     height: 24px;
     font-family: 'OpenSans-Bold';
     font-size: 16px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -322,7 +312,6 @@
     height: 24px;
     font-family: 'OpenSans-Bold';
     font-size: 16px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -333,7 +322,6 @@
     height: 24px;
     font-family: 'OpenSans-Bold';
     font-size: 16px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -345,7 +333,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -358,7 +345,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -371,7 +357,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -383,7 +368,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -395,7 +379,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -406,7 +389,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -487,7 +469,6 @@
     height: 16px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: 600;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -511,7 +492,6 @@
     height: 17px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: 600;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
@@ -536,7 +516,6 @@
     border: solid 1px #39bcd5 !important;
     font-family: 'OpenSans-Bold';
     font-size: 16px !important;
-    font-weight: bold !important;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5 !important;
@@ -681,7 +660,6 @@
     text-decoration: none;
     font-family: 'OpenSans-Bold';
     font-size: 16px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -720,7 +698,6 @@
     background-color: rgba(245, 245, 245, 0.3);
     font-family: 'Lato';
     font-size: 14px !important;
-    font-weight: 600 !important;
     font-family: 'OpenSans-Bold';
     font-style: normal;
     font-stretch: normal;
@@ -741,7 +718,6 @@
     background-color: #00bcd4;
     font-family: 'Lato';
     font-size: 14px !important;
-    font-weight: 600 !important;
     font-family: 'OpenSans-Bold';
     font-style: normal;
     font-stretch: normal;
@@ -827,7 +803,6 @@
     height: 20px;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -1022,7 +997,6 @@
  .fundContribution .contributionLabel{
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -1033,7 +1007,6 @@
  .fundContribution .contributionAmount{
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -1058,7 +1031,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -1083,7 +1055,7 @@
     text-align: left;
     width: 120px;
 }
-.fund-user-details span{
+.fund-user-details .gp-details{
     font-family: 'Open Sans';
     font-weight: normal;
     font-style: normal;
@@ -1092,7 +1064,21 @@
     letter-spacing: normal;
     text-align: right;
     color: #2f4858;
-    width: 148px;
+    width: 252px;
+}
+.gp-details div {
+    width: 120px;
+    display: inline-block;
+    word-wrap: break-word;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: right;
+    color: #2f4858;
 }
 
 #lpMainDashboard .fundImage{
@@ -1110,7 +1096,6 @@
     height: 15px; */
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;

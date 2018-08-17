@@ -3,7 +3,7 @@ export class Constants{
     // Environments settings
 
     // Develop URL
-    // BASE_URL = `http://192.168.1.231:3000/api/v1/`;
+    // BASE_URL = `http://192.168.1.231:8000/api/v1/`;
 
     // Stage URL
     // BASE_URL = `http://137.116.56.150:3000/api/v1/`;

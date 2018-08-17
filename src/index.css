@@ -28,6 +28,9 @@ body {
 .marginBottom2{
   margin-bottom: 2px;
 }
+.marginRight10{
+  margin-right: 10px;
+}
 .marginBotNone {
   margin-bottom: 0px !important;
 }
@@ -135,6 +138,12 @@ a:hover {
 .marginleft25 {
   margin-left: 25px;
 }
+.marginLeft30 {
+  margin-left: 30px;
+}
+.margin30 {
+  margin: 30px;
+}
 
 .marginTopminus10 {
   margin-top: -10px !important;
@@ -218,7 +227,7 @@ input:checked ~ .checkmark:after {
 
 /***********Radio button STYLES START******************/
 .radio-inline {
-  width: 150px;
+  min-width: 100px;
   margin-bottom: 10px !important;
 }
 
@@ -347,7 +356,6 @@ select option {
   height: auto;
   font-family: 'OpenSans-Bold';
   font-size: 20px;
-  font-weight: bold;
   font-style: normal;
   font-stretch: normal;
   line-height: 1.6;
@@ -360,7 +368,6 @@ select option {
   opacity: 0.5;
   font-family: 'OpenSans-Bold';
   font-size: 14px;
-  font-weight: bold;
   font-style: normal;
   font-stretch: normal;
   line-height: 1.43;
@@ -460,7 +467,6 @@ select option {
   margin-bottom: 44px;
 }
 .bold {
-  font-weight: bold;
   font-family: 'OpenSans-Bold';
 }
 .cursor-pointer {
@@ -554,4 +560,45 @@ button.close {
 }
 .minHeight150 {
   min-height: 150px;
+}
+.top150 .modal-content{
+  top: 150px !important;
+}
+.TtModalHeaderAlign h1 {
+  font-family: 'OpenSans-Bold';
+  font-size: 20px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.TtModalBody  div {
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.block {
+  display: block;
+}
+.vanilla-note {
+  font-family: 'OpenSans-Bold';
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  color: red;
+  font-size: 12px;
+}
+.vanilla-logo {
+  width: 100px;
+  margin-top: -15px;
+  cursor: pointer;
+}
+.marginTopMinus30 {
+  margin-top: -30px !important;
 }

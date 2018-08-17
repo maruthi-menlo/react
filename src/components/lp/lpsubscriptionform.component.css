@@ -14,6 +14,7 @@
 }
 .lpSubFormStyle .sidenav .left-nav-fund-name {
     padding-left: 0px !important;
+    cursor: pointer;
 }
 .lpSubFormStyle .sidenav ul li a {
     padding: 10px 0px 10px 2px !important;
@@ -32,7 +33,6 @@
     height: 23px;
     opacity: 0.5;
     font-size: 14px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
@@ -48,7 +48,6 @@
     height: 16px;
     font-family: 'OpenSans-Bold';
     font-size: 12px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.33;
@@ -109,9 +108,8 @@
 .alert-label {
     width: 86px;
     height: 32px;
-    font-family: 'OpenSans Bold';
+    font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -127,7 +125,6 @@
     opacity: 0.5;
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.6;
@@ -157,7 +154,6 @@
 .mainTextBlock {
     font-family: 'OpenSans-Bold';
     font-size: 20px;
-    font-weight: bold;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -183,6 +179,7 @@
 .selectFormControl  {
     height: 40px !important;
     margin-top: 8px;
+    border: solid 1px #526173 !important;
 }
 .height38 {
     height: 38px;
@@ -231,6 +228,13 @@
 }
 
 /* confirmation modal css */
+.tooltipDialog {
+    display: block; 
+    max-width: 800px !important;
+    width: 800px !important;
+}
+
+/* confirmation modal css */
 #confirmInvestorModal .confirmInvestorDialog {
     display: block; 
     max-width: 500px !important;
@@ -252,11 +256,19 @@
 #confirmInvestorModal .modal-header {
     border-bottom: none;
 }
+#confirmInvestorModal .modal-header h1 {
+    position: absolute;
+    padding-left: 15px;
+}
+#confirmInvestorModal .modal-content {
+    position: absolute;
+}
 #confirmInvestorModal button.close {
     margin-top: 10px !important;
-    position: relative;
-    top: 20px;
     z-index: 99999;
+    position: absolute;
+    right: 20px;
+    top: -15px;
 }
 #confirmInvestorModal .subtext {
     /* height: 120px;
@@ -265,7 +277,7 @@
     text-align: center;
 }
 #confirmInvestorModal .modal-body {
-    margin-left: 14px;
+    margin-left: 15px;
 }
 
 /* Review form css for subscriptions*/
@@ -300,7 +312,7 @@
     margin-left: 10px;
     background-color: #03a9f4;
     padding: 5px;
-    border-radius: 4px;
+    border-radius: 2px;
     font-family: 'Open Sans';
     font-size: 10px;
     font-weight: normal;
@@ -380,23 +392,28 @@
 .lpSubFormStyle .step1Form-row span:not(.error), .lpSubFormStyle .step1Form-row span:not(.error):hover {
     color: #2f4858;
     text-decoration: underline;
+    cursor: pointer;
 }
 .tooltip {
-    width: 600px !important;
+    width: 300px !important;
 }
 .tooltip-inner {
-    max-width: 600px !important;
+    max-width: 300px !important;
     background-color: #39bcd5 !important
 }
 .helpWord{
     cursor: pointer;
+    color: #2f4858;
+    text-decoration: underline;
+    font-family: 'OpenSans-Bold';
+    margin: 0px 5px 0px 5px;
 }
 #tooltip-2{
     position: absolute !important;
     top: 150px !important;
 }
 .lpSubFormStyle .main-title {
-    margin-left: 10px;
+    margin-left: 2px;
 }
 .lpSubFormStyle .header-right-row{
     display: flex;
@@ -460,4 +477,23 @@
 .lpSubFormStyle .header-fund-image {
     height: 60px;
     width: 60px;
+    border-radius: 50%;
+    margin-top: -15px;
+}
+.lpSubFormStyle input:not(.inputWidth290), .lpSubFormStyle select {
+    width: 80% !important;
+}
+.lpSubFormStyle .form-grid {
+    width: 85%;
+}
+.TtModalHeaderAlign {
+    /* margin-top: 95px; */
+    margin-bottom: 20px;
+}
+.ttModalAlign {
+    margin-top: -125px;
+}
+.TtModalBody {
+    max-height: 500px;
+    overflow: auto;
 }

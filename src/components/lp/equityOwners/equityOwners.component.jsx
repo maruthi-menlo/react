@@ -35,6 +35,7 @@ class equityOwnersComponent extends Component {
             numberOfexistingOrProspectivesValid:false,
             numberOfexistingOrProspectivesMsz:'',
             numberOfexistingOrProspectivesBorder:false,
+            equityOwnersErrorMsz:''
         }
 
     }
@@ -58,7 +59,7 @@ class equityOwnersComponent extends Component {
                     PubSub.publish('investorData',obj );
                     this.setState({
                         getInvestorObj: result.data.data,
-                        investorType: result.data.data.investorType,
+                        investorType: result.data.data.investorType?result.data.data.investorType:'LLC',
                         numberOfDirectEquityOwners: result.data.data.numberOfDirectEquityOwners,
                         existingOrProspectiveInvestorsOfTheFund: result.data.data.existingOrProspectiveInvestorsOfTheFund,
                         numberOfexistingOrProspectives: result.data.data.numberOfexistingOrProspectives,
@@ -123,12 +124,12 @@ class equityOwnersComponent extends Component {
                     this.updateStateParams(dataObj);
                 } else {
                     const re = /^[0-9\b]+$/;
-                    if (!re.test(value.trim())) {
+                    if (!re.test(value.trim()) && key === 'numberOfDirectEquityOwners') {
                         this.setState({
                             [key]: ''
                         })
                     } else {
-                        if(parseInt(value) < 0 || parseInt(value) >1000) {
+                        if(( parseInt(value) < 0 || parseInt(value) >1000 ) && key === 'numberOfDirectEquityOwners') {
                             return true;
                         }
                         this.setState({
@@ -162,7 +163,7 @@ class equityOwnersComponent extends Component {
     // Enable / Disble functionality of Investor Details next Button
     enableDisableInvestorDetailsButton(){
         let status;
-        status = (this.state.numberOfDirectEquityOwners && this.state.existingOrProspectiveInvestorsOfTheFund) ? true : false;
+        status = (this.state.numberOfDirectEquityOwners && this.state.existingOrProspectiveInvestorsOfTheFund !== null) ? true : false;
         this.setState({
             equityOwnersPageValid : status,
         });
@@ -192,12 +193,20 @@ class equityOwnersComponent extends Component {
         })
         .catch(error => {
             this.close();
-            this.props.history.push('/lp/entityProposing/'+this.state.getInvestorObj.id);
+            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                this.setState({
+                    equityOwnersErrorMsz: error.response.data.errors[0].msg,
+                });
+            } else {
+                this.setState({
+                    equityOwnersErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                });
+            }
         });
     }
 
     proceedToBack () {
-        this.props.history.push('/lp/equityOwners/'+this.state.getInvestorObj.id);
+        this.props.history.push('/lp/companiesAct/'+this.state.getInvestorObj.id);
     }
 
     render() {
@@ -205,7 +214,7 @@ class equityOwnersComponent extends Component {
             <div className="accreditedInvestor width100">
                 <div className="formGridDivMargins min-height-400">
                     {/* llc investor type block starts */}
-                    <div className="title">Equity Owners (5/7)</div>
+                    <div className="title">Equity Owners</div>
                     <Row className="step1Form-row" hidden={this.state.investorType !== 'LLC'}>
                         <Col xs={12} md={12}>
                             <label className="form-label width100">Please specify the number of direct equity owners of the Entity.</label>
@@ -222,7 +231,7 @@ class equityOwnersComponent extends Component {
                             </Radio>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24" hidden={this.state.existingOrProspectiveInvestorsOfTheFund !== true}>
-                            <label className="form-label width100">How many such existing or prospective investors are there (please enter the number)?</label>
+                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors.</label>
                             <FormControl type="text" placeholder="Enter number" className={"inputFormControl inputWidth290 " + (this.state.numberOfexistingOrProspectivesBorder ? 'inputError' : '')} value= {this.state.numberOfexistingOrProspectives}  onChange={(e) => this.equityOwnersChangeEvent(e,'numberOfexistingOrProspectives', 'EQUITY_OWNERS_REQUIRED')} onBlur={(e) => this.equityOwnersChangeEvent(e,'numberOfexistingOrProspectives','EQUITY_OWNERS_REQUIRED')}/>
                             <span className="error">{this.state.numberOfexistingOrProspectivesMsz}</span>
                         </Col>
@@ -243,7 +252,7 @@ class equityOwnersComponent extends Component {
                             </Radio>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24">
-                            <label className="form-label width100">How many such existing or prospective investors are there (please enter the number)?</label>
+                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors.</label>
                             <FormControl type="text" placeholder="Enter number" className="inputFormControl inputWidth290" />
                         <span className="error"></span>
                         </Col>
@@ -264,14 +273,14 @@ class equityOwnersComponent extends Component {
                             </Radio>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24">
-                            <label className="form-label width100">How many such existing or prospective investors are there (please enter the number)?</label>
+                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors.</label>
                         <FormControl type="text" placeholder="Enter number" className="inputFormControl inputWidth290" />
                             <span className="error"></span>
                         </Col>
                     </Row>
                     {/* iRevocableTrust investor type block ends */}
                 </div>
-
+                <div className="margin30 error">{this.state.equityOwnersErrorMsz}</div>
                <div className="footer-nav footerDivAlign">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className={"fa fa-chevron-right " + (!this.state.equityOwnersPageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>

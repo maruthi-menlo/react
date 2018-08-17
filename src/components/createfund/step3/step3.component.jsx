@@ -230,14 +230,14 @@ class Step3Component extends Component {
                 <h1 className="uploadFundDocument">Upload Fund Documents</h1>
                 <div className="chooseFileMargin">
                     <h1 className="title">Choose files to upload</h1>
-                    <div className="subtext">Choose document files to upload. Accepted files information appears here.</div>
+                    <div className="subtext">Upload your Limited Partnership Agreement (LPA) or Similar Document.</div>
                     <div className="uplodFileContainer marginTop46" hidden={this.state.createdFundData.status !== 'New-Draft'}>
                         <input type="file" id="uploadBtn" className="hide" onChange={ (e) => this.handleChange(e) } />
                         <FileDrop onDrop={(e) => this.handleChange(e, 'drop')}>
                             <Button className="uploadFileBox" onClick={this.uploadBtnClick}></Button>
                             <span className="uploadFileSubtext">Or drop files from your desktop to upload. Files should not exceed 10MB and should be of type pdf/docx only.</span>
                         </FileDrop>
-                        <div className="docNameDivAlign"><a className="upload-doc-name">{this.state.uploadFileName} </a> </div>
+                        <div className="docNameDivAlign"><div className="upload-doc-name">{this.state.uploadFileName} </div> </div>
                         <div className="filesize" hidden={this.state.uploadFileName ===''}>{this.state.uploadDocSize}  <i className="fa fa-trash cursor-pointer" onClick={this.deleteFile}></i></div>
                         
                     </div>
