@@ -10,6 +10,7 @@ import CreateFundComponent from '../components/createfund/createfund.component';
 import editFundComponent from '../components/editfund/editfund.component';
 import CreateVcFirmComponent from '../components/admin/createvcfirm.component';
 import LpSubscriptionFormComponent from '../components/lp/lpsubscriptionform.component';
+import SettingsComponent from '../components/settings/settings.component';
 
 class FsnetRouter extends Component{
 
@@ -28,7 +29,8 @@ class FsnetRouter extends Component{
                         <Route path='/createfund' component={CreateFundComponent}/>
                         <Route path='/admin' component={CreateVcFirmComponent}/>
                         <Route path='/lp' component={LpSubscriptionFormComponent}/>
-                        <Route path='/editfund' component={editFundComponent}/>
+                        <Route path='/fund' component={editFundComponent}/>
+                        <Route path='/settings' component={SettingsComponent}/>
                         <Redirect from='*' to='/404'/>
                     </Switch>
                 </div>

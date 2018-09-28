@@ -226,8 +226,8 @@ class LoginComponent extends Component{
                 </Row>
                 <Row className="loginContainer">
                     <Col lg={6} md={6} sm={6} xs={12}>
-                        <p className="content-heading">Welcome to Vanilla. We are revolutionizing the way accredited investors subscribe to and manage their investments in private funds.</p>
-                        <p className="content-text">Tired of completing lengthy subscription agreements? Signing by hand? Writing checks for capital calls? Lengthy and expensive transfer of interest procedures?<br/><br/>Vanilla allows managers of venture capital, private equity, real estate and other private funds to offer their limited partner subscribers a convenient, secure and efficient way to subscribe for and manage fund interests. Limited partners for their part can elect to store information so that there is no need to enter lengthy subscription qualification information fund after fund.<br/><br/>Toss out those PDF subscription agreements. There is a better way. It's Vanilla.</p>
+                        <p className="content-heading">Welcome to Vanilla. We are revolutionizing the way accredited investors subscribe to and manage their investments in private Funds.</p>
+                        <p className="content-text">Tired of completing lengthy subscription agreements? Signing by hand? Writing checks for capital calls? Lengthy and expensive transfer of interest procedures?<br/><br/>Vanilla allows managers of venture capital, private equity, real estate and other private Funds to offer their limited partner subscribers a convenient, secure and efficient way to subscribe for and manage Fund interests. Limited partners for their part can elect to store information so that there is no need to enter lengthy subscription qualification information Fund after Fund.<br/><br/>Toss out those PDF subscription agreements. There is a better way. It's Vanilla.</p>
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12} className="paddingLeft7">
                         <div className="formContainer">

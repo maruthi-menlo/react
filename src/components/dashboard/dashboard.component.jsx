@@ -62,12 +62,13 @@ class DashboardComponent extends Component {
     }
 
     openFund(e, id, status) {
-        this.props.history.push('/createfund/funddetails/' + id);
+        // this.props.history.push('/createfund/funddetails/' + id);
+        this.props.history.push('/fund/view/' + id);
     }
 
     openLpFund(e, id, status) {
         if(status !== 'Open' && status !== 'Not Interested') {
-            this.props.history.push('/lp/personaldetails/' + id);
+            this.props.history.push('/lp/investorInfo/' + id);
         }
     }
 
@@ -106,7 +107,7 @@ class DashboardComponent extends Component {
             let userObj = reactLocalStorage.getObject('userData');
             console.log("userObj::"+userObj);
             if (userObj) {
-                if (userObj.accountType === 'GP') {
+                if (userObj.accountType === 'GP' || userObj.accountType === 'GPDelegate') {
                     this.getGpFunds();
                 } else {
                     this.getLpFunds();
@@ -254,7 +255,7 @@ class DashboardComponent extends Component {
                     </Col>
                 </Row>
                 {
-                    this.state.dashboardType === 'GP' ?
+                   ( this.state.dashboardType === 'GP' || this.state.dashboardType === 'GPDelegate') ?
                         <Row className="dashboardMainRow fund-container">
                             <div className="myFunds">Your Funds</div>
                             <Col lg={12} md={12} sm={12} xs={12}>
@@ -273,7 +274,7 @@ class DashboardComponent extends Component {
                                 this.state.allGPFundsList.map((record, index) => {
                                     return (
                                         <Col lg={4} md={6} sm={6} xs={12} className="fund-col-container" key={index}>
-                                            <div className="fundBoxEdit" onClick={(e) => this.openFund(e, record['id'], record['status'])}>
+                                            <div onClick={(e) => this.openFund(e, record['id'], record['status'])} className={"fundBoxEdit " + (record['status'] == 'Deactivated' ? 'disabled fundDeactivated' : '')}>
                                                 <div className="fundImageEdit">
                                                     {
                                                         record['fundImage'] ?
@@ -294,30 +295,38 @@ class DashboardComponent extends Component {
                                                     <div className="inProgressDiv">
                                                         <div className="Invited">{record['inProgress']}</div>
                                                         <div className="labelInvited">In Progress</div>
-                                                        <div className="labelInvitedPrice">$ 0 M</div>
+                                                        <div className="labelInvitedPrice" title={record['sumOfCapitalCommitmentForInProgress'] ? this.FsnetUtil.convertToCurrency(record['sumOfCapitalCommitmentForInProgress']) : '$0.00'}>{record['sumOfCapitalCommitmentForInProgress'] ? this.FsnetUtil.convertToCurrency(record['sumOfCapitalCommitmentForInProgress']) : '$0.00'}</div>
                                                     </div>
                                                     <div className="closeReadyDiv">
                                                         <div className="Invited1">{record['closeReady']}</div>
                                                         <div className="labelClosedReady">Close-Ready</div>
-                                                        <div className="labelClosedPrice">$ 0 M</div>
+                                                        <div className="labelClosedPrice" title={record['sumOfCapitalCommitmentForCloseReady'] ? this.FsnetUtil.convertToCurrency(record['sumOfCapitalCommitmentForCloseReady']) : '$0.00'}>{record['sumOfCapitalCommitmentForCloseReady'] ? this.FsnetUtil.convertToCurrency(record['sumOfCapitalCommitmentForCloseReady']) : '$0.00'}</div>
                                                     </div>
                                                     <div className="closedDiv">
                                                         <div className="Invited2">{record['closed']}</div>
                                                         <div className="labelClosed">Closed</div>
-                                                        <div className="labelClosedReadyPrice">$ 0 M</div>
+                                                        <div className="labelClosedReadyPrice" title={record['sumOfCapitalCommitmentForClosed'] ? this.FsnetUtil.convertToCurrency(record['sumOfCapitalCommitmentForClosed']) : '$0.00'}>{record['sumOfCapitalCommitmentForClosed'] ? this.FsnetUtil.convertToCurrency(record['sumOfCapitalCommitmentForClosed']) : '$0.00'}</div>
                                                     </div>
                                                 </div>
                                                 <div className="Line clear-both"></div>
-                                                <div className="pull-right bold width37 tPriceStyle" hidden={record['fundTargetCommitment'] === 0}>T: ${this.FsnetUtil.convertNumberToMillion(record['fundTargetCommitment'])}</div>
-                                                <div className="caretDownAlign" hidden={record['fundTargetCommitment'] === 0}><i className="fa fa-caret-down"></i></div>
-                                                <div className={"progress-bar " + (record['fundTargetCommitment'] === 0 ? 'marginTop30' : '')}>
-                                                    {/* <div className="progress progress-pink"></div>
-                                                    <div className="progress progress-yellow"></div>
-                                                    <div className="progress progress-green"></div> */}
-                                                    <div className="progress progress-white"></div>
+
+                                                <div className="bold tPriceStyle price-meter">T:&nbsp;<span>{this.FsnetUtil.convertToCurrency(record['fundTargetCommitment'])}</span></div>
+                                                <div className="fund-progress-bar">
+                                                    <div className="price-percentage" style={{ left: (record['fundTargetCommitmentPercent'] ? record['fundTargetCommitmentPercent']+'%' : '0%') }} hidden={!record['fundTargetCommitment']}>
+                                                        {/* <div className="pull-right bold tPriceStyle price-meter">T: {this.FsnetUtil.convertToCurrency(record['fundTargetCommitment'])}</div> */}
+                                                        <div className="caretDownAlign"><i className="fa fa-caret-down"></i></div>
+                                                    </div>
+                                                    <div className="progress-bar">
+                                                        <div className={"progress progress-pink progress-radius-left "+ (!record['closeReadyPercent'] && !record['closedPercent'] ? 'progress-radius-left progress-radius-right' : '')} style={{ width: (record['inProgressPercent'] ? record['inProgressPercent']+'%' : '0%')}}></div>
+                                                        <div className={"progress progress-yellow "+ (!record['inProgressPercent'] ? 'progress-radius-left ' : ' ') + (!record['closedPercent'] ? 'progress-radius-right' : '')} style={{ width: (record['closeReadyPercent'] ? record['closeReadyPercent']+'%' : '0%')}}></div>
+                                                        <div className={"progress progress-green progress-radius-right "+ (!record['closeReadyPercent'] && !record['inProgressPercent'] ? 'progress-radius-left progress-radius-right' : '')} style={{ width: (record['closedPercent'] ? record['closedPercent']+'%' : '0%')}}></div>
+                                                    </div>
+                                                    <div className="price-percentage" style={{ left: (record['fundHardCapPercent'] ? record['fundHardCapPercent']+'%' : '70%') }} hidden={!record['fundHardCap']}>
+                                                        <div className="caretUpAlign"><i className="fa fa-caret-up"></i></div>
+                                                        {/* <div className="pull-right bold hcPriceStyle price-meter">HC: {this.FsnetUtil.convertToCurrency(record['fundHardCap'])}</div> */}
+                                                    </div>
                                                 </div>
-                                                <div className="caretUpAlign" hidden={record['fundHardCap'] === 0}><i className="fa fa-caret-up"></i></div>
-                                                <div className="pull-right bold hcPriceStyle" hidden={record['fundHardCap'] === 0}>HC: ${this.FsnetUtil.convertNumberToMillion(record['fundHardCap'])}</div>
+                                                <div className="bold hcPriceStyle price-meter">HC:&nbsp;<span>{this.FsnetUtil.convertToCurrency(record['fundHardCap'])}</span></div>
                                             </div>
                                         </Col>
                                     );
@@ -344,7 +353,7 @@ class DashboardComponent extends Component {
                                                     <img src={record['fund']['fundImage']['url']} alt="img" className="Fund-Image" />:
                                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
                                                     }
-                                                    <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')}>{record['fund']['legalEntity']}</div>
+                                                    <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')} title={record['fund']['legalEntity']}>{record['fund']['legalEntity']}</div>
                                                 </div>
                                                 <div className="fundImageEdit" hidden={record['subscriptionStatus']['name'] ==='Open'}>
                                                     {
@@ -352,7 +361,7 @@ class DashboardComponent extends Component {
                                                     <img src={record['fund']['fundImage']['url']} alt="img" className="Fund-Image" />: 
                                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
                                                     }
-                                                    <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')}>{record['fund']['legalEntity']}</div>
+                                                    <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')} title={record['fund']['legalEntity']}>{record['fund']['legalEntity']}</div>
                                                     <img src={boxNotificationImage} alt="notification-icon" className="notification-icon boxNotifStyle"/>
                                                     <span className="notificationCount">0</span>
                                                 </div>
@@ -362,20 +371,24 @@ class DashboardComponent extends Component {
                                                 <div className="viewParticipant" hidden={record['subscriptionStatus']['name'] !='Open'} onClick={()=>this.openpartnershipDocument(record['fund']['partnershipDocument']['url'])}>
                                                     View Participation Document
                                                 </div>
+                                                <div hidden={!record['lpCapitalCommitment']}>
+                                                    <div className="Line" hidden={record['subscriptionStatus']['name'] =='Open'}></div>
+                                                    <div className="fundContribution" hidden={record['subscriptionStatus']['name'] ==='Open'}>
+                                                        <div className="contributionLabel">My Contribution:</div>
+                                                        <div className="contributionAmount" title={record['lpCapitalCommitment'] ? this.FsnetUtil.convertToCurrency(record['lpCapitalCommitment']) : ''}>{record['lpCapitalCommitment'] ? this.FsnetUtil.convertToCurrency(record['lpCapitalCommitment']) : ''}</div>
+                                                    </div>
+                                                    <div className="Line" hidden={record['subscriptionStatus']['name'] =='Open'}></div>
+                                                </div>
                                                 <div className="fund-user-details" hidden={record['subscriptionStatus']['name'] ==='Open'}>
-                                                    <div className="gp-details"><label>GP Name: </label> <div>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</div></div>
+                                                    <div className="gp-details"><label>GP Name: </label> <div title={`${record['fund']['gp']['firstName']} ${record['fund']['gp']['lastName']}`}>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</div></div>
                                                     <div className="gp-details"><label>Phone Number: </label> <div>{record['fund']['gp']['cellNumber']}</div></div>
                                                     <div className="gp-details"><label hidden={record['fund']['gp']['city'] === null}>City: </label> <div>{record['fund']['gp']['city']}</div></div>
                                                     <div className="gp-details"><label hidden={record['fund']['gp']['state'] === null}>State: </label><div>{record['fund']['gp']['state']}</div> </div>
                                                     <div className="gp-details"><label hidden={record['fund']['gp']['country'] === null}>Country: </label><div>{record['fund']['gp']['country']}</div> </div>
                                                 </div>
                                                 <div className="Line" hidden={record['subscriptionStatus']['name'] !='Open'}></div>
-                                                <div className="interested marginAlign" hidden={record['subscriptionStatus']['name'] !='Open'} onClick={()=>this.acceptFund(record['id'])}>Yes, I am interested</div>
+                                                <div className="interested marginAlign" hidden={record['subscriptionStatus']['name'] !='Open'} onClick={()=>this.acceptFund(record['id'])}>Yes, I am interested.</div>
                                                 <div className="interested" hidden={record['subscriptionStatus']['name'] !='Open'} onClick={()=>this.rejectFund(record['id'])}>No, not at this time.</div>
-                                                {/* <div className="fundContribution" hidden={record['subscriptionStatus']['name'] ==='Open'}>
-                                                    <div className="contributionLabel">My Contribution:</div>
-                                                    <div className="contributionAmount">$3,000,000.000</div>
-                                                </div> */}
                                             </div>
                                         </Col>
                                     );
@@ -397,7 +410,7 @@ class DashboardComponent extends Component {
                                                     <img src={record['fundImage']['url']} alt="img" className="Fund-Image" />: 
                                                     <img src={userDefaultImage} alt="fund_image" className="Fund-Image" />
                                                     }
-                                                    <div className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')}>{record['fund']['legalEntity']}</div>
+                                                    <div title={record['fund']['legalEntity']} className={'Fund-Name ' + (record['fund']['legalEntity'].length <= 20 ? 'fund-name-align' : 'removeTop')}>{record['fund']['legalEntity']}</div>
                                                 </div>
                                                 <div className="fund-user-details">
                                                     <div className="gp-details"><label>GP Name: </label> <div>{record['fund']['gp']['firstName']} {record['fund']['gp']['lastName']}</div></div>

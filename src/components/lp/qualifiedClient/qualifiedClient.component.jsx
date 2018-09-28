@@ -140,9 +140,9 @@ class QualifiedClientComponent extends Component {
                                 <label className="form-label width100">Are you a 
                                 &nbsp; 
                                 <LinkWithTooltip tooltip={<span>
-                                    <strong>The Entity is a “qualified client” if it is either making a capital commitment to the investment fund for which it proposes to subscribe of USD 
+                                    <strong>The Entity is a “qualified client” if it is either making a capital commitment to the investment Fund for which it proposes to subscribe of USD 
                                         $1,000,000 or greater or is a Entity with investments that are valued at more than $2,100,000.</strong>
-                                    </span>} href="#" id="tooltip-1">
+                                    </span>} id="tooltip-1">
                                 <span><strong>“qualified client” </strong></span>
                                 </LinkWithTooltip> &nbsp; within the meaning of Rule 205-3 under the Advisers Act?</label>
                                 <Radio name="qualifiedClient" inline checked={this.state.areYouQualifiedClient === 'Yes'} onChange={(e) => this.qualifiedClientChangeEvent(e, 'areYouQualifiedClient', 'Yes')}>&nbsp; Yes

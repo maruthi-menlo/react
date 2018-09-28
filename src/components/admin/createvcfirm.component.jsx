@@ -298,7 +298,7 @@ class CreateVcFirmComponent extends Component{
     render(){
         return(
             <div id="addFirmContainer">
-                <Row>
+                <Row className="mainContainer">
                     <Col lg={5} md={6} sm={6} xs={12}>
                         <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginLeft30" onClick={this.redirectHome}/>  
                     </Col>
@@ -357,7 +357,7 @@ class CreateVcFirmComponent extends Component{
                             <Col lg={6} md={6} sm={6} xs={12} className="width40"></Col>
                         </Row>
                         <label className="label-header">Privacy Options</label>
-                        <div className="subText">Allow FSNET admin access to view and edit firm funds? This will allow an admin to impersonate a GP from firm and take actions on their behalf</div>
+                        <div className="subText">Allow FSNET admin access to view and edit firm Funds? This will allow an admin to impersonate a GP from firm and take actions on their behalf</div>
                         <Radio name="isImporsonatingAllowed" className="marginLeft15" inline onChange={(e) => this.handleInputChangeEvent('on','isImporsonatingAllowed')}>
                             On
                             <span className="radio-checkmark"></span>

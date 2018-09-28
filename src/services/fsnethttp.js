@@ -43,6 +43,11 @@ export class Fsnethttp{
         return axios.post(this.Constants.BASE_URL+'forgotPassword', obj);
     }
 
+    //Get forgotPasswordGetUsername
+    forgotPasswordGetUsername(obj) {
+        return axios.post(this.Constants.BASE_URL+'forgotPasswordGetUsername', obj);
+    }
+
     //Verify forgot password code
     verifycode(obj) {
         return axios.post(this.Constants.BASE_URL+'forgotPasswordTokenValidate', obj);
@@ -89,6 +94,11 @@ export class Fsnethttp{
         return axios.post(this.Constants.BASE_URL+'fund/gpDelegate/invite', obj);
     }
 
+    checkEmail(url, obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+url, obj);
+    }
+
     //Invite LP to the fund
     addLp(obj, headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
@@ -99,6 +109,18 @@ export class Fsnethttp{
      removeLp(obj, headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
         return axios.post(this.Constants.BASE_URL+'fund/removeLp', obj);
+    }
+
+    //Deactivate fund
+    deactivateFund(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/deactivate', obj);
+    }
+   
+    //send reminder to LP
+    sendReminder(obj, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.post(this.Constants.BASE_URL+'fund/sendRemainder', obj);
     }
 
     //Remove LP to the fund
@@ -129,6 +151,19 @@ export class Fsnethttp{
     getFund(id, headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
         return axios.get(this.Constants.BASE_URL+'fund/'+id);
+    }
+
+    //Get fund Info
+    getFundInfo(id, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'fund/view/info/'+id);
+    }
+
+    //Get fund
+    getFundDetails(params, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        let url = `${this.Constants.BASE_URL}fund/view/${params.fundId}?status=${params.status}&offset=${params.offset}&orderCol=${params.orderCol}&order=${params.order}`;
+        return axios.get(url);
     }
 
     //Get search based list of funds
@@ -188,6 +223,18 @@ export class Fsnethttp{
         return axios.get(this.Constants.BASE_URL+'getInvestorSubType/LLC');
     }
 
+    //Get Investor Sub Types
+    getInvestorTrustSubTypes(headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'getInvestorSubType/Trust');
+    }
+
+    //Get Investor Sub Types
+    submitSubscription(id, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'pdf/'+id);
+    }
+
     //Get Jurisdiction Types
     getJurisdictionTypes(headers, url) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
@@ -210,6 +257,30 @@ export class Fsnethttp{
     removeLpDelegate(obj, headers) {
         axios.defaults.headers.common['x-auth-token'] = headers.token;
         return axios.post(this.Constants.BASE_URL+'fund/removeFundLpDeleate', obj);
+    }
+
+    //get All Countries
+    getAllCountires(headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'getAllCountires');
+    }
+
+    //get All State
+    getUSStates(headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+'getUSStates');
+    }
+
+    //get All states by country
+    getStates(countryId, headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+`getStates/${countryId}`);
+    }
+
+    //Get Docusign URL
+    getAggrement(envelopId,headers, subscriptionId) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+`getPartnershipAgreement/${envelopId}/${subscriptionId}`);
     }
     /************LP Subscription API Calls End****************/
 }

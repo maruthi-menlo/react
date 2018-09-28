@@ -8,6 +8,7 @@ import { Constants } from '../../../constants/constants';
 import { Fsnethttp } from '../../../services/fsnethttp';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import Loader from '../../../widgets/loader/loader.component';
+import LpTableComponent from '../../editfund/lptable/lptable.component';
 
 class ModalComponent extends Component {
 
@@ -23,10 +24,15 @@ class ModalComponent extends Component {
         this.handleGpClose = this.handleGpClose.bind(this);
         this.handleLpDelClose = this.handleLpDelClose.bind(this);
         this.handleGpDelClose = this.handleGpDelClose.bind(this);
+        // this.handlefundDelShow = this.handlefundDelShow.bind(this);
+        this.handlefundDelClose = this.handlefundDelClose.bind(this);
+        this.handlefundClose = this.handlefundClose.bind(this);
         this.addLpFn = this.addLpFn.bind(this);
         this.addDelegateFn = this.addDelegateFn.bind(this);
         this.deleteLp = this.deleteLp.bind(this);
         this.deleteGp = this.deleteGp.bind(this);
+        this.deactivateFund = this.deactivateFund.bind(this);
+        this.deactivateFundStatus = this.deactivateFundStatus.bind(this);
         this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
         this.state = {
             show: false,
@@ -35,8 +41,10 @@ class ModalComponent extends Component {
             GPDelshow : false,
             isLpFormValid: false,
             firstNameBorder: false,
+            fundDeactivateModal: false,
             firstNameMsz: '',
             firstName: '',
+            reason: '',
             firstNameValid: false,
             lastNameBorder: false,
             lastNameMsz: '',
@@ -49,12 +57,16 @@ class ModalComponent extends Component {
             cellNumberBorder: false,
             cellNumberMsz: '',
             cellNumber: '',
+            isNew: true,
+            reasonValid: true,
+            isValidated: false,
             cellNumberValid: false,
             lpErrorMsz: '',
             lpSelectedList:[],
             lpScreenError:'',
             orgName:'',
             fundId: null,
+            fundName: '',
             gpDelegateErrorMsz:'',
             isGpDelgateFormValid:false,
             lpDelegateId:'',
@@ -96,6 +108,30 @@ class ModalComponent extends Component {
                 this.handleGpDelShow();
             })
         });
+
+        PubSub.subscribe('openfundDelModal', (msg, data) => {
+            if(!this.state.fundDeactivateModal) {
+                this.setState({
+                    fundId: data.fundId,
+                    fundName: data.fundName,
+                    fundStatus: data.fundStatus
+                },()=>{
+                    this.handlefundDelShow();
+                })
+            }
+        });
+
+        PubSub.subscribe('openfundDetailModal', (msg, data) => {
+            if(!this.state.fundDeactivateModal) {
+                this.setState({
+                    fundId: data.fundId,
+                    fundName: data.fundName,
+                    fundStatus: data.fundStatus
+                },()=>{
+                    this.handlefundShow();
+                })
+            }
+        });
     }
 
     deleteLp() {
@@ -128,6 +164,49 @@ class ModalComponent extends Component {
         .catch(error=>{
             this.close();
         });
+    }
+
+    deactivateFund() {
+        if(this.state.fundStatus != 'New-Draft') {
+            if(this.state.reason == null || this.state.reason == undefined || this.state.reason == '' ) {
+                this.setState({
+                    reasonValid: false
+                }, () => {
+                    this.deactivateFundStatus();
+                })
+            } else {
+                this.setState({
+                    reasonValid: true
+                }, () => {
+                    this.deactivateFundStatus();
+                })    
+            }
+        } else {
+            this.setState({
+                reasonValid: true
+            }, () => {
+                this.deactivateFundStatus();
+            })
+        }
+    }
+
+    deactivateFundStatus() {
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        let postObj = {fundId:this.state.fundId, deactivateReason: this.state.reason};
+        if(this.state.reasonValid) {
+            this.open()
+            this.Fsnethttp.deactivateFund(postObj,headers).then(result=>{
+                this.close();
+                if(result) {
+                    this.handlefundClose(true);
+                    // this.updateDeletedGpUserInFundObj(gpDelegateId)
+                }
+            })
+            .catch(error=>{
+                this.close();
+                // this.handlefundClose(true);
+            });
+        }
     }
 
     updateDeletedGpUserInFundObj(id) {
@@ -167,7 +246,14 @@ class ModalComponent extends Component {
 
     handleClose() {
         this.clearFormFileds();
-        this.setState({ show: false });
+        this.setState({ show: false }, () => {
+            let touchedArr = ['firstName', 'lastName', 'cellNumber', 'orgName', 'email'];
+            touchedArr.forEach(key => {
+                this.setState({
+                    [key+'Touched']: false
+                })
+            })
+        });
     }
 
     handleShow() {
@@ -185,15 +271,33 @@ class ModalComponent extends Component {
     handleLpDelShow() {
         this.setState({ LPDelshow: true });
     }
-    handleLpDelClose() {
+    handlefundShow() {
+        this.setState({ lpFundModal: true });
+    }
+    handlefundClose(redirect) {
+        this.setState({ lpFundModal: false }, () => {
+            if(redirect) {
+                PubSub.publish('goToDashboard');
+                // this.props.history.push('/dashboard');
+            }
+        });
+    }
+
+    handleLpDelClose(redirect) {
         this.setState({ LPDelshow: false });
     }
 
     handleGpDelShow() {
         this.setState({ GPDelshow: true });
     }
+    handlefundDelShow() {
+        this.setState({ fundDeactivateModal: true });
+    }
     handleGpDelClose() {
         this.setState({ GPDelshow: false });
+    }
+    handlefundDelClose() {
+        this.setState({ reasonTouched: false, reasonValid: true, fundDeactivateModal: false });
     }
 
     //Clear the fileds
@@ -221,7 +325,8 @@ class ModalComponent extends Component {
     }
 
     //Onchange event for all input text boxes.
-    handleInputChangeEvent(event,type, obj) {
+    handleInputChangeEvent(event,type, obj, eventType) {
+        window.scrollTo(0,0);
         let dataObj = {}; 
         this.setState({
             lpErrorMsz: ''
@@ -291,15 +396,35 @@ class ModalComponent extends Component {
                     };
                     this.updateStateParams(dataObj);
                 } else {
-                    this.setState({
-                        email: event.target.value,
-                        emailMsz: '',
-                        emailValid: true,
-                        emailBorder: false,
-                    })
-                    dataObj ={
-                        emailValid :true
-                    };
+                    let emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+                    if(event.target.value !== '' && emailRegex.test(event.target.value)) {
+                        this.setState({
+                            email: event.target.value,
+                            emailMsz: '',
+                            emailValid: true,
+                            emailBorder: false,
+                        
+                        }, () => {
+                            console.log('make call');
+                            if(eventType != 'blur') {
+                                this.checkEmail('lp');
+                            }
+                        })
+                        dataObj ={
+                            emailValid :true
+                        };
+                    } else {
+                        this.setState({
+                            email: event.target.value,
+                            emailMsz: '',
+                            isValidated: false,
+                            emailValid: true,
+                            emailBorder: false,
+                        })
+                        dataObj ={
+                            emailValid :true
+                        };
+                    } 
                 this.updateStateParams(dataObj);
                 }
                 break;
@@ -345,7 +470,16 @@ class ModalComponent extends Component {
         }
     }
 
-    handleInputChangeEventGP(event,type, obj) {
+    handleInputEventChange(e) {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({
+            [name] : value,
+            [name+'Touched'] : true
+        })
+    }
+
+    handleInputChangeEventGP(event,type, obj, eventType) {
         let dataObj = {}; 
         this.setState({
             gpDelegateErrorMsz: ''
@@ -414,16 +548,37 @@ class ModalComponent extends Component {
                     };
                     this.updateGPStateParams(dataObj);
                 } else {
-                    this.setState({
-                        email: event.target.value,
-                        emailMsz: '',
-                        emailValid: true,
-                        emailBorder: false,
-                    })
-                    dataObj ={
-                        emailValid :true
-                    };
-                this.updateGPStateParams(dataObj);
+                    let emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+                    if(event.target.value !== '' && emailRegex.test(event.target.value)) {
+                        this.setState({
+                            email: event.target.value,
+                            emailMsz: '',
+                            emailValid: true,
+                            emailBorder: false,
+                        
+                        }, () => {
+                            console.log('make call');
+                            if(eventType != 'blur'){
+                                this.checkEmail('gpDelegate');
+                            }
+                        })
+                        dataObj ={
+                            emailValid :true
+                        };
+                    } else {
+                        this.setState({
+                            email: event.target.value,
+                            isValidated: false,
+                            emailMsz: '',
+                            emailValid: true,
+                            emailBorder: false,
+                        })
+                        dataObj ={
+                            emailValid :true
+                        };
+                    } 
+                    
+                    this.updateGPStateParams(dataObj);
                 }
                 break;
             case 'user':
@@ -449,6 +604,88 @@ class ModalComponent extends Component {
                 // do nothing
                 break;
         }
+    }
+
+    checkEmail(type) {
+        let postObj = {email:this.state.email, fundId: this.state.fundId};
+        let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+        this.open()
+        let url = type == 'gpDelegate' ? 'delegate/gp/check' : (type == 'lpDelegate' ? 'delegate/lp/check' : 'lp/check');
+        this.Fsnethttp.checkEmail(url, postObj,headers).then(result=>{
+            this.close();
+            if(result.data) {
+                console.log('data::::', result.data);
+                this.setState({
+                    isNew: result.data.isNew,
+                    isValidated: true,
+                    firstName:  result.data.firstName,
+                    lastName:  result.data.lastName,
+                    cellNumber:  result.data.cellNumber,
+                    orgName:  result.data.organizationName ? result.data.organizationName : ''
+                }, () => {
+                    Object.keys(result.data).forEach(key => {
+                        // console.log(key, obj[data])
+                        if(key != 'email') {
+                            if(type == 'gpDelegate') {
+                                if(key == 'cellNumber') {
+                                    this.handleInputChangeEventGP(result.data[key], key);    
+                                } else {
+                                    this.handleInputChangeEventGP({target: {value : result.data[key]}}, key);
+                                }
+                            } else {
+                                if(key == 'cellNumber') {
+                                    this.handleInputChangeEvent(result.data[key], key);    
+                                } else {
+                                    this.handleInputChangeEvent({target: {value : result.data[key]}}, key);
+                                }
+                            }
+                        } else {
+                            // this.setState({
+                            //     email: result.data.email,
+                            //     isValidated: false,
+                            //     emailMsz: '',
+                            //     emailValid: true,
+                            //     emailBorder: false,
+                            // })
+                            // let dataObj ={
+                            //     emailValid :true
+                            // };
+                            // this.updateGPStateParams(dataObj);
+                        }
+                    })
+                    console.log('this.state::::', this.state);
+                })
+            }
+        })
+        .catch(error=>{
+            this.close();
+            if(error.response!==undefined && error.response.data !==undefined && error.response.data.errors !== undefined) {
+                if(type == 'gpDelegate') {
+                    this.setState({
+                        gpDelegateErrorMsz: error.response.data.errors[0].msg,
+                        isNew: true
+                    });
+                } else {
+                    this.setState({
+                        lpErrorMsz: error.response.data.errors[0].msg,
+                        isNew: true
+                    }); 
+                }
+            } else {
+                if(type == 'gpDelegate') {
+                    this.setState({
+                        gpDelegateErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                        isNew: true
+                    });
+                } else {
+                    this.setState({
+                        lpErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                        isNew: true
+                    });
+                }
+                
+            }
+        });
     }
 
     clearFormFileds() {
@@ -582,6 +819,8 @@ class ModalComponent extends Component {
                     let gpObj = result.data.data;
                     gpObj['selected'] = true;
                     gpObj['profilePic'] = null;
+                    gpObj['gPDelegateRequiredConsentHoldClosing'] = true;
+                    gpObj['gPDelegateRequiredDocuSignBehalfGP'] = false;
                     let getFundObj = this.state.fundObj;
                     getFundObj.gpDelegates.push(gpObj);
                     this.setState({
@@ -608,6 +847,12 @@ class ModalComponent extends Component {
             });
         }
     }
+    
+    handleFocus(key) {
+        this.setState({
+            [key+'Touched']: true
+        })
+    }
 
 
     render() {
@@ -619,21 +864,33 @@ class ModalComponent extends Component {
                     <Modal.Title>Add LP</Modal.Title>                                        
                     <Modal.Body>
                         <div className="subtext modal-subtext">Fill in the form below to add a new LP to the Fund. Fields marked with an * are required.</div>         
-                        <div className="form-main-div">
-                        <form>               
+                        <div className="form-main-div add-delegate">
+                        <form>
                             <Row className="marginBot20">
                                 <Col lg={6} md={6} sm={6} xs={12}>
-                                    <label className="form-label">First Name*</label>
-                                    <FormControl type="text" name="firstName" placeholder="Charles" className={"inputFormControl " + (this.state.firstNameBorder ? 'inputError' : '')} value= {this.state.firstName} onChange={(e) => this.handleInputChangeEvent(e,'firstName')} onBlur={(e) => this.handleInputChangeEvent(e,'firstName')}/>   
-                                    <span className="error">{this.state.firstNameMsz}</span>
+                                    <label className="form-label">Email Address*</label>
+                                    <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} value= {this.state.email} onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email', null, 'blur')} onFocus={(e) => this.handleFocus('email')}/>   
+                                    <span className="error">{this.state.emailMsz}</span>            
                                 </Col>
+                                <Col lg={6} md={6} sm={6} xs={12} hidden={!this.state.isValidated || !this.state.email}>
+                                    <label className="form-label">First Name*</label>
+                                    <FormControl type="text" name="firstName" placeholder="Charles" className={"inputFormControl " + (this.state.firstNameTouched && this.state.firstNameBorder ? 'inputError' : '')} value= {this.state.firstName} disabled={!this.state.isNew && this.state.firstName} onChange={(e) => this.handleInputChangeEvent(e,'firstName')} onBlur={(e) => this.handleInputChangeEvent(e,'firstName')} onFocus={(e) => this.handleFocus('firstName')}/>   
+                                    <span className="error" hidden={!this.state.firstNameTouched}>{this.state.firstNameMsz}</span>
+                                </Col>
+                                
+                            </Row>               
+                            <Row className="marginBot20" hidden={!this.state.isValidated || !this.state.email}>
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Last Name*</label>
-                                    <FormControl type="text" name="lastName" placeholder="Xavier" className={"inputFormControl " + (this.state.lastNameBorder ? 'inputError' : '')} value= {this.state.lastName} onChange={(e) => this.handleInputChangeEvent(e,'lastName')} onBlur={(e) => this.handleInputChangeEvent(e,'lastName')}/>   
-                                    <span className="error">{this.state.lastNameMsz}</span>
+                                    <FormControl type="text" name="lastName" placeholder="Xavier" className={"inputFormControl " + (this.state.lastNameTouched && this.state.lastNameBorder ? 'inputError' : '')} value= {this.state.lastName} disabled={!this.state.isNew && this.state.lastName} onChange={(e) => this.handleInputChangeEvent(e,'lastName')} onBlur={(e) => this.handleInputChangeEvent(e,'lastName')} onFocus={(e) => this.handleFocus('lastName')}/>   
+                                    <span className="error" hidden={!this.state.lastNameTouched}>{this.state.lastNameMsz}</span>
+                                </Col>
+                                <Col lg={6} md={6} sm={6} xs={12}>
+                                    <label className="form-label">Organization Name</label>
+                                    <FormControl type="text" name="orgName" placeholder="Organization Name" className="inputFormControl" value= {this.state.orgName} disabled={!this.state.isNew && this.state.orgName} onChange={(e) => this.handleInputChangeEvent(e,'orgName')} onFocus={(e) => this.handleFocus('orgName')}/>   
                                 </Col>
                             </Row> 
-                            <Row className="marginBot20">
+                            {/* <Row className="marginBot20">
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Email Address*</label>
                                     <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} value= {this.state.email} onChange={(e) => this.handleInputChangeEvent(e,'email')} onBlur={(e) => this.handleInputChangeEvent(e,'email')}/>   
@@ -641,14 +898,14 @@ class ModalComponent extends Component {
                                 </Col>
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Organization Name</label>
-                                    <FormControl type="text" name="orgName" placeholder="Organization Name" className="inputFormControl" value= {this.state.orgName} onChange={(e) => this.handleInputChangeEvent(e,'orgName')}/>   
+                                    <FormControl type="text" name="orgName" placeholder="Organization Name" className="inputFormControl" value= {this.state.orgName} disabled={!this.state.isNew && this.state.orgName} onChange={(e) => this.handleInputChangeEvent(e,'orgName')}/>   
                                 </Col>
-                            </Row>
-                            <Row className="marginBot20">
+                            </Row> */}
+                            <Row className="marginBot20" hidden={!this.state.isValidated || !this.state.email}>
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Phone Number (Cell)*</label>
-                                    <PhoneInput className={(this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')} />
-                                    <span className="error">{this.state.cellNumberMsz}</span>
+                                    <PhoneInput className={(this.state.cellNumberTouched && this.state.cellNumberBorder ? 'inputError' : '')} maxLength="14" placeholder="(123) 456-7890" value={ this.state.cellNumber } disabled={!this.state.isNew && this.state.cellNumber} country="US" onChange={phone => this.handleInputChangeEvent(phone,'cellNumber')} onFocus={(e) => this.handleFocus('cellNumber')}/>
+                                    <span className="error" hidden={!this.state.cellNumberTouched}>{this.state.cellNumberMsz}</span>
                                 </Col>
                             </Row>
                         </form>
@@ -671,27 +928,39 @@ class ModalComponent extends Component {
                     <Modal.Title>Add GP Delegate</Modal.Title>                                        
                     <Modal.Body>
                     <div className="subtext modal-subtext">Fill in the form below to add a new GP Delegate to the Fund. Fields marked with an * are required.</div>
-                        <div className="form-main-div">
-                        <form>               
+                        <div className="form-main-div add-delegate">
+                        <form>  
                             <Row className="marginBot20">
                                 <Col lg={6} md={6} sm={6} xs={12}>
-                                    <label className="form-label">First Name*</label>
-                                    <FormControl type="text" name="firstName" placeholder="Charles" className={"inputFormControl " + (this.state.firstNameBorder ? 'inputError' : '')} value= {this.state.firstName} onChange={(e) => this.handleInputChangeEventGP(e,'firstName')} onBlur={(e) => this.handleInputChangeEventGP(e,'firstName')}/>   
-                                    <span className="error">{this.state.firstNameMsz}</span>
+                                    <label className="form-label">Email Address*</label>
+                                    <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} value= {this.state.email} onChange={(e) => this.handleInputChangeEventGP(e,'email')} onBlur={(e) => this.handleInputChangeEventGP(e,'email', null, 'blur')}/>   
+                                    <span className="error">{this.state.emailMsz}</span>            
                                 </Col>
+                                <Col lg={6} md={6} sm={6} xs={12} hidden={!this.state.isValidated || !this.state.email}>
+                                    <label className="form-label">First Name*</label>
+                                    <FormControl type="text" name="firstName" placeholder="Charles" className={"inputFormControl " + (this.state.firstNameTouched && this.state.firstNameBorder ? 'inputError' : '')} value= {this.state.firstName} disabled={!this.state.isNew && this.state.firstName} onChange={(e) => this.handleInputChangeEventGP(e,'firstName')} onBlur={(e) => this.handleInputChangeEventGP(e,'firstName')} onFocus={(e) => this.handleFocus('firstName')}/>   
+                                    <span className="error" hidden={!this.state.firstNameTouched}>{this.state.firstNameMsz}</span>
+                                </Col>
+                            </Row>             
+                            <Row className="marginBot20" hidden={!this.state.isValidated || !this.state.email}>
+                                {/* <Col lg={6} md={6} sm={6} xs={12}>
+                                    <label className="form-label">First Name*</label>
+                                    <FormControl type="text" name="firstName" placeholder="Charles" className={"inputFormControl " + (this.state.firstNameBorder ? 'inputError' : '')} value= {this.state.firstName} disabled={!this.state.isNew && this.state.firstName} onChange={(e) => this.handleInputChangeEventGP(e,'firstName')} onBlur={(e) => this.handleInputChangeEventGP(e,'firstName')}/>   
+                                    <span className="error">{this.state.firstNameMsz}</span>
+                                </Col> */}
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Last Name*</label>
-                                    <FormControl type="text" name="lastName" placeholder="Xavier" className={"inputFormControl " + (this.state.lastNameBorder ? 'inputError' : '')} value= {this.state.lastName} onChange={(e) => this.handleInputChangeEventGP(e,'lastName')} onBlur={(e) => this.handleInputChangeEventGP(e,'lastName')}/>   
-                                    <span className="error">{this.state.lastNameMsz}</span>
+                                    <FormControl type="text" name="lastName" placeholder="Xavier" className={"inputFormControl " + (this.state.lastNameTouched && this.state.lastNameBorder ? 'inputError' : '')} value= {this.state.lastName} disabled={!this.state.isNew && this.state.lastName} onChange={(e) => this.handleInputChangeEventGP(e,'lastName')} onBlur={(e) => this.handleInputChangeEventGP(e,'lastName')} onFocus={(e) => this.handleFocus('lastName')}/>   
+                                    <span className="error" hidden={!this.state.lastNameTouched}>{this.state.lastNameMsz}</span>
                                 </Col>
                             </Row> 
-                            <Row className="marginBot20">
+                            {/* <Row className="marginBot20">
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <label className="form-label">Email Address*</label>
                                     <FormControl type="email" name="email" placeholder="ProfessorX@gmail.com" className={"inputFormControl " + (this.state.emailBorder ? 'inputError' : '')} value= {this.state.email} onChange={(e) => this.handleInputChangeEventGP(e,'email')} onBlur={(e) => this.handleInputChangeEventGP(e,'email')}/>   
                                     <span className="error">{this.state.emailMsz}</span>            
                                 </Col>
-                            </Row>
+                            </Row> */}
                         </form>
                         <div className="error">{this.state.gpDelegateErrorMsz}</div>
                         </div> 
@@ -740,6 +1009,58 @@ class ModalComponent extends Component {
                             <Col lg={6} md={6} sm={6} xs={12}>
                             <Button type="button" className="fsnetCancelButton btnEnabled" onClick={this.deleteGp}>Delete</Button>
                             </Col>
+                        </Row>   
+                    </Modal.Body>
+                </Modal>
+
+                <Modal id="GPDelModal" show={this.state.fundDeactivateModal} onHide={this.handlefundDelClose} dialogClassName="GPDelModalDialog fundModalDialog">
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Title>Deactivate {this.state.fundName}</Modal.Title>                                        
+                    <Modal.Body>
+                        <div className="subtext modal-subtext">Are you sure you want to deactivate {this.state.fundName}?</div>         
+                        <div className="form-main-div">
+                            {/* { this.state.fundStatus != 'Open' && this.state.fundStatus != 'Open-Ready'
+                            ? */}
+                            <form>
+                                <div className="marginBot20">
+                                    <label className="form-label">Reason*:</label>
+                                    <FormControl componentClass="textarea" placeholder="Reason For Deactivate Fund" name="reason" value={this.state.reason} className={"inputFormControl textarea col-md-11 " + (!this.state.reasonValid ? 'inputError' : '')} onChange={(e) => this.handleInputEventChange(e)} onFocus={(e) => { this.setState({ reasonValid : true }) }} />
+                                    {!this.state.reasonValid ? <span className="error">{this.Constants.REASON_REQUIRED}</span> : null}            
+                                </div>
+                            </form>
+                            {/* :
+                                null
+                            } */}
+                        
+                        </div> 
+                        <Row>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                            <Button type="button" className="fsnetCancelButton" onClick={this.handlefundDelClose}>Cancel</Button>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                            <Button type="button" className="fsnetCancelButton btnEnabled" onClick={this.deactivateFund}>Deactivate</Button>
+                            </Col>
+                        </Row>   
+                    </Modal.Body>
+                </Modal>
+
+
+                <Modal id="lpFundModal" show={this.state.lpFundModal} onHide={() => {this.handlefundClose(null)}} dialogClassName="GPDelModalDialog">
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Title>{this.state.fundName}</Modal.Title>                                        
+                    <Modal.Body>
+                        <div className="viewFund">
+                            <LpTableComponent fundId={this.state.fundId}></LpTableComponent> 
+                        </div>
+                        <Row>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                            <Button type="button" className="fsnetCancelButton" onClick={this.handlefundClose}>Cancel</Button>
+                            </Col>
+                            {/* <Col lg={6} md={6} sm={6} xs={12}>
+                            <Button type="button" className="fsnetCancelButton btnEnabled" onClick={this.handlefundClose}>Deactivate</Button>
+                            </Col> */}
                         </Row>   
                     </Modal.Body>
                 </Modal>

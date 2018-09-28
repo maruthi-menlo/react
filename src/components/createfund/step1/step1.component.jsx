@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
 import '../createfund.component.css';
-import { Button, Radio, Row, Col, FormControl } from 'react-bootstrap';
+import { Button, Radio, Row, Col, FormControl,Tooltip,OverlayTrigger } from 'react-bootstrap';
 import Loader from '../../../widgets/loader/loader.component';
 import {Fsnethttp} from '../../../services/fsnethttp';
 import {Constants} from '../../../constants/constants';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { PubSub } from 'pubsub-js';
+import { FsnetUtil } from '../../../util/util';
 import FundImage from '../../../images/fund-default@2x.png';
 
 class Step1Component extends Component{
@@ -15,16 +16,17 @@ class Step1Component extends Component{
         super(props);
         this.Fsnethttp = new Fsnethttp();
         this.Constants = new Constants();
+        this.FsnetUtil = new FsnetUtil();
         this.proceedToNext = this.proceedToNext.bind(this);
         this.proceedToBack = this.proceedToBack.bind(this);
         this.fundDetailsInputHandleEvent = this.fundDetailsInputHandleEvent.bind(this);
+        this.addPercentageToInput = this.addPercentageToInput.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
         this.removeImageBtn = this.removeImageBtn.bind(this);
         this.addCurrencyValueToInput = this.addCurrencyValueToInput.bind(this);
         this.handleinputFocus = this.handleinputFocus.bind(this);
         this.state = {
-            isAllDelegateSignNeeded: true,
             fundImageName: 'fund_Pic.jpg',
             currentFundImage : FundImage,
             fundPicFile: {},
@@ -58,7 +60,12 @@ class Step1Component extends Component{
             fundHardCapValid: true,
             fundHardCapBorder: false,
             fundHardCapMsz: '',
-            imageRemoved: true
+            imageRemoved: true,
+            percentageOfLPAndGPAggregateCommitmentPer:'',
+            percentageOfLPCommitmentPer:'',
+            generalPartnersCapitalCommitmentindicated:'',
+            generalPartnersCapitalCommitmentindicatedValid:false,
+            generalPartnersCapitalCommitmentindicatedMsz:''
         }
     }
 
@@ -101,9 +108,12 @@ class Step1Component extends Component{
     updateFundDetails(data) {
         this.setState({ createdFundData: data, fundId: data.id, firmId:reactLocalStorage.getObject('firmId') }, () => this.updateInputValues());
         let dataObj = {};
+        console.log('data::::', data);
         dataObj ={
             fundManagerLegalEntityNameValid : true,
             legalEntityValid: true,
+            fundTypeValid: true,
+            generalPartnersCapitalCommitmentindicatedValid:true
         };
         this.updateStateParams(dataObj);
     }
@@ -133,17 +143,20 @@ class Step1Component extends Component{
         this.setState({ 
             legalEntity: obj.legalEntity || '',
             fundHardCap: obj.fundHardCap &&  parseInt(obj.fundHardCap) !== 0 ? obj.fundHardCap : '',
-            fundHardCapCurrencyValue: obj.fundHardCap &&  parseInt(obj.fundHardCap) !== 0 ? this.convertToCurrency(obj.fundHardCap) : '',
-            fundTargetCommitmentCurrencyValue: obj.fundTargetCommitment &&  parseInt(obj.fundTargetCommitment) !== 0 ? this.convertToCurrency(obj.fundTargetCommitment) : '',
-            capitalCommitmentByGPCurrencyValue: obj.capitalCommitmentByFundManager && parseInt(obj.capitalCommitmentByFundManager) !==0 ? this.convertToCurrency(obj.capitalCommitmentByFundManager) : '',
+            fundHardCapCurrencyValue: obj.fundHardCap &&  parseInt(obj.fundHardCap) !== 0 ? this.FsnetUtil.convertToCurrency(obj.fundHardCap) : '',
+            fundTargetCommitmentCurrencyValue: obj.fundTargetCommitment &&  parseInt(obj.fundTargetCommitment) !== 0 ? this.FsnetUtil.convertToCurrency(obj.fundTargetCommitment) : '',
+            capitalCommitmentByGPCurrencyValue: obj.capitalCommitmentByFundManager && parseInt(obj.capitalCommitmentByFundManager) !==0 ? this.FsnetUtil.convertToCurrency(obj.capitalCommitmentByFundManager) : '',
+            fundType: obj.fundType || 0,
             fundManagerLegalEntityName: obj.fundManagerLegalEntityName || '',
             capitalCommitmentByGP: obj.capitalCommitmentByFundManager && parseInt(obj.capitalCommitmentByFundManager) !==0 ? obj.capitalCommitmentByFundManager: '',
             percentageOfLPCommitment: obj.percentageOfLPCommitment && parseInt(obj.percentageOfLPCommitment) !==0 ? obj.percentageOfLPCommitment : '',
+            percentageOfLPCommitmentPer: obj.percentageOfLPCommitment && parseInt(obj.percentageOfLPCommitment) !==0 ? obj.percentageOfLPCommitment+'%' : '',
             fundTargetCommitment: obj.fundTargetCommitment || '',
             percentageOfLPAndGPAggregateCommitment: obj.percentageOfLPAndGPAggregateCommitment &&parseInt(obj.percentageOfLPAndGPAggregateCommitment) !==0 ? obj.percentageOfLPAndGPAggregateCommitment : '',
+            percentageOfLPAndGPAggregateCommitmentPer: obj.percentageOfLPAndGPAggregateCommitment &&parseInt(obj.percentageOfLPAndGPAggregateCommitment) !==0 ? obj.percentageOfLPAndGPAggregateCommitment+'%' : '',
             currentFundImage: obj.fundImage? obj.fundImage.url: FundImage,
+            generalPartnersCapitalCommitmentindicated: obj.generalPartnersCapitalCommitmentindicated? obj.generalPartnersCapitalCommitmentindicated: '',
             fundImageName: obj.fundImage? obj.fundImage.originalname: 'fund_Pic.jpg',
-            isAllDelegateSignNeeded: obj.isAllDelegateSignNeeded
          }, () => this.disableFundParticipationFields());
     }
 
@@ -151,11 +164,11 @@ class Step1Component extends Component{
         if(this.state.percentageOfLPCommitment === '' && this.state.percentageOfLPAndGPAggregateCommitment === '' && this.state.capitalCommitmentByGP === '') {
             this.enableAllTextBoxes()
         } else if(this.state.percentageOfLPCommitment !== '') {
-            this.disableBandCTextFields();
+            this.enableATextField();
         } else if(this.state.percentageOfLPAndGPAggregateCommitment !== '') {
-            this.disableAandEnableBTextFields();
+            this.enableCTextField();
         } else if(this.state.capitalCommitmentByGP !== '') {
-            this.disableAandCTextFields();
+            this.enableBTextField();
         }
     }
 
@@ -170,10 +183,17 @@ class Step1Component extends Component{
     // Enable / Disble functionality of Login Button
 
     enableDisableFundDetailsButton(){
-        let status = (this.state.legalEntityValid && this.state.fundManagerLegalEntityNameValid && this.state.fundTargetCommitmentValid && this.state.fundHardCapValid ) ? true : false;
+        let status = (this.state.legalEntityValid && this.state.fundManagerLegalEntityNameValid && this.state.fundTargetCommitmentValid && this.state.fundHardCapValid && this.state.generalPartnersCapitalCommitmentindicatedValid && this.state.fundTypeValid ) ? true : false;
         this.setState({
             fundDetailsPageValid : status
         });
+    }
+
+    numbersOnly(event) {
+        if (((event.which != 46 || (event.which == 46 && event.target.value == '')) ||
+            event.target.value.indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
     }
 
     addCurrencyValueToInput(event, type) {
@@ -182,7 +202,7 @@ class Step1Component extends Component{
             case 'fundHardCap':
                 if(event.target.value !== '') {
                     let error = this.hardCardValidation(event.target.value);
-                    let value = this.convertToCurrency(event.target.value);
+                    let value = this.FsnetUtil.convertToCurrency(event.target.value);
                     if(error) {
                         this.setState({
                             fundHardCapCurrencyValue: value,
@@ -215,7 +235,7 @@ class Step1Component extends Component{
             case 'fundTargetCommitment':
                 if(event.target.value !== '') {
                     let error = this.targetCommitmentValidation(event.target.value);
-                    let value = this.convertToCurrency(event.target.value);
+                    let value = this.FsnetUtil.convertToCurrency(event.target.value);
                     if(error) {
                         this.setState({
                             fundTargetCommitmentCurrencyValue: value,
@@ -247,7 +267,7 @@ class Step1Component extends Component{
                 break;
             case 'capitalCommitmentByGP':
                 if(event.target.value !== '') {
-                    let value = this.convertToCurrency(event.target.value);
+                    let value = this.FsnetUtil.convertToCurrency(event.target.value);
                     this.setState({
                         capitalCommitmentByGPCurrencyValue: value
                     })
@@ -282,16 +302,46 @@ class Step1Component extends Component{
                     })
                 }
                 break;
+            case 'fundType':
+                if(event.target.value !== '') {
+                    this.setState({
+                        fundType: this.state.fundType
+                    })
+                }
+                break;
+            case type:
+                if(event.target.value !== '') {
+                    this.setState({
+                        [type+'Per']: this.state[type]
+                    })
+                }
+                break;
             default:
                 break;
         }
 
     }
+
+    //Add Percentage to % input fields.
+    addPercentageToInput(event, type) {
+        switch(type) {
+            case type:
+                if(event.target.value !== '') {
+                    this.setState({
+                        [type+'Per']:parseFloat(event.target.value)+'%',
+                        [type]:parseFloat(event.target.value) //This is for float conversion if we have more than two dots
+                    })
+                }
+                break;
+            default: 
+                break;
+        }
+    }
  
     //Fund details input change event
     fundDetailsInputHandleEvent(event,type) {
         let dataObj={};
-        const allowNumberRegex = /^[0-9\b]+$/;
+        const allowNumberRegex = /^[0-9]*[.]{0,1}[0-9]/;
         switch(type) {
             case 'legalEntity':
                 if(event.target.value.trim() === '' || event.target.value.trim() === undefined) {
@@ -322,15 +372,43 @@ class Step1Component extends Component{
                 // if value is not blank, then test the regex
                 if (event.target.value.trim() === '' || allowNumberRegex.test(event.target.value)) {
                     this.setState({
-                        fundHardCap: event.target.value,
+                        fundHardCap: parseFloat(event.target.value),
                         fundHardCapCurrencyValue: event.target.value
                     })
                 }
                 break;
+            case 'fundType':
+                if(event.target.value.trim() === '' || event.target.value.trim() === undefined || event.target.value.trim() == 0) {
+                    this.setState({
+                        fundTypeMsz: this.Constants.FUND_TYPE_REQUIRED,
+                        fundTypeValid: false,
+                        fundTypeBorder: true,
+                        fundType: ''
+                    })
+                    dataObj ={
+                        fundTypeValid :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        fundTypeMsz: '',
+                        fundTypeValid: true,
+                        fundTypeBorder: false,
+                        fundType: event.target.value
+                    })
+                    dataObj ={
+                        fundTypeValid :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
+                this.setState({
+                    fundType: event.target.value
+                })
+                break;
             case 'fundTargetCommitment':
                 if (event.target.value.trim() === '' || allowNumberRegex.test(event.target.value)) {
                     this.setState({
-                        fundTargetCommitment: event.target.value,
+                        fundTargetCommitment: parseFloat(event.target.value),
                         fundTargetCommitmentCurrencyValue: event.target.value
                     })
                 }
@@ -366,15 +444,17 @@ class Step1Component extends Component{
             case 'percentageOfLPCommitment':
                 if(event.target.value.trim() === '' || event.target.value.trim() === undefined) {
                     this.setState({
-                        percentageOfLPCommitment: ''
+                        percentageOfLPCommitment: '',
+                        percentageOfLPCommitmentPer: ''
                     })
                     this.enableAllTextBoxes()
                 } else {
                     if ((event.target.value.trim() === '' || allowNumberRegex.test(event.target.value)) && (parseInt(event.target.value) >0 && parseInt(event.target.value) <=100)) {
                         this.setState({
-                            percentageOfLPCommitment: event.target.value
+                            percentageOfLPCommitment: event.target.value,
+                            percentageOfLPCommitmentPer: event.target.value
                         })
-                        this.disableBandCTextFields();
+                        this.enableATextField();
                     }
                 }
                 break;
@@ -382,18 +462,16 @@ class Step1Component extends Component{
                 if(event.target.value.trim() === '' || event.target.value.trim() === undefined) {
                     this.setState({
                         percentageOfLPAndGPAggregateCommitment: '',
-                        percentageOfLPAndGPAggregateCommitmentCurrencyValue: ''
+                        percentageOfLPAndGPAggregateCommitmentPer: ''
                     })
-                    if(this.state.capitalCommitmentByGP === '') {
-                        this.enableAllTextBoxes()
-                    }
+                    this.enableAllTextBoxes()
                 } else {
                     if ((event.target.value.trim() === '' || allowNumberRegex.test(event.target.value)) && ((parseInt(event.target.value) >0 && parseInt(event.target.value) <=100))) {
                         this.setState({
                             percentageOfLPAndGPAggregateCommitment: event.target.value,
-                            percentageOfLPAndGPAggregateCommitmentCurrencyValue: event.target.value
+                            percentageOfLPAndGPAggregateCommitmentPer: event.target.value
                         })
-                        this.disableAandEnableBTextFields();
+                        this.enableCTextField();
                     }
                 }
                 break;
@@ -401,70 +479,67 @@ class Step1Component extends Component{
                 if(event.target.value.trim() === '' || event.target.value.trim() === undefined) {
                     this.setState({
                         capitalCommitmentByGP: '',
-                        capitalCommitmentByGPCurrencyValue: ''
+                        capitalCommitmentByGPCurrencyValue: '',
                     })
-                    if(this.state.percentageOfLPAndGPAggregateCommitment === '') {
-                        this.enableAllTextBoxes()
-                    } 
+                    this.enableAllTextBoxes()
                     
                 } else {
                     if (event.target.value.trim() === '' || allowNumberRegex.test(event.target.value)) {
                         this.setState({
-                            capitalCommitmentByGP: event.target.value,
+                            capitalCommitmentByGP: parseFloat(event.target.value),
                             capitalCommitmentByGPCurrencyValue: event.target.value
                         })
-                        if(this.state.percentageOfLPAndGPAggregateCommitment === '') {
-                            this.disableAandCTextFields();
-                        } else {
-                            this.disableAFiled();
-                        }
+                        this.enableBTextField();
+                        
                     }
                 }
                 break;
-            case 'isAllDelegateSignNeededYes':
+            case 'generalPartnersCapitalCommitmentindicated1':
                 this.setState({
-                    isAllDelegateSignNeeded: true  
+                    generalPartnersCapitalCommitmentindicated: 1  
                 })
+                dataObj ={
+                    generalPartnersCapitalCommitmentindicatedValid :true
+                };
+                this.updateStateParams(dataObj);
                 break;
-            case 'isAllDelegateSignNeededNo':
+            case 'generalPartnersCapitalCommitmentindicated2':
                 this.setState({
-                    isAllDelegateSignNeeded: false  
+                    generalPartnersCapitalCommitmentindicated: 2  
                 })
+                dataObj ={
+                    generalPartnersCapitalCommitmentindicatedValid :true
+                };
+                this.updateStateParams(dataObj);
                 break;
             default:
                 // do nothing
         }
     }
 
-    disableBandCTextFields() {
+    enableATextField() {
         this.setState({
+            aTextBoxDisabled: false,
             bTextBoxDisabled: true,
             cTextBoxDisabled: true,
             fundDetailspageError:''
         })
     }
 
-    disableAandCTextFields() {
+    enableBTextField() {
         this.setState({
             aTextBoxDisabled: true,
+            bTextBoxDisabled: false,
             cTextBoxDisabled: true,
             fundDetailspageError:''
         })
     }
 
-    disableAFiled() {
+    enableCTextField() {
         this.setState({
             aTextBoxDisabled: true,
+            bTextBoxDisabled: true,
             cTextBoxDisabled: false,
-            bTextBoxDisabled: false,
-            fundDetailspageError:''
-        })
-    }
-
-    disableAandEnableBTextFields() {
-        this.setState({
-            aTextBoxDisabled: true,
-            bTextBoxDisabled: false,
             fundDetailspageError:''
         })
     }
@@ -500,6 +575,14 @@ class Step1Component extends Component{
         let reader = new FileReader();
         if(event.target.files && event.target.files.length > 0) {
             this.imageFile = event.target.files[0];
+            let imageName = event.target.files[0].name
+            var sFileExtension = imageName.split('.')[imageName.split('.').length - 1].toLowerCase();
+            const imageFormats = ['png','jpg','jpeg','gif','tif','svg'];
+            if(imageFormats.indexOf(sFileExtension) === -1) {
+                document.getElementById('uploadBtn').value = "";
+                alert('Please upload valid image.')
+                return true;
+            }
             //Change user profile image size limit here.
             if(this.imageFile.size <=1600000) {
                     this.setState({
@@ -537,24 +620,19 @@ class Step1Component extends Component{
         if(this.state.capitalCommitmentByGP === '' && this.state.percentageOfLPCommitment === '' && this.state.percentageOfLPAndGPAggregateCommitment === '') {
             error = true;
             this.setState({
-                fundDetailspageError: 'Please enter one minimum fund participation amount.'
+                fundDetailspageError: 'Please enter one General Partner’s Capital Commitment.'
             })
         } 
-        if(this.state.capitalCommitmentByGP === '' && this.state.percentageOfLPAndGPAggregateCommitment !== '') {
-            error = true;
-            this.setState({
-                fundDetailspageError: 'Please enter Capital commitment by Fund Manager.'
-            })
-        }
         if(!error) {
             this.open()
             var formData = new FormData();
             formData.append("vcfirmId", this.state.firmId);
             formData.append("legalEntity", this.state.legalEntity);
             formData.append("fundHardCap", this.state.fundHardCap? this.state.fundHardCap : 0);
+            formData.append("fundType", this.state.fundType ? this.state.fundType : 0);
             formData.append("fundTargetCommitment", this.state.fundTargetCommitment? this.state.fundTargetCommitment : 0);
             formData.append("fundManagerLegalEntityName", this.state.fundManagerLegalEntityName);
-            formData.append("isAllDelegateSignNeeded", this.state.isAllDelegateSignNeeded);
+            formData.append("generalPartnersCapitalCommitmentindicated", this.state.generalPartnersCapitalCommitmentindicated);
             if(Object.keys(this.state.fundPicFile).length === 0 && this.state.fundPicFile.constructor === Object && this.state.imageRemoved){
                 formData.append("requestContainImage", false);
             } else {
@@ -564,10 +642,11 @@ class Step1Component extends Component{
             if(this.state.fundId !== '') {
                 formData.append("fundId", this.state.fundId)
             }
-            formData.append("capitalCommitmentByFundManager", this.state.capitalCommitmentByGP?this.state.capitalCommitmentByGP:0);
             formData.append("percentageOfLPCommitment", this.state.percentageOfLPCommitment?this.state.percentageOfLPCommitment:0);
+            formData.append("capitalCommitmentByFundManager", this.state.capitalCommitmentByGP?this.state.capitalCommitmentByGP:0);
             formData.append("percentageOfLPAndGPAggregateCommitment", this.state.percentageOfLPAndGPAggregateCommitment ? this.state.percentageOfLPAndGPAggregateCommitment : 0);
             let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
+            // console.log('this.fundType:::', this.state.fundType);
             this.Fsnethttp.fundStore(formData, headers).then(result=>{
                 this.close();
                 this.setState({
@@ -596,25 +675,19 @@ class Step1Component extends Component{
            
     }
 
-    convertToCurrency(value) {
-        let amount = value;
-        if(amount !== '') {
-            // Create our number formatter.
-            var formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                // the default value for minimumFractionDigits depends on the currency
-                // and is usually already 2
-            });
-            return formatter.format(amount); 
-        }
-    }
-
- 
-
-
     render(){
+        function LinkWithTooltip({ id, children, href, tooltip }) {
+            return (
+              <OverlayTrigger
+                overlay={<Tooltip id={id}>{tooltip}</Tooltip>}
+                placement="right"
+                delayShow={300}
+                delayHide={150}
+              >
+                <a href={href}>{children}</a>
+              </OverlayTrigger>
+            );
+          }
         return(
             <div className="step1FormClass">
                 <div className="form-grid formGridDivMargin">
@@ -630,7 +703,7 @@ class Step1Component extends Component{
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">Hard Cap</label>
-                                <FormControl type="text" value= {this.state.fundHardCapCurrencyValue} placeholder="$15,000,000.00" className={"inputFormControl " + (this.state.fundHardCapBorder ? 'inputError' : '')} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundHardCap')}} onFocus={(e)=>{this.handleinputFocus(e,'fundHardCap')}} />
+                                <FormControl type="text" value= {this.state.fundHardCapCurrencyValue} placeholder="$15,000,000.00" className={"inputFormControl " + (this.state.fundHardCapBorder ? 'inputError' : '')} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'fundHardCap')} onKeyPress={(e) => {this.numbersOnly(e)}} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundHardCap')}} onFocus={(e)=>{this.handleinputFocus(e,'fundHardCap')}} />
                                 <span className="error">{this.state.fundHardCapMsz}</span>
                             </Col>
                         </Row>
@@ -642,34 +715,79 @@ class Step1Component extends Component{
                             </Col>
                             <Col xs={6} md={6}>
                                 <label className="form-label">Fund Target Commitment</label>
-                                <FormControl type="text" placeholder="$15,000.00" className={"inputFormControl " + (this.state.fundTargetCommitmentBorder ? 'inputError' : '')} value= {this.state.fundTargetCommitmentCurrencyValue}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundTargetCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'fundTargetCommitment')}} />
+                                <FormControl type="text" placeholder="$15,000.00" className={"inputFormControl " + (this.state.fundTargetCommitmentBorder ? 'inputError' : '')} value= {this.state.fundTargetCommitmentCurrencyValue}  onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundTargetCommitment')} onKeyPress={(e) => {this.numbersOnly(e)}} onBlur={(e)=>{this.addCurrencyValueToInput(e,'fundTargetCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'fundTargetCommitment')}} />
                                 <span className="error">{this.state.fundTargetCommitmentMsz}</span>
                             </Col>
                         </Row>
-                        <h2 className="title marginTop40">Minimum Fund Participation Amount or Minimum Fund Participation Percentage</h2>
-                        <h4 className="subtext">Fill in one. Minimum fund participation can be calculated based on percentage participation.</h4>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">% of LP Commitment </label>
-                                <FormControl type="text" placeholder="100.00%" className="inputFormControl" value={this.state.percentageOfLPCommitment} disabled={this.state.aTextBoxDisabled} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPCommitment')}  />
+                                <label className="form-label">Fund Type*</label>
+                                <FormControl defaultValue={0} className={"selectFormControl " + (this.state.fundTypeBorder ? 'inputError' : '')}  componentClass="select" placeholder="Select Fund Type" value= {this.state.fundType} onChange={(e) => this.fundDetailsInputHandleEvent(e,'fundType')} onBlur={(e) => this.fundDetailsInputHandleEvent(e,'fundType')} onFocus={(e)=>{this.handleinputFocus(e,'fundType')}}>
+                                        <option value="0">Select Fund Type</option>
+                                        <option value="1">U.S. Fund</option>
+                                        <option value="2">Non-U.S. Fund</option>
+                                </FormControl>
+                                <span className="error">{this.state.fundTypeMsz}</span>
+                            </Col>
+                            {/* <Col lg={6} md={6} sm={6} xs={12}>
+                                <label className="form-label">Fund Type*</label>
+                                <FormControl name='selectState' defaultValue={''} value={this.state.fundType} className={"selectFormControl " + (this.state.fundTypeBorder ? 'inputError' : '')} componentClass="select" placeholder="Select Fund Type" onChange={(e) => this.fundDetailsInputHandleEvent(e, 'fundType')} onBlur={(e) => this.fundDetailsInputHandleEvent(e, 'fundType')}>
+                                    <option value=''>Select Fund Type</option>
+                                    <option value="UsCCorp">U.S.Entity</option>
+                                    <option value="UsSCorp">Non U.S.Entity</option>
+                                </FormControl>
+                                {this.state.selectStateTouched && this.state.trustLegallyDomiciled == 231 && this.state.selectState == 0 ? <span className="error">{this.Constants.STATE_REQUIRED}</span> : null}
+                            </Col> */}
+                        </Row>
+                        <h2 className="title marginTop40">General Partner’s Capital Commitment</h2>
+                        <h4 className="subtext">Specify the General Partner’s Capital Commitment to the Fund by filling in one of the parameters. Click on any parameter for more information.</h4>
+                        <Row className="step1Form-row">
+                            <Col xs={6} md={6}>
+                                <label className="form-label">% of LP Commitments
+                                        &nbsp;
+                                        <span>
+                                            <LinkWithTooltip tooltip="The indicated percentage will establish a GP Capital Commitment based upon a percentage of the aggregate Limited Partner Capital Commitments, without reference to the General Partner’s Capital Commitment itself.  For example, if the aggregate Limited Partner Capital Commitments are $1,000,000 and 1% is selected, the General Partner’s Capital  Commitment will be $10,000." id="tooltip-1">
+                                            <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
+                                            </LinkWithTooltip>
+                                        </span>    
+                                </label>
+                                <FormControl type="text" placeholder="100.00%" className="inputFormControl" value={this.state.percentageOfLPCommitmentPer} disabled={this.state.aTextBoxDisabled} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPCommitment')} onBlur={(e)=>{this.addPercentageToInput(e,'percentageOfLPCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'percentageOfLPCommitment')}}/>
                             </Col>
                             <Col xs={6} md={6}>
-                                <label className="form-label">Capital commitment by Fund Manager  </label>
-                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" disabled={this.state.bTextBoxDisabled} value={this.state.capitalCommitmentByGPCurrencyValue}  onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')}  onBlur={(e)=>{this.addCurrencyValueToInput(e,'capitalCommitmentByGP')}} onFocus={(e)=>{this.handleinputFocus(e,'capitalCommitmentByGP')}} />
+                                <label className="form-label">Fixed Commitment in Dollars
+                                        &nbsp;
+                                        <span>
+                                            <LinkWithTooltip tooltip="Permits entry of a specific, fixed dollar amount in whole dollars or with increments of cents, as preferred." id="tooltip-1">
+                                            <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
+                                            </LinkWithTooltip>
+                                        </span> 
+                                </label>
+                                <FormControl type="text" placeholder="$15,000.00" className="inputFormControl" disabled={this.state.bTextBoxDisabled} value={this.state.capitalCommitmentByGPCurrencyValue}  onChange={(e)=> this.fundDetailsInputHandleEvent(e,'capitalCommitmentByGP')}  onKeyPress={(e) => {this.numbersOnly(e)}} onBlur={(e)=>{this.addCurrencyValueToInput(e,'capitalCommitmentByGP')}} onFocus={(e)=>{this.handleinputFocus(e,'capitalCommitmentByGP')}} />
                             </Col>
                         </Row>
                         <Row className="step1Form-row">
                             <Col xs={6} md={6}>
-                                <label className="form-label">% of LP + GP Aggregate Commitment</label>
-                                <FormControl type="text" placeholder="100.00%" className="inputFormControl" disabled={this.state.cTextBoxDisabled} value={this.state.percentageOfLPAndGPAggregateCommitment} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPAndGPAggregateCommitment')} />
+                                <label className="form-label">% of LP + GP Commitments
+                                    &nbsp;
+                                    <span>
+                                        <LinkWithTooltip tooltip="The indicated percentage will establish a GP Capital Commitment based upon a percentage of the sum of (x) the aggregate Limited Partner Capital Commitments plus (y) the General Partner’s Capital Commitment itself.  For example, if the aggregate Limited Partner Capital Commitments are $1,000,000 and 1% is selected, the General Partner’s Capital  Commitment will be $10,101.01 (such that aggregate Capital Commitments of both the Limited Partners and General Partner are $1,010,101.01, of which $10,101.01 is precisely 1%)." id="tooltip-1">
+                                        <i className="fa fa-question-circle toolTipIconAlign" aria-hidden="true"></i>
+                                        </LinkWithTooltip>
+                                    </span> 
+                                </label>
+                                <FormControl type="text" placeholder="100.00%" className="inputFormControl" disabled={this.state.cTextBoxDisabled} value={this.state.percentageOfLPAndGPAggregateCommitmentPer} onChange={(e)=> this.fundDetailsInputHandleEvent(e,'percentageOfLPAndGPAggregateCommitment')} onBlur={(e)=>{this.addPercentageToInput(e,'percentageOfLPAndGPAggregateCommitment')}} onFocus={(e)=>{this.handleinputFocus(e,'percentageOfLPAndGPAggregateCommitment')}} />
                             </Col>
-                            <Col xs={6} md={6}>
-                                <label className="form-label">All delegates must sign fund:</label>
-                                <Radio name="radioGroup" checked={this.state.isAllDelegateSignNeeded === true} inline id="yesCheckbox" onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededYes')}>&nbsp; Yes 
-                                <span className="radio-checkmark"></span>
+                        </Row>
+                        <h2 className="title marginTop40">The General Partner’s Capital Commitment indicated is:</h2>
+                        <Row className="step1Form-row">
+                            <Col xs={12} md={12} className="marginLeft15">
+                                <Radio name="generalPartnersCapitalCommitmentindicated" checked={this.state.generalPartnersCapitalCommitmentindicated === 1} onChange={(e) => this.fundDetailsInputHandleEvent(e,'generalPartnersCapitalCommitmentindicated1')}>
+                                    <span className="radio-checkmark custom"></span>
+                                    <div className="radioText alignRadioText">A minimum amount only, but not a cap.  If this option is selected, the General Partner’s Capital Commitment may be increased above the required minimum level through the final closing date on later screens.</div>
                                 </Radio>
-                                <Radio name="radioGroup" inline id="noCheckbox" checked={this.state.isAllDelegateSignNeeded === false} onChange={(e) => this.fundDetailsInputHandleEvent(e,'isAllDelegateSignNeededNo')}>&nbsp; No 
-                                <span className="radio-checkmark"></span>
+                                <Radio name="generalPartnersCapitalCommitmentindicated" checked={this.state.generalPartnersCapitalCommitmentindicated === 2} onChange={(e) => this.fundDetailsInputHandleEvent(e,'generalPartnersCapitalCommitmentindicated2')}>
+                                    <span className="radio-checkmark custom"></span>
+                                    <div className="radioText alignRadioText">An exact amount to be adhered to.  If this option is selected, there will be no option to increase the General Partner’s Capital Commitment on later screens, though you may return here to revise this setting at any time.</div>
                                 </Radio>
                             </Col>
                         </Row>

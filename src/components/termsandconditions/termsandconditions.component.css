@@ -1,0 +1,38 @@
+.mainTermContainer{
+    margin: 90px;
+    text-align: justify;
+}
+h4 {
+    color: #376EA9 !important;
+    /*margin-bottom: 0px !important;*/
+}
+.lightBold{
+    color: #595959;
+}
+/*p{
+    margin-bottom: 10px !important;
+}*/
+.paraColorChange{
+    color: #595959;
+}
+.termsAlign{
+    text-align: center;
+}
+.versionAlign{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    color: #595959;
+}
+p.versionAlign::first-letter{
+    font-size: 20px;
+}
+label.augAlign::first-letter{
+    font-size: 20px;
+    display: inline;
+}
+.termsLinks a{
+    color: #3A00FF;
+    text-decoration: underline;
+}

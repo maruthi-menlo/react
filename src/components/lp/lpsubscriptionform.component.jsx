@@ -19,6 +19,7 @@ import { PubSub } from 'pubsub-js';
 import InvestorInformationComponent from '../lp/Investor-Information/investorinformation.component';
 import LlcFormComponent from '../lp/llc/llc.component';
 import AccreditedInvestorComponent from '../lp/accreditedInvestor/accreditedInvestor.component';
+import capitalCommitmentComponent from '../lp/capitalCommitment/capitalCommitment.component';
 import confirmComponent from '../lp/confirm/confirm.component';
 import QualifiedPurchaserComponent from '../lp/qualifiedPurchaser/qualifiedPurchaser.component';
 import QualifiedClientComponent from '../lp/qualifiedClient/qualifiedClient.component';
@@ -30,7 +31,7 @@ import reviewComponent from '../lp/Review/review.component';
 import LpModalComponent from '../lp/lpmodals/lpmodals.component';
 import { FsnetUtil } from '../../util/util';
 import { reactLocalStorage } from 'reactjs-localstorage';
-import vanillaLogo from '../../images/Vanilla.png';
+import vanillaLogo from '../../images/Vanilla-white.png';
 
 var investor = {}, addLpDelegate={}, removeDelegate={};
 class LpSubscriptionFormComponent extends Component {
@@ -55,11 +56,12 @@ class LpSubscriptionFormComponent extends Component {
             lpsubscriptionObj: {},
             currentPage: null,
             currentPageCount:1,
-            totalPageCount:7,
+            totalPageCount:8,
             currentInvestorInfoPageNumber: 1,
             investorInfoValid: false,
             qualifiedPurchaserValid: false,
             accreditedInvestorValid: false,
+            capitalCommitmentValid: false,
             companiesActValid: false,
             equityOwnersValid: false,
             entityProposingValid: false,
@@ -85,9 +87,20 @@ class LpSubscriptionFormComponent extends Component {
             },()=>{
                 //Validate lef nav section based on investorType
                 if(this.state.investorType === 'Individual') {
+                    this.setState({
+                        totalPageCount:4
+                    });
                     this.validateIndividualPages();
                 } else if(this.state.investorType === 'LLC') {
+                    this.setState({
+                        totalPageCount:8
+                    });
                     this.validateLLCPages();
+                } else if(this.state.investorType === 'Trust') {
+                    this.setState({
+                        totalPageCount:6
+                    });
+                    this.validateTrustPages();
                 }
             })
         });
@@ -135,7 +148,14 @@ class LpSubscriptionFormComponent extends Component {
             this.getPage();
             this.getSubscriptionDetails(id);
             this.lpDelegates(id);
+            window.scrollTo(0, 0);
         }
+    }
+
+    componentWillReceiveProps(newProps) {
+        // console.log('new Props:::', newProps);
+        let id = this.FsnetUtil.getLpFundId();
+        this.getSubscriptionDetails(id);
     }
 
     //Get the fund details
@@ -148,7 +168,9 @@ class LpSubscriptionFormComponent extends Component {
                 if (result.data) {
                     this.setState({
                         lpsubscriptionObj: result.data.data,
-                        investorType: result.data.data.investorType? result.data.data.investorType:'LLC',
+                        investorTypeTemp: result.data.data.investorType? result.data.data.investorType:'LLC',
+                        // investorType: result.data.data.investorType? result.data.data.investorType:'LLC',
+                        investorType: this.state.investorType ? this.state.investorType : (result.data.data.investorType? result.data.data.investorType:'LLC'),
                         legalEntity: result.data.data.fund.legalEntity,
                         status: result.data.data.subscriptionStatus.name,
                         currentFundImage: result.data.data.fund.fundImage? result.data.data.fund.fundImage.url: FundImage
@@ -156,14 +178,19 @@ class LpSubscriptionFormComponent extends Component {
                         //Assing total pages count based on investor type.
                         if(result.data.data.investorType === 'Individual') {
                             this.setState({
-                                totalPageCount:3
+                                totalPageCount:4
                             });
                             this.validateIndividualPages();
                         } else if(result.data.data.investorType === 'LLC') {
                             this.setState({
-                                totalPageCount:7
+                                totalPageCount:8
                             });
                             this.validateLLCPages();
+                        } else if(result.data.data.investorType === 'Trust') {
+                            this.setState({
+                                totalPageCount:6
+                            });
+                            this.validateTrustPages();
                         }
                     })
                     PubSub.publish('getLpSubscription', result.data.data);
@@ -217,15 +244,23 @@ class LpSubscriptionFormComponent extends Component {
     investorPageValid() {
         let mandatoryFields = [];
         if(this.state.investorType === 'Individual') {
-            mandatoryFields = ['investorType', 'name', 'areYouSubscribingAsJointIndividual', 'typeOfLegalOwnership', 'mailingAddressCity', 'mailingAddressPhoneNumber', 'mailingAddressState','mailingAddressStreet','mailingAddressZip'];
+            mandatoryFields = ['investorType', 'name', 'areYouSubscribingAsJointIndividual', 'isSubjectToDisqualifyingEvent', 'mailingAddressCity', 'mailingAddressState','mailingAddressStreet','mailingAddressZip'];
         } else if(this.state.investorType === 'LLC') {
-            mandatoryFields = ['investorType','jurisdictionEntityLegallyRegistered','entityName','isEntityTaxExemptForUSFederalIncomeTax', 'istheEntityFundOfFundsOrSimilarTypeVehicle', 'releaseInvestmentEntityRequired', 'mailingAddressCity', 'mailingAddressPhoneNumber', 'mailingAddressState','mailingAddressStreet','mailingAddressZip'];
+            mandatoryFields = ['investorType','jurisdictionEntityLegallyRegistered','entityName','isEntityTaxExemptForUSFederalIncomeTax', 'isSubjectToDisqualifyingEvent', 'releaseInvestmentEntityRequired', 'mailingAddressCity', 'mailingAddressState','mailingAddressStreet','mailingAddressZip', 'otherInvestorAttributes'];
+        } else if(this.state.investorType === 'Trust') {
+            if(this.state.lpsubscriptionObj.investorSubType == 9) {
+                mandatoryFields = ['investorType','investorSubType', 'email', 'trustName', 'trustLegallyDomiciled', 'isEntityTaxExemptForUSFederalIncomeTax', 'releaseInvestmentEntityRequired', 'isSubjectToDisqualifyingEvent', 'mailingAddressCity', 'mailingAddressStreet', 'mailingAddressCountry', 'mailingAddressState', 'mailingAddressZip', 'otherInvestorAttributes'];
+                // mandatoryFields = ['investorType','investorSubType','email','entityName', 'country', 'istheEntityFundOfFundsOrSimilarTypeVehicle', 'mailingAddressCity', 'mailingAddressPhoneNumber', 'mailingAddressState','mailingAddressStreet','mailingAddressZip'];
+            } else {
+                mandatoryFields = ['investorType','investorSubType', 'email', 'trustName', 'trustLegallyDomiciled', 'isEntityTaxExemptForUSFederalIncomeTax', 'releaseInvestmentEntityRequired', 'isSubjectToDisqualifyingEvent', 'mailingAddressCity', 'mailingAddressStreet', 'mailingAddressCountry', 'mailingAddressState', 'mailingAddressZip', 'legalTitleDesignation', 'otherInvestorAttributes'];
+            }
         }
         
         let  valid = this.FsnetUtil.checkNullOrEmpty(mandatoryFields, this.state.lpsubscriptionObj);
         if(valid){
             this.setState({
                 investorInfoValid: true,
+                currentInvestorInfoPageNumber: 2
             })
         } else {
             this.setState({
@@ -256,36 +291,74 @@ class LpSubscriptionFormComponent extends Component {
         if(this.state.lpsubscriptionObj.areYouAccreditedInvestor!== null && this.state.lpsubscriptionObj.areYouAccreditedInvestor!== undefined) {
             this.setState({
                 accreditedInvestorValid: true,
+            }, () => {
+                this.stepsCompleted();
             })
         } else {
             this.setState({
                 accreditedInvestorValid: false
+            }, () => {
+                this.stepsCompleted();
+            })
+        }
+    }
+
+    capitalCommitmentPageValid() {
+        if(this.state.lpsubscriptionObj.lpCapitalCommitment!== null && this.state.lpsubscriptionObj.lpCapitalCommitment!== undefined && this.state.lpsubscriptionObj.lpCapitalCommitment!== '') {
+            this.setState({
+                capitalCommitmentValid: true,
+            }, () => {
+                this.stepsCompleted();
+            })
+        } else {
+            this.setState({
+                capitalCommitmentValid: false
+            }, () => {
+                this.stepsCompleted();
             })
         }
     }
 
     //Check companies act page is valid
     companiesActPageValid() {
+        // if(this.state.lpsubscriptionObj.companiesAct!== null && this.state.lpsubscriptionObj.companiesAct!== undefined && this.state.lpsubscriptionObj.numberOfDirectEquityOwners && this.state.lpsubscriptionObj.existingOrProspectiveInvestorsOfTheFund!== null) {
         if(this.state.lpsubscriptionObj.companiesAct!== null && this.state.lpsubscriptionObj.companiesAct!== undefined) {
+            
             this.setState({
                 companiesActValid: true,
+            }, () => {
+                this.stepsCompleted();
             })
+        } else if(this.state.investorType == 'Trust') {
+                if((this.state.lpsubscriptionObj.companiesAct == 2 || this.state.lpsubscriptionObj.companiesAct == 3) && this.state.lpsubscriptionObj.numberOfDirectEquityOwners && this.state.lpsubscriptionObj.existingOrProspectiveInvestorsOfTheFund!== null) {
+                    this.setState({
+                        companiesActValid: true,
+                    }, () => {
+                        this.stepsCompleted();
+                    })        
+                }
         } else {
             this.setState({
                 companiesActValid: false
+            }, () => {
+                this.stepsCompleted();
             })
         }
     }
 
     //Check equity owners page is valid
     equityOwnersPageValid() {
-        if(this.state.lpsubscriptionObj.numberOfDirectEquityOwners && this.state.lpsubscriptionObj.existingOrProspectiveInvestorsOfTheFund!== null) {
+        if(this.state.lpsubscriptionObj.numberOfDirectEquityOwners >= 0 && this.state.lpsubscriptionObj.existingOrProspectiveInvestorsOfTheFund!== null) {
             this.setState({
                 equityOwnersValid: true,
+            }, () => {
+                this.stepsCompleted();
             })
         } else {
             this.setState({
                 equityOwnersValid: false
+            }, () => {
+                this.stepsCompleted();
             })
         }
     }
@@ -295,17 +368,25 @@ class LpSubscriptionFormComponent extends Component {
         if((this.state.lpsubscriptionObj.entityProposingAcquiringInvestment!== null && this.state.lpsubscriptionObj.entityProposingAcquiringInvestment!== undefined) && this.state.lpsubscriptionObj.anyOtherInvestorInTheFund!== null && this.state.lpsubscriptionObj.entityHasMadeInvestmentsPriorToThedate!== null && this.state.lpsubscriptionObj.partnershipWillNotConstituteMoreThanFortyPercent!== null && this.state.lpsubscriptionObj.beneficialInvestmentMadeByTheEntity!== null) {
             this.setState({
                 entityProposingValid: true,
+            }, () => {
+                this.stepsCompleted();
             })
         } else {
             this.setState({
                 entityProposingValid: false
+            }, () => {
+                this.stepsCompleted();
             })
         }
     }
 
+    isEmpty(value){
+        return (value == null || value.length === 0);
+    }
+
     //Check Erisa page is valid
     erisaPageValid() {
-        if((this.state.lpsubscriptionObj.employeeBenefitPlan!==null && this.state.lpsubscriptionObj.employeeBenefitPlan!==undefined) && (this.state.lpsubscriptionObj.planAsDefinedInSection4975e1!==null && this.state.lpsubscriptionObj.planAsDefinedInSection4975e1!==undefined) && (this.state.lpsubscriptionObj.benefitPlanInvestor!==null && this.state.lpsubscriptionObj.benefitPlanInvestor!==undefined) ) {
+        if(!this.isEmpty(this.state.lpsubscriptionObj.employeeBenefitPlan) || !this.isEmpty(this.state.lpsubscriptionObj.planAsDefinedInSection4975e1) || !this.isEmpty(this.state.lpsubscriptionObj.benefitPlanInvestor)) {
             this.setState({
                 erisaValid: true,
             },()=>{
@@ -324,9 +405,11 @@ class LpSubscriptionFormComponent extends Component {
     stepsCompleted() {
         let pages = [];
         if(this.state.investorType === 'Individual') {
-            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid'];
+            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid', 'capitalCommitmentValid'];
         } else if(this.state.investorType === 'LLC') {
-            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid', 'companiesActValid', 'equityOwnersValid', 'entityProposingValid', 'erisaValid'];
+            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid', 'companiesActValid', 'equityOwnersValid', 'entityProposingValid', 'erisaValid', 'capitalCommitmentValid'];
+        } else if (this.state.investorType === 'Trust') {
+            pages = ['investorInfoValid', 'accreditedInvestorValid', 'qualifiedPurchaserValid', 'companiesActValid', 'erisaValid', 'capitalCommitmentValid'];
         }
         let idx = 0;
         for(let index of pages){
@@ -345,6 +428,7 @@ class LpSubscriptionFormComponent extends Component {
         this.investorPageValid();
         this.accreditedInvestorPageValid();
         this.qualifiedPurchaserPageValid();
+        this.capitalCommitmentPageValid();
     }
 
     //Call all the pages related to investor type LLC
@@ -356,6 +440,17 @@ class LpSubscriptionFormComponent extends Component {
         this.companiesActPageValid();
         this.equityOwnersPageValid();
         this.enitityProposingPageValid();
+        this.erisaPageValid();
+        this.capitalCommitmentPageValid();
+    }
+
+    validateTrustPages() {
+        this.investorPageValid();
+        this.accreditedInvestorPageValid();
+        this.qualifiedPurchaserPageValid();
+        this.companiesActPageValid();
+        this.erisaPageValid();
+        this.capitalCommitmentPageValid();
     }
 
     //Redirect to login
@@ -399,8 +494,18 @@ class LpSubscriptionFormComponent extends Component {
     }
 
     openPatnershipDocument() {
-        if(this.state.lpsubscriptionObj.fund.partnershipDocument) {
-            window.open(this.state.lpsubscriptionObj.fund.partnershipDocument.url, '_blank', 'width = 1000px, height = 600px')
+        if(this.state.lpsubscriptionObj.documentsForSignature) {
+            let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+            this.open();
+            this.Fsnethttp.getAggrement(this.state.lpsubscriptionObj.documentsForSignature.envelopeId, headers, this.state.lpsubscriptionObj.id).then(result => {
+                this.close();
+                if (result.data) {
+                    window.location.href = result.data.url;
+                }
+            })
+            .catch(error => {
+                this.close();
+            });
         }
     }
 
@@ -411,19 +516,20 @@ class LpSubscriptionFormComponent extends Component {
                 <nav className="navbar navbar-custom">
                     <div className="navbar-header">
                         <div className="sidenav">
-                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
+                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo"/></h1>
                         </div>
                     </div>
                     <div className="text-center navbar-collapse-custom" id="navbar-collapse" hidden={!this.state.showSideNav}>
                         <div className="sidenav">
-                            <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
+                            <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo"/></h1>
                             <h2 className="text-left lpDashAlign"><img src={homeImage} alt="home_image" className="" />&nbsp; <Link to="/dashboard" className="dashboardTxtAlign">Dashboard</Link></h2>
                             <div className="active-item text-left"><label className="fund-left-pic-label"><img src={copyImage} alt="image" /></label>&nbsp;<div className="left-nav-fund-name text-left subAgrmnt">Subscription Agreement</div> <span className="fsbadge fsbadgeAlign">{this.state.currentPageCount}/{this.state.totalPageCount}</span></div>
                             {
                                 this.state.investorType ?
                                 <ul className="sidenav-menu">
                                     <li>
-                                        <Link className={(this.state.currentPage === 'personaldetails' ? 'active' : '')} to={"/lp/personaldetails/"+this.state.lpsubscriptionObj.id}>Investor Information ({this.state.currentInvestorInfoPageNumber}/2)<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.investorInfoValid === false}/></Link>
+                                        <Link className={(this.state.currentPage === 'investorInfo' ? 'active' : '')} to={"/lp/investorInfo/"+this.state.lpsubscriptionObj.id}>Investor Information ({this.state.currentInvestorInfoPageNumber}/2)<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.investorInfoValid === false}/></Link>
+                                        {/* <Link className={`${this.state.currentPage === 'investorInfo' ? 'active' : ''}`} to={"/lp/investorInfo/"+this.state.lpsubscriptionObj.id}>Investor Information ({this.state.currentInvestorInfoPageNumber}/2)<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.investorInfoValid === false}/></Link> */}
                                     </li>
                                     <li>
                                         <Link className={(this.state.currentPage === 'AccreditedInvestor' ? 'active' : '')} to={"/lp/AccreditedInvestor/"+this.state.lpsubscriptionObj.id}>Accredited Investor<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.accreditedInvestorValid === false} /></Link>
@@ -431,24 +537,29 @@ class LpSubscriptionFormComponent extends Component {
                                     <li>
                                         <Link className={(this.state.currentPage === 'qualifiedPurchaser' ? 'active' : '')} to={"/lp/qualifiedPurchaser/"+this.state.lpsubscriptionObj.id}>Qualified Purchaser/Client<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.qualifiedPurchaserValid === false}/></Link>
                                     </li>
-                                    <li hidden={this.state.investorType === 'Individual'}>
-                                        <Link to={"/lp/companiesAct/"+this.state.lpsubscriptionObj.id}>Companies Act<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.companiesActValid === false}/></Link>
+                                    <li hidden={this.state.investorType === 'Individual'} className={(this.state.investorTypeTemp == 'Individual' ? 'not-allowed' : '')}>
+                                        {/* <Link className={(this.state.currentPage === 'companiesAct' ? 'active' : '')} to={"/lp/companiesAct/"+this.state.lpsubscriptionObj.id}>Companies Act<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.companiesActValid === false}/></Link> */}
+                                        <Link className={`${this.state.currentPage === 'companiesAct' ? 'active' : ''} ${this.state.investorTypeTemp == 'Individual' ? 'disabled' : ''}`} to={"/lp/companiesAct/"+this.state.lpsubscriptionObj.id}>Companies Act<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.companiesActValid === false}/></Link>
                                     </li>
-                                    <li hidden={this.state.investorType !== 'LLC'}>
-                                        <Link to={"/lp/equityOwners/"+this.state.lpsubscriptionObj.id}>Equity owners<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.equityOwnersValid === false}/></Link></li>
-                                    <li hidden={this.state.investorType !== 'LLC'}>
-                                        <Link to={"/lp/entityProposing/"+this.state.lpsubscriptionObj.id}>Look-Through Issues<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.entityProposingValid === false}/></Link>
+                                    <li hidden={this.state.investorType !== 'LLC'} className={(this.state.investorTypeTemp != 'LLC' ? 'not-allowed' : '')}>
+                                        {/* <Link className={(this.state.currentPage === 'equityOwners' ? 'active' : '')} to={"/lp/equityOwners/"+this.state.lpsubscriptionObj.id}>Equity owners<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.equityOwnersValid === false}/></Link></li> */}
+                                        <Link className={`${this.state.currentPage === 'equityOwners' ? 'active' : ''} ${this.state.investorTypeTemp != 'LLC' ? 'disabled' : ''}`} to={"/lp/equityOwners/"+this.state.lpsubscriptionObj.id}>Equity owners<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.equityOwnersValid === false}/></Link></li>
+                                    <li hidden={this.state.investorType !== 'LLC'} className={(this.state.investorTypeTemp != 'LLC' ? 'not-allowed' : '')}>
+                                        {/* <Link className={(this.state.currentPage === 'entityProposing' ? 'active' : '')} to={"/lp/entityProposing/"+this.state.lpsubscriptionObj.id}>Look-Through Issues<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.entityProposingValid === false}/></Link> */}
+                                        <Link className={`${this.state.currentPage === 'entityProposing' ? 'active' : ''} ${this.state.investorTypeTemp != 'LLC' ? 'disabled' : ''}`} to={"/lp/entityProposing/"+this.state.lpsubscriptionObj.id}>Look-Through Issues<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.entityProposingValid === false}/></Link>
                                     </li>
-                                    <li hidden={this.state.investorType === 'Individual'}>
-                                        <Link to={"/lp/erisa/"+this.state.lpsubscriptionObj.id}>ERISA<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.erisaValid === false}/></Link>
+                                    <li hidden={this.state.investorType === 'Individual'} className={(this.state.investorTypeTemp == 'Individual' ? 'not-allowed' : '')}>
+                                        {/* <Link className={(this.state.currentPage === 'erisa' ? 'active' : '')} to={"/lp/erisa/"+this.state.lpsubscriptionObj.id}>ERISA<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.erisaValid === false}/></Link> */}
+                                        <Link className={`${this.state.currentPage === 'erisa' ? 'active' : ''} ${this.state.investorTypeTemp == 'Individual' ? 'disabled' : ''}`} to={"/lp/erisa/"+this.state.lpsubscriptionObj.id}>ERISA<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.erisaValid === false}/></Link>
                                     </li>
+                                    <li><Link className={(this.state.currentPage === 'capitalCommitment' ? 'active' : '')} to={"/lp/capitalCommitment/"+this.state.lpsubscriptionObj.id}>Capital Commitment<img src={successImage} alt="successImage" className="ptrSuccessImage successImg" hidden={this.state.capitalCommitmentValid === false}/></Link></li>
                                     <li><Link className={(this.state.currentPage === 'review' ? 'active' : '')} to={"/lp/review/"+this.state.lpsubscriptionObj.id}>Review & Confirm
                                     {/* <img src={successImage} alt="successImage" className="ptrSuccessImage successImg" /> */}
                                     </Link></li>
                                 </ul>:
                                 <ul className="sidenav-menu minHeight150">
                                     <li>
-                                        <Link className={(this.state.currentPage === 'personaldetails' ? 'active' : '')} to={"/lp/personaldetails/"+this.state.lpsubscriptionObj.id}>Investor Information (1/2)</Link>
+                                        <Link className={(this.state.currentPage === 'investorInfo' ? 'active' : '')} to={"/lp/investorInfo/"+this.state.lpsubscriptionObj.id}>Investor Information (1/2)</Link>
                                     </li>
                                 </ul>
                             }
@@ -493,13 +604,19 @@ class LpSubscriptionFormComponent extends Component {
                         <div className="mainHeading">
                             <Row className="">
                                 <Col lg={6} md={6} sm={6} xs={12} id="">
+                                    <Row>
+                                        <Col lg={3} md={3} sm={3} xs={3} className="fundImageAllign">
                                             {
                                                 this.state.lpsubscriptionObj['fund'] && this.state.lpsubscriptionObj['fund']['fundImage'] ?
                                                 <img src={this.state.lpsubscriptionObj['fund']['fundImage']['url']} alt="img" className="header-fund-image"/>: 
                                                 <img src={fundDefaultImage} alt="fund_image" className="header-fund-image"/>
                                             }
-                                    <span className="main-title">{this.state.legalEntity}</span>
-                                    {/* <span className="statusTxtStyle">{this.state.status}</span> */}
+                                        </Col>
+                                        <Col lg={9} md={9} sm={9} xs={9} className="fundNameAllign">
+                                            <span className="main-title">{this.state.legalEntity}</span>
+                                            {/* <span className="statusTxtStyle">{this.state.status}</span> */}
+                                        </Col>
+                                    </Row>  
                                 </Col>
                                 <Col lg={6} md={6} sm={6} xs={12}>
                                     <HeaderComponent ></HeaderComponent>
@@ -517,7 +634,7 @@ class LpSubscriptionFormComponent extends Component {
                             </Row>
                         </div>
                         <Row className="main-content">
-                            <Route exact path={`${match.url}/personaldetails/:id`} component={InvestorInformationComponent} />
+                            <Route exact path={`${match.url}/investorInfo/:id`} component={InvestorInformationComponent} />
                             <Route exact path={`${match.url}/llc/:id`} component={LlcFormComponent} />  
                             <Route exact path={`${match.url}/AccreditedInvestor/:id`} component={AccreditedInvestorComponent} />    
                             <Route exact path={`${match.url}/confirm/:id`} component={confirmComponent} />     
@@ -527,6 +644,7 @@ class LpSubscriptionFormComponent extends Component {
                             <Route exact path={`${match.url}/equityOwners/:id`} component={equityOwnersComponent} />          
                             <Route exact path={`${match.url}/entityProposing/:id`} component={entityProposingComponent} />  
                             <Route exact path={`${match.url}/erisa/:id`} component={ERISAComponent} />
+                            <Route exact path={`${match.url}/capitalCommitment/:id`} component={capitalCommitmentComponent} />
                             <Route exact path={`${match.url}/review/:id`} component={reviewComponent} />                        
                         </Row>
                     </div>

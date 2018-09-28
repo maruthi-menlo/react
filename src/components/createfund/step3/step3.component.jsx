@@ -81,7 +81,7 @@ class Step3Component extends Component {
                 uploadDocFile: data,
                 uploadDocSize: (data.partnershipDocument.size/ 1048576).toFixed(4)+' MB',
                 uploadFundPageValid: true,
-                documentLink: data.partnershipDocument.url
+                documentLink: data.partnershipDocument.path ? data.partnershipDocument.baseUrl+data.partnershipDocument.path: ''
             })
         }
     }
@@ -180,7 +180,6 @@ class Step3Component extends Component {
 
     uploadBtnClick() {
         document.getElementById('uploadBtn').click();
-
     }
 
     //Upload patnership document.

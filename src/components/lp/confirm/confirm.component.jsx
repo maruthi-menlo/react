@@ -38,7 +38,7 @@ class confirmComponent extends Component {
                 <div className="form-grid formGridDivMargin min-height-400">
                         <Row className="step1Form-row">
                             <Col xs={12} md={12}>
-                                <label className="form-label width100">Based on your input, the fund will hold your interest in the following name:  [John Smith and Judy Smith], [Tenants in Common].  Is this acceptable?</label>
+                                <label className="form-label width100">Based on your input, the Fund will hold your interest in the following name:  [John Smith and Judy Smith], [Tenants in Common].  Is this acceptable?</label>
                                 <Radio name="confirmCheck" inline id="yesCheckbox">&nbsp; Yes
                                     <span className="radio-checkmark"></span>
                                 </Radio>

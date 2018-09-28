@@ -166,7 +166,7 @@ class entityProposingComponent extends Component {
                         <Col xs={12} md={12}>
                             <label className="form-label width100">Please check the appropriate true or false response to the following statements regarding the Look-Through Issues to subscribe for an investment in the fund:</label>
                         </Col>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} md={12} className="marginTop15">
                             <label className="form-label width100">The Entity was not organized for the purpose of acquiring the investment.</label>
                             <Radio name="entityProposingAcquiringInvestment" inline checked={this.state.entityProposingAcquiringInvestment === true} onChange={(e) => this.equityProposingChangeEvent(e, 'radio', true, 'entityProposingAcquiringInvestment')}>&nbsp; True
                                 <span className="radio-checkmark"></span>
@@ -175,7 +175,7 @@ class entityProposingComponent extends Component {
                                 <span className="radio-checkmark"></span>
                             </Radio>
                         </Col>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} md={12} className="marginTop15">
                             <label className="form-label width100"> To the best of the Entity’s knowledge, the Entity does not control, nor is it controlled by, or under common control with, any other investor in the fund.  </label>
                             <Radio name="anyOtherInvestorInTheFund" inline checked={this.state.anyOtherInvestorInTheFund === true} onChange={(e) => this.equityProposingChangeEvent(e, 'radio',true, 'anyOtherInvestorInTheFund')}>&nbsp; True
                                 <span className="radio-checkmark"></span>
@@ -184,7 +184,7 @@ class entityProposingComponent extends Component {
                                 <span className="radio-checkmark"></span>
                             </Radio>
                         </Col>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} md={12} className="marginTop15">
                             <label className="form-label width100">The Entity has made investments prior to the date hereof or intends to make investments in the near future and each beneficial owner of interests in the Entity has and will share in the same proportion to each such investment.</label>
                             <Radio name="entityHasMadeInvestmentsPriorToThedate" inline checked={this.state.entityHasMadeInvestmentsPriorToThedate === true} onChange={(e) => this.equityProposingChangeEvent(e, 'radio',true, 'entityHasMadeInvestmentsPriorToThedate')}>&nbsp; True
                                 <span className="radio-checkmark"></span>
@@ -193,7 +193,7 @@ class entityProposingComponent extends Component {
                                 <span className="radio-checkmark"></span>
                             </Radio>
                         </Col>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} md={12} className="marginTop15">
                             <label className="form-label width100">The Entity’s investment in the Partnership will not constitute more than forty percent (40%) of the Entity’s assets (including for this purpose any committed capital for an Entity that is an investment fund).</label>
                             <Radio name="partnershipWillNotConstituteMoreThanFortyPercent" inline checked={this.state.partnershipWillNotConstituteMoreThanFortyPercent === true} onChange={(e) => this.equityProposingChangeEvent(e, 'radio',true, 'partnershipWillNotConstituteMoreThanFortyPercent')}>&nbsp; True
                                 <span className="radio-checkmark"></span>
@@ -202,7 +202,7 @@ class entityProposingComponent extends Component {
                                 <span className="radio-checkmark"></span>
                             </Radio>
                         </Col>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} md={12} className="marginTop15">
                             <label className="form-label width100">The governing documents of the Entity require that each beneficial owner of the Entity, including, but not limited to, shareholders, partners and beneficiaries, participate through such beneficial owner’s interest in the Entity in all of the Entity’s investments and that the profits and losses from each such investment are shared among such beneficial owners in the same proportions as all other investments of the Entity.  No such beneficial owner may vary such beneficial owner’s share of the profits and losses or the amount of such beneficial owner’s contribution for any investment made by the Entity. </label>
                             <Radio name="beneficialInvestmentMadeByTheEntity" inline checked={this.state.beneficialInvestmentMadeByTheEntity === true} onChange={(e) => this.equityProposingChangeEvent(e, 'radio',true, 'beneficialInvestmentMadeByTheEntity')}>&nbsp; True
                                 <span className="radio-checkmark"></span>

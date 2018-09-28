@@ -20,25 +20,20 @@ class QualifiedPurchaserComponent extends Component {
         this.qualifiedPurchaserChangeEvent = this.qualifiedPurchaserChangeEvent.bind(this);
         this.proceedToNext = this.proceedToNext.bind(this);
         this.proceedToBack = this.proceedToBack.bind(this);
-        this.closeCompanyModal = this.closeCompanyModal.bind(this);
         this.openCompanyModal = this.openCompanyModal.bind(this);
+        this.openAdvisetModal = this.openAdvisetModal.bind(this);
         this.openTooltip = this.openTooltip.bind(this);
-        this.closeTooltipModal = this.closeTooltipModal.bind(this);
-        this.closeQualifiedClientTooltip = this.closeQualifiedClientTooltip.bind(this);
         this.qualifiedClientTooltip = this.qualifiedClientTooltip.bind(this);
         this.state = {
             showModal: false,
             investorType: 'LLC',
-            areYouQualifiedPurchaser: null,
-            areYouQualifiedClient: null,
+            areYouQualifiedPurchaser: false,
+            areYouQualifiedClient: false,
             qualifiedPurchaserPageValid: false,
             showQualifiedClient: false,
             showQualifiedClientIndividual: false,
             investorObj: {},
-            showTooltipModal: false,
-            showQualifiedClientModal: false,
             qualifiedPurchaserErrorMsz:'',
-            showCompanyModal: false
         }
 
     }
@@ -63,8 +58,9 @@ class QualifiedPurchaserComponent extends Component {
                     this.setState({
                         investorObj: result.data.data,
                         investorType: result.data.data.investorType?result.data.data.investorType:'LLC',
-                        areYouQualifiedPurchaser: result.data.data.areYouQualifiedPurchaser,
-                        areYouQualifiedClient: result.data.data.areYouQualifiedClient
+                        investorSubType: result.data.data.investorSubType ? result.data.data.investorSubType : (result.data.data.investorType == 'Trust' ? 9 : 0),
+                        areYouQualifiedPurchaser: result.data.data.areYouQualifiedPurchaser ? result.data.data.areYouQualifiedPurchaser : false,
+                        areYouQualifiedClient: result.data.data.areYouQualifiedClient ? result.data.data.areYouQualifiedClient : false
                     },()=>{
                         this.updateInvestorInputFields(this.state.investorObj)
                     })
@@ -106,33 +102,24 @@ class QualifiedPurchaserComponent extends Component {
 
     //Show Purchaser Modal
     openTooltip() {
-        this.setState({ showTooltipModal: true });
-    }
-    //Close Purchaser Modal
-    closeTooltipModal() {
-        this.setState({ showTooltipModal: false });
+        // this.setState({ showTooltipModal: true });
+        PubSub.publish('openModal', {investorType: this.state.investorType, investorSubType: this.state.investorSubType, modalType: 'qualifier', type: 'qualifierModal'});
     }
 
     //Show Company Act Modal
     openCompanyModal() {
-        this.setState({ showCompanyModal: true });
+        PubSub.publish('openModal', {investorType: this.state.investorType, investorSubType: this.state.investorSubType, modalType: 'actModalWindow', type: 'company'});
     }
 
-    //Close Company Act Modal
-    closeCompanyModal() {
-        this.setState({ showCompanyModal: false });
+    openAdvisetModal() {
+        PubSub.publish('openModal', {investorType: this.state.investorType, investorSubType: this.state.investorSubType, modalType: 'actModalWindow', type: 'adviser'});
     }
 
     //Show Qualified client Modal
     qualifiedClientTooltip() {
-        this.setState({ showQualifiedClientModal: true });
+        // this.setState({ showQualifiedClientModal: true });
+        PubSub.publish('openModal', {investorType: this.state.investorType, investorSubType: this.state.investorSubType, modalType: 'qualifier', type: 'qualifierClientModal'});
     }
-
-    //Show Qualified client Modal
-    closeQualifiedClientTooltip() {
-        this.setState({ showQualifiedClientModal: false });
-    }
-
 
     qualifiedPurchaserChangeEvent(event, type, value) {
         this.setState({
@@ -142,15 +129,15 @@ class QualifiedPurchaserComponent extends Component {
         if(type === 'areYouQualifiedPurchaser') {
             if(value === false) {
                 this.setState({
-                    qualifiedPurchaserPageValid: false,
+                    qualifiedPurchaserPageValid: true,
                     showQualifiedClient: true,
-                    areYouQualifiedClient: null
+                    areYouQualifiedClient: false
                 }) 
             } else {
                 this.setState({
                     qualifiedPurchaserPageValid: true,
                     showQualifiedClient: false,
-                    areYouQualifiedClient: null
+                    areYouQualifiedClient: false
                 }) 
             }
         }
@@ -163,7 +150,7 @@ class QualifiedPurchaserComponent extends Component {
     }
 
     proceedToNext() {
-        let postobj = {investorType:this.state.investorType,subscriptonId:this.state.investorObj.id, step:4,areYouQualifiedPurchaser:this.state.areYouQualifiedPurchaser }
+        let postobj = {investorType:this.state.investorType,investorSubType: this.state.investorSubType, subscriptonId:this.state.investorObj.id, step:4,areYouQualifiedPurchaser:this.state.areYouQualifiedPurchaser }
         this.state.areYouQualifiedPurchaser === false ? postobj['areYouQualifiedClient'] = this.state.areYouQualifiedClient:postobj
         this.open();
         let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
@@ -171,7 +158,7 @@ class QualifiedPurchaserComponent extends Component {
             this.close();
             if (result.data) {
                 if(this.state.investorType === 'Individual') {
-                    this.props.history.push('/lp/review/'+this.state.investorObj.id);
+                    this.props.history.push('/lp/capitalCommitment/'+this.state.investorObj.id);
                 } else {
                     this.props.history.push('/lp/companiesAct/'+this.state.investorObj.id);
                 }
@@ -216,11 +203,12 @@ class QualifiedPurchaserComponent extends Component {
                         <div className="title">Qualified Purchaser</div>
                         <Row className="step1Form-row">
                             <Col xs={12} md={12}>
-                                <label className="form-label width100" hidden={this.state.investorType !== 'Individual'}>Are you an 
-                                <span className="helpWord" onClick={this.openTooltip}>qualified purchaser</span>within the meaning of Section 2(a)(51) under the<span className="helpWord" onClick={this.openCompanyModal}>Companies Act</span>?
+                                <label className="form-label width100" hidden={this.state.investorType !== 'Individual'}>Are you an <span className="helpWord" onClick={this.openTooltip}>qualified purchaser</span> within the meaning of Section 2(a)(51) under the <span className="helpWord" onClick={this.openCompanyModal}>Companies Act</span>?
                                 </label>
-                                <label className="form-label width100" hidden={this.state.investorType !== 'LLC'}>Are you an 
-                                <span className="helpWord" onClick={this.openTooltip}>qualified purchaser</span> within the meaning of Section 2(a)(51) under the<span className="helpWord" onClick={this.openCompanyModal}>Companies Act</span>?
+                                <label className="form-label width100" hidden={this.state.investorType !== 'LLC'}>Are you an <span className="helpWord" onClick={this.openTooltip}>qualified purchaser</span> within the meaning of Section 2(a)(51) under the <span className="helpWord" onClick={this.openCompanyModal}>Companies Act</span>?
+                                </label>
+                                <label className="form-label width100" hidden={this.state.investorType !== 'Trust'}>
+                                    Is the Trust a <span className="helpWord" onClick={this.openTooltip}>qualified purchaser</span> within the meaning of Section 2(a)(51) under the <span className="helpWord" onClick={this.openCompanyModal}>Companies Act</span>?
                                 </label>
                                 <Radio name="qualifiedPurchaser" inline checked={this.state.areYouQualifiedPurchaser === true} onChange={(e) => this.qualifiedPurchaserChangeEvent(e, 'areYouQualifiedPurchaser', true)}>&nbsp; Yes
                                     <span className="radio-checkmark"></span>
@@ -231,10 +219,13 @@ class QualifiedPurchaserComponent extends Component {
                             </Col>
                         </Row>
                         {/* Qualified Client starts for individual investor type*/}
-                        <Row className="step1Form-row" hidden={!this.state.showQualifiedClient}>
+                        <Row className="step1Form-row" hidden={this.state.areYouQualifiedPurchaser}>
                             <Col xs={12} md={12}>
-                                <label className="form-label width100" hidden={this.state.investorType !== 'Individual'}>Are you a <span className="helpWord" onClick={this.openTooltip}>qualified client</span>within the meaning of Rule 205-3 under the <span className="helpWord" onClick={this.openTooltip}>Advisers Act</span>?</label>
-                                <label className="form-label width100" hidden={this.state.investorType !== 'LLC'}>Is your Entity considered a<span className="helpWord" onClick={this.qualifiedClientTooltip}>qualified client</span> within the meaning of Rule 205-3 under the<span className="helpWord" onClick={this.openTooltip}>Advisers Act</span>?
+                                <label className="form-label width100" hidden={this.state.investorType !== 'Individual'}>Is your Entity considered a <span className="helpWord" onClick={this.qualifiedClientTooltip}>qualified client</span> within the meaning of Rule 205-3 under the <span className="helpWord" onClick={this.openAdvisetModal}>Advisers Act</span>?</label>
+                                <label className="form-label width100" hidden={this.state.investorType !== 'LLC'}>Is your Entity considered a <span className="helpWord" onClick={this.qualifiedClientTooltip}>qualified client</span> within the meaning of Rule 205-3 under the <span className="helpWord" onClick={this.openAdvisetModal}>Advisers Act</span>?
+                                </label>
+                                <label className="form-label width100" hidden={this.state.investorType !== 'Trust'}>
+                                    Is your Trust considered a <span className="helpWord" onClick={this.qualifiedClientTooltip}>qualified client</span> within the meaning of Rule 205-3 under the <span className="helpWord" onClick={this.openAdvisetModal}>Advisers Act</span>?
                                 </label>
                                 <Radio name="qualifiedClient" inline checked={this.state.areYouQualifiedClient === true} onChange={(e) => this.qualifiedPurchaserChangeEvent(e, 'areYouQualifiedClient', true)}>&nbsp; Yes
                                     <span className="radio-checkmark"></span>
@@ -256,9 +247,9 @@ class QualifiedPurchaserComponent extends Component {
                                     (2)  [MOST COMMON] The Trust owns investments that are valued at not less than $5,000,000 and is owned directly or indirectly by two (2) or more natural persons related as siblings, spouses (including former spouses) or direct lineal descendants by birth or adoption, spouses of such persons, the estates of such persons, or foundations, charitable organizations or trusts established by or for the benefit of such persons.
                                     OR<br/>
                                     (3)  The Trust  is a “qualified institutional buyer” as defined in paragraph (a) of Rule 144A under the Securities Act, acting for its own account, the account of another “qualified institutional buyer”, or the account of a “qualified purchaser”; provided that 
-                                    (i) a dealer described in paragraph (a)(1)(ii) of Rule 144A must own and invest on a discretionary basis at least USD $25,000,000 in securities of issuers that are not affiliated persons of the dealer and (ii) a plan referred to in paragraph (a)(1)(i)(D) or (a)(1)(i)(E) of Rule 144A, or a trust fund referred to in paragraph (a)(1)(i)(F) of Rule 144A that holds the assets of such a plan, will not be deemed to be acting for its own account if investment decisions with respect to the plan are made by the beneficiaries of the plan, except with respect to investment decisions made solely by the fiduciary, trustee or sponsor of such plan.
+                                    (i) a dealer described in paragraph (a)(1)(ii) of Rule 144A must own and invest on a discretionary basis at least USD $25,000,000 in securities of issuers that are not affiliated persons of the dealer and (ii) a plan referred to in paragraph (a)(1)(i)(D) or (a)(1)(i)(E) of Rule 144A, or a trust Fund referred to in paragraph (a)(1)(i)(F) of Rule 144A that holds the assets of such a plan, will not be deemed to be acting for its own account if investment decisions with respect to the plan are made by the beneficiaries of the plan, except with respect to investment decisions made solely by the fiduciary, trustee or sponsor of such plan.
                                     OR<br/>
-                                    (4)  The Trust is not covered by clauses (1), (2) or (3) above, is not formed for the specific purpose of acquiring the investment in the fund as to which the Trust proposes to subscribe, as to which the trustee or other person authorized to make decisions with respect to the Trust and each settlor or other person who has contributed assets to the Trust is a person described as an individual (including any person who is acquiring such investment with his or her spouse in a joint capacity, as community property or similar shared interest) who either individually or together with a spouse, owns investments that are valued at not less than USD $5,000,000.<br/>
+                                    (4)  The Trust is not covered by clauses (1), (2) or (3) above, is not formed for the specific purpose of acquiring the investment in the Fund as to which the Trust proposes to subscribe, as to which the trustee or other person authorized to make decisions with respect to the Trust and each settlor or other person who has contributed assets to the Trust is a person described as an individual (including any person who is acquiring such investment with his or her spouse in a joint capacity, as community property or similar shared interest) who either individually or together with a spouse, owns investments that are valued at not less than USD $5,000,000.<br/>
 
                                     “Investments” shall mean any of the following:<br/>
                                     (1) “Securities” as such term is defined by Section 2(a)(1) of the Securities Act. <br/> 
@@ -273,7 +264,7 @@ class QualifiedPurchaserComponent extends Component {
                                     "<br/></span>} id="tooltip-1">
                                     <span className="helpWord">“qualified purchaser”</span>
                                 </LinkWithTooltip> &nbsp; within the meaning of Section 2(a)(51) under the &nbsp;
-                                <LinkWithTooltip tooltip="" href="#" id="tooltip-1">
+                                <LinkWithTooltip tooltip="" id="tooltip-1">
                                     <span className="helpWord">Companies Act,</span>
                                 </LinkWithTooltip>
                                 </label>
@@ -293,11 +284,11 @@ class QualifiedPurchaserComponent extends Component {
                                 {/* <label className="form-label width100">Is your Trust considered a qualified client within the meaning of Rule 205-3 under the Advisers Act?</label> */}
                                 <label className="form-label width100">Is your Trust considered a &nbsp;
                                 <LinkWithTooltip tooltip={<span>"
-                                The Trust is a qualified client if it is either making a capital commitment to the investment fund for which it proposes to subscribe of USD $1,000,000 or greater or is a Trust with investments that are valued at more than $2,100,000.
+                                The Trust is a qualified client if it is either making a capital commitment to the investment Fund for which it proposes to subscribe of USD $1,000,000 or greater or is a Trust with investments that are valued at more than $2,100,000.
                                     "</span>} id="tooltip-1">
                                     <span className="helpWord">qualified client</span>
                                 </LinkWithTooltip> &nbsp; within the meaning of Rule 205-3 under the &nbsp;
-                                <LinkWithTooltip tooltip="" href="#" id="tooltip-1">
+                                <LinkWithTooltip tooltip="" id="tooltip-1">
                                     <span className="helpWord">Advisers Act?</span>
                                 </LinkWithTooltip>
                                 </label>
@@ -320,9 +311,9 @@ class QualifiedPurchaserComponent extends Component {
                                     OR<br/>
                                     (2)  [MOST COMMON] The Trust owns investments that are valued at not less than $5,000,000 and is owned directly or indirectly by two (2) or more natural persons related as siblings, spouses (including former spouses) or direct lineal descendants by birth or adoption, spouses of such persons, the estates of such persons, or foundations, charitable organizations or trusts established by or for the benefit of such persons.
                                     OR<br/>
-                                    (3)  The Trust  is a “qualified institutional buyer” as defined in paragraph (a) of Rule 144A under the Securities Act, acting for its own account, the account of another “qualified institutional buyer”, or the account of a “qualified purchaser”; provided that (i) a dealer described in paragraph (a)(1)(ii) of Rule 144A must own and invest on a discretionary basis at least USD $25,000,000 in securities of issuers that are not affiliated persons of the dealer and (ii) a plan referred to in paragraph (a)(1)(i)(D) or (a)(1)(i)(E) of Rule 144A, or a trust fund referred to in paragraph (a)(1)(i)(F) of Rule 144A that holds the assets of such a plan, will not be deemed to be acting for its own account if investment decisions with respect to the plan are made by the beneficiaries of the plan, except with respect to investment decisions made solely by the fiduciary, trustee or sponsor of such plan.
+                                    (3)  The Trust  is a “qualified institutional buyer” as defined in paragraph (a) of Rule 144A under the Securities Act, acting for its own account, the account of another “qualified institutional buyer”, or the account of a “qualified purchaser”; provided that (i) a dealer described in paragraph (a)(1)(ii) of Rule 144A must own and invest on a discretionary basis at least USD $25,000,000 in securities of issuers that are not affiliated persons of the dealer and (ii) a plan referred to in paragraph (a)(1)(i)(D) or (a)(1)(i)(E) of Rule 144A, or a trust Fund referred to in paragraph (a)(1)(i)(F) of Rule 144A that holds the assets of such a plan, will not be deemed to be acting for its own account if investment decisions with respect to the plan are made by the beneficiaries of the plan, except with respect to investment decisions made solely by the fiduciary, trustee or sponsor of such plan.
                                     OR<br/>
-                                    (4)  The Trust is not covered by clauses (1), (2) or (3) above, is not formed for the specific purpose of acquiring the investment in the fund as to which the Trust proposes to subscribe, as to which the trustee or other person authorized to make decisions with respect to the Trust and each settlor or other person who has contributed assets to the Trust is a person described as an individual (including any person who is acquiring such investment with his or her spouse in a joint capacity, as community property or similar shared interest) who either individually or together with a spouse, owns investments that are valued at not less than USD $5,000,000.<br/>
+                                    (4)  The Trust is not covered by clauses (1), (2) or (3) above, is not formed for the specific purpose of acquiring the investment in the Fund as to which the Trust proposes to subscribe, as to which the trustee or other person authorized to make decisions with respect to the Trust and each settlor or other person who has contributed assets to the Trust is a person described as an individual (including any person who is acquiring such investment with his or her spouse in a joint capacity, as community property or similar shared interest) who either individually or together with a spouse, owns investments that are valued at not less than USD $5,000,000.<br/>
 
                                     “Investments” shall mean any of the following:<br/>
                                     (1) “Securities” as such term is defined by Section 2(a)(1) of the Securities Act.<br/>  
@@ -337,7 +328,7 @@ class QualifiedPurchaserComponent extends Component {
                                     "<br/></span>} id="tooltip-1">
                                     <span className="helpWord">“qualified purchaser”</span>
                                 </LinkWithTooltip> &nbsp; within the meaning of Section 2(a)(51) under the &nbsp;
-                                <LinkWithTooltip tooltip="" href="#" id="tooltip-1">
+                                <LinkWithTooltip tooltip="" id="tooltip-1">
                                     <span className="helpWord">Companies Act,</span>
                                 </LinkWithTooltip>
                                 </label>
@@ -357,11 +348,11 @@ class QualifiedPurchaserComponent extends Component {
                                 {/* <label className="form-label width100">Is your Trust considered a qualified client within the meaning of Rule 205-3 under the Advisers Act?</label> */}
                                 <label className="form-label width100">Is your Trust considered a &nbsp;
                                 <LinkWithTooltip tooltip={<span>"
-                                The Trust is a qualified client if it is either making a capital commitment to the investment fund for which it proposes to subscribe of USD $1,000,000 or greater or is a Trust with investments that are valued at more than $2,100,000.
+                                The Trust is a qualified client if it is either making a capital commitment to the investment Fund for which it proposes to subscribe of USD $1,000,000 or greater or is a Trust with investments that are valued at more than $2,100,000.
                                     "</span>} id="tooltip-1">
                                     <span className="helpWord">qualified client</span>
                                 </LinkWithTooltip> &nbsp; within the meaning of Rule 205-3 under the &nbsp;
-                                <LinkWithTooltip tooltip="" href="#" id="tooltip-1">
+                                <LinkWithTooltip tooltip="" id="tooltip-1">
                                     <span className="helpWord">Advisers Act?</span>
                                 </LinkWithTooltip>
                                 </label>
@@ -381,67 +372,6 @@ class QualifiedPurchaserComponent extends Component {
                     <i className={"fa fa-chevron-right " + (!this.state.qualifiedPurchaserPageValid ? 'disabled' : '')} onClick={this.proceedToNext} aria-hidden="true"></i>
                 </div>
                 <Loader isShow={this.state.showModal}></Loader>
-                <Modal id="confirmInvestorModal" className="ttModalAlign" dialogClassName="tooltipDialog" show={this.state.showTooltipModal} onHide={this.closeTooltipModal}>
-                    <Modal.Header className="TtModalHeaderAlign" closeButton>
-                        <h1>Qualified Purchaser</h1>
-                    </Modal.Header>
-                    <Modal.Body className="TtModalBody">
-                        <div hidden={this.state.investorType !== 'Individual'}>
-                        You are an “qualified purchaser” if you own investments that are valued at not less than USD $5,000,000.  If you propose to acquire the interest in the investment fund as to which you propose to subscribe in a joint capacity with your spouse, such as community property or a similar shared interest, then you may include in this determination investments owned by your spouse.<br/>
-                        “Investments” shall mean any of the following:<br/>
-                        (1) “Securities” as such term is defined by Section 2(a)(1) of the Securities Act.<br/>
-                        (2) Real estate held for investment purposes (i.e., not used by you for personal purposes or as a place of business or in connection with your trade or business).<br/>
-                        (3) Commodities futures contracts, options on such contracts or options on commodities that are traded on or subject to the rules of (i) any contract market designated for trading under the Exchange Act and rules thereunder or (ii) any board of trade or exchange outside the United States, as contemplated in Part 30 of the rules under the Exchange Act) held for investment purposes.<br/>
-                        (4) Physical commodities (with respect to which a Commodity Interest is traded on a market specified in paragraph 3 above) held for investment purposes.<br/>
-                        (5) Financial contracts within the meaning of Section 3(c)(2)(B)(ii) of the Companies Act, which are held for investment purposes.<br/>
-                        (6) Cash and cash equivalents (including bank deposits, certificates of deposit, bankers acceptances and similar bank instruments held for investment purposes and the net cash surrender value of insurance policies).
-                        Valued data:
-                        “Valued” shall mean either the fair market value or cost of Investments net of the amount of any outstanding indebtedness incurred to acquire such Investments."<br/>
-                        </div>
-                        <div hidden={this.state.investorType !== 'LLC'}>
-                        If any one of the four options below apply, the Entity is considered a “qualified purchaser” and if none of the four options below apply, the Entity is not a “qualified purchaser”:<br/>
-                        (1)  [MOST COMMON] The Entity is acting for its own account or the accounts of others described in clauses (2), (3) or (4) below, and in the aggregate owns and invests on a discretionary basis investments that are valued at not less than USD $25,000,000.
-                        OR<br/>
-                        (2)  [MOST COMMON] The Entity owns investments that are valued at not less than $5,000,000 and is owned directly or indirectly by two (2) or more natural persons related as siblings, spouses (including former spouses) or direct lineal descendants by birth or adoption, spouses of such persons, the estates of such persons, or foundations, charitable organizations or trusts established by or for the benefit of such persons.
-                        OR<br/>
-                        (3)  The Entity  is a “qualified institutional buyer” as defined in paragraph (a) of Rule 144A under the Securities Act, acting for its own account, the account of another “qualified institutional buyer”, or the account of a “qualified purchaser”; provided that (i) a dealer described in paragraph (a)(1)(ii) of Rule 144A must own and invest on a discretionary basis at least USD $25,000,000 in securities of issuers that are not affiliated persons of the dealer and (ii) a plan referred to in paragraph (a)(1)(i)(D) or (a)(1)(i)(E) of Rule 144A, or a trust fund referred to in paragraph (a)(1)(i)(F) of Rule 144A that holds the assets of such a plan, will not be deemed to be acting for its own account if investment decisions with respect to the plan are made by the beneficiaries of the plan, except with respect to investment decisions made solely by the fiduciary, trustee or sponsor of such plan.
-                        OR<br/>
-                        (4)  The Entity is not covered by clauses (1), (2) or (3) above, is not formed for the specific purpose of acquiring the investment in the fund as to which the Entity proposes to subscribe, and each equity owner of the Entity is an individual (including any person who is acquiring such investment with his or her spouse in a joint capacity, as community property or similar shared interest) who either individually or together with a spouse, owns investments that are valued at not less than USD $5,000,000.
-                        <br/>
-                        Investments data:<br/>
-                            “Investments” shall mean any of the following:<br/>
-                            (1) “Securities” as such term is defined by Section 2(a)(1) of the Securities Act.  <br/>
-                            (2) Real estate held for investment purposes (i.e., not used by you for personal purposes or as a place of business or in connection with your trade or business).<br/>
-                            (3) Commodities futures contracts, options on such contracts or options on commodities that are traded on or subject to the rules of (i) any contract market designated for trading under the Exchange Act and rules thereunder or (ii) any board of trade or exchange outside the United States, as contemplated in Part 30 of the rules under the Exchange Act) held for investment purposes.<br/>
-                            (4) Physical commodities (with respect to which a Commodity Interest is traded on a market specified in paragraph 3 above) held for investment purposes.<br/>
-                            (5) Financial contracts within the meaning of Section 3(c)(2)(B)(ii) of the Companies Act, which are held for investment purposes.<br/>
-                            (6) Cash and cash equivalents (including bank deposits, certificates of deposit, bankers acceptances and similar bank instruments held for investment purposes and the net cash surrender value of insurance policies).<br/>
-                            Valued data:<br/>
-                        “Valued” shall mean either the fair market value or cost of Investments net of the amount of any outstanding indebtedness incurred to acquire such Investments.
-                        </div>
-                    </Modal.Body>
-                </Modal>
-                <Modal id="confirmInvestorModal" className="ttModalAlign" dialogClassName="tooltipDialog top150" show={this.state.showQualifiedClientModal} onHide={this.closeQualifiedClientTooltip}>
-                    <Modal.Header className="TtModalHeaderAlign" closeButton>
-                        <h1>Qualified Client</h1>
-                    </Modal.Header>
-                    <Modal.Body className="TtModalBody">
-                        <div>
-                        The Entity is a qualified client if it is either making a capital commitment to the investment fund for which it proposes to subscribe of USD $1,000,000 or greater or is a Entity with investments that are valued at more than $2,100,000.
-                        </div>
-                    </Modal.Body>
-                </Modal>
-                <Modal id="confirmInvestorModal" className="ttModalAlign" dialogClassName="tooltipDialog top150" show={this.state.showCompanyModal} onHide={this.closeCompanyModal}>
-                    <Modal.Header className="TtModalHeaderAlign" closeButton>
-                        <h1>Companies Act</h1>
-                    </Modal.Header>
-                    <Modal.Body className="TtModalBody">
-                        <div>
-                            United Stated Investment Company Act of 1940, as amended
-                        </div>
-                        
-                    </Modal.Body>
-                </Modal>
             </div>
         );
     }

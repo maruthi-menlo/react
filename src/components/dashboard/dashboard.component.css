@@ -84,6 +84,10 @@
     padding: 8px 12px 16px 12px;
     margin: 30px 30px 30px 15px;
 }
+
+.fundBoxEdit.fundDeactivated {
+    opacity: 0.5;
+}
 /*.fundImageEdit{
     height: 48px;
 }*/
@@ -100,11 +104,13 @@
 }
 #MainDashboard .fund-name-align {
     position: relative;
-    top: -7px;
+    top: 0px;
+    
 }
 #MainDashboard .removeTop {
     position: relative;
     top: 0px;
+    
 }
 .Fund-Name {
     width: 152px;
@@ -118,6 +124,12 @@
     color: #2f4858;
     display: inline-block;
     margin-right: 14px;
+    top: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    
 }
 .Bounding-Box {
     width: 20px;
@@ -374,6 +386,11 @@
     letter-spacing: normal;
     color: #000;
     margin-bottom: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .labelClosedReadyPrice {
     height: 20px;
@@ -384,6 +401,11 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #000;
+    margin-left: 3px;
+    margin-right: 3px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .labelClosedPrice {
     height: 20px;
@@ -394,28 +416,36 @@
     line-height: 1.43;
     letter-spacing: normal;
     color: #000;
+    margin-left: 3px;
+    margin-right: 3px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .priceDivAlign {
     margin-top: -10px;
 }
 .inProgressDiv {
-    width: 35%;
+    width: 34%;
     float: left;
 }
 .closeReadyDiv {
-    width: 38%;
+    width: 34%;
     float: left;
     margin-left: 5px;
 }
 .closedDiv {
-    width: 24%;
+    width: 30%;
     float: left;
 }
 .progressDivAlign {
     margin-left: 10px;
 }
-.tPriceStyle {
+
+.tPriceStyle span{
     font-family: 'Open Sans';
+}
+.tPriceStyle {
     font-size: 12px;
     font-weight: normal;
     font-style: normal;
@@ -423,9 +453,14 @@
     line-height: 1.33;
     letter-spacing: normal;
     color: #2f4858;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.hcPriceStyle span{
+    font-family: 'Open Sans';
 }
 .hcPriceStyle {
-    font-family: 'Open Sans';
     font-size: 12px;
     font-weight: normal;
     font-style: normal;
@@ -433,7 +468,10 @@
     line-height: 1.33;
     letter-spacing: normal;
     color: #2f4858;
-    margin-top: 5px;
+    margin-top: 10px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .actnRqStyle {
     margin-bottom: -6px;
@@ -556,9 +594,9 @@
     background-color: rgba(245, 245, 245, 0.3) !important;
 }
 .progress-yellow{
-    background-color: lightyellow !important;
-    width: 35% !important;
-    border: 1px solid lightyellow;
+    background-image: linear-gradient(to bottom, #fdeb71, #f8d800) !important;
+    /* opacity: 0.7; */
+    width: 35%;
     border-radius: 0px !important;
     border-right: none;
     border-left: none;
@@ -566,24 +604,24 @@
 }
 .progress-white {
     background-color: #ffffff !important;
-    width: 100% !important;
+    width: 100%;
     border: 1px solid #ffffff;
     border-radius: 4px !important;
     border-left: none;
     height: 12px !important;
 }
 .progress-pink {
-    background-color: pink !important;
-    width: 30% !important;
-    border: 1px solid pink;
+    background-image: linear-gradient(to bottom, #ffaa85, #b3315f) !important;
+    /* opacity: 0.7; */
+    width: 30%;
     border-radius: 0px !important;
     border-right: none;
     height: 12px !important;
 }
 .progress-green{
-    background-color: lightgreen !important;
-    width: 25% !important;
-    border: 1px solid lightgreen;
+    background-image: linear-gradient(to bottom, #90f7ec, #32ccbc) !important;
+    /* opacity: 0.7; */
+    width: 25%;
     border-radius: 0px !important;
     border-right: none;
     border-left: none;
@@ -593,6 +631,32 @@
     background-color: #ff3a3a !important;
     width: 30% !important;
 }
+
+.fundBoxEdit .fund-progress-bar {
+    padding-top: 10px !important;
+}
+
+.fundBoxEdit .fund-progress-bar .price-meter {
+    font-size: 12px !important;
+    font-family: 'Open Sans' !important;
+}
+.fundBoxEdit .fund-progress-bar .caretUpAlign, 
+.fundBoxEdit .fund-progress-bar .caretDownAlign {
+    font-size: 12px !important;
+    font-family: 'Open Sans' !important;
+    left: -3px;
+    line-height: 24px;
+}
+
+.fundBoxEdit .fund-progress-bar .progress-bar {
+    height: 20px !important;
+    padding: 4px !important;
+}
+
+.fundBoxEdit .fund-progress-bar .progress-bar .progress {
+    height: 12px !important;
+}
+
 .fund-col-container {
     display: inline-block;
 }
@@ -992,7 +1056,8 @@
     color: var(--white);
  }
  #lpMainDashboard .fundContribution{
-    margin: 0 0 0 57px;
+     margin-bottom: 5px;
+    padding-left: 10px;
  }
  .fundContribution .contributionLabel{
     font-family: 'OpenSans-Bold';
@@ -1004,6 +1069,12 @@
     color: #2f4858;
     text-align: left;
  }
+ 
+ .fundContribution-seperator {
+    width: 240px;
+    border-top: 1px solid rgba(51, 101, 138, 0.2);
+ }
+
  .fundContribution .contributionAmount{
     font-family: 'OpenSans-Bold';
     font-size: 20px;
@@ -1013,6 +1084,9 @@
     letter-spacing: normal;
     color: #1adbb9;
     text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
  }
  .openForm{
     min-width: 50px;
@@ -1079,6 +1153,11 @@
     letter-spacing: normal;
     text-align: right;
     color: #2f4858;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    top: 5px;
 }
 
 #lpMainDashboard .fundImage{
@@ -1103,6 +1182,10 @@
     color: #ffffff;
     color: var(--white);
 }
+#lpMainDashboard .interested:hover {
+    border: 1px solid #000000 !important;
+    border-radius: 30px;
+}
 #lpMainDashboard .interested{
     /* width: 208px;
     height: 20px; */
@@ -1115,7 +1198,9 @@
     letter-spacing: normal;
     text-align: center;
     color: #0c0033;
+    height: 35px;
+    line-height: 35px;
 }
 #lpMainDashboard .marginAlign{
-    margin: 16px 0 24px 0;
+    margin: 15px 0 15px 0;
 }

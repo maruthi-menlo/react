@@ -3,6 +3,7 @@ import './register.component.css';
 import { Row,Col, Button, Checkbox as CBox, FormControl} from 'react-bootstrap';
 import {Fsnethttp} from '../../services/fsnethttp';
 import {Constants} from '../../constants/constants';
+import { Route, Link } from "react-router-dom";
 import userDefaultImage from '../../images/default_user.png';
 import Loader from '../../widgets/loader/loader.component';
 import  HeaderComponent from '../authheader/header.component'
@@ -121,6 +122,14 @@ class RegisterComponent extends Component{
         let reader = new FileReader();
         if(event.target.files && event.target.files.length > 0) {
             this.imageFile = event.target.files[0];
+            let imageName = event.target.files[0].name
+            var sFileExtension = imageName.split('.')[imageName.split('.').length - 1].toLowerCase();
+            const imageFormats = ['png','jpg','jpeg','gif','tif','svg'];
+            if(imageFormats.indexOf(sFileExtension) === -1) {
+                document.getElementById('uploadBtn').value = "";
+                alert('Please upload valid image.')
+                return true;
+            }
             //Change user profile image size limit here.
             if(this.imageFile.size <=1600000) {
                     this.setState({
@@ -559,7 +568,7 @@ class RegisterComponent extends Component{
                     <div className="parentDiv">
                         <h1 className="register-text">FSNET Account registration</h1>
                         <div className="mandatory-content">Fill in the form below to register for your account. Fields marked with an * are mandatory.</div>
-                        <div className="mandatory-content">Password should contain a minimum of eight characters with at least one letter, one number, and one special character.</div>
+                        <div className="mandatory-content">Password should contain a minimum of eight characters with at least one letter, one number and one special character.</div>
                         <form>
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
@@ -610,7 +619,7 @@ class RegisterComponent extends Component{
                         <CBox checked={this.state.fsnetTermsandServices} className="" onChange={(e) => this.handleInputChangeEvent(e,'fsnetTermsandServices')}>
                         <span className="checkmark"></span>
                         </CBox>
-                        <label className="rememberLabel remember-text">By checking this box you agree to  <a>FSNET&apos;s Terms of Service</a></label><br/>
+                        <label className="rememberLabel remember-text">By checking this box you agree to  <Link to="/terms-and-conditions" target="_blank">FSNET&apos;s Terms of Service</Link></label><br/>
                         <div className="error marginTopminus10">{this.state.termsandConditionsRequired}</div>
                         <div className="error">{this.state.errorMessage}</div>
                         <Button className={"signupBtn "+ (this.state.isFormValid ? 'btnEnabled' : '') } disabled={!this.state.isFormValid} onClick={this.signUpFn}>Sign Up</Button>

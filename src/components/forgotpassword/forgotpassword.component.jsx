@@ -45,6 +45,11 @@ class ForgotPasswordComponent extends Component {
             isAccountTypeValid: false,
             verifyCodeFormValid: false,
             isscreen3FormValid: false,
+            username:'',
+            hideScreen1:false,
+            userNameList:[],
+            usernameMsz:'',
+            usernameBorder: false,
         }
         this.showForgotScreenFn = this.showForgotScreenFn.bind(this);
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -73,7 +78,7 @@ class ForgotPasswordComponent extends Component {
     // Enable / Disble functionality of Login Button
 
     enableDisableForgotButtion() {
-        let status = (this.state.isemailOrcellNumberValid && this.state.isAccountTypeValid) ? true : false;
+        let status = (this.state.isemailOrcellNumberValid) ? true : false;
         this.setState({
             isscreen1FormValid: status
         });
@@ -129,26 +134,23 @@ class ForgotPasswordComponent extends Component {
                 }
                 this.updateStateParams(dataObj);
                 break;
-            case 'accountType':
+            case 'username':
                 if (event.target.value === '0' || event.target.value === '' || event.target.value === undefined) {
                     this.setState({
-                        isAccountTypeValid: false
+                        usernameBorder: true,
+                        usernameMsz: this.Constants.USER_NAME_REQUIRED,
+                        username:'',
+                        isscreen1FormValid: false,
                     })
-                    dataObj = {
-                        isAccountTypeValid: false
-                    };
                 } else {
                     this.setState({
-                        accountType: event.target.value,
-                        accountTypeRequired: '',
-                        accountTypeBorder: false,
-                        isAccountTypeValid: true
+                        username: event.target.value,
+                        usernameBorder: false,
+                        usernameMsz:'',
+                        isscreen1FormValid:true
                     })
-                    dataObj = {
-                        isAccountTypeValid: true
-                    };
+                   
                 }
-                this.updateStateParams(dataObj);
                 break;
             case 'password':
                 if (event.target.value.trim() === '' || this.state.confirmPassword === '') {
@@ -198,7 +200,7 @@ class ForgotPasswordComponent extends Component {
         }
         if ((event.target !== undefined && event.target.value.length === 6) || button === 'verifyResetButton') {
             this.open();
-            let postObj = { email: this.state.email.trim(), cellNumber: this.state.cellNumber, accountType: this.state.accountType, code: code }
+            let postObj = { email: this.state.email.trim(), cellNumber: this.state.cellNumber, username: this.state.username, code: code }
             let newPostObj = this.clean(postObj)
             this.Fsnethttp.verifycode(newPostObj).then(result => {
                 this.close();
@@ -222,6 +224,7 @@ class ForgotPasswordComponent extends Component {
                     this.close();
                     if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
                         this.setState({
+                            showVerifyCodeIcon: false,
                             invalidVerifyCodeMsz: error.response.data.errors[0].msg,
                             verificationCode: code,
                             verifyCodeFormValid: false,
@@ -260,7 +263,7 @@ class ForgotPasswordComponent extends Component {
 
     //Send code again
     sendCodeAgain() {
-        let forgotObj = { email: this.state.email.trim(), cellNumber: this.state.cellNumber, accountType: this.state.accountType }
+        let forgotObj = { email: this.state.email.trim(), cellNumber: this.state.cellNumber, username: this.state.username }
         let newObj = this.clean(forgotObj)
         this.Fsnethttp.forgotPassword(newObj).then(result => {
             this.close();
@@ -268,6 +271,7 @@ class ForgotPasswordComponent extends Component {
                 this.setState({
                     showForgotScreen1: false,
                     showForgotScreen2: true,
+                    hideScreen1:false
                 });
             }
         })
@@ -281,6 +285,50 @@ class ForgotPasswordComponent extends Component {
             });
     }
 
+
+     //Get all usernames 
+     checkUserNames() {
+         if(!this.state.hideScreen1) {
+             let postObj = { email: this.state.email, cellNumber: this.state.cellNumber }
+             this.Fsnethttp.forgotPasswordGetUsername(postObj).then(result => {
+                 this.close();
+                 if (result.data) {
+                     if(result.data && result.data.data.length === 1) {
+                         this.setState({
+                             username: result.data.data[0],
+                         },()=>{
+                             this.sendCodeAgain();
+                         })
+                     } else if(result.data && result.data.data.length > 0) {
+                         this.setState({
+                             hideScreen1: true,
+                             isscreen1FormValid:false,
+                             userNameList: result.data.data
+                         })
+                     } else {
+                         this.setState({
+                             forgotScreen1ErrorMsz: this.Constants.FORGOT_USER_NOT_EXISTS
+                         })
+                     }
+                 }
+             })
+             .catch(error => {
+                 this.close();
+                 if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
+                    this.setState({
+                        forgotScreen1ErrorMsz: error.response.data.errors[0].msg,
+                    })
+                 }else {
+                    this.setState({
+                        forgotScreen1ErrorMsz: this.Constants.INTERNAL_SERVER_ERROR,
+                    });
+                 }
+             });
+         } else {
+            this.sendCodeAgain();
+         }
+    }
+
     //Show forgot screens based on the screen type.
     showForgotScreenFn(event, screen) {
         switch (screen) {
@@ -288,7 +336,7 @@ class ForgotPasswordComponent extends Component {
                 let valid = this.screen1Validations();
                 if (!valid) {
                     this.open();
-                    this.sendCodeAgain();
+                    this.checkUserNames();
                 }
                 break;
             case 'screen2':
@@ -318,7 +366,7 @@ class ForgotPasswordComponent extends Component {
     }
 
     resetPassword() {
-        let resetPwdObj = { email: this.state.email, cellNumber: this.state.cellNumber, accountType: this.state.accountType, code: this.state.verificationCode, password: this.state.password, passwordConfirmation: this.state.confirmPassword }
+        let resetPwdObj = { email: this.state.email, cellNumber: this.state.cellNumber, username: this.state.username, code: this.state.verificationCode, password: this.state.password, passwordConfirmation: this.state.confirmPassword }
         let newPostObj = this.clean(resetPwdObj)
         this.Fsnethttp.resetPassword(newPostObj).then(result => {
             this.close();
@@ -329,30 +377,30 @@ class ForgotPasswordComponent extends Component {
                 });
             }
         })
-            .catch(error => {
-                this.close();
-                if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
-                    this.setState({
-                        createNewPwdErr: false,
-                        createNewPwdErrMsz: error.response.data.errors[0].msg,
-                    });
-                }
-            });
+        .catch(error => {
+            this.close();
+            if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
+                this.setState({
+                    createNewPwdErr: false,
+                    createNewPwdErrMsz: error.response.data.errors[0].msg,
+                });
+            }
+        });
     }
 
     screen1Validations() {
         let email = this.state.email.trim();
         let number = this.state.cellNumber;
-        let type = this.state.accountType;
+        // let type = this.state.accountType;
         let error = false;
         let emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-        if (type === '0' || type === '') {
-            this.setState({
-                accountTypeRequired: this.Constants.ACCOUNT_TYPE_REQUIRED,
-                accountTypeBorder: true
-            })
-            error = true;
-        }
+        // if (type === '0' || type === '') {
+        //     this.setState({
+        //         accountTypeRequired: this.Constants.ACCOUNT_TYPE_REQUIRED,
+        //         accountTypeBorder: true
+        //     })
+        //     error = true;
+        // }
 
         if (email === '' && (number === '' || number === undefined)) {
             this.setState({
@@ -450,34 +498,43 @@ class ForgotPasswordComponent extends Component {
                     <div className="forgotTopBorder"></div>
                     <div className="forgotParentDiv">
                         <h1 className="forgot-text" hidden={this.state.showForgotScreen4}>Forgot password</h1>
-                        <div className="instructions-content" hidden={!this.state.showForgotScreen1}>Enter your email or phone below to receive instructions to reset your password.</div>
+                        {!this.state.hideScreen1 && !this.state.showForgotScreen2 && !this.state.showForgotScreen3 && !this.state.showForgotScreen4
+                        ?
+                            <div className="instructions-content" hidden={!this.state.showForgotScreen1}>Enter your email or phone below to receive instructions to reset your password.</div>
+                        : 
+                            null
+                        }
+                        {/* <div className="instructions-content" hidden={!this.state.showForgotScreen1}>Enter your email or phone below to receive instructions to reset your password.</div> */}
+                        <div className="instructions-content" hidden={!this.state.hideScreen1}>You have multiple usernames with your email/phone. Please select the username you want to reset the password.</div>
                         <div className="instructions-content marginBottom30" hidden={!this.state.showForgotScreen2}>Please enter the code we sent you.</div>
                         <div className="instructions-content" hidden={!this.state.showForgotScreen3}>Create a new password. Password must contain 8 or more characters with a mix of letters, numbers & symbols.</div>
                         <Row hidden={!this.state.showForgotScreen1}>
                             <form>
-                                <Col lg={12} md={12} sm={12} xs={12} className="marginBot20">
-                                    <label className="forgot-label-text">Email Address</label>
-                                    <input type="text" name="email" onChange={(e) => this.handleChangeEvent(e, 'email')} className={"forgotFormControl " + (this.state.emailErrorBorder ? 'inputError' : '')} placeholder="JohnDoe@gmail.com" /><br />
-                                    <span className="error">{this.state.emailErrorMsz}</span>
-                                </Col>
-                                <Col lg={12} md={12} sm={12} xs={12}>
-                                    <label className="forgot-label-text">Phone Number (Cell)</label>
-                                    <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={this.state.cellNumber} className={(this.state.cellNumberErrorBorder ? 'inputError' : '')} country="US" onChange={phone => this.handleChangeEvent(phone, 'cellNumber')} />
-                                    <span className="error">{this.state.cellNumberErrorMsz}</span>
-                                </Col>
-                                <Col lg={12} md={12} sm={12} xs={12} className="marginTop10">
-                                    <label className="forgot-label-text">Account type*</label>
-                                    <FormControl defaultValue="0" className={"forgotFormControl " + (this.state.accountTypeBorder ? 'inputError' : '')} componentClass="select" onChange={(e) => this.handleChangeEvent(e, 'accountType')} placeholder="Select Role">
-                                        <option value={0}>Select Role</option>
-                                        <option value="FSNETAdministrator">FSNETAdministrator</option>
-                                        <option value="GP">GP</option>
-                                        <option value="GPDelegate">GPDelegate</option>
-                                        <option value="LP">LP</option>
-                                        <option value="LPDelegate">LPDelegate</option>
+                                <div hidden={this.state.hideScreen1} className="marginTop24">
+                                    <Col lg={12} md={12} sm={12} xs={12} className="marginBot20">
+                                        <label className="forgot-label-text">Email Address</label>
+                                        <input type="text" name="email" onChange={(e) => this.handleChangeEvent(e, 'email')} className={"forgotFormControl " + (this.state.emailErrorBorder ? 'inputError' : '')} placeholder="JohnDoe@gmail.com" /><br />
+                                        <span className="error">{this.state.emailErrorMsz}</span>
+                                    </Col>
+                                    <Col lg={12} md={12} sm={12} xs={12}>
+                                        <label className="forgot-label-text">Phone Number (Cell)</label>
+                                        <PhoneInput maxLength="14" placeholder="(123) 456-7890" value={this.state.cellNumber} className={(this.state.cellNumberErrorBorder ? 'inputError' : '')} country="US" onChange={phone => this.handleChangeEvent(phone, 'cellNumber')} />
+                                        <span className="error">{this.state.cellNumberErrorMsz}</span>
+                                    </Col>
+                                </div>
+                                <Col lg={12} md={12} sm={12} xs={12} className="marginTop10" hidden={!this.state.hideScreen1}>
+                                    <label className="forgot-label-text">Username*</label>
+                                    <FormControl defaultValue="0" className={"forgotFormControl " + (this.state.usernameBorder ? 'inputError' : '')} componentClass="select" onChange={(e) => this.handleChangeEvent(e, 'username')} placeholder="Select Role">
+                                        <option value={0}>Select Username</option>
+                                        {this.state.userNameList.map((record, index) => {
+                                            return (
+                                                <option value={record}  key={index} >{record}</option>
+                                            );
+                                        })}
                                     </FormControl>
-                                    <span className="error">{this.state.accountTypeRequired}</span>
-                                    <div className="error">{this.state.forgotScreen1ErrorMsz} </div>
+                                    <span className="error">{this.state.usernameMsz}</span>
                                 </Col>
+                                <div className="error marginLeft15">{this.state.forgotScreen1ErrorMsz} </div>
                                 <Row>
                                     <Button className={"forgot-submit " + (this.state.isscreen1FormValid ? 'btnEnabled' : '')} disabled={!this.state.isscreen1FormValid} onClick={(e) => this.showForgotScreenFn(e, 'screen1')}>Submit</Button> <br />
                                 </Row>

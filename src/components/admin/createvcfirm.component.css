@@ -1,6 +1,12 @@
-#addFirmContainer .row {
+.addFirmRow .row, .addFirmRow.row {
     margin-left: 0 !important;
     margin-right: 0 !important;
+}
+#addFirmContainer .mainContainer {
+    margin: 0px !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    height: 100px;
 }
 #addFirmContainer .dashboardMainRow, #addFirmContainer .addFirmRow  {
     padding: 15px;

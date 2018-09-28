@@ -92,7 +92,7 @@ class Step6Component extends Component {
                     currentFundDataObj: result.data.data,
                     fundImage: result.data.data.fundImage ? result.data.data.fundImage.url : FundImage,
                     fundImageName: result.data.data.fundImage ? result.data.data.fundImage.originalname : 'fund_Pic.jpg',
-                    documentLink: result.data.data.partnershipDocument ? result.data.data.partnershipDocument.url: '',
+                    documentLink: result.data.data.partnershipDocument.path ? result.data.data.partnershipDocument.baseUrl+result.data.data.partnershipDocument.path: '',
                     getLpList: result.data.data.lps ? result.data.data.lps : []
                 })
             }
@@ -136,57 +136,6 @@ class Step6Component extends Component {
         this.props.history.push('/createfund/lp/' + this.state.fundId);
     }
 
-    sortLp(e, colName, sortVal) {
-        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
-        let firmId = this.state.firmId;
-        let fundId = this.state.fundId;
-        if(this.state.getLpList && this.state.getLpList.length > 1) {
-            this.open();
-            this.Fsnethttp.getLpSort(firmId, fundId, headers, colName, sortVal).then(result => {
-                if (result.data && result.data.data.length > 0) {
-                    this.close();
-                    this.setState({ getLpList: result.data.data });
-                    if (colName === 'firstName') {
-                        if (sortVal === 'desc') {
-                            this.setState({
-                                showNameAsc: true
-                            })
-                        } else {
-                            this.setState({
-                                showNameAsc: false
-                            })
-                        }
-                    } else {
-                        if (sortVal === 'desc') {
-                            this.setState({
-                                showOrgAsc: true
-                            })
-                        } else {
-                            this.setState({
-                                showOrgAsc: false
-                            })
-                        }
-                    }
-    
-                } else {
-                    this.close();
-                    this.setState({
-                        getLpList: [],
-                        showNameAsc: false
-                    }, )
-                }
-            })
-                .catch(error => {
-                    this.close();
-                    this.setState({
-                        getLpList: []
-                    })
-    
-                });
-        }
-    }
-
-
     render() {
         return (
             <div className="step6Class marginTop6">
@@ -197,7 +146,7 @@ class Step6Component extends Component {
                     </div>
                     <Row id="step6-rows1" >
                         <Col md={3} sm={3} xs={6} className="step6-col-pad">
-                            <span className="col1">Fund Details</span>
+                            <div className="col1">Fund Details</div>
                         </Col>
                         <Col md={5} sm={5} xs={6}>
                             <div className="col2">Legal Entity:  {this.state.currentFundDataObj.legalEntity}</div>
@@ -205,14 +154,18 @@ class Step6Component extends Component {
                             <div className="col2">Fund Manager (GP) Legal Entity Name:</div>
                             <div className="col2">{this.state.currentFundDataObj.fundManagerLegalEntityName}</div>
                             <div className="col2" hidden={this.state.currentFundDataObj.fundTargetCommitment === null}>Fund Target Commitment: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.fundTargetCommitment)}</div>
-                            <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPCommitment === null}>% of LP Commitment: {this.state.currentFundDataObj.percentageOfLPCommitment}</div>
-                            <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment === null}>% of LP + GP Aggregate Commitment: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment)}</div>
-                            <div className="col2" hidden={this.state.currentFundDataObj.capitalCommitmentByFundManager === null}>Capital commitment by Fund Manager: {this.state.currentFundDataObj.capitalCommitmentByFundManager}</div>
+                            <div className="col2">Fund Type: {this.state.fundType == 1 ? 'U.S. Fund' : 'Non-U.S. Fund'}</div>
+                            <div className="col2 subtext margin5">General Partner Commitment:</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPCommitment == 0}>% of LP Commitments: {this.state.currentFundDataObj.percentageOfLPCommitment}%</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment == 0}>% of LP + GP Commitments: {this.state.currentFundDataObj.percentageOfLPAndGPAggregateCommitment}%</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.capitalCommitmentByFundManager == 0}>Fixed Commitment in Dollars: {this.FsnetUtil.convertToCurrency(this.state.currentFundDataObj.capitalCommitmentByFundManager)}</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.generalPartnersCapitalCommitmentindicated == 2}>The General Partner’s Capital Commitment indicated is: A minimum amount only, but not a cap. If this option is selected, the General Partner’s Capital Commitment may be increased above the required minimum level through the final closing date on later screens.</div>
+                            <div className="col2" hidden={this.state.currentFundDataObj.generalPartnersCapitalCommitmentindicated == 1}>The General Partner’s Capital Commitment indicated is: An exact amount to be adhered to. If this option is selected, there will be no option to increase the General Partner’s Capital Commitment on later screens, though you may return here to revise this setting at any time.</div>
                         </Col>
                         <Col md={2} sm={2} xs={6}>
-                            <div className="col3">Fund Image:</div>
-                            <div className="col3"><img src={this.state.fundImage} alt="profile-pic" className="profile-pic" /></div>
-                            <div className="col3">{this.state.fundImageName}</div>
+                            <div className="col3 text-center">Fund Image:</div>
+                            <div className="col3 text-center"><img src={this.state.fundImage} alt="profile-pic" className="profile-pic" /></div>
+                            <div className="col3 text-center">{this.state.fundImageName}</div>
                         </Col>
                         <Col md={2} sm={2} xs={6}>
                             <span className="col4"><Link to={"/createfund/funddetails/" + this.state.fundId}>Change</Link></span>
@@ -265,7 +218,7 @@ class Step6Component extends Component {
                             <span className="col4"><Link to={"/createfund/lp/" + this.state.fundId}>Change</Link></span>
                         </Col>
                     </Row>
-                    <div className="staticTextAndTbl marginTop24">
+                    {/* <div className="staticTextAndTbl marginTop24">
                         <h2 className="staticText">Select which documents are required for which LPs (check all that apply)</h2>
                         <div className="table">
                             <table className="tableClass">
@@ -288,7 +241,6 @@ class Step6Component extends Component {
                                             Organization
                                             <i className="fa fa-sort-desc" aria-hidden="true" ></i>
                                         </th>
-                                        {/* <th className="tableCaret borderTopNone">LP Name<i className="fa fa-caret-down"></i></th> */}
                                         <th className="name-heading borderTopNone text-left">Partnership Agreement</th>
                                     </tr>
                                 </thead>
@@ -332,18 +284,14 @@ class Step6Component extends Component {
                                 </tbody>
                             </table>
                         </div>
-                        <Loader isShow={this.state.showModal}></Loader>
-                    </div>
+                    </div> */}
                     <div className="staticTextBelowTable">
                         <div className="staticTextBelowText">
                             Once everything is confirmed correct, click the “Start Fund” button in the sidebar.
                     </div>
                     </div>
-                    {/* <div className="startFundButtonStyle">
-                        <Button className="fsnetButton" onClick={this.openStartFundModal}><i className="fa fa-check strtFndChk" aria-hidden="true"></i>&nbsp;Start Fund</Button>                                    
-                    </div> */}
-
                 </div>
+                <Loader isShow={this.state.showModal}></Loader>
                 <div className="footer-nav">
                     <i className="fa fa-chevron-left" onClick={this.proceedToBack} aria-hidden="true"></i>
                     <i className="fa fa-chevron-right disabled" aria-hidden="true"></i>

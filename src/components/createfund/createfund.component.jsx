@@ -20,8 +20,9 @@ import successImage from '../../images/success-small.png';
 import Loader from '../../widgets/loader/loader.component';
 import { Constants } from '../../constants/constants';
 import { PubSub } from 'pubsub-js';
-import vanillaLogo from '../../images/Vanilla.png';
+import vanillaLogo from '../../images/Vanilla-white.png';
 
+var fundInfo = {}, pageInfo={};
 class CreateFundComponent extends Component {
 
     constructor(props) {
@@ -54,18 +55,25 @@ class CreateFundComponent extends Component {
             gpDelegatesSelectedUsers: false,
             lpSelectedUsers: false
         }
-        PubSub.subscribe('fundData', (msg, data) => {
+        fundInfo = PubSub.subscribe('fundData', (msg, data) => {
             this.setState({
                 fundId: data.id
             }, () => {
                 this.updateObjandNavLinks(data);
             })
         });
-        PubSub.subscribe('pageNumber', (msg, data) => {
+        pageInfo = PubSub.subscribe('pageNumber', (msg, data) => {
             this.getCurrentPageNumber(data.type, data.page)
         });
 
     }
+
+    //Unsuscribe the pubsub
+    componentWillUnmount() {
+        PubSub.unsubscribe(fundInfo);
+        PubSub.unsubscribe(pageInfo);
+    }
+
 
     logout() {
         reactLocalStorage.clear();
@@ -110,6 +118,7 @@ class CreateFundComponent extends Component {
             if (fundId !== 'funddetails' && fundId !== 'createfund') {
                 this.setState({ fundId: fundId }, () => this.getFundDetails());
             }
+            window.scrollTo(0, 0);
         } else {
             this.props.history.push('/');
         }
@@ -182,7 +191,7 @@ class CreateFundComponent extends Component {
     
 
     enableStartFundButton() {
-        if (this.state.fundId && this.state.createdFundDataObj.partnershipDocument !== null && this.state.lpSelectedUsers && this.state.createdFundDataObj.status === 'New-Draft') {
+        if (this.state.fundId && this.state.createdFundDataObj.partnershipDocument !== null && this.state.lpSelectedUsers && this.state.createdFundDataObj.status === 'New-Draft' && this.state.currentPage === 'review') {
             this.setState({
                 startFundValid: true
             })
@@ -250,6 +259,8 @@ class CreateFundComponent extends Component {
         this.setState({
             currentPageNumber: number,
             currentPage: page
+        },()=>{
+            this.enableStartFundButton();
         })
     }
 
@@ -266,36 +277,17 @@ class CreateFundComponent extends Component {
                         <nav className="navbar navbar-custom">
                         <div className="navbar-header">
                         <div className="sidenav">
-                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
+                            <h1 className="text-left"><i className="fa fa-bars" aria-hidden="true" onClick={(e) => this.hamburgerClick()}></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo"/></h1>
                         </div>
                         </div>
                         <div className="text-center navbar-collapse-custom" id="navbar-collapse" hidden={!this.state.showSideNav}>
                         <div className="sidenav">
-                        <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo marginTopMinus30"/></h1>
+                        <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo"/></h1>
                         <h2 className="text-left"><img src={homeImage} alt="home_image" className="" />&nbsp; <Link to="/dashboard">Dashboard</Link></h2>
                         <div className="active-item text-left"><label className="fund-left-pic-label"><img src={this.state.fundImage} alt="fund_image" /></label>&nbsp;<div className="left-nav-fund-name text-left">{this.state.fundName}</div> <span className="fsbadge">{this.state.currentPageNumber}/{this.state.totalPageCount}</span></div>
                         {
                             this.state.fundId && this.state.showLeftNavLinks ?
                                 <ul className="sidenav-menu">
-                                    {/* <li><Link to={"/createfund/funddetails/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><img src={successImage} alt="successImage" /></span></Link></li>
-    
-    
-                                    <li><Link to={"/createfund/gpDelegate/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'gpDelegate')} className={(this.state.currentPage === 'gpDelegate' ? 'active' : '')}>Assign GP Delegates<span className="checkIcon" hidden={this.state.createdFundDataObj.gps && this.state.createdFundDataObj.gps.length === 0}><img src={successImage} alt="successImage" /></span></Link></li>
-    
-    
-    
-    
-                                    <li><Link hidden={this.state.createdFundDataObj.partnershipDocument === null} to={"/createfund/upload/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'upload')} className={(this.state.currentPage === 'upload' ? 'active' : '')}>Partnership Agreement<span className="checkIcon"><img src={successImage} alt="successImage" /></span></Link><a className={(this.state.currentPage === 'upload' ? 'active' : '')} hidden={this.state.createdFundDataObj.partnershipDocument !== null}>Partnership Agreement</a></li>
-    
-                                    <li><Link hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0} to={"/createfund/lp/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'lp')} className={(this.state.currentPage === 'lp' ? 'active' : '')}>Assign LPs to Fund<span className="checkIcon"><img src={successImage} alt="successImage" /></span></Link>
-                                    <a className={(this.state.currentPage === 'lp' ? 'active' : '')} hidden={this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0}>Assign LPs to Fund</a>
-                                    </li>
-    
-    
-                                    <li>
-                                        <Link hidden={(this.state.createdFundDataObj.partnershipDocument === null) || (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length === 0)} to={"/createfund/review/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'review')} className={(this.state.currentPage === 'review' ? 'active' : '')}>Review & Confirm</Link>
-                                        <a className={(this.state.currentPage === 'review' ? 'active' : '')} hidden={(this.state.createdFundDataObj.partnershipDocument !== null) && (this.state.createdFundDataObj.lps && this.state.createdFundDataObj.lps.length > 0)}>Review & Confirm</a>
-                                    </li> */}
                                     <li>
                                         <Link to={"/createfund/funddetails/" + this.state.fundId} onClick={(e) => this.getCurrentPageNumber('sideNav', 'funddetails')} className={(this.state.currentPage === 'funddetails' ? 'active' : '')}>Fund Details<span className="checkIcon"><img src={successImage} alt="successImage" /></span></Link>
                                     </li>
@@ -338,7 +330,7 @@ class CreateFundComponent extends Component {
                                                         : <img src={userDefaultImage} alt="img" className="user-image" />
                                                 }
                                             </div>
-                                            <div className="dpDelName">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                            <div className="dpDelName" title={`${record['firstName']} ${record['lastName']}`}>{record['firstName']}&nbsp;{record['lastName']}</div>
                                             <div className="dpDelgDel"><i className="fa fa-minus" onClick={(e) => this.deleteGp(e, record['id'])}></i></div>
                                         </div>
                                     );
@@ -389,7 +381,7 @@ class CreateFundComponent extends Component {
                         <HeaderComponent ></HeaderComponent>
                     </div>
                     <div className="contentWidth">
-                        <div className="main-heading"><span className="main-title">Create New Fund</span><Link to="/dashboard" className="cancel-fund">Cancel</Link></div>
+                        <div className="main-heading"><span className="main-title">{this.state.fundId ? 'Edit' : 'Create New'} Fund</span><Link to="/dashboard" className="cancel-fund">Cancel</Link></div>
                         <Row className="main-content">
                             <Route exact path={`${match.url}/funddetails`} component={Step1Component} />
                             <Route exact path={`${match.url}/funddetails/:id`} component={Step1Component} />

@@ -521,12 +521,13 @@ class Step5Component extends Component {
                             return (
 
                                 <div className="userRow" key={index}>
+                                    <label className="userImageAlt">
                                     {
                                         record['profilePic'] ?
                                             <img src={record['profilePic']['url']} alt="img" className="user-image" />
                                             : <img src={userDefaultImage} alt="img" className="user-image" />
                                     }
-
+                                    </label>
                                     <div className="lp-name">{record['firstName']}&nbsp;{record['lastName']}</div>
                                     <div className="lp-name lp-name-pad">{record['organizationName']}</div>
                                     <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e, 'user', { record })}>

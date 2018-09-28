@@ -95,7 +95,7 @@ class equityOwnersComponent extends Component {
 
     equityOwnersChangeEvent(event, type, radioTypeName, blur) {
         let key = type;
-        let value = event.target.value.trim();
+        let value = !event.target.value.trim() ? '' : event.target.value;
         let dataObj = {};
         switch(type) {
             case 'radio':
@@ -123,13 +123,13 @@ class equityOwnersComponent extends Component {
                     };
                     this.updateStateParams(dataObj);
                 } else {
-                    const re = /^[0-9\b]+$/;
-                    if (!re.test(value.trim()) && key === 'numberOfDirectEquityOwners') {
+                    // const re = /^[0-9\b]+$/;
+                    if (!value.trim() && key === 'numberOfDirectEquityOwners') {
                         this.setState({
                             [key]: ''
                         })
                     } else {
-                        if(( parseInt(value) < 0 || parseInt(value) >1000 ) && key === 'numberOfDirectEquityOwners') {
+                        if(( parseInt(value) <= 0 || parseInt(value) >=1000 ) && key === 'numberOfDirectEquityOwners') {
                             return true;
                         }
                         this.setState({
@@ -150,6 +150,16 @@ class equityOwnersComponent extends Component {
             default:
                 break;
         }
+    }
+
+    isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            // return false;
+            evt.preventDefault();
+        }
+        return true;
     }
 
     // Update state params values and login button visibility
@@ -218,7 +228,7 @@ class equityOwnersComponent extends Component {
                     <Row className="step1Form-row" hidden={this.state.investorType !== 'LLC'}>
                         <Col xs={12} md={12}>
                             <label className="form-label width100">Please specify the number of direct equity owners of the Entity.</label>
-                            <FormControl type="text" placeholder="Enter number" className={"inputFormControl inputWidth290 " + (this.state.numberOfDirectEquityOwnersBorder ? 'inputError' : '')} value= {this.state.numberOfDirectEquityOwners}  onChange={(e) => this.equityOwnersChangeEvent(e,'numberOfDirectEquityOwners', 'EQUITY_OWNERS_REQUIRED')} onBlur={(e) => this.equityOwnersChangeEvent(e,'numberOfDirectEquityOwners','EQUITY_OWNERS_REQUIRED')}/>
+                            <FormControl type="text" placeholder="Enter number" className={"inputFormControl inputWidth290 " + (this.state.numberOfDirectEquityOwnersBorder ? 'inputError' : '')} value= {this.state.numberOfDirectEquityOwners}  onChange={(e) => this.equityOwnersChangeEvent(e,'numberOfDirectEquityOwners', 'EQUITY_OWNERS_REQUIRED')} onKeyPress={(e) => {this.isNumber(e)}}  onBlur={(e) => this.equityOwnersChangeEvent(e,'numberOfDirectEquityOwners','EQUITY_OWNERS_REQUIRED')}/>
                             <span className="error">{this.state.numberOfDirectEquityOwnersMsz}</span>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24">
@@ -231,8 +241,8 @@ class equityOwnersComponent extends Component {
                             </Radio>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24" hidden={this.state.existingOrProspectiveInvestorsOfTheFund !== true}>
-                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors.</label>
-                            <FormControl type="text" placeholder="Enter number" className={"inputFormControl inputWidth290 " + (this.state.numberOfexistingOrProspectivesBorder ? 'inputError' : '')} value= {this.state.numberOfexistingOrProspectives}  onChange={(e) => this.equityOwnersChangeEvent(e,'numberOfexistingOrProspectives', 'EQUITY_OWNERS_REQUIRED')} onBlur={(e) => this.equityOwnersChangeEvent(e,'numberOfexistingOrProspectives','EQUITY_OWNERS_REQUIRED')}/>
+                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors?</label>
+                            <FormControl type="text" placeholder="Enter investors." className={"inputFormControl inputWidth290 " + (this.state.numberOfexistingOrProspectivesBorder ? 'inputError' : '')} value= {this.state.numberOfexistingOrProspectives}  onChange={(e) => this.equityOwnersChangeEvent(e,'numberOfexistingOrProspectives', 'EXISTING_INVESTORS_REQUIRED')} onBlur={(e) => this.equityOwnersChangeEvent(e,'numberOfexistingOrProspectives','EXISTING_INVESTORS_REQUIRED')}/>
                             <span className="error">{this.state.numberOfexistingOrProspectivesMsz}</span>
                         </Col>
                     </Row>
@@ -252,8 +262,8 @@ class equityOwnersComponent extends Component {
                             </Radio>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24">
-                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors.</label>
-                            <FormControl type="text" placeholder="Enter number" className="inputFormControl inputWidth290" />
+                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors?</label>
+                            <FormControl type="text" placeholder="Enter investors." className="inputFormControl inputWidth290" />
                         <span className="error"></span>
                         </Col>
                     </Row>
@@ -273,8 +283,8 @@ class equityOwnersComponent extends Component {
                             </Radio>
                         </Col>
                         <Col xs={12} md={12} className="marginTop24">
-                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors.</label>
-                        <FormControl type="text" placeholder="Enter number" className="inputFormControl inputWidth290" />
+                            <label className="form-label width100">Please list the names of any and all of such existing or prospective investors?</label>
+                        <FormControl type="text" placeholder="Enter investors." className="inputFormControl inputWidth290" />
                             <span className="error"></span>
                         </Col>
                     </Row>

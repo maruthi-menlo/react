@@ -1,0 +1,166 @@
+.lptableContainer {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+table {
+  position: relative;
+  width: 1000px;
+  overflow: hidden;
+  border: none !important;
+  border-collapse: collapse;
+}
+
+/*thead*/
+thead {
+  position: relative;
+  display: block; /*seperates the header from the body allowing it to be positioned*/
+  width: 1000px;
+  table-layout:fixed;
+  overflow: visible;
+}
+
+thead th {
+  min-width: 200px !important;
+  max-width: 200px !important;
+  min-height: 32px;
+  border: none !important;
+  background-color: #FFF;
+  color: rgba(47, 72, 88, 0.5);
+  font-size: 12px;
+  line-height: 1.33;
+  font-weight: bold;
+  text-align: center;
+  /* height: 190px; */
+  border-bottom: solid 1px rgba(51, 101, 138, 0.25);
+}
+
+.viewFund.expandTable .tableEdit .tableMargin,
+.viewFund.expandTable .tableEdit tbody {
+  width: 1200px !important;
+}
+
+.viewFund.expandTable .lptableContainer {
+  width: 100% !important;
+  margin: 0;
+}
+
+.viewFund.expandTable .tableEdit thead th,
+.viewFund.expandTable .tableEdit tbody td {
+  min-width: 170px !important;
+  max-width: 170px !important;
+}
+
+.viewFund.expandTable .tableEdit tbody td {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewFund.expandTable .tableEdit tbody {
+  max-height: 500px !important;
+}
+
+thead th:nth-child(1) {/*first cell in the header*/
+  position: relative;
+  display: block; /*seperates the first cell in the header from the header*/
+  background-color: #FFF;
+  color: rgba(47, 72, 88, 0.5);
+  height: 56px;
+  border: none !important;
+  top: 15px;
+  font-size: 12px;
+  line-height: 1.33;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+/*tbody*/
+tbody {
+  position: relative;
+  display: block; /*seperates the tbody from the header*/
+  width: 1000px;
+  max-height: 450px;
+  overflow: scroll;
+  border: solid 1px rgba(51, 101, 138, 0.25);
+  border-radius: 4px;
+}
+
+
+tbody td .statusIndicator {
+  display: block;
+  margin-left: 12px;
+  margin-top: 2px;
+  font-size: 10px !important;
+  font-style: italic !important;
+  opacity: 0.5;
+  
+}
+
+.dot {
+  height: 6px;
+  width: 6px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-closed {
+  background-color: #1adbb9 !important;
+}
+
+.dot-closeReady {
+  background-color: #ffff00 !important;
+}
+
+.dot-open {
+  background-color: #03a9f4 !important;
+}
+
+tbody td {
+  min-width: 200px !important;
+  max-width: 200px !important;
+  color: rgba(47, 72, 88, 1);
+  font-size: 12px;
+  line-height: 1.33;
+  vertical-align: middle !important;
+  text-align: center;
+  word-break: break-all;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: none !important;
+}
+
+tbody tr td:nth-child(1) {  /*the first cell in each tr*/
+  position: relative;
+  display: block; /*seperates the first column from the tbody*/
+  min-height: 48px;
+  color: rgba(47, 72, 88, 1);
+  font-size: 12px;
+  line-height: 1.33;
+  vertical-align: middle;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  border: none !important;
+  text-align: left;
+  word-break: break-all;
+  border-right: solid 1px rgba(51, 101, 138, 0.25) !important;
+}
+
+tbody tr:nth-child(odd) td:nth-child(1) {
+    background-color: #F2F2F2 !important;
+    white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+tbody tr:nth-child(even) td:nth-child(1) {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #fff !important;
+}

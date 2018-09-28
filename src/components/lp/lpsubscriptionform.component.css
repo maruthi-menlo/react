@@ -5,6 +5,7 @@
     width: 18px;
     height: 20px;
     margin-left: 0px;
+    border-radius: 50%;
 }
 .lpSubFormStyle .header-right-row {
     margin-top: 15px;
@@ -173,6 +174,13 @@
 .radioTxtWidth {
     width: 200px !important;
 }
+.right-gap {
+    margin-right: 20px;
+}
+.left-gap {
+    margin-left: 0px;
+}
+
 .radioSmallTxtWidth {
     width: 100px !important;
 }
@@ -191,9 +199,10 @@
 .footerDivAlign {
     margin-left: 18px;
 }
-.companiesActRadio {
+.lpSubFormStyle .companiesActRadio {
     width: 100% !important;
     display: block !important;
+    font-size: 14px !important
 }
 .subAgrmnt {
     width: 170px !important;
@@ -232,6 +241,37 @@
     display: block; 
     max-width: 800px !important;
     width: 800px !important;
+}
+
+.investorModal {
+    min-height: 250px !important;
+    max-height: 250px !important;
+}
+
+.investorModal .list-heading {
+    margin-left: 0 !important;
+    margin-bottom: 10px !important;
+}
+
+.investorModal p {
+    margin-bottom: 8px !important;
+    margin-left: 10px !important;
+}
+
+.investorModal ol {
+    counter-reset: list;
+    list-style-position: outside;
+}
+.investorModal ol > li {
+    list-style: none;
+}
+.investorModal ol.lower-roman > li:before {
+    content: "(" counter(list, lower-roman) ") ";
+    counter-increment: list;
+}
+.investorModal ol.decimal > li:before {
+    content: "(" counter(list, decimal) ") ";
+    counter-increment: list;
 }
 
 /* confirmation modal css */
@@ -279,26 +319,99 @@
 #confirmInvestorModal .modal-body {
     margin-left: 15px;
 }
+#confirmInvestorModal .fundNameCenter{
+    display: block;
+    text-align: center;
+    color: #39bcd5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#confirmInvestorModal .title-text-center{
+    width: 416px;
+    margin-left: 9px;
+}
 
 /* Review form css for subscriptions*/
 #subscriptionReview #step6-row1{
     min-height: 170px;
     padding: 0px 0 24px;
     border-bottom: 2px solid rgba(51,101,138,.5);
-    width: 850px;
+    width: 90%;
     margin: 0!important;
 }
 #subscriptionReview .step6-row{
     min-height: 90px;
     padding: 24px 0;
     border-bottom: 2px solid rgba(51,101,138,.5);
-    width: 850px;
+    width: 90%;
     margin: 0!important;
+}
+
+.colm a {
+    margin-left: 0px !important;
 }
 
 #subscriptionReview .staticTextBelowTable{
     border-top: 0;
 }
+.staticTextBelowTable .confirmSubmitReview{
+    background-color: #39bcd5;
+    color: white;
+    border-radius: 30px !important;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    margin-bottom: 40px;
+    padding: 8px 20px;
+
+}
+.staticTextBelowTablePadding{
+    padding: 25px !important;
+    width: 90% !important;
+}
+.step-col-pad1 {
+    padding-right: 0px !important;
+}
+.step-col-pad2 {
+    padding-left: 25px !important;
+}
+.step-col-pad3 {
+    padding-left: 0px !important;
+    text-align: justify;
+}
+.firstQuesitionPadding{
+    padding-bottom: 10px;
+}
+.remainingQuesitionPadding{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.step-row-borderBottom{
+    border-bottom: 2px solid rgba(51,101,138,.5);
+}
+.step-row-borderTop{
+    border-Top: 2px solid rgba(51,101,138,.5);
+}
+.answerYesNo{
+    text-align: center;
+}
+.answerText{
+    text-align: justify;
+}
+.erisa-heading {
+    font-size: 16px !important;
+}
+
+#subscriptionReview .lightContent {
+    font-weight: 600;
+    color: #39bcd5 !important;
+    font-size: 14px !important;    
+}
+
 .successImg {
     float: right;
     right: 9px;
@@ -394,6 +507,21 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.step1lastCheckBox{
+    margin-top: 24px;
+}
+.step1PaddingLeft15{
+    padding-left: 15px;
+}
+.otherInvesterFontSize{
+    font-size: 14px;
+    font-family: 'Open Sans';
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+}
 .tooltip {
     width: 300px !important;
 }
@@ -406,15 +534,18 @@
     color: #2f4858;
     text-decoration: underline;
     font-family: 'OpenSans-Bold';
-    margin: 0px 5px 0px 5px;
+    margin: 0px 0px 0px 0px;
+}
+.textarea {
+    min-height: 75px !important;
 }
 #tooltip-2{
     position: absolute !important;
     top: 150px !important;
 }
-.lpSubFormStyle .main-title {
+/* .lpSubFormStyle .main-title {
     margin-left: 2px;
-}
+} */
 .lpSubFormStyle .header-right-row{
     display: flex;
     justify-content: flex-end;
@@ -452,9 +583,6 @@
         float: none !important;
     }
 }
-.checkBoxText{
-    margin-left: 24px;
-}
 .marginForInput{
     margin: 18px 0 0 24px;
 }
@@ -480,11 +608,14 @@
     border-radius: 50%;
     margin-top: -15px;
 }
-.lpSubFormStyle input:not(.inputWidth290), .lpSubFormStyle select {
-    width: 80% !important;
+.lpSubFormStyle input:not(.inputWidth290), .lpSubFormStyle select, .lpSubFormStyle .textarea, .lpSubFormStyle .react-phone-number-input {
+    width: 90% !important;
+}
+.lpSubFormStyle .react-phone-number-input {
+    margin-top: 8px;
 }
 .lpSubFormStyle .form-grid {
-    width: 85%;
+    width: 95%;
 }
 .TtModalHeaderAlign {
     /* margin-top: 95px; */
@@ -496,4 +627,49 @@
 .TtModalBody {
     max-height: 500px;
     overflow: auto;
+}
+@media (max-width:766px) and (min-width:320px) {
+    .individualForm .form-grid{
+        width: 100% !important;
+        padding: 0px 0px 0px 30px;
+    }
+    .qualifiedPurchaser .form-grid{
+        width: 100% !important;
+        padding: 0px 0px 0px 30px;
+    }
+    .individualForm select{
+        width: 100% !important;
+    }
+    .individualForm input:not(.inputWidth290){
+        width: 100% !important;
+    }
+    .individualForm .textarea{
+        width: 100% !important;
+    }
+}
+
+@media (max-width:766px) and (min-width:320px) {
+    .accreditedInvestor .formGridDivMargins {
+        margin: 15px 0px 15px 30px;
+    }
+    
+}
+@media (max-width:766px) and (min-width:320px) {
+    .accreditedInvestor .formGridDivMargins {
+        margin: 15px 0px 15px 30px;
+    }
+    .accreditedInvestor .step-col-pad1{
+        padding-left: 0px;
+    }
+    .accreditedInvestor .step-col-pad2{
+        margin-left: 15px;
+    }
+}
+@media (min-width:768px) and (max-width:1024px){
+    .lpSubFormStyle{
+        width: 1000px !important;
+    }
+    .accreditedInvestor .step-col-pad4{
+        padding-left: 0px !important;
+    }
 }

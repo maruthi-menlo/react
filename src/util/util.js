@@ -1,8 +1,8 @@
 
 export class FsnetUtil{
-
     convertToCurrency(value) {
-        let amount = value;
+        let amount = parseFloat(value);
+        
         if(amount !== '') {
             // Create our number formatter.
             var formatter = new Intl.NumberFormat('en-US', {
@@ -47,13 +47,36 @@ export class FsnetUtil{
         return page;
     }
 
+    percentage(partialValue, totalValue) {
+        return (100 * partialValue) / totalValue;
+    } 
+
     checkNullOrEmpty(list,obj) {
         for(let index of list) {
             if(obj[index] === null || obj[index] === '' || obj[index] === undefined) {
+                if(index == 'otherInvestorAttributes' && obj[index] && obj[index].length == 0) {
+                    return false;
+                }
                 return false;
             }
         }
         return true;
+    }
+
+
+    decodeEntities(encodedString) {
+        var textArea = document.createElement('textarea');
+        textArea.innerHTML = encodedString;
+        console.log('textArea.value:::',textArea.value);
+        return textArea.value;
+    }
+
+    decodeObj(obj) {
+        if (!Array.isArray(obj) && typeof obj != 'object') return obj;
+        return Object.keys(obj).reduce((acc, key) => {
+          acc[key] = obj[key] != null ? (typeof obj[key] == 'string'? this.decodeEntities(obj[key]) : this.decodeObj(obj[key])): null;
+          return acc;
+        }, Array.isArray(obj)? []:{});
     }
     
     

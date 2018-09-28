@@ -8,6 +8,7 @@ import Loader from '../../../widgets/loader/loader.component';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { PubSub } from 'pubsub-js';
 
+var fundInfo = {}, pageInfo={};
 class Step2Component extends Component {
 
     constructor(props) {
@@ -42,13 +43,22 @@ class Step2Component extends Component {
             gpDelegatesSelectedList:[],
             gpDelegateScreenError:'',
             noDelegatesMsz:'',
-            fundObj: {}
+            fundObj: {},
+            gPDelegateRequiredDocuSignBehalfGPList : [],
+            gPDelegateRequiredConsentHoldClosingList : [],
         }
-        PubSub.subscribe('fundData', (msg, data) => {
+        fundInfo = PubSub.subscribe('fundData', (msg, data) => {
             this.updateGps(data)
         });
-        PubSub.publish('pageNumber', {type:'sideNav', page: 'gpDelegate'});
+        pageInfo = PubSub.publish('pageNumber', {type:'sideNav', page: 'gpDelegate'});
     }
+
+    //Unsuscribe the pubsub
+    componentWillUnmount() {
+        PubSub.unsubscribe(fundInfo);
+        PubSub.unsubscribe(pageInfo);
+    }
+
 
 
     //Onchange event for all input text boxes.
@@ -135,26 +145,78 @@ class Step2Component extends Component {
                 break;
             case 'user':
                 let getSelectedList = this.state.gpDelegatesSelectedList;
-                let selectedId = obj.record.id
+                let behalfList =  this.state.gPDelegateRequiredDocuSignBehalfGPList;
+                let closingList = this.state.gPDelegateRequiredConsentHoldClosingList;
+                let selectedId = obj.record.id;
+                this.selectHoldClosing(selectedId,event.target.checked)
                 if(event.target.checked) {
                     if(getSelectedList.indexOf(selectedId) === -1) {
                         getSelectedList.push(selectedId);
                     }
+                    if(closingList.indexOf(selectedId) === -1) {
+                        closingList.push(selectedId);
+                    }
                 } else {
                     var index = getSelectedList.indexOf(selectedId);
+                    var closingIndex = closingList.indexOf(selectedId);
                     if (index !== -1) {
                         getSelectedList.splice(index, 1);
                     }
+                    if (closingIndex !== -1) {
+                        closingList.splice(index, 1);
+                    }
+                }
+                var behalfIndex = behalfList.indexOf(selectedId);
+                if (behalfIndex !== -1) {
+                    behalfList.splice(index, 1);
                 }
                 this.updateSelectedValueToList(obj.record.id,event.target.checked)
                 this.setState({
                     gpDelegatesSelectedList: getSelectedList,
+                    gPDelegateRequiredDocuSignBehalfGPList:behalfList,
+                    gPDelegateRequiredConsentHoldClosingList: closingList,
                     gpDelegateScreenError:''
+                })
+                break;
+            case type:
+                let getList = this.state[type+'List'];
+                let id = obj.record.id
+                if(event.target.checked) {
+                    if(getList.indexOf(id) === -1) {
+                        getList.push(id);
+                    }
+                } else {
+                    var index = getList.indexOf(id);
+                    if (index !== -1) {
+                        getList.splice(index, 1);
+                    }
+                }
+                this.selectHoldClosing(id,event.target.checked,type)
+                this.setState({
+                    type: getList,
                 })
                 break;
             default:
                 // do nothing
                 break;
+        }
+    }
+
+    selectHoldClosing(id,value,type) {
+        let selectedId = id;
+        if(type) {
+            for(let index of this.state.getGpDelegatesList) {
+                if(index['id'] === id) {
+                    index[type] = value
+                }
+            }
+        } else {
+            for(let index of this.state.getGpDelegatesList) {
+                if(index['id'] === id) {
+                    index['gPDelegateRequiredConsentHoldClosing'] = value
+                    index['gPDelegateRequiredDocuSignBehalfGP'] = value ? !value:value
+                }
+            }
         }
     }
 
@@ -252,8 +314,24 @@ class Step2Component extends Component {
 
     proceedToNext() {
         this.open();
+        let gpDelegates = [];
+        for(let index of this.state.gpDelegatesSelectedList) {
+            let obj = {};
+            obj['delegateId'] = index;
+            if(this.state.gPDelegateRequiredDocuSignBehalfGPList.indexOf(index) !== -1) {
+                obj['gPDelegateRequiredDocuSignBehalfGP'] = 1
+            } else {
+                obj['gPDelegateRequiredDocuSignBehalfGP'] = 0
+            }
+            if(this.state.gPDelegateRequiredConsentHoldClosingList.indexOf(index) !== -1) {
+                obj['gPDelegateRequiredConsentHoldClosing'] = 1
+            } else {
+                obj['gPDelegateRequiredConsentHoldClosing'] = 0
+            }
+            gpDelegates.push(obj);
+        }
         let headers = { token : JSON.parse(reactLocalStorage.get('token'))};
-        let delegateObj = {fundId:this.state.fundId, vcfirmId:this.state.firmId, gpDelegates:this.state.gpDelegatesSelectedList }
+        let delegateObj = {fundId:parseInt(this.state.fundId), vcfirmId:this.state.firmId, gpDelegates:gpDelegates }
         this.Fsnethttp.assignDelegatesToFund(delegateObj, headers).then(result=>{
             this.close();
             this.props.history.push('/createfund/upload/'+this.state.fundId);
@@ -282,26 +360,47 @@ class Step2Component extends Component {
     selectedMembersPushToList() {
         if(this.state.getGpDelegatesList.length >0) {
             let list = [];
+            let holdClosingList = [];
+            let requiredDocuSignBehalfGP = [];
             for(let index of this.state.getGpDelegatesList) {
                 if(index['selected'] === true) {
                     list.push(index['id'])
                 }
+                if(index['gPDelegateRequiredConsentHoldClosing'] === true) {
+                    holdClosingList.push(index['id'])
+                }
+                if(index['gPDelegateRequiredDocuSignBehalfGP'] === true) {
+                    requiredDocuSignBehalfGP.push(index['id'])
+                }
                 this.setState({
-                    gpDelegatesSelectedList: list
+                    gpDelegatesSelectedList: list,
+                    gPDelegateRequiredConsentHoldClosingList: holdClosingList,
+                    gPDelegateRequiredDocuSignBehalfGPList: requiredDocuSignBehalfGP
                 })
             }
         }
     }
+    
 
     updateSelectedValueToList(id, value) {
         if(this.state.getGpDelegatesList.length >0) {
-            let getList = this.state.getGpDelegatesList
+            let getList = this.state.getGpDelegatesList;
+            let list = this.state.gPDelegateRequiredConsentHoldClosingList;
             for(let index of getList) {
                 if(index['id'] === id) {
                     index['selected'] = value
+                    
                 }
                 this.setState({
                     gpDelegatesSelectedList: getList
+                })
+            }
+            for(let index of list) {
+                if(index['id'] === id) {
+                    index['gPDelegateRequiredConsentHoldClosing'] = value
+                }
+                this.setState({
+                    gPDelegateRequiredConsentHoldClosingList: list
                 })
             }
         }
@@ -358,21 +457,40 @@ class Step2Component extends Component {
                 <h1 className="title">Assign GP Delegates</h1>
                 <p className="subtext marginBottom44">Add new GP Delegates below.  Once added, as GP’s account holder you may unselect one or more GP Delegates which will cause them to be disassociated with this Fund.  You are required to select certain attributes about each GP Delegate as indicated below.  You may change these attributes at any time by returning to this screen.</p>
                 <Button className="fsnetButton" onClick={this.addGpDelegateBtn}><i className="fa fa-plus"></i>GP Delegate</Button>
+                <div className="gpDelegateTableHeader" hidden={this.state.getGpDelegatesList.length ===0}>
+                    <div className="gpDelegateHeadaerNoText"></div>
+                    <div className="gpDelegateHeadaerTitle"><div>Enable for this Fund</div></div>
+                    <div className="gpDelegateHeadaerTitle"><div>GP Delegate Required to DocuSign Fund Documents on Behalf of GP?</div></div>
+                    <div className="gpDelegateHeadaerTitle"><div>GP Delegate Required to Consent to Hold Closing?</div></div>
+                </div>
                 <div className={"userContainer " + (this.state.getGpDelegatesList.length ===0 ? 'borderNone' : '')} >
                     {this.state.getGpDelegatesList.length >0 ?
                         this.state.getGpDelegatesList.map((record, index)=>{
                             return(
                                 <div className="userRow" key={index}>
+                                    <label className="userImageAlt">
                                     {
                                         record['profilePic']  ?
                                         <img src={record['profilePic']['url']} alt="img" className="user-image" />
-                                         : <img src={userDefaultImage} alt="img" className="user-image" />
+                                        : <img src={userDefaultImage} alt="img" className="user-image" />
                                     }
-                                    
+                                    </label>
                                     <div className="fund-user-name">{record['firstName']}&nbsp;{record['lastName']}</div>
-                                    <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e,'user',{record})}>
-                                        <span className="checkmark"></span>
-                                    </CBox>
+                                    <div className="gpDelegateCheckbox paddingLeft30">
+                                        <CBox checked={record['selected']} onChange={(e) => this.handleInputChangeEvent(e,'user',{record})}>
+                                            <span className="checkmark"></span>
+                                        </CBox>
+                                    </div>
+                                    <div className="gpDelegateCheckbox paddingLeft30">
+                                        <CBox checked={record['gPDelegateRequiredDocuSignBehalfGP']} onChange={(e) => this.handleInputChangeEvent(e,'gPDelegateRequiredDocuSignBehalfGP',{record})}>
+                                            <span className="checkmark"></span>
+                                        </CBox>
+                                    </div>
+                                    <div className="gpDelegateCheckbox paddingLeft30">
+                                        <CBox checked={record['gPDelegateRequiredConsentHoldClosing']} onChange={(e) => this.handleInputChangeEvent(e,'gPDelegateRequiredConsentHoldClosing',{record})}>
+                                            <span className="checkmark"></span>
+                                        </CBox>
+                                    </div>
                                 </div>
                             );
                         })
