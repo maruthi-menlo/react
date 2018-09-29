@@ -60,6 +60,8 @@
     font-stretch: normal;
     line-height: normal;
     letter-spacing: 0.6px;
+    position: relative;
+    top: 18px;
 }
 .alert-content div{
     color: #39bcd5;
@@ -86,8 +88,8 @@
 }
 .alert-text {
     float: left;
-    width: 110px;
-    min-height: 60px;
+    width: 138px;
+    /*min-height: 60px;*/
     height: auto;
     font-family: 'OpenSans-SemiBold';
     font-size: 14px;
@@ -98,9 +100,18 @@
     letter-spacing: normal;
     color: #2f4858;
 }
+.alertPaddingLeft{
+    padding-right:0px !important; 
+}
 .alert-text a {
     color: #39bcd5;
     text-decoration: underline;
+}
+.alertTextWidth{
+    width: 214px !important;
+}
+.alertWidth{
+    width: 25px !important;
 }
 .dismiss {
     width: 12px;
@@ -109,10 +120,10 @@
     border: 1px solid #39bcd5;
     border-radius: 50%;
     color: #FFF;
-    position: relative;
+    /* position: relative;
     top: 20px;
     left: -13px;
-    cursor: pointer;
+    cursor: pointer; */
 }
 .alert-row {
     width: 305px;

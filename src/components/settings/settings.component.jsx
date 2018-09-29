@@ -16,6 +16,8 @@ import vanillaLogo from '../../images/Vanilla-white.png';
 import infoImage from '../../images/info.svg';
 import vanillaDarkLogo from '../../images/Vanilla.png';
 import dashboardComponent from '../dashboard/dashboard.component';
+import personalSelected from '../../images/personalSelected.svg';
+import key from '../../images/key.svg';
 
 class SettingsComponent extends Component {
 
@@ -95,10 +97,10 @@ class SettingsComponent extends Component {
                             {
                                 <ul className="sidenav-menu">
                                     <li>
-                                        <Link to={"/settings/profile"}><img src={infoImage} alt="home_image" className="" />&nbsp;<span>Personal Details</span></Link>
+                                        <Link to={"/settings/profile"}><img src={personalSelected} alt="home_image" className="" />&nbsp;<span>Personal Details</span></Link>
                                     </li>
                                     <li>
-                                        <Link to={"/settings/change-password"}><img src={infoImage} alt="home_image" className="" />&nbsp;<span>Change Password</span></Link>
+                                        <Link to={"/settings/change-password"}><img src={key} alt="home_image" className="" />&nbsp;<span>Change Password</span></Link>
                                     </li>
                                     <li>
                                         <Link to={"/settings/privacy"}><img src={infoImage} alt="home_image" className="" />&nbsp;<span>Settings</span></Link>
