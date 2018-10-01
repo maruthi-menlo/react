@@ -29,6 +29,7 @@ class addendumsComponent extends Component {
         this.closeAddendumModal = this.closeAddendumModal.bind(this);
         this.showModal = this.showModal.bind(this);
         this.startBtnFn = this.startBtnFn.bind(this);
+        this.sortAddendum = this.sortAddendum.bind(this);
         this.state = {
             showModal: false,
             showSideNav: true,
@@ -39,7 +40,11 @@ class addendumsComponent extends Component {
             showUploadPage: false,
             showAddendumPage: true,
             showLpPage:false,
-            showAddendumModal:false
+            showAddendumModal:false,
+            getAddendumsList: [],
+            noAddendumsMsz: '',
+            showNameAsc: true,
+            showOrgAsc: true,
         }
 
     }
@@ -49,10 +54,33 @@ class addendumsComponent extends Component {
     }
 
     componentDidMount() {
+        let id = this.FsnetUtil.getLpFundId();
+        console.log(id);
+        this.getAddendums(id);
 
     }
 
-
+    //Get list of Addendums
+    getAddendums(id) {
+        if(id) {
+            this.open();
+            let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+            this.Fsnethttp.getFund(id, headers).then(result => {
+                this.close();
+                this.setState({
+                    getAddendumsList: result.data.data.lps
+                })
+            })
+            .catch(error => {
+                this.close();
+                this.setState({
+                    getAddendumsList: [],
+                    noAddendumsMsz: this.Constants.NO_LPS
+                })
+    
+            });
+        }
+    }
 
     // ProgressLoader : close progress loader
     close() {
@@ -165,6 +193,58 @@ class addendumsComponent extends Component {
         
     }
 
+    //Sorting for name and organization
+    sortAddendum(e, colName, sortVal) {
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+        let firmId = 1;
+        let fundId = 90;
+        if (this.state.getAddendumsList && this.state.getAddendumsList.length > 1) {
+            this.open();
+            this.Fsnethttp.getLpSort(firmId, fundId, headers, colName, sortVal).then(result => {
+                if (result.data && result.data.data.length > 0) {
+                    this.close();
+                    this.setState({ getAddendumsList: result.data.data });
+                    if (colName === 'firstName') {
+                        if (sortVal === 'desc') {
+                            this.setState({
+                                showNameAsc: true
+                            })
+                        } else {
+                            this.setState({
+                                showNameAsc: false
+                            })
+                        }
+                    } else {
+                        if (sortVal === 'desc') {
+                            this.setState({
+                                showOrgAsc: true
+                            })
+                        } else {
+                            this.setState({
+                                showOrgAsc: false
+                            })
+                        }
+                    }
+
+                } else {
+                    this.close();
+                    this.setState({
+                        getAddendumsList: [],
+                        showNameAsc: false
+                    }, )
+                }
+
+            })
+            .catch(error => {
+                this.close();
+                this.setState({
+                    getAddendumsList: []
+                })
+
+            });
+        }
+    }
+
     render() {
         return (
             <div className="lpSubFormStyle addendumContainer">
@@ -173,7 +253,7 @@ class addendumsComponent extends Component {
                 <div className="LpDelegatesContainer marginTop20 marginLeft25 paddingLeft15" hidden={!this.state.showAddendumPage}>
                     <p className="Subtext">View addendums or upload documents to create a new one.</p>
                     <Button className="newAddendumButton" onClick={this.newAddendumFn}><i className="fa fa-plus paddingRight5"></i>New Addendum</Button>
-                    <Row className="full-width marginTop20 marginLeft61">
+                    {/* <Row className="full-width marginTop20 marginLeft61">
                         <div className="name-heading marginLeft75">
                             LP Name
                                     <i className="fa fa-sort-asc" aria-hidden="true"  ></i>
@@ -182,19 +262,50 @@ class addendumsComponent extends Component {
                             Organization
                                 <i className="fa fa-sort-asc" aria-hidden="true"></i>
                         </div>
-                    </Row>
-                    <div className="userLPContainer marginTop10">
-                        <div className="userRow">
-                            <label className="userImageAlt">
-                                {
-                                    <img src={userDefaultImage} alt="img" className="user-image" />
-                                }
-                            </label>
-                            <div className="lp-name">SarahDouglas</div>
-                            <div className="lp-name lp-name-pad">Menlo Technologies</div>
-                            <Button className="btnViewPrint" ><img src={documentImage} alt="home_image"/><span className="viewPrintText">View + Print</span></Button>
+                    </Row> */}
+                    {this.state.getAddendumsList.length > 0 ?
+                    <Row className="full-width marginTop20 marginLeft61">
+                        <div className="name-heading marginLeft75" hidden={!this.state.showNameAsc} onClick={(e) => this.sortAddendum(e, 'firstName', 'asc')}>
+                            LP Name
+                                    <i className="fa fa-sort-asc" aria-hidden="true"  ></i>
                         </div>
-                    </div>
+                        <div className="name-heading marginLeft75" onClick={(e) => this.sortAddendum(e, 'firstName', 'desc')} hidden={this.state.showNameAsc}>
+                            LP Name
+                                <i className="fa fa-sort-desc" aria-hidden="true"  ></i>
+                        </div>
+                        <div className="name-heading" onClick={(e) => this.sortAddendum(e, 'organizationName', 'asc')} hidden={!this.state.showOrgAsc}>
+                            Organization
+                                <i className="fa fa-sort-asc" aria-hidden="true"></i>
+                        </div>
+                        <div className="name-heading" onClick={(e) => this.sortAddendum(e, 'organizationName', 'desc')} hidden={this.state.showOrgAsc}>
+                            Organization
+                                <i className="fa fa-sort-desc" aria-hidden="true" ></i>
+                        </div>
+                    </Row> : ''
+                }
+                    <div className={"userAddendumContainer " + (this.state.getAddendumsList.length === 0 ? 'borderNone' : 'marginTop10')}>
+                    {this.state.getAddendumsList.length > 0 ?
+                        this.state.getAddendumsList.map((record, index) => {
+                            return (
+
+                                <div className="userRow" key={index}>
+                                    <label className="userImageAlt">
+                                    {
+                                        record['profilePic'] ?
+                                            <img src={record['profilePic']['url']} alt="img" className="user-image" />
+                                            : <img src={userDefaultImage} alt="img" className="user-image" />
+                                    }
+                                    </label>
+                                    <div className="lp-name">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                    <div className="lp-name lp-name-pad">{record['organizationName']}</div>
+                                    <Button className="btnViewPrint" ><img src={documentImage} alt="home_image"/><span className="viewPrintText">View + Print</span></Button>
+                                </div>
+                            );
+                        })
+                        :
+                        <div className="title margin20 text-center">{this.state.noDelegatesMsz}</div>
+                    }
+                </div>
                 </div>
                 <div className="LpDelegatesContainer marginTop6 marginLeft25 marginBot20 paddingLeft15" id="createFund" hidden={!this.state.showUploadPage}>
                     <h1 className="uploadFundDocument">Upload Addendum Documents</h1>
@@ -215,7 +326,7 @@ class addendumsComponent extends Component {
                 <div className="LpDelegatesContainer marginTop6 marginLeft25 paddingLeft15" hidden={!this.state.showLpPage}>
                     <h1 className="title marginBottom2">Choose LPs</h1>
                     <div className="subtext">Check off the LPs that you want to send this addendum to.</div>
-                    <Row className="full-width marginTop20">
+                    {/* <Row className="full-width marginTop20">
                         <div className="name-heading marginLeft30">
                             LP Name
                                     <i className="fa fa-sort-asc" aria-hidden="true"  ></i>
@@ -233,6 +344,52 @@ class addendumsComponent extends Component {
                                 <span className="checkmark"></span>
                             </CBox>
                         </div>
+                    </div> */}
+                    {this.state.getAddendumsList.length > 0 ?
+                    <Row className="full-width marginTop20 marginLeft61">
+                        <div className="name-heading marginLeft75" hidden={!this.state.showNameAsc} onClick={(e) => this.sortAddendum(e, 'firstName', 'asc')}>
+                            LP Name
+                                    <i className="fa fa-sort-asc" aria-hidden="true"  ></i>
+                        </div>
+                        <div className="name-heading marginLeft75" onClick={(e) => this.sortAddendum(e, 'firstName', 'desc')} hidden={this.state.showNameAsc}>
+                            LP Name
+                                <i className="fa fa-sort-desc" aria-hidden="true"  ></i>
+                        </div>
+                        <div className="name-heading" onClick={(e) => this.sortAddendum(e, 'organizationName', 'asc')} hidden={!this.state.showOrgAsc}>
+                            Organization
+                                <i className="fa fa-sort-asc" aria-hidden="true"></i>
+                        </div>
+                        <div className="name-heading" onClick={(e) => this.sortAddendum(e, 'organizationName', 'desc')} hidden={this.state.showOrgAsc}>
+                            Organization
+                                <i className="fa fa-sort-desc" aria-hidden="true" ></i>
+                        </div>
+                    </Row> : ''
+                }
+                    <div className={"userAddendumContainer " + (this.state.getAddendumsList.length === 0 ? 'borderNone' : 'marginTop10')}>
+                    {this.state.getAddendumsList.length > 0 ?
+                        this.state.getAddendumsList.map((record, index) => {
+                            return (
+
+                                <div className="userRow" key={index}>
+                                    <label className="userImageAlt">
+                                    {
+                                        record['profilePic'] ?
+                                            <img src={record['profilePic']['url']} alt="img" className="user-image" />
+                                            : <img src={userDefaultImage} alt="img" className="user-image" />
+                                    }
+                                    </label>
+                                    <div className="lp-name">{record['firstName']}&nbsp;{record['lastName']}</div>
+                                    <div className="lp-name lp-name-pad">{record['organizationName']}</div>
+                                    <CBox className="marginLeft8">
+                                        <span className="checkmark"></span>
+                                    </CBox>
+                                </div>
+                            );
+                        })
+                        :
+                        <div className="title margin20 text-center">{this.state.noDelegatesMsz}</div>
+                    }
+                    
                     </div>
                     <div className="selectAllDiv">
                         <CBox className="marginRight8">

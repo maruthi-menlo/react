@@ -27,6 +27,7 @@ class ModalComponent extends Component {
         // this.handlefundDelShow = this.handlefundDelShow.bind(this);
         this.handlefundDelClose = this.handlefundDelClose.bind(this);
         this.handlefundClose = this.handlefundClose.bind(this);
+        this.handleCloseFundClose = this.handleCloseFundClose.bind(this);
         this.addLpFn = this.addLpFn.bind(this);
         this.addDelegateFn = this.addDelegateFn.bind(this);
         this.deleteLp = this.deleteLp.bind(this);
@@ -34,6 +35,7 @@ class ModalComponent extends Component {
         this.deactivateFund = this.deactivateFund.bind(this);
         this.deactivateFundStatus = this.deactivateFundStatus.bind(this);
         this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
+        this.closeFundBtn = this.closeFundBtn.bind(this);
         this.state = {
             show: false,
             GPshow : false,
@@ -42,6 +44,7 @@ class ModalComponent extends Component {
             isLpFormValid: false,
             firstNameBorder: false,
             fundDeactivateModal: false,
+            fundCloseModal: false,
             firstNameMsz: '',
             firstName: '',
             reason: '',
@@ -132,6 +135,15 @@ class ModalComponent extends Component {
                 })
             }
         });
+        PubSub.subscribe('openCloseFundModal', (msg, data) => {
+            if(!this.state.fundCloseModal) {
+                this.setState({
+                    fundId: data.fundId
+                },()=>{
+                    this.handlefundCloseShow();
+                })
+            }
+        });
     }
 
     deleteLp() {
@@ -188,6 +200,10 @@ class ModalComponent extends Component {
                 this.deactivateFundStatus();
             })
         }
+    }
+
+    closeFundBtn() {
+
     }
 
     deactivateFundStatus() {
@@ -274,6 +290,9 @@ class ModalComponent extends Component {
     handlefundShow() {
         this.setState({ lpFundModal: true });
     }
+    handleCloseFundClose() {
+        this.setState({ fundCloseModal: false });
+    }
     handlefundClose(redirect) {
         this.setState({ lpFundModal: false }, () => {
             if(redirect) {
@@ -292,6 +311,9 @@ class ModalComponent extends Component {
     }
     handlefundDelShow() {
         this.setState({ fundDeactivateModal: true });
+    }
+    handlefundCloseShow() {
+        this.setState({ fundCloseModal: true });
     }
     handleGpDelClose() {
         this.setState({ GPDelshow: false });
@@ -1040,6 +1062,26 @@ class ModalComponent extends Component {
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12}>
                             <Button type="button" className="fsnetCancelButton btnEnabled" onClick={this.deactivateFund}>Deactivate</Button>
+                            </Col>
+                        </Row>   
+                    </Modal.Body>
+                </Modal>
+                <Modal id="GPDelModal" show={this.state.fundCloseModal} onHide={this.handleCloseFundClose} dialogClassName="GPDelModalDialog fundModalDialog">
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Title>Close Fund</Modal.Title>                                        
+                    <Modal.Body>
+                        <div className="subtext modal-subtext">Are you sure you want to close Fund?</div>         
+                        <div className="form-main-div">
+                            
+                        
+                        </div> 
+                        <Row>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                            <Button type="button" className="fsnetCancelButton" onClick={this.handleCloseFundClose}>Cancel</Button>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12}>
+                            <Button type="button" className="fsnetCancelButton btnEnabled" onClick={this.closeFundBtn}>Close Fund</Button>
                             </Col>
                         </Row>   
                     </Modal.Body>

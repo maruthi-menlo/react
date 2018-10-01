@@ -12,7 +12,8 @@ export class Constants{
     BASE_URL = `http://137.116.56.150:8000/api/v1/`;
 
     REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME = "Password and Password Confirm should be the same.";
-
+    CURRENT_PWD_REQUIRED = 'Please enter current password.';
+    CNFRM_PWD_REQUIRED = 'Please enter confirm password.';
     REQUIRED_PASSWORD_AGAINPASSWORD_SAME = "Password and Password again should be the same.";
     TERMS_CONDITIONS = "Please accept terms & conditions.";
     MOBILE_NUMBER_FORMAT = "Phone number is invalid.";

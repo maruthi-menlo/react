@@ -452,7 +452,7 @@ class LpTableComponent extends Component{
                 </div>
                 
                 {/* View LP Profile-Change Fund Commitment */}
-                <div className="lpTableModalUser">
+                {/* <div className="lpTableModalUser">
                     <div className="closeImageAlign">
                         <img src={closeSmallBlack} alt="close_image" className="" />
                     </div>
@@ -471,7 +471,7 @@ class LpTableComponent extends Component{
                         <Button className="confirmAndSaveBtn">Confirm and Save</Button>
                         <Button className="cancelnewFundBtn">Cancel</Button>
                     </div>    
-                </div>
+                </div> */}
                 <Loader isShow={this.state.showModal}></Loader>
                 <ModalComponent></ModalComponent>
             </div>

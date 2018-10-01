@@ -3,14 +3,31 @@ import '../settings.component.css';
 import Loader from '../../../widgets/loader/loader.component';
 import { Link } from "react-router-dom";
 import { Row, Col, Button } from 'react-bootstrap';
+import {Constants} from '../../../constants/constants';
 
 class changePasswordComponent extends Component {
 
     constructor(props) {
         super(props);
+        this.Constants = new Constants();
+        this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
+        this.resetPasswordFn = this.resetPasswordFn.bind(this);
         this.state = {
             showModal: false,
-            
+            isFormValid: false,
+            currentPasswordValid: false, 
+            currentPassword: '', 
+            currentPasswordBorder: false, 
+            currentPasswordMsz: '', 
+            passwordValid: false,
+            password: '', 
+            ppasswordBorder: false, 
+            passwordMsz: '',
+            cnfrmPasswordValid: false,
+            cnfrmPassword: '', 
+            cnfrmPasswordBorder: false, 
+            cnfrmPasswordMsz: '',
+            changePasswordErrorMsz: ''
         }
 
     }
@@ -19,7 +36,64 @@ class changePasswordComponent extends Component {
         
     }
 
+    //Onchange event for all input text boxes.
+    handleInputChangeEvent(event,type,errorName) {
+        let dataObj = {}; 
+        switch(type) {
+            case type:
+                if(event.target.value.trim() === '' || event.target.value === undefined) {
+                    this.setState({
+                        [type+'Msz']: this.Constants[errorName],
+                        [type+'Valid']: false,
+                        [type+'Border']: true,
+                    })
+                    dataObj ={
+                        [type+'Valid'] :false
+                    };
+                    this.updateStateParams(dataObj);
+                } else {
+                    this.setState({
+                        [type]: event.target.value.trim(),
+                        [type+'Msz']: '',
+                        [type+'Valid']: true,
+                        [type+'Border']: false,
+                    })
+                    dataObj ={
+                        [type+'Valid'] :true
+                    };
+                    this.updateStateParams(dataObj);
+                }
+                break;
+            default:
+                // do nothing
+        }
+    }
 
+    // Update state params values and save button visibility
+
+    updateStateParams(updatedDataObject){
+        this.setState(updatedDataObject, ()=>{
+            this.enableDisableSaveButton();
+        });
+    }
+
+    // Enable / Disble functionality of save Button
+
+    enableDisableSaveButton(){
+        let status = (this.state.currentPasswordValid && this.state.passwordValid && this.state.cnfrmPasswordValid ) ? true : false;
+        this.setState({
+            isFormValid : status
+        });
+    }
+
+    resetPasswordFn() {
+        if(this.state.password !== this.state.cnfrmPassword) {
+            this.setState({
+                changePasswordErrorMsz:this.Constants.REQUIRED_PASSWORD_CONFIRMPASSWORD_SAME
+            })
+            return true;
+        }
+    }
     
     render() {
         return (
@@ -31,23 +105,27 @@ class changePasswordComponent extends Component {
                     <Row className="marginTop20">
                         <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                             <label className="input-label">Current Password</label>
-                            <input type="password" name="password" className="forgotFormControl inputMarginBottom"/><br />
+                            <input type="password" name="password" placeholder="Enter Old Password" className={"forgotFormControl inputMarginBottom " + (this.state.currentPasswordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'currentPassword', 'CURRENT_PWD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'currentPassword', 'CURRENT_PWD_REQUIRED')}/>
+                            <span className="error">{this.state.currentPasswordMsz}</span>
                         </Col>
                     </Row>
                     <Row className="marginTop20">
                         <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                             <label className="input-label">Password</label>
-                            <input type="password" name="newPassword" className="forgotFormControl inputMarginBottom"/><br />
+                            <input type="password" name="newPassword" placeholder="Enter New Password" className={"forgotFormControl inputMarginBottom " + (this.state.passwordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'password', 'LOGIN_PASSWORD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'password', 'LOGIN_PASSWORD_REQUIRED')}/>
+                            <span className="error">{this.state.passwordMsz}</span>
                         </Col>
                     </Row>
                     <Row className="marginTop20">
                         <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                             <label className="input-label">Password again</label>
-                            <input type="password" name="confirmPassword" className="forgotFormControl" />
+                            <input type="password" name="confirmPassword" placeholder="Confirm Password" className={"forgotFormControl " + (this.state.cnfrmPasswordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'cnfrmPassword', 'CNFRM_PWD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'cnfrmPassword', 'CNFRM_PWD_REQUIRED')} />
+                            <span className="error">{this.state.cnfrmPasswordMsz}</span>
                         </Col>
                     </Row>
+                    <div className="error marginTop20">{this.state.changePasswordErrorMsz}</div>
                     <Row className="marginTop20">
-                        <Button className="reset-password-btn btnEnabled">Reset Password</Button>
+                        <Button className={"reset-password-btn "+ (this.state.isFormValid ? 'btnEnabled' : '') } onClick={this.resetPasswordFn}>Reset Password</Button>
                     </Row>
                     <label className="cancel-btn cancelBtn marginTop20"> <a href="/dashboard">Cancel</a></label>
                 </div>

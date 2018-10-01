@@ -12,7 +12,8 @@ class privacyComponent extends Component {
         super(props);
         this.state = {
             showModal: false,
-            
+            allowGPdelegatesToSign: true,
+            isImporsonatingAllowed:true
         }
 
     }

@@ -7,6 +7,10 @@ import { Row,Col, Button, Checkbox as CBox, FormControl} from 'react-bootstrap';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/rrui.css'
 import 'react-phone-number-input/style.css'
+import { Fsnethttp } from '../../../services/fsnethttp';
+import { FsnetAuth } from '../../../services/fsnetauth';
+import { FsnetUtil } from '../../../util/util';
+import { reactLocalStorage } from 'reactjs-localstorage';
 
 class profileComponent extends Component {
 
@@ -17,8 +21,12 @@ class profileComponent extends Component {
             userImageName: 'Profile_Pic.jpg',
             currentUserImage: userDefaultImage,
             profilePicFile: {},
+            countriesList:[]
             
         }
+        this.FsnetAuth = new FsnetAuth();
+        this.FsnetUtil = new FsnetUtil();
+        this.Fsnethttp = new Fsnethttp();
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
         this.removeImageBtn = this.removeImageBtn.bind(this);
@@ -26,7 +34,18 @@ class profileComponent extends Component {
     }
 
     componentDidMount() {
+        this.getAllCountires();
         
+    }
+
+    //ProgressLoader : Close progress loader
+    close() {
+        this.setState({ showModal: false });
+    }
+
+    // ProgressLoader : show progress loader
+    open() {
+        this.setState({ showModal: true });
     }
 
     //USer profile pic upload.
@@ -76,6 +95,22 @@ class profileComponent extends Component {
         document.getElementById('uploadBtn').click();
     }
 
+    getAllCountires() {
+        let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+        this.open();
+        this.Fsnethttp.getAllCountires(headers).then(result => {
+            this.close();
+            if (result.data) {
+                this.setState({
+                    countriesList: result.data
+                })
+            }
+        })
+        .catch(error => {
+            this.close();
+        });
+    }
+
 
     
     render() {
@@ -119,7 +154,12 @@ class profileComponent extends Component {
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="input-label">Country/Region</label>
                                 <FormControl name='country' defaultValue={0} className="selectFormControl" componentClass="select">
-                                    <option value={0}>Select Country</option>
+                                <option value={0}>Select Country</option>
+                                {this.state.countriesList.map((record, index) => {
+                                    return (
+                                        <option value={record['id']} key={index} >{record['name']}</option>
+                                    );
+                                })}
                                 </FormControl>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">

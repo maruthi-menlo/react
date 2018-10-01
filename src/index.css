@@ -119,7 +119,7 @@ select option {
 a:hover {
   text-decoration: underline !important;
 }
-.selectFormControl.inputError, .inputFormControl.inputError, .react-phone-number-input.inputError {
+.selectFormControl.inputError, .inputFormControl.inputError, .react-phone-number-input.inputError, .forgotFormControl.inputError {
   border-color: red !important;
 }
 .btn.disabled, .btn[disabled] {

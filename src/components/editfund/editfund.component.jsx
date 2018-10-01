@@ -263,6 +263,11 @@ class editFundComponent extends Component {
         }
     }
 
+    closeFund() {
+        console.log('clicked closeFund modal');
+        PubSub.publish('openCloseFundModal', {fundId: this.state.fundId})
+    }
+
     confirmDeactivate() {
         console.log('clicked modal');
         PubSub.publish('openfundDelModal', {fundId: this.state.fundId, fundName: this.state.fundName, fundStatus: this.state.fundStatus})
@@ -320,6 +325,9 @@ class editFundComponent extends Component {
                                     <li>
                                         {/* <Link to={"/editFund/addendums/"+'2'}><img src={currencyImage} alt="home_image" className="" />&nbsp;<span>Capital Call</span></Link> */}
                                         <a className="cursor" ><img src={currencyImage} alt="home_image" className="" />&nbsp;<span>Capital Call</span></a>
+                                    </li>
+                                    <li>
+                                        <a className="cursor" onClick={() => { this.closeFund()}}><img src={null} alt={null} className="" style={{ visibility: 'hidden' }}/>&nbsp;<span>Close Fund</span></a>
                                     </li>
                                     <li>
                                         <a className="cursor" onClick={() => { this.confirmDeactivate()}}><img src={null} alt={null} className="" style={{ visibility: 'hidden' }}/>&nbsp;<span>Deactivate Fund</span></a>
