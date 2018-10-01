@@ -164,3 +164,145 @@ tbody tr:nth-child(even) td:nth-child(1) {
     text-overflow: ellipsis;
     background-color: #fff !important;
 }
+
+/*View LP Profile-Change Fund Commitment*/
+
+.lpTableModalUser{
+  width: 288px;
+  height: 427px;
+  border-radius: 4px;
+  box-shadow: -8px 8px 16px 0 rgba(82, 97, 115, 0.18);
+  background-color: #ffffff;
+  background-color: var(--white);
+  border: solid 1px rgba(51, 101, 138, 0.25);
+}
+.lpTableModalUser .closeImageAlign{
+  float: right;
+  position: relative;
+  left: -10px;
+}
+.lpTableModalUser .imageInputContainer{
+  margin-left: 36px;
+  margin-right: 35px;
+  clear: both;
+}
+.lpTableModalUser .profilePictureImage{
+  display: block;
+  margin: auto;
+}
+.lpTableModalUser .Sarah-Douglas {
+  /*width: 143px;*/
+  height: 32px;
+  font-family: 'OpenSans-Bold';
+  font-size: 20px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  color: #2f4858;
+  text-align: center;
+  margin-bottom: 2px;
+}
+.lpTableModalUser .Limited-Partner-Individual {
+  /*width: 159px;*/
+  height: 16px;
+  font-family: 'OpenSans-Bold';
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  color: #2f4858;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.lpTableModalUser .Current-Fund-Commitm {
+  /*width: 214px;*/
+  height: 20px;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.lpTableModalUser .currentFundAmount {
+  /*width: 165px;*/
+  height: 32px;
+  font-family: 'OpenSans-Bold';
+  font-size: 20px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  color: #1adbb9;
+    position: relative;
+    top: -5px;
+  margin-bottom: 2px;
+}
+.lpTableModalUser .newFundCommitment {
+  width: 217px;
+  height: 20px;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #2f4858;
+}
+.lpTableModalUser .inputNewFundCommitment{
+  width: 217px !important;
+  height: 40px;
+  border-radius: 3px !important;
+  border: solid 1px #39bcd5 !important;    
+  font-family: 'Lato';
+  font-size: 16px !important;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5 !important;
+  letter-spacing: normal;
+  color: #526173 !important;
+  padding-left: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 17px;
+}
+.lpTableModalUser .confirmAndSaveBtn {
+  width: 217px;
+  height: 36px;
+  background-color: #00bcd4;
+  border-radius: 50px;
+  font-family: 'Lato';
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+  color: var(--white);
+  margin-bottom: 22px;
+}
+.lpTableModalUser .cancelnewFundBtn{
+  width: 217px;
+  
+  font-family: 'Lato';
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  color: #0c0033;
+  background-color: #ffffff;
+}

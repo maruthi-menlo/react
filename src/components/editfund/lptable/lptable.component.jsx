@@ -4,7 +4,7 @@ import Loader from '../../../widgets/loader/loader.component';
 import { Constants } from '../../../constants/constants';
 import { Fsnethttp } from '../../../services/fsnethttp';
 import { FsnetAuth } from '../../../services/fsnetauth';
-import { Row, Col,Table,Button} from 'react-bootstrap';
+import { Row, Col,Table,Button,FormControl } from 'react-bootstrap';
 import userDefaultImage from '../../../images/default_user.png';
 import errorImage from '../../../images/error.svg';
 import editImage from '../../../images/edit_2.svg';
@@ -14,6 +14,8 @@ import ModalComponent from '../../createfund/modals/modals.component';
 import { PubSub } from 'pubsub-js';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { FsnetUtil } from '../../../util/util';
+import closeSmallBlack from '../../../images/close-small-black.svg';
+import profilePictureLarge from '../../../images/profile-picture-large.svg'; 
 import $ from 'jquery';
 var fundInfo = {};
 class LpTableComponent extends Component{
@@ -447,6 +449,28 @@ class LpTableComponent extends Component{
                         </div>
                     </div>
 
+                </div>
+                
+                {/* View LP Profile-Change Fund Commitment */}
+                <div className="lpTableModalUser">
+                    <div className="closeImageAlign">
+                        <img src={closeSmallBlack} alt="close_image" className="" />
+                    </div>
+                    <div className="imageInputContainer">
+                        <img src={profilePictureLarge} alt="profile_picture" className="profilePictureImage" />
+                        <h1 className="Sarah-Douglas">Sarah Douglas</h1>  
+                        <h2 className="Limited-Partner-Individual">Limited Partner-Individual</h2>  
+                        <div>
+                            <label className="Current-Fund-Commitm">Current Fund Commitment:</label>
+                            <label className="currentFundAmount">$5,000,000.00</label>  
+                        </div>
+                        <div>
+                            <label  className="newFundCommitment">New Fund Commitment</label>
+                            <FormControl type="text" name="firmName" className="inputFormControl inputWidth290 inputNewFundCommitment" placeholder="$5,500,000.00"/>                              
+                        </div>
+                        <Button className="confirmAndSaveBtn">Confirm and Save</Button>
+                        <Button className="cancelnewFundBtn">Cancel</Button>
+                    </div>    
                 </div>
                 <Loader isShow={this.state.showModal}></Loader>
                 <ModalComponent></ModalComponent>
