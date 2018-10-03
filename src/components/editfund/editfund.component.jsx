@@ -180,7 +180,7 @@ class editFundComponent extends Component {
             fundName: data.legalEntity,
             fundStatus: data.status,
             fundObj: data,
-            documentLink: data.partnershipDocument ? data.partnershipDocument.url : null,
+            documentLink: data.partnershipDocument ? data.partnershipDocument.baseUrl+data.partnershipDocument.path : null,
             getGpDelegatesList: data.gpDelegates ? data.gpDelegates: [],
             getLpList: data.lps ? data.lps: [],
             gpDelegatesSelectedUsers: false,

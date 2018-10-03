@@ -500,7 +500,8 @@ class LpSubscriptionFormComponent extends Component {
             this.Fsnethttp.getAggrement(this.state.lpsubscriptionObj.documentsForSignature.envelopeId, headers, this.state.lpsubscriptionObj.id).then(result => {
                 this.close();
                 if (result.data) {
-                    window.location.href = result.data.url;
+                    // window.location.href = result.data.url;
+                    window.open(result.data.url, '_blank', 'width = 1000px, height = 600px')
                 }
             })
             .catch(error => {

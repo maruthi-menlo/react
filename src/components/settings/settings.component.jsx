@@ -18,6 +18,7 @@ import vanillaDarkLogo from '../../images/Vanilla.png';
 import dashboardComponent from '../dashboard/dashboard.component';
 import personalSelected from '../../images/personalSelected.svg';
 import key from '../../images/key.svg';
+import settingsSelected from '../../images/settings-selected.svg';
 
 class SettingsComponent extends Component {
 
@@ -91,7 +92,7 @@ class SettingsComponent extends Component {
                         </div>
                     </div>
                     <div className="text-center navbar-collapse-custom" id="navbar-collapse" hidden={!this.state.showSideNav}>
-                        <div className="sidenav">
+                        <div className="sidenav" id="profileSideNav">
                             <h1 className="text-left logoHamburger"><i className="fa fa-bars" aria-hidden="true"></i>&nbsp; <img src={vanillaLogo} alt="vanilla" className="vanilla-logo"/></h1>
                             <h2 className="text-left lpDashAlign"><img src={homeImage} alt="home_image" className="" />&nbsp; <Link to="/dashboard">Dashboard</Link></h2>
                             {
@@ -103,7 +104,7 @@ class SettingsComponent extends Component {
                                         <Link to={"/settings/change-password"}><img src={key} alt="home_image" className="" />&nbsp;<span>Change Password</span></Link>
                                     </li>
                                     <li>
-                                        <Link to={"/settings/privacy"}><img src={infoImage} alt="home_image" className="" />&nbsp;<span>Settings</span></Link>
+                                        <Link to={"/settings/privacy"}><img src={settingsSelected} alt="home_image" className="" />&nbsp;<span>Settings</span></Link>
                                     </li>
                                 </ul>
                             }

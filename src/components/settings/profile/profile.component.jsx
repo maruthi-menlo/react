@@ -21,7 +21,8 @@ class profileComponent extends Component {
             userImageName: 'Profile_Pic.jpg',
             currentUserImage: userDefaultImage,
             profilePicFile: {},
-            countriesList:[]
+            countriesList:[],
+            statesList:[]
             
         }
         this.FsnetAuth = new FsnetAuth();
@@ -30,12 +31,13 @@ class profileComponent extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.uploadBtnClick = this.uploadBtnClick.bind(this);
         this.removeImageBtn = this.removeImageBtn.bind(this);
-
+        this.countryChange = this.countryChange.bind(this);
+        this.inputHandleChange = this.inputHandleChange.bind(this);
     }
 
     componentDidMount() {
         this.getAllCountires();
-        
+        document.getElementById('profileSideNav').style.position = 'fixed'
     }
 
     //ProgressLoader : Close progress loader
@@ -111,7 +113,31 @@ class profileComponent extends Component {
         });
     }
 
+    countryChange(e) {
+        const id = e.target.value;
+        if(id) {
+            let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
+            this.open();
+            this.Fsnethttp.getStates(id, headers).then(result => {
+                this.close();
+                if (result.data) {
+                    this.setState({
+                        statesList: result.data
+                    })
+                }
+            })
+            .catch(error => {
+                this.close();
+                this.setState({
+                    statesList: []
+                })
+            });
+        }
+    }
 
+    inputHandleChange(e) {
+
+    }
     
     render() {
         return (
@@ -122,12 +148,22 @@ class profileComponent extends Component {
                     <form>
                         <Row className="marginBot24">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="input-label">Full Name</label>
-                                <FormControl type="text" name="fullName" className="inputFormControl" maxLength="200" placeholder="John Doe"/>
+                                <label className="input-label">First Name</label>
+                                <FormControl type="text" name="firstName" className="inputFormControl" maxLength="200" placeholder="John"/>
                             </Col>
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="input-label">Last Name</label>
+                                <FormControl type="text" name="lastName" className="inputFormControl" maxLength="200" placeholder="Doe"/>
+                            </Col>
+                        </Row>
+                        <Row className="marginBot24">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="input-label">Email Address</label>
                                 <FormControl type="text" name="email" className="inputFormControl" id="email" placeholder="JohnDoe@gmail.com"/>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="input-label">Phone Number (Cell)</label>
+                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" country="US" onChange={ (e) => this.inputHandleChange(e) }/>
                             </Col>
                         </Row>
                         <Row className="marginBot24">
@@ -146,14 +182,14 @@ class profileComponent extends Component {
                                 <FormControl type="text" name="city" className="inputFormControl" placeholder="San Francisco"/>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="input-label">Zipcode</label>
+                                <label className="input-label">Zip Code</label>
                                 <FormControl type="text" name="zipCode" className="inputFormControl" placeholder="95051"/>
                             </Col>
                         </Row>
                         <Row className="marginBot24">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <label className="input-label">Country/Region</label>
-                                <FormControl name='country' defaultValue={0} className="selectFormControl" componentClass="select">
+                                <FormControl name='country' defaultValue={0} className="selectFormControl" componentClass="select" onChange={(e) => this.countryChange(e,'country')}>
                                 <option value={0}>Select Country</option>
                                 {this.state.countriesList.map((record, index) => {
                                     return (
@@ -163,12 +199,20 @@ class profileComponent extends Component {
                                 </FormControl>
                             </Col>
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
-                                <label className="input-label">Phone Number (Cell)</label>
-                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" country="US"/>
+                                <label className="input-label">State</label>
+                                <FormControl name='state' defaultValue={0} className="selectFormControl" componentClass="select">
+                                <option value={0}>Select State</option>
+                                {this.state.statesList.map((record, index) => {
+                                    return (
+                                        <option value={record['id']} key={index} >{record['name']}</option>
+                                    );
+                                })}
+                                </FormControl>
                             </Col>
+                            
                         </Row>
                         <label className="label-text marginBot12">Profile Picture: (Image must not exceed 512 x 512)</label>
-                        <Row className="profile-Row profileMargin">
+                        <Row className="profile-Row profileMargin marginBot24">
                             <Col lg={6} md={6} sm={6} xs={12} className="width40">
                                 <img src={this.state.currentUserImage} alt="profile-pic" className="profile-pic"/>
                                 <span className="profilePicName">{this.state.userImageName}</span>
@@ -177,6 +221,31 @@ class profileComponent extends Component {
                                 <input type="file" id="uploadBtn" className="hide" onChange={ (e) => this.handleChange(e) } />
                                 <Button className="uploadFile fsnetBtn" onClick={this.uploadBtnClick}>Upload File</Button> <br/>
                                 <label className="removeBtn" onClick={this.removeImageBtn}>Remove</label>
+                            </Col>
+                        </Row>
+                        <Row className="profile-Row profileMargin">
+                            <CBox className="marginLeft8 marginLeft20">
+                                <span className="checkmark"></span>
+                            </CBox><span className="marginTop10 subtext">Please fill below details if details are not same as above.</span>
+                        </Row>
+                        <Row className="marginBot24">
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="input-label">First Name</label>
+                                <FormControl type="text" name="firstName" className="inputFormControl" maxLength="200" placeholder="John"/>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="input-label">Last Name</label>
+                                <FormControl type="text" name="lastName" className="inputFormControl" maxLength="200" placeholder="Doe"/>
+                            </Col>
+                        </Row>
+                        <Row className="marginBot24">
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="input-label">Email Address</label>
+                                <FormControl type="text" name="email" className="inputFormControl" id="email" placeholder="JohnDoe@gmail.com"/>
+                            </Col>
+                            <Col lg={6} md={6} sm={6} xs={12} className="width40">
+                                <label className="input-label">Primary Phone Number</label>
+                                <PhoneInput maxLength="14" placeholder="(123) 456-7890" country="US" onChange={ (e) => this.inputHandleChange(e) }/>
                             </Col>
                         </Row>
                     </form>

@@ -1507,7 +1507,7 @@ class InvestorInformationComponent extends Component {
                                         </Row>
                                         <Row className="step1Form-row">
                                             <Col xs={12} md={12}>
-                                                <label className="form-label width100">Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment?</label>
+                                                <label className="form-label width100">Are you subscribing as joint individuals with your spouse, such as community property or tenants in common?</label>
                                                 <Radio name="jointIndividual" inline checked={this.state.areYouSubscribingAsJointIndividual === true} onChange={(e) => this.investorHandleChangeEvent(e, 'radio', true, 'areYouSubscribingAsJointIndividual')}>&nbsp; Yes
                                             <span className="radio-checkmark"></span>
                                                 </Radio>

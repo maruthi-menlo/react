@@ -25,7 +25,8 @@ class reviewComponent extends Component {
             investorType: 'LLC',
             lpObj:{},
             investorSubTypeName:'',
-            jurisdictionEntityLegallyRegisteredName:''
+            jurisdictionEntityLegallyRegisteredName:'',
+            hideConfirmBtn:false
         }
 
     }
@@ -275,6 +276,9 @@ class reviewComponent extends Component {
     }
 
     submitSubscription() {
+        this.setState({
+            hideConfirmBtn:true
+        })
         let headers = { token: JSON.parse(reactLocalStorage.get('token')) };
         this.open();
         this.Fsnethttp.submitSubscription(this.state.subscriptionId, headers).then(result => {
@@ -374,7 +378,7 @@ class reviewComponent extends Component {
                                 <Row>
                                     <Col md={7} sm={7} xs={7} className="step-col-pad3">
                                         <div>
-                                            <span className="col2">Are you subscribing as joint individuals with your spouse, such as community property or tenants in comment:</span>
+                                            <span className="col2">Are you subscribing as joint individuals with your spouse, such as community property or tenants in common:</span>
                                             
                                         </div>
                                     </Col>
@@ -2224,7 +2228,7 @@ class reviewComponent extends Component {
                         {/*<div className="staticTextBelowText">
                             Once everything is confirmed correct, click the "Partnership Agreement” button in the sidebar.
                             </div>*/}
-                        <Button className="confirmSubmitReview" onClick={this.submitSubscription}>Confirm & Submit</Button>
+                        <Button className="confirmSubmitReview" hidden={this.state.lpObj.status !== 2 || this.state.hideConfirmBtn} onClick={this.submitSubscription}>Confirm & Submit</Button>
                     </div>
 
                 </div>

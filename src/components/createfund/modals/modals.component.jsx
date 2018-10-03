@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import '../createfund.component.css';
 import { PubSub } from 'pubsub-js';
-import { Button, Modal,Row, Col, FormControl } from 'react-bootstrap';
+import { Button, Modal,Row, Col,Checkbox as CBox, FormControl } from 'react-bootstrap';
 import PhoneInput from 'react-phone-number-input';
 import { Constants } from '../../../constants/constants';
 import { Fsnethttp } from '../../../services/fsnethttp';
@@ -38,6 +38,7 @@ class ModalComponent extends Component {
         this.deactivateFundStatus = this.deactivateFundStatus.bind(this);
         this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
         this.closeFundBtn = this.closeFundBtn.bind(this);
+        this.handleCloseFund = this.handleCloseFund.bind(this);
         this.state = {
             show: false,
             GPshow : false,
@@ -206,6 +207,12 @@ class ModalComponent extends Component {
 
     closeFundBtn() {
 
+    }
+
+    handleCloseFund(e, value) {
+        if(e.target.value > value) {
+            alert('Close target commitment should be less than target commitment.')
+        }
     }
 
     deactivateFundStatus() {
@@ -1037,7 +1044,7 @@ class ModalComponent extends Component {
                     </Modal.Body>
                 </Modal>
 
-                <Modal id="GPDelModal" show={this.state.fundDeactivateModal} onHide={this.handlefundDelClose} dialogClassName="GPDelModalDialog fundModalDialog">
+                <Modal id="GPDelModal" className="GPDelModalDeactivate" show={this.state.fundDeactivateModal} onHide={this.handlefundDelClose} dialogClassName="GPDelModalDialog fundModalDialog">
                     <Modal.Header closeButton>
                     </Modal.Header>
                     <Modal.Title>Deactivate {this.state.fundName}</Modal.Title>                                        
@@ -1099,7 +1106,10 @@ class ModalComponent extends Component {
                                     </label>
                                     <div className="lp-name">Name</div>
                                     <div className="lp-name lp-name-width lp-name-pad lp-name-pad-5">$10,000</div>
-                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000"/>   
+                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000" onBlur={(e) => this.handleCloseFund(e, 10)}/>   
+                                    <CBox className="marginLeft8 marginLeft20">
+                                        <span className="checkmark"></span>
+                                    </CBox>
                                 </div>                        
                                 <div className="userRow">
                                     <label className="userImageAlt paddingBottom8">
@@ -1109,7 +1119,10 @@ class ModalComponent extends Component {
                                     </label>
                                     <div className="lp-name">Maruthi prasad</div>
                                     <div className="lp-name lp-name-width lp-name-pad lp-name-pad-5">$10,000</div>
-                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000"/>   
+                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000" onBlur={(e) => this.handleCloseFund(e, 10)}/>   
+                                    <CBox className="marginLeft8 marginLeft20">
+                                        <span className="checkmark"></span>
+                                    </CBox>
                                 </div>     
                                 <div className="userRow">
                                     <label className="userImageAlt paddingBottom8">
@@ -1119,17 +1132,20 @@ class ModalComponent extends Component {
                                     </label>
                                     <div className="lp-name">Sarah Douglas</div>
                                     <div className="lp-name lp-name-width lp-name-pad lp-name-pad-5">$10,000</div>
-                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000"/>   
+                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000" onBlur={(e) => this.handleCloseFund(e, 10)}/>   
+                                    <CBox className="marginLeft8 marginLeft20">
+                                        <span className="checkmark"></span>
+                                    </CBox>
                                 </div>     
                                 <div className="title margin20 text-center">{this.state.noDelegatesMsz}</div>                   
                             </div>                       
                         </div> 
                         <Row>
-                            <Col lg={6} md={6} sm={6} xs={12}>
-                            <Button type="button" className="fsnetCancelButton" onClick={this.handleCloseFundClose}>Cancel</Button>
+                            <Col lg={8} md={8} sm={8} xs={12} className="paddingZero">
+                            <Button type="button" className="fsnetCancelButton buttonFloat" onClick={this.handleCloseFundClose}>Cancel</Button>
                             </Col>
-                            <Col lg={6} md={6} sm={6} xs={12}>
-                            <Button type="button" className="fsnetCancelButton btnEnabled" onClick={this.closeFundBtn}>Close Fund</Button>
+                            <Col lg={4} md={4} sm={4} xs={12} className="paddingZero">
+                            <Button type="button" className="fsnetCancelButton btnEnabled buttonFloat" onClick={this.closeFundBtn}>Close Fund</Button>
                             </Col>
                         </Row>   
                     </Modal.Body>

@@ -105,21 +105,21 @@ class changePasswordComponent extends Component {
                     <Row className="marginTop20">
                         <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                             <label className="input-label">Current Password</label>
-                            <input type="password" name="password" placeholder="Enter Old Password" className={"forgotFormControl inputMarginBottom " + (this.state.currentPasswordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'currentPassword', 'CURRENT_PWD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'currentPassword', 'CURRENT_PWD_REQUIRED')}/>
+                            <input type="password" name="password" placeholder="Enter Current Password" className={"forgotFormControl inputMarginBottom " + (this.state.currentPasswordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'currentPassword', 'CURRENT_PWD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'currentPassword', 'CURRENT_PWD_REQUIRED')}/>
                             <span className="error">{this.state.currentPasswordMsz}</span>
                         </Col>
                     </Row>
                     <Row className="marginTop20">
                         <Col className="width40" lg={6} md={6} sm={6} xs={12}>
                             <label className="input-label">Password</label>
-                            <input type="password" name="newPassword" placeholder="Enter New Password" className={"forgotFormControl inputMarginBottom " + (this.state.passwordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'password', 'LOGIN_PASSWORD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'password', 'LOGIN_PASSWORD_REQUIRED')}/>
+                            <input type="password" name="newPassword" placeholder="Enter Password" className={"forgotFormControl inputMarginBottom " + (this.state.passwordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'password', 'LOGIN_PASSWORD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'password', 'LOGIN_PASSWORD_REQUIRED')}/>
                             <span className="error">{this.state.passwordMsz}</span>
                         </Col>
                     </Row>
                     <Row className="marginTop20">
                         <Col className="width40" lg={6} md={6} sm={6} xs={12}>
-                            <label className="input-label">Password again</label>
-                            <input type="password" name="confirmPassword" placeholder="Confirm Password" className={"forgotFormControl " + (this.state.cnfrmPasswordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'cnfrmPassword', 'CNFRM_PWD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'cnfrmPassword', 'CNFRM_PWD_REQUIRED')} />
+                            <label className="input-label">Confirm Password</label>
+                            <input type="password" name="confirmPassword" placeholder="Enter Confirm Password" className={"forgotFormControl " + (this.state.cnfrmPasswordBorder ? 'inputError' : '')} onChange={(e) => this.handleInputChangeEvent(e,'cnfrmPassword', 'CNFRM_PWD_REQUIRED')} onBlur={(e) => this.handleInputChangeEvent(e,'cnfrmPassword', 'CNFRM_PWD_REQUIRED')} />
                             <span className="error">{this.state.cnfrmPasswordMsz}</span>
                         </Col>
                     </Row>

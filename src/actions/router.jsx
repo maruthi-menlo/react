@@ -11,6 +11,7 @@ import editFundComponent from '../components/editfund/editfund.component';
 import CreateVcFirmComponent from '../components/admin/createvcfirm.component';
 import LpSubscriptionFormComponent from '../components/lp/lpsubscriptionform.component';
 import SettingsComponent from '../components/settings/settings.component';
+import DocusignDocumentComponent from '../components/docusign/docusigndocument.component';
 
 class FsnetRouter extends Component{
 
@@ -31,6 +32,7 @@ class FsnetRouter extends Component{
                         <Route path='/lp' component={LpSubscriptionFormComponent}/>
                         <Route path='/fund' component={editFundComponent}/>
                         <Route path='/settings' component={SettingsComponent}/>
+                        <Route path='/docusign/response*' component={DocusignDocumentComponent}/>
                         <Redirect from='*' to='/404'/>
                     </Switch>
                 </div>

@@ -1609,7 +1609,7 @@ input[type=checkbox]{
  }
  #GPDelModal .modal-content {
     padding-left: 6px !important;
-    width: 700px;
+    width: 750px;
  }
  #GPDelModal .modal-body {
     margin-left: 8px;
@@ -2020,7 +2020,7 @@ li:last-child ul.sub-menu {
     /* margin-left: 10px; */
 }
 .form-main-div .userAddendumContainer {
-    width: 640px;
+    width: 690px;
     height: 250px;
     /* max-height: 400px; */
     overflow: auto;
@@ -2129,19 +2129,32 @@ li:last-child ul.sub-menu {
     color: #2f4858;
     position: relative;
     top: -9px;
-  }
-  .GpDelModalCloseFund{
-      width: 680px;
-  }
-  .form-main-div .inputFormControlCloseFund{
+}
+.GpDelModalCloseFund{
+    width: 680px;
+}
+.form-main-div .inputFormControlCloseFund{
     width: 155px !important;
     display: inline-block !important;
     margin-top: 0px !important;
-    border: 1px solid #39bcd5 !important;
-  }
-  .form-main-div .paddingBottom8{
-      padding-bottom: 8px;
-  }
-  .form-main-div .lp-name-width{
-      width: 204px;
-  }
+    /*border: 1px solid #39bcd5 !important;*/
+}
+.form-main-div .paddingBottom8{
+    padding-bottom: 8px;
+}
+.form-main-div .lp-name-width{
+    width: 204px;
+}
+  .form-main-div .marginLeft20{
+    margin-left: 20px;
+}
+.GPDelModalDeactivate .modal-header{
+    margin-top: -50px !important;
+}
+#GPDelModal .paddingZero{
+    padding: 0px;
+}
+#GPDelModal .buttonFloat{
+    float: right;
+}
+

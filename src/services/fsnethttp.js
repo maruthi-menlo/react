@@ -283,4 +283,10 @@ export class Fsnethttp{
         return axios.get(this.Constants.BASE_URL+`getPartnershipAgreement/${envelopId}/${subscriptionId}`);
     }
     /************LP Subscription API Calls End****************/
+    /************Docusign API Calls Start****************/
+    envelopStatus(envelopId,headers) {
+        axios.defaults.headers.common['x-auth-token'] = headers.token;
+        return axios.get(this.Constants.BASE_URL+`recipients/status/${envelopId}`);
+    }
+    /************Docusign API Calls End****************/
 }

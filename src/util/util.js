@@ -40,6 +40,14 @@ export class FsnetUtil{
         return urlSplitFundId;
     }
 
+    getEnvelopeId() {
+        var url = window.location.href;
+        var parts = url.split("id=");
+        var urlSplitFundId = parts[parts.length - 1];
+        var envelopId = urlSplitFundId.split("?")[0]
+        return envelopId;
+    }
+
     getCurrentPageForLP() {
         var url = window.location.href;
         var parts = url.split("/");
