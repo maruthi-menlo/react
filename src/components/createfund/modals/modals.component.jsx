@@ -9,6 +9,8 @@ import { Fsnethttp } from '../../../services/fsnethttp';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import Loader from '../../../widgets/loader/loader.component';
 import LpTableComponent from '../../editfund/lptable/lptable.component';
+import userDefaultImage from '../../../images/default_user.png';
+import documentImage from '../../../images/documentsWhite.svg';
 
 class ModalComponent extends Component {
 
@@ -1066,15 +1068,61 @@ class ModalComponent extends Component {
                         </Row>   
                     </Modal.Body>
                 </Modal>
-                <Modal id="GPDelModal" show={this.state.fundCloseModal} onHide={this.handleCloseFundClose} dialogClassName="GPDelModalDialog fundModalDialog">
+                <Modal id="GPDelModal"  show={this.state.fundCloseModal} onHide={this.handleCloseFundClose} dialogClassName="GPDelModalDialog fundModalDialog">
                     <Modal.Header closeButton>
                     </Modal.Header>
                     <Modal.Title>Close Fund</Modal.Title>                                        
                     <Modal.Body>
                         <div className="subtext modal-subtext">Are you sure you want to close Fund?</div>         
                         <div className="form-main-div">
-                            
-                        
+                            <Row className="full-width marginTop20 marginLeft61">
+                                <div className="name-heading marginLeft75" >
+                                    Name
+                                            <i className="fa fa-sort-asc" aria-hidden="true"  ></i>
+                                </div>
+                                
+                                <div className="name-heading" >
+                                    Target Commitment
+                                        <i className="fa fa-sort-asc" aria-hidden="true"></i>
+                                </div>
+                                <div className="name-heading" >
+                                    Close Target Commitment
+                                        <i className="fa fa-sort-asc" aria-hidden="true"></i>
+                                </div>                                
+                            </Row> 
+                            <div className="userAddendumContainer marginTop10" >                    
+                                <div className="userRow">
+                                    <label className="userImageAlt paddingBottom8">
+                                    {
+                                        <img src={userDefaultImage} alt="img" className="user-image" />
+                                    }
+                                    </label>
+                                    <div className="lp-name">Name</div>
+                                    <div className="lp-name lp-name-width lp-name-pad lp-name-pad-5">$10,000</div>
+                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000"/>   
+                                </div>                        
+                                <div className="userRow">
+                                    <label className="userImageAlt paddingBottom8">
+                                    {
+                                        <img src={userDefaultImage} alt="img" className="user-image" />
+                                    }
+                                    </label>
+                                    <div className="lp-name">Maruthi prasad</div>
+                                    <div className="lp-name lp-name-width lp-name-pad lp-name-pad-5">$10,000</div>
+                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000"/>   
+                                </div>     
+                                <div className="userRow">
+                                    <label className="userImageAlt paddingBottom8">
+                                    {
+                                        <img src={userDefaultImage} alt="img" className="user-image" />
+                                    }
+                                    </label>
+                                    <div className="lp-name">Sarah Douglas</div>
+                                    <div className="lp-name lp-name-width lp-name-pad lp-name-pad-5">$10,000</div>
+                                    <FormControl type="text" name="firmName" className="inputFormControl inputFormControlCloseFund " placeholder="$10,000"/>   
+                                </div>     
+                                <div className="title margin20 text-center">{this.state.noDelegatesMsz}</div>                   
+                            </div>                       
                         </div> 
                         <Row>
                             <Col lg={6} md={6} sm={6} xs={12}>

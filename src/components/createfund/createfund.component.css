@@ -1609,6 +1609,7 @@ input[type=checkbox]{
  }
  #GPDelModal .modal-content {
     padding-left: 6px !important;
+    width: 700px;
  }
  #GPDelModal .modal-body {
     margin-left: 8px;
@@ -1617,7 +1618,7 @@ input[type=checkbox]{
     margin-top: 20px !important;
  }
 #GPDelModal .modal-title {
-    margin-top: -47px;
+    margin-top: -10px;
     text-align: left;
     padding-left: 23px;
     font-family: 'OpenSans-Bold';
@@ -1867,6 +1868,8 @@ li:last-child ul.sub-menu {
 
 #GPDelModal .fundModalDialog .modal-header button.close {
     margin-top: 0px !important;
+    position: relative;
+    top: 40px;
 }
 
 #GPDelModal .fundModalDialog .modal-body .subtext {
@@ -1910,3 +1913,235 @@ li:last-child ul.sub-menu {
 #lpFundModal .modal-dialog.GPDelModalDialog .modal-body .viewFund .tableEdit tbody {
     max-height: 300px !important;
 }
+
+.form-main-div .full-width {
+    width: 100% !important;
+}
+.form-main-div .newAddendumButton{
+    width: 210px;
+    border: solid 1px #39bcd5 !important;
+    background-color: #39bcd5;
+    height: 40px;
+    border-radius: 30px !important;
+    font-family: 'OpenSans-Bold';
+    font-size: 16px !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5 !important;
+    letter-spacing: normal;
+    color: #ffffff;
+    padding: 8px 40px 8px 30px;
+    box-shadow: initial !important;
+}
+.form-main-div .full-width {
+    width: 100% !important;
+}
+.form-main-div .userRow {
+    min-height: 48px;
+    border-bottom: 1px solid #add8e6;
+    width: 100%;
+    line-height: 20px;
+    padding-top: 8px;
+}
+.form-main-div .marginLeft61{
+    margin-left: 61px !important;
+}
+.form-main-div .lp-name {
+    width: 215px;
+    min-height: 20px;
+    height: auto;
+    font-family: 'OpenSans-Bold';
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    padding-left: 20px;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+.form-main-div .lp-name-target {
+    width: 200px;
+    min-height: 20px;
+    height: auto;
+    font-family: 'OpenSans-Bold';
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    color: #2f4858;
+    display: inline-block;
+    padding-left: 20px;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+.form-main-div .lp-name-pad{
+    padding-left: 28px;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+.form-main-div .lp-name-pad-5{
+    padding-left: 5px;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+.form-main-div .name-heading {
+    width: 200px;
+    min-height: 16px;
+    opacity: 0.5;
+    font-family: 'OpenSans-Bold';
+    font-size: 12px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    cursor: pointer;
+}
+.form-main-div .name-heading .fa{
+    position: relative;
+    left: 5px;
+    top: -2px;
+    font-size: 18px;
+}
+.form-main-div .userLPContainer {
+    width: 600px;
+    height: 250px;
+    /* max-height: 400px; */
+    overflow: auto;
+    box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
+    box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
+    border: 1px solid #add8e6;
+    margin-top: 30px !important;
+    margin-bottom: 30px;
+    /* margin-left: 10px; */
+}
+.form-main-div .userAddendumContainer {
+    width: 640px;
+    height: 250px;
+    /* max-height: 400px; */
+    overflow: auto;
+    box-shadow: inset 0 -1px 0 0 rgba(117, 117, 117, 0.25);
+    box-shadow: inset 0 -1px 0 0 var(--warm-grey-25);
+    border: 1px solid #add8e6;
+    margin-top: 30px !important;
+    margin-bottom: 30px;
+    /* margin-left: 10px; */
+}
+.lpSubFormStyle{
+    width: 100%;
+}
+.contentWidth .main-content{
+    margin-left: 0px;
+}
+#createFund .viewPrintText{
+    position: relative;
+    top: -2px;
+}
+.form-main-div .main-title{
+    margin-left: 20px !important;
+}
+.form-main-div .marginLeft25{
+    margin-left: 25px !important;
+}
+.form-main-div .marginTop54{
+    margin-top: 54px !important;
+}
+.form-main-div .paddingRight5{
+    padding-right: 5px !important;
+}
+.form-main-div .marginTop10{
+    margin-top: 10px !important;
+}
+.form-main-div .marginTop36{
+    margin-top: 36px !important;
+}
+.form-main-div .marginLeft26{
+    margin-left: 26px;
+}
+.form-main-div .uploadFundDocument {
+    /* width: 253px; */
+    height: 24px;
+    opacity: 0.5;
+    font-family: 'OpenSans-Bold';
+    font-size: 16px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #2f4858;
+    /*margin-left: 20px;*/
+    margin-left: 0px !important;
+    margin-bottom: 24px;
+}
+.form-main-div .marginBottom2{
+    margin-bottom: 2px !important;
+}
+.form-main-div .marginBottom12{
+    margin-bottom: 12px !important;
+}
+.form-main-div .marginBottom28{
+    margin-bottom: 28px !important;
+}
+.form-main-div .marginBottom24{
+    margin-bottom: 24px !important;
+}
+.form-main-div .marginBottom18{
+    margin-bottom: 18px !important;
+}
+.form-main-div .checkBoxTextPdf{
+    position: relative;
+    top: -5px;
+}
+.form-main-div .marginBottom32{
+    margin-bottom: 32px !important;
+}
+.form-main-div .marginLeft8{
+    margin-left: 8px;
+}
+.form-main-div .marginRight8{
+    margin-right: 8px;
+}
+.form-main-div .marginRight12{
+    margin-right: 12px;
+}
+.form-main-div .paddingLeft0{
+    padding-left: 0px;
+}
+.form-main-div .lpNameTextAlign{
+    position: relative;
+    top: -4px;
+}
+.form-main-div .lpSelectAll {
+    width: 55px;
+    height: 16px;
+    opacity: 0.5;
+    font-family: 'Open Sans';
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #2f4858;
+    position: relative;
+    top: -9px;
+  }
+  .GpDelModalCloseFund{
+      width: 680px;
+  }
+  .form-main-div .inputFormControlCloseFund{
+    width: 155px !important;
+    display: inline-block !important;
+    margin-top: 0px !important;
+    border: 1px solid #39bcd5 !important;
+  }
+  .form-main-div .paddingBottom8{
+      padding-bottom: 8px;
+  }
+  .form-main-div .lp-name-width{
+      width: 204px;
+  }
