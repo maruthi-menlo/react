@@ -1,0 +1,31 @@
+.loader-container {
+    &.loader-hidden {
+      visibility: hidden;
+    }
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 10000;
+    .loader-backdrop {
+      height: 100%;
+      z-index: 1000;
+      width: 100%;
+      position: absolute;
+      background: #000000;
+      opacity: 0.4;
+    }
+    .loader-overlay {
+      position: relative;
+      top: 45%;
+      left: 0;
+      opacity: 1;
+      z-index: 500000;
+      display: flex;
+      justify-content: center;
+      .loader-indicator {
+        z-index: 10000000;
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }

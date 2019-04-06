@@ -1,0 +1,293 @@
+<div class="customersViewContainer">
+  <div class="customersView">
+    <div class="row mb52">
+      <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6 pdLeft">
+        <div class="customerText">Here you can add new customers and make edits to existing customer accounts. Select edit details to make changes to company profiles, azure subscriptions, and user access.</div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 pdRight">
+        <button type="submit" class="btn signInBtn">Add Customer</button>
+      </div>
+    </div>
+    <div class="mb24">
+      <span class="customerViewType">View:</span>
+      <div class="btn-group btn-toggle"> 
+          <button class="btn defaultBtn cspButton" (click) = "cspTableViewShow();" [ngClass]="cspTableView == true ? 'dcBtn bNone' : 'cspButton brNone'">CSP</button>
+          <button class="btn defaultBtn" (click) = "dcTableViewShow();" [ngClass]="dcTableView == true ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
+        </div>
+    </div>
+    <div class="row tableBorder" *ngIf= "dcTableView">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="companyName">Company Name</th>
+              <th class="updated">Updated</th>
+              <th class="dateAdded">Date Added</th>
+              <th class="subscriptions">Subscriptions</th>
+              <th class="admins">Admins</th>
+              <th class="users">Users</th>
+              <th class="actionsTH">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="companyName">Dunder Mifflin</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="companyName">Dunder Mifflin</td>
+                <td class="updated">3/11/2019</td>
+                <td class="dateAdded">3/11/2019</td>
+                <td class="subscriptions">5 Subscriptions</td>
+                <td class="admins">1 Admin</td>
+                <td class="users">2 Users</td>
+                <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="row tableBorder" *ngIf= "cspTableView">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="companyName">Company Name </th>
+            <th class="updated">Updated</th>
+            <th class="dateAdded">Date Added</th>
+            <th class="subscriptions">Subscriptions</th>
+            <th class="admins">Admins</th>
+            <th class="users">Users</th>
+            <th class="actionsTH">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="companyName">Mifflin Dunder</td>
+            <td class="updated">3/11/2019</td>
+            <td class="dateAdded">3/11/2019</td>
+            <td class="subscriptions">5 Subscriptions</td>
+            <td class="admins">1 Admin</td>
+            <td class="users">2 Users</td>
+            <td class="actionsTD">
+              <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+              <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content) (click) = openDeactivateModal(content)>Deactivate</span>
+            </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+          <tr>
+              <td class="companyName">Mifflin Dunder</td>
+              <td class="updated">3/11/2019</td>
+              <td class="dateAdded">3/11/2019</td>
+              <td class="subscriptions">5 Subscriptions</td>
+              <td class="admins">1 Admin</td>
+              <td class="users">2 Users</td>
+              <td class="actionsTD">
+                <span style="padding-right: 40px;text-decoration: underline;">Edit Details</span>
+                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

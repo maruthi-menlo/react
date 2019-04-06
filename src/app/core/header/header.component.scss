@@ -1,0 +1,59 @@
+@import 'styles/variables.scss';
+
+.headerContainer{
+    box-shadow: inset 0 1px 3px 0 rgba(74, 74, 74, 0.5);
+    background-color: $headerBG;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    width: 100%;
+    height: 80px;
+    .playaLogo{
+        .floatLeft img{
+            padding-top: 14px;
+            padding-left: 20px;
+        }
+    }
+    .paddingRight8Percent{
+        padding-right: 8%;
+        .customerLogoWidth{
+            width: 48px;
+            height: 48px;
+            background-color: $white;
+            border-radius: 50px;
+            margin-right: 20px;
+            position: relative;
+            top: -4px;
+        }
+        .customerDetails{
+            display: inline-block;
+        position: relative;
+        top: 10px;
+        }
+        .arrowIcon{
+            position: relative;
+            top: -12px;
+        }
+        .customerName{
+            font-family: $heebo;
+            font-size: 16px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            color: $white;
+            margin-right: 8px;
+        }
+        .customerDesignation{
+            opacity: 0.5;
+            font-family: Heebo;
+            font-size: 14px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.43;
+            letter-spacing: normal;
+            color: $white;
+        }
+    }
+}

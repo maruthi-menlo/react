@@ -1,0 +1,108 @@
+@import 'styles/variables.scss';
+@import 'styles/mixin.scss';
+.primaryNavbar{
+    width: 96px;
+    height: 944px;
+    background-color: #2a3438;
+    float: left;
+    .navbar{
+        padding: 0px;
+        .navbar-nav{
+            li:active{
+                border-left: 4px solid $white;
+            }
+            li:hover{
+                border-left: 4px solid $white;
+            }
+            .nav-item{
+                width: 96px;
+                // height: 76px;
+                background-color: rgba(171, 220, 255, 0.25);
+                .nav-link{
+                    padding: 0px;
+                    .controlPanel{
+                        font-family: $heebo;
+                        font-size: 12px;
+                        font-weight: normal;
+                        font-style: normal;
+                        font-stretch: normal;
+                        line-height: 1.33;
+                        letter-spacing: normal;
+                        text-align: center;
+                        color: $white;
+                        padding-bottom: 12px;
+                    }
+                    img{
+                        width: 28px;
+                        height: 28px;
+                        margin: auto;
+                        display: block;
+                        margin-top: 14px;
+                        margin-bottom: 6px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.secondaryNavbar{
+    width: 247px;
+    height: 944px;
+    box-shadow: inset -1px 0 0 0 rgba(74, 74, 74, 0.25);
+    background-color: $white;
+    float: left;
+    .navbar{
+        padding: 0px;
+        padding-top: 24px;
+        .navbar-nav{
+            width: 100%;
+            li:focus{                
+                outline: none;
+            }
+            .nav-item{
+                background-color: rgba(255, 255, 255, 0.25);
+                .nav-link{
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    img{
+                        padding-left: 20px;
+                        padding-right: 12px;
+                        position: relative;
+                        top: -3px;
+                    }
+                    .profileIcon{
+                        color: $hexaBlack;
+                        opacity: 0.5;
+                        // position: relative;
+                        // top: 3px;
+                        padding-left: 20px;
+                        padding-right: 12px;
+                    }
+                    .navList{
+                        opacity: 0.5;
+                        font-family: $heebo;
+                        font-size: 14px;
+                        font-weight: normal;
+                        font-style: normal;
+                        font-stretch: normal;
+                        line-height: 1.43;
+                        letter-spacing: normal;
+                        color: $hexaBlack;
+                        // position: relative;
+                        // top: 3px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// .nav-item:hover{
+//     background-color: #00a0ff !important;
+//     opacity: 0.25;
+//     .navList{
+//         opacity: 1 !important;
+//         color: blue !important;
+//     }
+// }

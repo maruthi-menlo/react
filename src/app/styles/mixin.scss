@@ -1,0 +1,25 @@
+@mixin form-button($width, $height, $font-family, $font-size, $font-weight, $font-style, $font-stretch, $line-height, $letter-spacing, $text-align, $color, $background-color, $border-radius, $border) {
+  width: $width;
+  height: $height;
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  font-style: $font-style;
+  font-stretch: $font-stretch;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  text-align: $text-align;
+  color: $color;
+  background-color: $background-color;
+  border-radius: $border-radius;
+  border: $border;
+  &:hover {
+
+  }
+  &:focus {
+    box-shadow: none;
+  }
+}
+@mixin input-box(){
+  
+}

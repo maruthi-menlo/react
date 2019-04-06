@@ -1,0 +1,29 @@
+<div class="loginContainer">
+  <div class="loginFormSection">
+      <form [formGroup]="loginForm">
+        <div class="signInText">Sign In</div>
+        <div class="form-group inputTextBox mb24">
+          <label class="labelText">Email</label>
+          <input type="text" class="form-control" [ngClass]="loginForm.controls['email'].hasError('required') && loginForm.controls['email'].touched || loginForm.controls['email'].hasError('pattern') && loginForm.controls['email'].dirty ? 'error mb10' : ''"  formControlName="email" (keydown.space)="restrictLeadingSpace($event);">
+          <p class="labelText errorText" *ngIf="loginForm.controls['email'].hasError('required') && loginForm.controls['email'].touched">Please enter email.</p>
+          <p class="labelText errorText" *ngIf="loginForm.controls['email'].hasError('pattern') && loginForm.controls['email'].dirty">Please enter valid email.</p>
+        </div>
+        <div class="form-group inputTextBox mb20">
+          <label class="labelText">Password</label>
+          <input type="password" class="form-control" [ngClass]="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched || loginForm.controls['password'].hasError('minlength') || loginForm.controls['password'].hasError('maxlength') && loginForm.controls['password'].dirty? 'error mb10' : ''" formControlName="password" (keydown.space)="restrictLeadingSpace($event);">
+          <p class="labelText errorText" *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">Please enter password.</p>
+          <p class="labelText errorText" *ngIf="loginForm.controls['password'].hasError('minlength') && loginForm.controls['password'].dirty">Passwords must be at least 8 characters.</p>
+          <p class="labelText errorText" *ngIf="loginForm.controls['password'].hasError('maxlength') && loginForm.controls['password'].dirty">Passwords must be at less than 20 characters.</p>
+        </div>
+        <div class="form-group form-check mb20">
+          <label class="form-check-label">
+            <input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Remember me</span>
+          </label>
+        </div>
+        <div class="errorText mb8" *ngIf="loginErrorMsz">{{loginErrorMsz}}</div>
+        <button type="submit" class="btn signInBtn" [ngClass]="!(loginForm.valid) ? 'disabled' : ''" [disabled]="!(loginForm.valid)" (click)="login()">Sign In</button>
+        <div class="forgotPwd cursor">Forgot Password?</div>
+      </form>
+  </div>
+</div>
+<app-footer></app-footer>

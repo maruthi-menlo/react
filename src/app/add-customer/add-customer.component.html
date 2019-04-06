@@ -1,0 +1,388 @@
+<div class="addCustomerContainer">
+    <div class="addCustomer">
+      <h1 class="addCustomerText">Add New Customer</h1>
+      <p class="addCustomerText completeForm" *ngIf = "customerTypeValue == 'DC'">Complete the form below to add a new customer to the system. A valid Azure subscription ID is required for a customer to be added.</p>
+      <p class="addCustomerText completeForm" *ngIf = "customerTypeValue == 'CSP'">Complete the form below to add a new customer to the system. A CSP will be able to add their own customers when they login for the first time.</p>
+      <div>
+        <div class="addCustomerText completeForm customerType">Are you adding a CSP (Cloud Service Provider) or a Direct Customer?</div>
+        <div class="mb20">
+          <div class="radio" >
+            <input id="radio-1" name="radio" type="radio" value="CSP" (change)= customerType($event)>
+            <label for="radio-1" class="radio-label"><span class="addCustomerText radioLabelText">CSP</span></label>
+          </div>    
+          <div class="radio">
+            <input id="radio-2" name="radio" type="radio" checked value="DC" (change)= customerType($event)>
+            <label  for="radio-2" class="radio-label"><span class="addCustomerText radioLabelText">Direct Customer</span></label>
+          </div>
+        </div>
+        <!--Direct customer section starts ----------------------------------------- -->
+        <form [formGroup]="customerForm">
+          <div class="customerForm" id="directCustomer" *ngIf = "customerTypeValue == 'DC'">
+            <!--Company details section starts-->
+            <div class="companyDetails">
+              <div class="addCustomerText customerFormHeading">Company Details</div>
+              <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Company Name</label>
+                        <input type="text" class="form-control"  formControlName="companyname" [ngClass]="customerForm.controls['companyname'].hasError('required') && customerForm.controls['companyname'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="customerForm.controls['companyname'].hasError('required') && customerForm.controls['companyname'].touched">Please enter company name.</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Tenant Id</label>
+                        <input type="text" class="form-control"  formControlName="tenantid" [ngClass]="customerForm.controls['tenantid'].hasError('required') && customerForm.controls['tenantid'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="customerForm.controls['tenantid'].hasError('required') && customerForm.controls['tenantid'].touched">Please enter tenant id.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Address</label>
+                        <input type="text" class="form-control"  formControlName="address1" [ngClass]="customerForm.controls['address1'].hasError('required') && customerForm.controls['address1'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="customerForm.controls['address1'].hasError('required') && customerForm.controls['address1'].touched">Please enter tenant id.</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                        <div class="form-group inputTextBox mb24">
+                          <label class="labelText">Suite, apt, etc.</label>
+                          <input type="text" class="form-control"  formControlName="address2" [ngClass]="customerForm.controls['address2'].hasError('required') && customerForm.controls['address2'].touched ? 'error mb10' : ''">
+                          <p class="labelText errorText" *ngIf="customerForm.controls['address2'].hasError('required') && customerForm.controls['address2'].touched">Please enter tenant id.</p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">City</label>
+                        <input type="text" class="form-control" formControlName="city" [ngClass]="customerForm.controls['city'].hasError('required') && customerForm.controls['city'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="customerForm.controls['city'].hasError('required') && customerForm.controls['city'].touched">Please enter tenant id.</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Zipcode</label>
+                        <input type="text" class="form-control"  formControlName="zipcode" [ngClass]="customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched">Please enter tenant id.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pdLeft">
+                          <div class="form-group inputTextBox mb40">
+                            <label for="sel1" class="labelText">Country</label>
+                            <select class="form-control state" formControlName="countryid" [ngClass]="customerForm.controls['countryid'].hasError('required') && customerForm.controls['countryid'].touched ? 'error mb10' : ''" (change)="getStatesForCountry($event.target.value)">
+                              <option [value]="''">Select Country</option>
+                              <option *ngFor="let country of allCountries" [value]="country.id"> {{country.name}} </option>
+                            </select>
+                            <p class="labelText errorText" *ngIf="customerForm.controls['countryid'].hasError('required') && customerForm.controls['countryid'].touched">Please enter tenant id.</p>
+                          </div>
+                        </div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pdLeft">
+                        <div class="form-group inputTextBox mb40">
+                          <label for="sel1" class="labelText">State</label>
+                          <select class="form-control country" formControlName="stateid" [ngClass]="customerForm.controls['stateid'].hasError('required') && customerForm.controls['stateid'].touched ? 'error mb10' : ''">
+                            <option [value]="''">Select State</option>
+                            <option *ngFor="let state of allStates" [value]="state.id"> {{state.name}} </option>
+                          </select>
+                          <p class="labelText errorText" *ngIf="customerForm.controls['stateid'].hasError('required') && customerForm.controls['stateid'].touched">Please enter tenant id.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!--Company details section Ends-->
+            <!--User details section starts-->
+            <div class="userDetails" formArrayName="userDetails">
+              <div class="addCustomerText customerFormHeading mb8">User Details</div>
+              <div class="addCustomerText completeForm mb28">Enter the name and email for the users of this account.  By default the first user added is designated the role of an admin. Users can also be added and managed from the control panel.</div>
+                <div formGroupName={{i}} *ngFor="let address of customerForm.controls['userDetails'].controls; let i=index">
+                  <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                          <div class="form-group inputTextBox mb24">
+                            <label class="labelText">First Name</label>
+                            <input type="text" class="form-control"  formControlName="firstname" [ngClass]="address.controls['firstname'].hasError('required') && address.controls['firstname'].touched ? 'error mb10' : ''">
+                            <p class="labelText errorText" *ngIf="address.controls['firstname'].hasError('required') && address.controls['firstname'].touched">Please enter tenant id.</p>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                            <div class="form-group inputTextBox mb24">
+                              <label class="labelText">Last Name</label>
+                              <input type="text" class="form-control"  formControlName="lastname" [ngClass]="address.controls['lastname'].hasError('required') && address.controls['lastname'].touched ? 'error mb10' : ''">
+                              <p class="labelText errorText" *ngIf="address.controls['lastname'].hasError('required') && address.controls['lastname'].touched">Please enter tenant id.</p>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                          <div class="form-group inputTextBox mb16">
+                            <label class="labelText">Email</label>
+                            <input type="text" class="form-control"  formControlName="email" [ngClass]="address.controls['email'].hasError('required') && address.controls['email'].touched || address.controls['email'].hasError('pattern') && address.controls['email'].dirty ? 'error mb10' : ''">
+                            <p class="labelText errorText" *ngIf="address.controls['email'].hasError('required') && address.controls['email'].touched">Please enter email.</p>
+                            <p class="labelText errorText" *ngIf="address.controls['email'].hasError('pattern') && address.controls['email'].dirty">Please enter valid email.</p>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                            <div class="form-group inputTextBox mb16">
+                                <label for="sel1" class="labelText">Role</label>
+                                <select class="form-control role"  formControlName="roleid" [ngClass]="address.controls['roleid'].hasError('required') && address.controls['roleid'].touched ? 'error mb10' : ''">
+                                  <option>Select Role</option>
+                                </select>
+                                <p class="labelText errorText" *ngIf="address.controls['roleid'].hasError('required') && address.controls['roleid'].touched">Please enter tenant id.</p>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="addCustomerText completeForm mb48 width215" (click)="addUserDetails()"><i class="fa fa-plus-circle faCircleMargin" aria-hidden="true"></i>Add Another User</div>
+            </div>
+            <!--User details section Ends-->
+            <!--Azure Subscription Details section Starts-->
+            <div class="azureSubscription userDetails" formArrayName="azureSubDetails">
+              <div class="addCustomerText customerFormHeading mb8">Azure Subscription Details</div>
+              <div class="addCustomerText completeForm mb28">Enter the Azure subscription ID’s  and passwords for each associated service. You may also choose to input a markup % for each subscription.</div>
+              <div formGroupName={{j}} *ngFor="let azureDetails of customerForm.controls['azureSubDetails'].controls; let j=index">
+                <div class="row">
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                        <div class="form-group inputTextBox mb24">
+                          <label class="labelText">Subscription ID</label>
+                          <input type="text" class="form-control"  formControlName="subscriptionid" [ngClass]="azureDetails.controls['subscriptionid'].hasError('required') && azureDetails.controls['subscriptionid'].touched ? 'error mb10' : ''">
+                          <p class="labelText errorText" *ngIf="azureDetails.controls['subscriptionid'].hasError('required') && azureDetails.controls['subscriptionid'].touched">Please enter tenant id.</p>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                          <div class="form-group inputTextBox mb24">
+                            <label class="labelText">Markup %</label>
+                            <input type="password" class="form-control"  formControlName="markup" [ngClass]="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched ? 'error mb10' : ''">
+                            <p class="labelText errorText" *ngIf="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched">Please enter tenant id.</p>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Discount</label>
+                        <input type="text" class="form-control"  formControlName="discount" [ngClass]="azureDetails.controls['discount'].hasError('required') && azureDetails.controls['discount'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="azureDetails.controls['discount'].hasError('required') && azureDetails.controls['discount'].touched">Please enter tenant id.</p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="addCustomerText completeForm mb72 mt_8 width215" (click)="addazureSubDetails()"><i class="fa fa-plus-circle faCircleMargin" aria-hidden="true"></i>Add Row</div>
+            </div>
+            <!--Azure Subscription Details section Ends-->
+          </div>
+        </form>
+        <!--Direct customer section ends -------------------------------------------- -->
+        <!--CSP customer section starts --------------------------------------------- -->
+        <div class="customerForm" id="cspCustomer" *ngIf = "customerTypeValue == 'CSP'">
+        <!--CSP details section starts-->
+          <div class="companyDetails">
+            <div class="addCustomerText customerFormHeading">CSP Details</div>
+            <div class="row">
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb24">
+                      <label class="labelText">Company Name</label>
+                      <input type="text" class="form-control" >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb24">
+                      <label class="labelText">Address</label>
+                      <input type="text" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Suite, apt, etc.</label>
+                        <input type="text" class="form-control" >
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb24">
+                      <label class="labelText">City</label>
+                      <input type="text" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb24">
+                        <label class="labelText">Zipcode</label>
+                        <input type="text" class="form-control" >
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb32">
+                        <label for="sel1" class="labelText">Country</label>
+                        <select class="form-control state"  formControlName="countryId">
+                          <option>Select Country</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pdLeft">
+                      <div class="form-group inputTextBox mb32">
+                        <label for="sel1" class="labelText">State</label>
+                        <select class="form-control country"  formControlName="stateId">
+                          <option>Select State</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="addCustomerText completeForm mb24">Some elements can be customized to match the branding of your CSP. By default Playa branding and colors are displayed.</div>
+            <div class="row">
+              <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 pdLeft">
+                <div class="row">
+                  <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pdZero">
+                    <div class="form-group inputTextBox mb24">
+                        <label for="sel1" class="labelText">Company Logo (Optional)</label>
+                        <div class="fileInputs">
+                          <input type="file" class="form-control file" >
+                          <div class="row dragDropFile">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
+                              <img src="../../assets/images/upload.png" class="floatRight pdtop20">
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dragDropPad pdLeft">
+                              <div class="dragDropChoose">Drag & Drop or <span class="chooseFile">Choose File</span></div>
+                              <div class="fileType">File Types: JPG, JPEG, or PNG</div>
+                              <div class="fileSize">Max file size: 16MB</div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdZero">
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb40">
+                      <label class="labelText width85Percent">Header Hex Code (Optional)</label>
+                      <input type="text" class="form-control"  placeholder="#000000">
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb40">
+                      <label class="labelText width85Percent">Primary Button Hex Code (Optional)</label>
+                      <input type="text" class="form-control"  placeholder="#000000">
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb40">
+                      <label class="labelText width85Percent">Active Field Hex Code (Optional)</label>
+                      <input type="text" class="form-control"  placeholder="#000000">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>          
+          </div>
+          <!--CSP details section Ends-->
+          <!--User details section starts-->          
+          <div class="userDetails">
+              <div class="addCustomerText customerFormHeading mb8">User Details</div>
+              <div class="addCustomerText completeForm mb28">Enter the name and email  for the users of the CSP account.  By default the first user added is designated the role of an admin. Users can also be managed from the control panel.</div>
+                <div>
+                  <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                          <div class="form-group inputTextBox mb24">
+                            <label class="labelText">First Name</label>
+                            <input type="text" class="form-control"  formControlName="firstName">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                            <div class="form-group inputTextBox mb24">
+                              <label class="labelText">Last Name</label>
+                              <input type="text" class="form-control"  formControlName="lastName">
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                          <div class="form-group inputTextBox mb16">
+                            <label class="labelText">Email</label>
+                            <input type="text" class="form-control"  formControlName="email">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                            <div class="form-group inputTextBox mb16">
+                                <label for="sel1" class="labelText">Role</label>
+                                <select class="form-control role"  formControlName="role">
+                                  <option>Select Role</option>
+                                </select>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="addCustomerText completeForm mb48 width215"><i class="fa fa-plus-circle faCircleMargin" aria-hidden="true"></i>Add Another User</div>
+            </div>
+        </div>
+        <!--CSP customer section ends ----------------------------------------------- -->
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
+            <button type="submit" class="btn cancelBtn opacity-5">Cancel</button>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <button type="submit" class="btn saveSubmitBtn floatRight" [ngClass]="!(customerForm.valid) ? 'disabled' : ''" [disabled]="!(customerForm.valid)" (click)="submit();">Save & Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

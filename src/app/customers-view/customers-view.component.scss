@@ -1,0 +1,216 @@
+@import 'styles/variables.scss';
+@import 'styles/mixin.scss';
+
+.customersViewContainer{
+    width: 78.30%;
+    float: left;
+    background-color: $white;
+    margin: auto;
+    background-color: $whiteAlice;
+    .customersView{
+        width: 87%;
+        margin-left: 9%;
+        padding-top: 48px;
+        .customerViewType{
+            opacity: 0.5;
+            font-family: $heebo;
+            font-size: 16px;
+            font-weight: 500;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: $hexaBlack;
+            margin-right: 19px;
+        }
+        .cspButton{
+            border: solid 1px rgba(0, 0, 0, 0.7);
+            color: $hexaBlack;
+        }
+        // .cspButton:focus{
+        //     background-color: $hexaBlue;
+        //     color: $white;
+        //     border: none;
+        //     box-shadow: none;
+        // }
+        // .dcBtn:focus{
+        //     border: solid 1px rgba(0, 0, 0, 0.7);
+        //     color: $hexaBlack;
+        //     border-left: none;
+        //     background-color: $white;
+        //     box-shadow: none;
+        // }
+        .dcBtn{
+            background-color: $hexaBlue;
+            color: $white;
+        }
+        .blNone{
+            border-left: none;
+        }
+        .brNone{
+            border-right: none;
+        }
+        .bNone{
+            border: none;
+        }
+        .defaultBtn{
+            width: 129px;
+            height: 40px;
+            font-family: $heebo;
+            font-size: 14px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.43;
+            letter-spacing: normal;
+            text-align: center;
+            opacity: 0.7;
+        }
+        .btn:focus{
+            box-shadow: none;
+        }
+        .customerText{
+            font-family: $heebo;
+            font-size: 16px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            color: $hexaBlack;
+            opacity: 0.5;
+        }
+        .signInBtn{
+            cursor: pointer;
+            float: right;
+            @include form-button(201px, 40px, $heebo, 16px, bold, normal, normal, 1.5, normal, center, $colorBlue, $white, 4px, 1px solid $colorBlue);
+        }
+        .tableBorder{
+            border-radius: 8px;
+            border: 1px solid rgba(42, 52, 56,0.2);
+            table {
+                border-radius: 8px;
+                overflow: hidden;
+              }
+            .table{
+                margin-bottom: 0px;
+                thead{
+                    th{
+                        border: none;
+                        font-weight: normal !important;
+                    }
+                    tr{
+                        opacity: 0.75;
+                        background-color: $headerBG;
+                        color: $white;
+                    }
+                    
+                    // tr:nth-child(odd){
+                    //     background: red;
+                    // }
+                    // tr:nth-child(even){
+                    //     background: blue;
+                    // }
+                }
+                tbody{
+                    tr:nth-child(even) {
+                        box-shadow: inset 1px 0 0 0 rgba(0, 0, 0, 0.25), inset -1px 0 0 0 rgba(0, 0, 0, 0.25);
+                        background-color: $white;
+                    }
+                    tr:nth-child(odd) {
+                        box-shadow: inset 1px 0 0 0 rgba(0, 0, 0, 0.25), inset -1px 0 0 0 rgba(0, 0, 0, 0.25);
+                        background-color: rgba(42, 52, 56, 0.1);
+                    }
+                }
+                tr{
+                    font-family: $heebo;
+                    font-size: 14px;
+                    font-weight: normal;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.43;
+                    letter-spacing: normal;
+                }
+                .companyName{
+                    width: 19%;
+                }
+                .updated{
+                    width: 11%;
+                }
+                .dateAdded{
+                    width: 14%;
+                }
+                .subscriptions{
+                    width:15%;
+                }
+                .admins{
+                    width:11%
+                }
+                .Users{
+                    width:10%;
+                }
+                .actionsTH{
+                    width:20%;
+                    text-align: center;
+                }
+                .actionsTD{
+                    width:20%;
+                }
+            }
+        }
+    }
+}
+// th {
+//     background: #ddd;
+// }
+
+// @media only screen and (min-width:1366px) and (max-width:1599px){
+//     .customersViewContainer{
+//         width: 74.3%;
+//         .customersView{
+//             width: 93%;
+//             margin-left: 5%;
+//         }
+//     }
+// }
+
+@media only screen and (min-width: 1366px) and (max-width: 1583px){
+    .customersView{
+        width: 82% !important;
+    }
+    .customersViewContainer{
+      width: 74.30% !important;
+    }
+  }
+  
+  @media only screen and (min-width: 1024px) and (max-width: 1365px){
+    .customersView{
+      width: 85% !important;
+    }
+    .customersViewContainer{
+      width: 66.30% !important;
+    }
+  }
+  
+  
+  @media only screen and (min-width: 768px) and (max-width: 1023px){
+    .customersView{
+      width: 89% !important;
+    }
+    .customersViewContainer{
+      width: 55.30% !important;
+    }
+  }
+  
+  @media only screen and (min-width: 1024px) and (max-width: 1281px){
+    .width85Percent{
+      width: 77% !important;
+    }
+  }
+  
+  @media only screen and (min-width: 768px) and (max-width: 962px){
+    .width85Percent{
+      width: 95% !important;
+    }
+  }
+

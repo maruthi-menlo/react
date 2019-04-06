@@ -1,0 +1,128 @@
+/*--------------------
+       IMPORTS
+--------------------*/
+@import 'variables.scss';
+
+body {
+    // min-width: 320px;
+    overflow-x: hidden;
+    font-family: 'Heebo', sans-serif;
+    width: 100%;
+}
+.row{
+    margin: 0 !important;
+}
+.floatLeft{
+    float: left;
+}
+.floatRight{
+    float: right;
+}
+.displayBlock{
+    display: block;
+}
+.displayNone{
+    display: none;
+}
+.displatInline{
+    display: inline;
+}
+.displayInlineBlock{
+    display: inline-block !important;
+}
+.mb10{
+    margin-bottom: 10px !important;
+}
+.mb8{
+    margin-bottom: 8px !important;
+}
+.mb16{
+    margin-bottom: 16px !important;
+}
+.mb24{
+    margin-bottom: 24px !important;
+}
+.mb20{
+    margin-bottom: 20px !important;
+}
+.mb28{
+    margin-bottom: 28px !important;
+}
+.mb32{
+    margin-bottom: 32px !important;
+}
+.mb40{
+    margin-bottom: 40px !important;
+}
+.mb48{
+    margin-bottom: 48px !important;
+}
+.mb52{
+    margin-bottom: 52px !important;
+}
+.mb64{
+    margin-bottom: 64px !important;
+}
+.mb72{
+    margin-bottom: 72px !important;
+}
+.mt_8{
+    margin-top: -8px !important;
+}
+.wd256px{
+    width: 256px !important;
+}
+.wd164px{
+    width: 164px !important;
+}
+.wd347px{
+    width: 352px !important;
+}
+.mr19{
+    margin-right: 19px !important;
+}
+.pdLeft{
+    padding-left: 0px !important;
+}
+.pdRight{
+    padding-right: 0px !important;
+}
+.pdZero{
+    padding: 0px !important;
+}
+.pdtop20{
+    padding-top: 20px;
+}
+.pdLeft8{
+    padding-left: 8px;
+}
+.opacity-5{
+    opacity: 0.5;
+}
+.width215{
+    width: 195px;
+    cursor: pointer;
+}
+
+.customDeactivateModal{
+    @media (min-width: 576px){
+        .modal-dialog {
+            max-width: 531px !important;
+        }
+    }
+}
+
+.error{
+    border: 1px solid red !important;
+}
+.errorText{
+    color: red !important;
+
+}
+.disabled{
+    cursor: not-allowed !important;
+    opacity: 0.4 !important;
+}
+.cursor{
+    cursor: pointer;
+}
