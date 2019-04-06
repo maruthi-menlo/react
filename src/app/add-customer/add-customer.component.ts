@@ -17,6 +17,7 @@ export class AddCustomerComponent implements OnInit {
   cspUserDetailsObj: FormGroup;
   allCountries: any=[];
   allStates:any=[];
+  allRoles:any=[];
 
   constructor(
     private fb: FormBuilder,
@@ -27,14 +28,15 @@ export class AddCustomerComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.getAllCountries();
+    this.getAllRoles();
   }
 
   get userDetails() {
-    return this.customerForm.get('userDetails') as FormArray;
+    return this.customerForm.get('users') as FormArray;
   }
 
   get azureSubDetails() {
-    return this.customerForm.get('azureSubDetails') as FormArray;
+    return this.customerForm.get('azuresubscriptions') as FormArray;
   }
 
   // get cspUserDetails() {
@@ -51,7 +53,7 @@ export class AddCustomerComponent implements OnInit {
   // }
 
   addUserDetails(){
-    let formArrayDetails = this.customerForm.controls['userDetails'] as FormArray;
+    let formArrayDetails = this.customerForm.controls['users'] as FormArray;
     formArrayDetails.push(this.fb.group({
       firstname: ['', Validators.compose([Validators.required])],
       lastname: ['', Validators.compose([Validators.required])],
@@ -61,7 +63,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   addazureSubDetails() {
-    let formArray = this.customerForm.controls['azureSubDetails'] as FormArray;
+    let formArray = this.customerForm.controls['azuresubscriptions'] as FormArray;
     formArray.push(this.fb.group({
       subscriptionid: ['', Validators.compose([Validators.required])],
       markup: ['', Validators.compose([Validators.required])],
@@ -79,8 +81,8 @@ export class AddCustomerComponent implements OnInit {
       zipcode: ['', Validators.compose([Validators.required])],
       countryid: ['', Validators.compose([Validators.required])],
       stateid: ['', Validators.compose([Validators.required])],
-      userDetails: this.fb.array([ ]),
-      azureSubDetails: this.fb.array([ ])
+      users: this.fb.array([ ]),
+      azuresubscriptions: this.fb.array([ ])
     });
     [1].forEach(ele => {
       this.addUserDetails();
@@ -107,6 +109,17 @@ export class AddCustomerComponent implements OnInit {
     })
   }
 
+  getAllRoles(){
+    this.customerService.getRoles().subscribe((res:any) => {
+      if(!res.error){
+        this.allRoles = res.data;
+        console.log(this.allRoles);
+      }else{
+      }
+    }, err => {
+    })
+  }
+
   //to get the states for the selected country
   getStatesForCountry(value){
     // this.customerForm.controls['state'].setValue('');
@@ -120,8 +133,8 @@ export class AddCustomerComponent implements OnInit {
   }
 
   submit(){
-    console.log("login",this.customerForm.value)
-    this.customerService.addCustomer(this.customerForm.value).subscribe((res:any) => {
+    const addCustomerPostObj = this.customerForm.value
+    this.customerService.addCustomer(addCustomerPostObj).subscribe((res:any) => {
       console.log(res);
     }, err => {
     })

@@ -110,10 +110,10 @@
             </div>
             <!--Company details section Ends-->
             <!--User details section starts-->
-            <div class="userDetails" formArrayName="userDetails">
+            <div class="userDetails" formArrayName="users">
               <div class="addCustomerText customerFormHeading mb8">User Details</div>
               <div class="addCustomerText completeForm mb28">Enter the name and email for the users of this account.  By default the first user added is designated the role of an admin. Users can also be added and managed from the control panel.</div>
-                <div formGroupName={{i}} *ngFor="let address of customerForm.controls['userDetails'].controls; let i=index">
+                <div formGroupName={{i}} *ngFor="let address of customerForm.controls['users'].controls; let i=index">
                   <div class="row">
                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
                       <div class="row">
@@ -149,7 +149,8 @@
                             <div class="form-group inputTextBox mb16">
                                 <label for="sel1" class="labelText">Role</label>
                                 <select class="form-control role"  formControlName="roleid" [ngClass]="address.controls['roleid'].hasError('required') && address.controls['roleid'].touched ? 'error mb10' : ''">
-                                  <option>Select Role</option>
+                                  <option [value]="''">Select Role</option>
+                                  <option *ngFor="let roles of allRoles" [value]="roles.id">{{roles.name}}</option>
                                 </select>
                                 <p class="labelText errorText" *ngIf="address.controls['roleid'].hasError('required') && address.controls['roleid'].touched">Please enter tenant id.</p>
                               </div>
@@ -162,10 +163,10 @@
             </div>
             <!--User details section Ends-->
             <!--Azure Subscription Details section Starts-->
-            <div class="azureSubscription userDetails" formArrayName="azureSubDetails">
+            <div class="azureSubscription userDetails" formArrayName="azuresubscriptions">
               <div class="addCustomerText customerFormHeading mb8">Azure Subscription Details</div>
               <div class="addCustomerText completeForm mb28">Enter the Azure subscription ID’s  and passwords for each associated service. You may also choose to input a markup % for each subscription.</div>
-              <div formGroupName={{j}} *ngFor="let azureDetails of customerForm.controls['azureSubDetails'].controls; let j=index">
+              <div formGroupName={{j}} *ngFor="let azureDetails of customerForm.controls['azuresubscriptions'].controls; let j=index">
                 <div class="row">
                   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
                     <div class="row">
@@ -179,7 +180,7 @@
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                           <div class="form-group inputTextBox mb24">
                             <label class="labelText">Markup %</label>
-                            <input type="password" class="form-control"  formControlName="markup" [ngClass]="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched ? 'error mb10' : ''">
+                            <input type="text" class="form-control"  formControlName="markup" [ngClass]="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched ? 'error mb10' : ''">
                             <p class="labelText errorText" *ngIf="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched">Please enter tenant id.</p>
                           </div>
                         </div>

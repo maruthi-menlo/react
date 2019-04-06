@@ -27,6 +27,11 @@ export class CustomerService {
     return this.http.post(url, data)
   }
 
+  getRoles(){
+    let url = `${this.api_url}${urls.ROLES}`;
+    return this.http.get(url)
+  }
+
   addCustomer(data) {
     let url = `${this.api_url}${urls.DIRECT_CUSTOMER}`;
     return this.http.post(url, data)
