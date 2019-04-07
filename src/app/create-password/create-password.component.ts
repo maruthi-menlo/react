@@ -68,8 +68,8 @@ export class CreatePasswordComponent implements OnInit {
     })
   };
 
-  // cancel(){
-  //   this.router.navigate(['/customersview']);
-  // }
+  cancel(){
+    this.router.navigate(['/customersview']);
+  }
 
 }
