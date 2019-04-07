@@ -25,7 +25,7 @@ export class AnonymousGuard implements CanActivate {
           return true;
         } else {
           if (isLoggedIn && isLoggedIn.loggedIn) {
-            this.router.navigate(['/addcustomer']);
+            this.router.navigate(['/customersview']);
             return false;
           }
         }

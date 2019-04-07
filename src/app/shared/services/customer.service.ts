@@ -36,4 +36,27 @@ export class CustomerService {
     let url = `${this.api_url}${urls.DIRECT_CUSTOMER}`;
     return this.http.post(url, data)
   }
+
+  createPassword(data) {
+    let url = `${this.api_url}${urls.CREATE_PASSWORD}`;
+    return this.http.post(url, data)
+  }
+
+  addCSPCustomer(data) {
+    let formData:any = new FormData();
+    formData.append('companyname ',data.companyname )
+    formData.append('address1 ',data.address1 )
+    formData.append('address2',data.address2)
+    formData.append('city',data.city)
+    formData.append('zipcode',data.zipcode)
+    formData.append('countryid',data.countryid)
+    formData.append('stateid',data.stateid)
+    formData.append('logo',data.logo)
+    formData.append('headerHexCode',data.headerHexCode)
+    formData.append('primaryButtonHexCode',data.primaryButtonHexCode)
+    formData.append('activeFieldHexCode',data.activeFieldHexCode)
+    formData.append('users',JSON.stringify(data.users))
+    let url = `${this.api_url}${urls.CSP_Customer}`;
+    return this.http.post(url, formData)
+  }
 }

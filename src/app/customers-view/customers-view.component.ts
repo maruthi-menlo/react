@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { DeactivatePlayaAccountModalComponent } from '../core/modals/deactivate-playa-account-modal/deactivate-playa-account-modal.component'
+import { Router } from '@angular/router';
+import { UtilService } from '../shared/services/util.service';
 
 @Component({
   selector: 'app-customers-view',
@@ -13,11 +15,19 @@ export class CustomersViewComponent implements OnInit {
   cspTableView: any = false;
   closeResult: string;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,
+    private router:Router,
+    private utilService:UtilService
+  ) { }
 
   ngOnInit() {
     // this.dcTableView();
     // this.cspTableViewShow();
+  }
+
+  ngAfterViewInit() {
+    this.utilService.setNavHeight('commonContainer')
   }
 
   dcTableViewShow(){
@@ -45,6 +55,10 @@ export class CustomersViewComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  navigateToaddCustomerPage(){
+    this.router.navigate(['/addcustomer']);
   }
 
 }

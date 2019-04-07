@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilService } from '../shared/services/util.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-playa-admin',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditPlayaAdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private utilService:UtilService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    this.utilService.setNavHeight('commonContainer')
+  }
+
+  cancel(){
+    this.router.navigate(['/customersview']);
+  }
 }

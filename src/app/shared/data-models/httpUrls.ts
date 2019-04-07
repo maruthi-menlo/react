@@ -5,6 +5,8 @@ export const httpUrls = {
     COUNTRIES: 'getCountries',
     STATES:'getStatesByCountry',
     DIRECT_CUSTOMER:'addCustomer',
-    ROLES: 'getRoles'
+    ROLES: 'getRoles',
+    CSP_Customer: 'addCSPCustomer',
+    CREATE_PASSWORD: 'createPassword'
 }
 

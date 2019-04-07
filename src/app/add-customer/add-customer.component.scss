@@ -105,9 +105,16 @@
             cursor: pointer;
             @include form-button(164px, 40px, $heebo, 16px, bold, normal, normal, 1.5, normal, center, $white, $menloBlue, 4px,"");
         }
+        .removeBtn{
+          cursor: pointer;
+          position: relative;
+          top: 25px;
+          @include form-button('70px', 25px, $heebo, 10px, bold, normal, normal, 1.5, normal, center, $white, $menloBlue, 4px,"");
+      }
         .fileInputs{
             position: relative;
             z-index: 2;
+
             .file{
                 height: 80px !important;
                 position: relative;

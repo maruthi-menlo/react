@@ -8,7 +8,8 @@ const routes: Routes = [
   // { path:'navbar', loadChildren: './nav-bar/nav-bar.module#NavBarModule'},
   // { path:'playalanding', loadChildren: './playa-admin-landing/playa-admin-landing.module#PlayaAdminLandingModule'},
   { path:'editplayaprofile', loadChildren: './edit-playa-admin/edit-playa-admin.module#EditPlayaAdminModule'},
-  { path:'customersview', loadChildren: './customers-view/customers-view.module#CustomersViewModule'}
+  { path:'customersview', loadChildren: './customers-view/customers-view.module#CustomersViewModule'},
+  { path: 'updatepassword/:id', loadChildren: './create-password/create-password.module#CreatePasswordModule'}
 ];
 
 @NgModule({

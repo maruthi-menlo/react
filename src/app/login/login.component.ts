@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router, Routes, RouterModule } from '@angular/router';
 import { AuthService } from '../auth/auth.service'
 import { ValidationService } from '../shared/services/validation.service';
+import { GetJsonService } from '../shared/services/json.service';
 
 @Component({
   selector: 'app-login',
@@ -14,17 +15,30 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   afterLogin: any = true;
   loginErrorMsz: any;
+  messages:any={};
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private jsonService:GetJsonService,
 
   ) { }
 
   ngOnInit() {
     this.initForm();
+    this.getMessages('messages');
+  }
+
+  getMessages(name) {
+    this.jsonService.getJSON(name).subscribe((res:any) => {
+      console.log(res);
+      if(res){
+        this.messages = res;        
+      }
+    }, err => {
+    })
   }
 
   initForm() {
@@ -37,7 +51,7 @@ export class LoginComponent implements OnInit {
   login() {
     const loginPostObj = this.loginForm.value
     this.authService.login(loginPostObj).subscribe((res: any) => {
-      this.router.navigate(['/addcustomer']);
+      this.router.navigate(['/customersview']);
     }, err => {
       this.loginErrorMsz = err && err.message[0] && err.message[0].msg  ? err.message[0].msg : err.message;
       setTimeout(() => {
