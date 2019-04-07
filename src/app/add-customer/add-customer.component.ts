@@ -46,12 +46,11 @@ export class AddCustomerComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.utilService.setNavHeight('commonContainer')
+    this.utilService.setNavHeight('commonContainer');
   }
 
   getMessages(name) {
     this.jsonService.getJSON(name).subscribe((res:any) => {
-      console.log(res);
       if(res){
         this.messages = res;        
       }
@@ -67,19 +66,6 @@ export class AddCustomerComponent implements OnInit {
     return this.customerForm.get('azuresubscriptions') as FormArray;
   }
 
-  // get cspUserDetails() {
-  //   return this.customerForm.get('cspUserDetails') as FormArray;
-  // }
-
-
-  // addUserDetails() {
-  //   this.userDetails.push(this.userDetailsObj);
-  // }
-
-  // cspAddUserDetails() {
-  //   this.cspUserDetails.push(this.cspUserDetailsObj);
-  // }
-
   addUserDetails(){
     let formArrayDetails = this.customerForm.controls['users'] as FormArray;
     formArrayDetails.push(this.fb.group({
@@ -88,6 +74,9 @@ export class AddCustomerComponent implements OnInit {
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
       roleid: ['', Validators.compose([Validators.required])]
     }))
+    setTimeout(() => {
+      this.utilService.setNavHeight('commonContainer')
+    }, 100);
   }
 
   addCSPUserDetails(){
@@ -98,6 +87,9 @@ export class AddCustomerComponent implements OnInit {
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
       roleid: ['', Validators.compose([Validators.required])]
     }))
+    setTimeout(() => {
+      this.utilService.setNavHeight('commonContainer')
+    }, 100);
   }
 
   addazureSubDetails() {
@@ -107,6 +99,9 @@ export class AddCustomerComponent implements OnInit {
       markup: ['', Validators.compose([Validators.required])],
       discount: ['', Validators.compose([Validators.required])]
     }));
+    setTimeout(() => {
+      this.utilService.setNavHeight('commonContainer')
+    }, 100);
   }
  
   initForm(){
@@ -151,8 +146,10 @@ export class AddCustomerComponent implements OnInit {
   }
 
   customerType(event: any){
-    this.customerTypeValue = event.target.value
-    // console.log('radio',this.customerTypeValue)
+    this.customerTypeValue = event.target.value;
+    setTimeout(() => {
+      this.utilService.setNavHeight('commonContainer')
+    }, 100);
   }
 
   //to get all the countries
@@ -160,9 +157,7 @@ export class AddCustomerComponent implements OnInit {
     this.customerService.getCountries().subscribe((res:any) => {
       if(!res.error){
         this.allCountries = res.data;
-        // this.cardAndBillingDetailsForm.controls['country'].setValue(this.allCountries[0].countryId);
-      } else {
-      } 
+      }
     }, err => {
     })
   }
@@ -171,8 +166,6 @@ export class AddCustomerComponent implements OnInit {
     this.customerService.getRoles().subscribe((res:any) => {
       if(!res.error){
         this.allRoles = res.data;
-        console.log(this.allRoles);
-      }else{
       }
     }, err => {
     })
@@ -180,17 +173,13 @@ export class AddCustomerComponent implements OnInit {
 
   //to get the states for the selected country
   getStatesForCountry(value){
-    // this.customerForm.controls['state'].setValue('');
     this.customerService.getCountryStates(value).subscribe((res:any) => {
       if(!res.error){
         this.allStates = res.data;
-      } else {
-      } 
+      }
     }, err => {
     })
   }
-
-
 
   imageChangeEvent(imageEvent, formControl){
     let reader = new FileReader();
@@ -216,14 +205,12 @@ export class AddCustomerComponent implements OnInit {
   }
 
   resetFileInput(element?) {
-    // this[element].nativeElement.value = "";
     this.logoObj = {}
   }
   
   submit(){
     const addCustomerPostObj = this.customerForm.value
     this.customerService.addCustomer(addCustomerPostObj).subscribe((res:any) => {
-      console.log(res);
       this.router.navigate(['/customersview']);
     }, err => {
     })
@@ -235,9 +222,8 @@ export class AddCustomerComponent implements OnInit {
   
   submitCSP(){
     const addCspPostObj = this.cspCustomerForm.value
-    console.log(addCspPostObj)
     this.customerService.addCSPCustomer(addCspPostObj).subscribe((res:any) => {
-      console.log(res);
+      this.router.navigate(['/customersview']);
     }, err => {
     })
   }
