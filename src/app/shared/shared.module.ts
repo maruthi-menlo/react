@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NgbModule, NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDatepickerModule, NgbDatepickerConfig, NgbAlertModule, NgbDateParserFormatter, NgbDateAdapter, NgbTimepicker, NgbTimepickerModule, NgbPopoverModule, NgbTooltipModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderService } from './services/loader.service';
 import { LoaderComponent } from '../core/loader/loader.component';
 import { CustomerService } from './services/customer.service';
@@ -13,13 +13,16 @@ import {PercentPipe} from './pipes/percent.pipe';
     CommonModule,
     NgbModule,
     NgbPaginationModule,
-    NgbAlertModule
+    NgbAlertModule,
+    NgbPopoverModule
   ],
   providers: [
     LoaderService,
     CustomerService,
     GetJsonService
   ],
-  exports: [LoaderComponent]
+  exports: [
+    LoaderComponent,
+    NgbPopoverModule]
 })
 export class SharedModule { }

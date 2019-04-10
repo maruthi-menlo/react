@@ -9,10 +9,10 @@
         padding: 0px;
         .navbar-nav{
             li:active{
-                border-left: 4px solid $white;
+                border-left: 4px solid $white !important;
             }
             li:hover{
-                border-left: 4px solid $white;
+                border-left: 4px solid $white !important;
             }
             .nav-item{
                 width: 96px;

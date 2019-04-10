@@ -56,4 +56,12 @@
             color: $white;
         }
     }
+
+    .cursorPointer{
+        padding-left: 13px;
+        list-style-type: none;
+        margin-bottom: 0;
+        padding-right: 13px;
+        cursor: pointer;
+    }
 }

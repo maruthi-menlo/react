@@ -5,6 +5,8 @@ import { ValidationService } from '../shared/services/validation.service';
 import { Router } from '@angular/router';
 import { UtilService } from '../shared/services/util.service';
 import { GetJsonService } from '../shared/services/json.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { DeactivateEditUserComponent } from '../core/modals/deactivate-edit-user/deactivate-edit-user.component'
 
 @Component({
   selector: 'app-add-customer',
@@ -25,7 +27,11 @@ export class AddCustomerComponent implements OnInit {
   imageFile:any;
   logoObj:any={};
   logoError:boolean = false;
+  addCustomer:boolean = true;
   cspCustomerForm:  FormGroup;
+  openDeleteUserModal = true;
+  closeResult: string;
+  errorMsz:string = '';
   @ViewChild('fileInput') imageUpload: any;
 
   constructor(
@@ -34,10 +40,13 @@ export class AddCustomerComponent implements OnInit {
     private router: Router,
     private utilService:UtilService,
     private jsonService:GetJsonService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
+    this.addCustomer = this.router.url.indexOf('DC') > -1 || this.router.url.indexOf('CSP') > -1 ? false : true;
+    this.customerTypeValue = this.router.url.indexOf('CSP') > -1 ? 'CSP' : 'DC';
     this.initForm();
     this.initCSPForm();
     this.getAllCountries();
@@ -97,7 +106,9 @@ export class AddCustomerComponent implements OnInit {
     formArray.push(this.fb.group({
       subscriptionid: ['', Validators.compose([Validators.required])],
       markup: ['', Validators.compose([Validators.required])],
-      discount: ['', Validators.compose([Validators.required])]
+      markupMask: ['', Validators.compose([Validators.required])],
+      discount: ['', Validators.compose([Validators.required])],
+      discountMask: ['', Validators.compose([Validators.required])]
     }));
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
@@ -120,7 +131,7 @@ export class AddCustomerComponent implements OnInit {
     [1].forEach(ele => {
       this.addUserDetails();
     }),
-    [1,2,3].forEach(ele => {
+    [1].forEach(ele => {
       this.addazureSubDetails();
     })
   }
@@ -147,9 +158,24 @@ export class AddCustomerComponent implements OnInit {
 
   customerType(event: any){
     this.customerTypeValue = event.target.value;
+    this.customerForm.reset();
+    this.cspCustomerForm.reset();
+    this.setDefaultValues()
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
     }, 100);
+  }
+
+  setDefaultValues() {
+    if(this.customerTypeValue == 'CSP') {
+      this.setUSDefault('cspCustomerForm','countryid',222);
+      this.getStatesForCountry(222);
+      this.setRoleDefaultAdministrator('cspCustomerForm','users','roleid',2)
+    } else {
+      this.setUSDefault('customerForm','countryid',222);
+      this.getStatesForCountry(222);
+      this.setRoleDefaultAdministrator('customerForm','users','roleid',2);
+    }
   }
 
   //to get all the countries
@@ -157,6 +183,8 @@ export class AddCustomerComponent implements OnInit {
     this.customerService.getCountries().subscribe((res:any) => {
       if(!res.error){
         this.allCountries = res.data;
+        this.setUSDefault('customerForm','countryid',222);
+        this.getStatesForCountry(222)
       }
     }, err => {
     })
@@ -166,6 +194,7 @@ export class AddCustomerComponent implements OnInit {
     this.customerService.getRoles().subscribe((res:any) => {
       if(!res.error){
         this.allRoles = res.data;
+        this.setRoleDefaultAdministrator('customerForm','users','roleid',2)
       }
     }, err => {
     })
@@ -179,6 +208,17 @@ export class AddCustomerComponent implements OnInit {
       }
     }, err => {
     })
+  }
+
+  //Set default role as administrator
+  setRoleDefaultAdministrator(formBuilder,formArray, formControl,value) {
+    let usersArray = this[formBuilder].controls[formArray]['controls'] as FormArray;
+    usersArray[0].controls[formControl].setValue(value);
+  }
+
+  //Set default role as administrator
+  setUSDefault(formBuilder, formControl,value) {
+    this[formBuilder].controls[formControl].setValue(value);
   }
 
   imageChangeEvent(imageEvent, formControl){
@@ -211,24 +251,66 @@ export class AddCustomerComponent implements OnInit {
   submit(){
     const addCustomerPostObj = this.customerForm.value
     this.customerService.addCustomer(addCustomerPostObj).subscribe((res:any) => {
-      this.router.navigate(['/customersview']);
+      alert('Direct customer has been created successfully.');
+      setTimeout(() => {
+        this.router.navigate(['/customersview']);
+      }, 500);
+
     }, err => {
+      this.errorMsz = err && err.error ? err.error.message : '';
     })
   }
 
   navigateToCustomerPage() {
     this.router.navigate(['/customersview']);
   }
+
+  openDeleteModal(content) {
+    this.modalService.open(DeactivateEditUserComponent,{ariaLabelledBy: 'modal-basic-title', centered: true, windowClass: 'customDeactivateModal'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
   
   submitCSP(){
     const addCspPostObj = this.cspCustomerForm.value
     this.customerService.addCSPCustomer(addCspPostObj).subscribe((res:any) => {
-      this.router.navigate(['/customersview']);
+      alert('CSP customer has been created successfully.');
+      setTimeout(() => {
+        this.router.navigate(['/customersview']);
+      }, 500);
     }, err => {
+      this.errorMsz = err && err.error ? err.error.message : '';
     })
   }
 
   cancel(){
     this.router.navigate(['/customersview']);
   }
+
+  percentBlur(e,id,formArray,formControl) {
+    let value = e.target.value;
+    let maskValue = value ? `${value}%` : value;
+    let azureSubscription = this.customerForm.controls[formArray]['controls'] as FormArray;
+    azureSubscription[id].controls[`${formControl}Mask`].setValue(maskValue);
+    azureSubscription[id].controls[formControl].setValue(value);
+  }
+
+  percentFocus(id,formArray,formControl) {
+    let azureSubscription = this.customerForm.controls[formArray]['controls'] as FormArray;
+    let markupValue = azureSubscription[id].controls[formControl].value;
+    azureSubscription[id].controls[`${formControl}Mask`].setValue(markupValue);
+  }
+
 }

@@ -16,15 +16,19 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { PlayaAdminLandingModule } from './playa-admin-landing/playa-admin-landing.module';
 import { CustomersDataComponent } from './customers-data/customers-data.component';
 import { DeactivatePlayaAccountModalComponent } from './core/modals/deactivate-playa-account-modal/deactivate-playa-account-modal.component';
+import { DeactivateEditUserComponent } from './core/modals/deactivate-edit-user/deactivate-edit-user.component';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     CustomersDataComponent,
-    DeactivatePlayaAccountModalComponent
+    DeactivatePlayaAccountModalComponent,
+    DeactivateEditUserComponent,
+    // DashboardComponent
   ],
-  entryComponents: [DeactivatePlayaAccountModalComponent],
+  entryComponents: [DeactivatePlayaAccountModalComponent,DeactivateEditUserComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

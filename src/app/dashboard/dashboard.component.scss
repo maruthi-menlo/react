@@ -1,0 +1,33 @@
+
+.fill {
+min-height: 100%;
+height: 100%;
+box-sizing: border-box;
+width: 78%;
+float: left;
+}
+
+#reportContainer {
+height: 100%;
+min-height: 100%;
+display: block;
+}
+
+@media only screen and (min-width: 1366px) and (max-width: 1583px){
+    .fill{
+      width: 74.30% !important;
+    }
+  }
+  
+  @media only screen and (min-width: 1024px) and (max-width: 1365px){
+    .fill{
+      width: 66.30% !important;
+    }
+  }
+  
+  
+  @media only screen and (min-width: 768px) and (max-width: 1023px){
+    .fill{
+      width: 55.30% !important;
+    }
+  }

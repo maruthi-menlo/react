@@ -5,7 +5,7 @@ import { MustMatch } from '../shared/services/must-match.validator';
 import { GetJsonService } from '../shared/services/json.service';
 import { UtilService } from '../shared/services/util.service';
 import { ActivatedRoute } from '@angular/router';
-import { CustomerService } from '../shared/services/customer.service';
+import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 
 
@@ -20,13 +20,14 @@ export class CreatePasswordComponent implements OnInit {
   messages:any={};
   userid:string = '';
   passwordPostObj:any = {};
+  validPasswordToken:boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private validationService: ValidationService,
     private jsonService:GetJsonService,
     private route:ActivatedRoute,
-    private customerService: CustomerService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -37,7 +38,18 @@ export class CreatePasswordComponent implements OnInit {
       if(params && params.token) {
         this.userid = params.token;
       }
+      this.validateToken();
     });
+  }
+
+  validateToken() {
+    const data = {token:this.userid}
+    this.authService.validatePasswordToken(data).subscribe((res:any) => {
+      this.validPasswordToken = true;
+    }, err => {
+      this.authService.logout();
+      this.validPasswordToken = false;
+    })
   }
 
   getMessages(name) {
@@ -61,9 +73,11 @@ export class CreatePasswordComponent implements OnInit {
   submitPwd(){
     let password = this.createPasswordForm.controls.password.value;
     const passwordPostObj= {userid:this.userid,password:password};
-    console.log(passwordPostObj)
-    this.customerService.createPassword(passwordPostObj).subscribe((res:any) => {
-      console.log(res);      
+    this.authService.createPassword(passwordPostObj).subscribe((res:any) => {
+      alert("Password changed successfully") 
+      setTimeout(() => {
+        this.router.navigate(['/login'])     
+      }, 1500);
     }, err => {
     })
   };

@@ -38,6 +38,16 @@ export class AuthService {
     .pipe(catchError(this.utilService.handleError)); 
   }
 
+  createPassword(data) {
+    let url = `${this.api_url}${urls.CREATE_PASSWORD}`;
+    return this.http.post(url, data)
+  }
+
+  validatePasswordToken(data) {
+    let url = `${this.api_url}${urls.VALIDATE_PASSWPORD_TOKEN}`;
+    return this.http.post(url, data)
+  }
+
   get getCurrentUser() {
     const user = localStorage.getItem('profile');
     return user ? JSON.parse(user) : null;

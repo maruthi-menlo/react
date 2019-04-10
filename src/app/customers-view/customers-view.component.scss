@@ -132,29 +132,38 @@
                     letter-spacing: normal;
                 }
                 .companyName{
-                    width: 19%;
+                    min-width: 19%;
+                    max-width: 19%;
                 }
                 .updated{
-                    width: 11%;
+                    min-width: 11%;
+                    max-width: 11%;
                 }
                 .dateAdded{
-                    width: 14%;
+                    min-width: 14%;
+                    max-width: 14%;
                 }
                 .subscriptions{
-                    width:15%;
+                    min-width:15%;
+                    min-width:15%;
                 }
                 .admins{
-                    width:11%
+                    min-width:11%;
+                    max-width:11%
                 }
                 .Users{
-                    width:10%;
+                    max-width:10%;
+                    min-width:10%;
                 }
                 .actionsTH{
-                    width:20%;
+                    max-width:20%;
+                    min-width:20%;
                     text-align: center;
                 }
                 .actionsTD{
-                    width:20%;
+                    min-width:20%;
+                    max-width:20%;
+                    text-align: center;
                 }
             }
         }
@@ -183,13 +192,57 @@
     }
   }
   
-  @media only screen and (min-width: 1024px) and (max-width: 1365px){
+  @media only screen and (min-width: 1024px) and (max-width: 1278px){
     .customersView{
       width: 85% !important;
     }
     .customersViewContainer{
       width: 66.30% !important;
     }
+
+    .companyName{
+        min-width: 170px !important;
+        max-width: 170px !important;
+    }
+    .updated{
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+    .dateAdded{
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+    .subscriptions{
+        min-width: 150px !important;
+        max-width: 150px !important;
+    }
+    .admins{
+        min-width: 150px !important;
+        max-width: 150px !important;
+    }
+    .users{
+        min-width: 110px !important;
+        max-width: 110px !important;
+    }
+    .actionsTH{
+        min-width: 300px !important;
+        max-width: 300px !important;
+        text-align: center;
+    }
+    .actionsTD{
+        min-width: 300px !important;
+        max-width: 300px !important;
+        text-align: center;
+    }
+}
+
+    @media only screen and (min-width: 1279px) and (max-width: 1365px){
+        .customersView{
+          width: 85% !important;
+        }
+        .customersViewContainer{
+          width: 72.30% !important;
+        }
   }
   
   
@@ -200,6 +253,42 @@
     .customersViewContainer{
       width: 55.30% !important;
     }
+
+    .companyName{
+        min-width: 170px !important;
+        max-width: 170px !important;
+    }
+    .updated{
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+    .dateAdded{
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+    .subscriptions{
+        min-width: 150px !important;
+        max-width: 150px !important;
+    }
+    .admins{
+        min-width: 150px !important;
+        max-width: 150px !important;
+    }
+    .users{
+        min-width: 110px !important;
+        max-width: 110px !important;
+    }
+    .actionsTH{
+        min-width: 300px !important;
+        max-width: 300px !important;
+        text-align: center;
+    }
+    .actionsTD{
+        min-width: 300px !important;
+        max-width: 300px !important;
+        text-align: center;
+    }
+
   }
   
   @media only screen and (min-width: 1024px) and (max-width: 1281px){

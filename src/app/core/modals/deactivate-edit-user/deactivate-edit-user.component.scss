@@ -1,0 +1,55 @@
+@import 'styles/variables.scss';
+@import 'styles/mixin.scss';
+
+.modal-header{
+    border-bottom: none;
+    .deactivateText{
+        font-family: $heebo;
+        font-size: 20px;
+        font-weight: 600;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.4;
+        letter-spacing: normal;
+        color: #000000;
+    }
+    .close{
+        padding: 10px 17px 0px 0px;
+        font-size: 2rem;
+        opacity: inherit;
+        &:focus{
+            outline: none;
+        }
+    }
+}
+.modal-body{
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 15%;
+    .modalBodyText{
+        opacity: 0.5;
+        font-family: $heebo;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        color: #000000;
+    }
+}
+.modal-footer{
+    justify-content: space-between;
+    border-top: none;
+    .cancelBtn{
+        cursor: pointer;
+        margin-left: 8px;
+        @include form-button(88px, 32px, $heebo, 14px, bold, normal, normal, 1.5, normal, center, $hexaBlack, $white, 4px, 1px solid $hexaBlack);
+    }
+    .removeBtn{
+        cursor: pointer;
+        @include form-button(168px, 32px, $heebo, 14px, bold, normal, normal, 1.5, normal, center, #ff0000, $white, 4px, 1px solid #ff0000);
+    }
+}

@@ -7,6 +7,9 @@ export const httpUrls = {
     DIRECT_CUSTOMER:'addCustomer',
     ROLES: 'getRoles',
     CSP_Customer: 'addCSPCustomer',
-    CREATE_PASSWORD: 'createPassword'
+    CREATE_PASSWORD: 'createPassword',
+    VALIDATE_PASSWPORD_TOKEN: 'checkValidToken',
+    GET_DC_DATA: 'getListCustomers',
+    GET_CSP_DATA:'getCSPListCustomers'
 }
 
