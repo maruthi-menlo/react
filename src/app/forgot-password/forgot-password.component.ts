@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router, Routes, RouterModule } from '@angular/router';
+import { AuthService } from '../auth/auth.service'
+import { ValidationService } from '../shared/services/validation.service';
+import { GetJsonService } from '../shared/services/json.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -8,19 +12,42 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  hideContainer = true;
+  forgotPasswordForm: FormGroup;
   forgotPassword:number = 1;
+  errorMsg: any;
+  messages:any={};
 
-
+  
   constructor(
-    private router:Router
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private validationService: ValidationService,
+    private jsonService:GetJsonService,
   ) { }
 
   ngOnInit() {
+    this.initForm();
   }
 
-  sendPassword(){
-    this.forgotPassword = 2;
+  initForm() {
+    this.forgotPasswordForm = this.fb.group({
+      email: ['', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
+    })
+  }
+
+
+
+  sendPassword() {
+    const fgtPwdPostObj = this.forgotPasswordForm.value
+    this.authService.forgotPassword(fgtPwdPostObj).subscribe((res: any) => {
+      this.forgotPassword = 1;
+    }, err => {
+      this.errorMsg = err && err.message ? err.message : '' ;
+      setTimeout(() => {
+        this.errorMsg = "";      
+      }, 2000);
+    })
   }
 
   cancel(){

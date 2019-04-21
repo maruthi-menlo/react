@@ -19,6 +19,6 @@ export const httpUrls = {
     EDIT_PLAYA_USER_DATA: 'adminEditProfile',
     DEACTIVATE_CSP_DIRECT_USERS:'removeUserFromCustomer',
     UPDATE_USER_STATUS:'updateStatusCustomer',
-
+    FORGOT_PWD:'forgotPassword',
 }
 

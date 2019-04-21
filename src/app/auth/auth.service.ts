@@ -38,6 +38,11 @@ export class AuthService {
     .pipe(catchError(this.utilService.handleError)); 
   }
 
+  forgotPassword(data) {
+    let url = `${this.api_url}${urls.FORGOT_PWD}`;
+    return this.http.post(url, data)     
+  }
+
   createPassword(data) {
     let url = `${this.api_url}${urls.CREATE_PASSWORD}`;
     return this.http.post(url, data)

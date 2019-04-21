@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FooterModule } from '../core/footer/footer.module';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ForgotPasswordRoutingModule } from './forgot-password-routing.module';
 import { ForgotPasswordComponent } from './forgot-password.component';
 
@@ -10,7 +10,9 @@ import { ForgotPasswordComponent } from './forgot-password.component';
   imports: [
     CommonModule,
     ForgotPasswordRoutingModule,
-    FooterModule
+    FooterModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ForgotPasswordModule { }
