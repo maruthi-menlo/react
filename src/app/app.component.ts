@@ -8,7 +8,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'Playa';
-  loginRoute:boolean = false
+  loginRoute:boolean = true
  
 
   constructor(
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        if(event.url.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/updatepassword') > -1 ) {
+        if(event.url.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/updatepassword') > -1 || event.urlAfterRedirects.indexOf('/forgotpassword') > -1 ) {
           this.loginRoute = true
         } else {
           this.loginRoute = false

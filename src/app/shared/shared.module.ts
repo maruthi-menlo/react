@@ -6,6 +6,7 @@ import { LoaderComponent } from '../core/loader/loader.component';
 import { CustomerService } from './services/customer.service';
 import {GetJsonService} from './services/json.service';
 import {PercentPipe} from './pipes/percent.pipe';
+import { ToastService } from './services/toaster.service';
 
 @NgModule({
   declarations: [LoaderComponent,PercentPipe],
@@ -19,7 +20,8 @@ import {PercentPipe} from './pipes/percent.pipe';
   providers: [
     LoaderService,
     CustomerService,
-    GetJsonService
+    GetJsonService,
+    ToastService
   ],
   exports: [
     LoaderComponent,

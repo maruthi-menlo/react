@@ -2,7 +2,7 @@
   <div class="editProfile">
     <h1 class="editProfileText">Edit Profile</h1>
     <p class="editProfileText completeForm">Here you can make changes to your profile or password.</p>
-    <form>
+    <form [formGroup]="editPlayaProfileForm">
       <div class="editProfileForm">
         <!--User details section starts-->
         <div class="userDetails">
@@ -14,13 +14,13 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb24">
                         <label class="labelText">First Name</label>
-                        <input type="text" class="form-control"  formControlName="firstName" placeholder="abc">
+                        <input type="text" class="form-control"  formControlName="firstname" placeholder="abc">
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                         <div class="form-group inputTextBox mb24">
                           <label class="labelText">Last Name</label>
-                          <input type="text" class="form-control"  formControlName="lastName" placeholder="xyz">
+                          <input type="text" class="form-control"  formControlName="lastname" placeholder="xyz">
                         </div>
                       </div>
                   </div>
@@ -48,7 +48,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Current Pasword</label>
-                      <input type="password" class="form-control"  formControlName="firstName">
+                      <input type="password" class="form-control"  formControlName="oldpassword">
                     </div>
                   </div>
                 </div>
@@ -60,13 +60,13 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb64">
                       <label class="labelText">New Password</label>
-                      <input type="password" class="form-control"  formControlName="email">
+                      <input type="password" class="form-control"  formControlName="newpassword">
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb64">
                       <label class="labelText">New Password Again</label>
-                      <input type="password" class="form-control"  formControlName="lastName">
+                      <input type="password" class="form-control"  formControlName="newpasswordagain">
                     </div>
                   </div>
                 </div>
@@ -74,6 +74,7 @@
             </div>
           </div>
         </div>
+        <div class="errorText mb8" *ngIf="errorMsz">{{errorMsz}}</div>
         <!--User details section Ends-->
     </form>
     <div class="row">
@@ -81,7 +82,7 @@
         <button type="submit" class="btn cancelBtn opacity-5" (click) = "cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight">Save Changes</button>
+        <button type="submit" class="btn saveSubmitBtn floatRight" (click) = "submit();">Save Changes</button>
       </div>
     </div>
   </div>

@@ -50,6 +50,6 @@
     }
     .removeBtn{
         cursor: pointer;
-        @include form-button(168px, 32px, $heebo, 14px, bold, normal, normal, 1.5, normal, center, #ff0000, $white, 4px, 1px solid #ff0000);
+        @include form-button('', 32px, $heebo, 14px, bold, normal, normal, 1.5, normal, center, #ff0000, $white, 4px, 1px solid #ff0000);
     }
 }

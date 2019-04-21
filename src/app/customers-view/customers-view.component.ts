@@ -4,12 +4,14 @@ import { DeactivatePlayaAccountModalComponent } from '../core/modals/deactivate-
 import { Router } from '@angular/router';
 import { UtilService } from '../shared/services/util.service';
 import { CustomerService } from '../shared/services/customer.service';
+import { ToastService } from '../shared/services/toaster.service';
 
 @Component({
   selector: 'app-customers-view',
   templateUrl: './customers-view.component.html',
   styleUrls: ['./customers-view.component.scss']
 })
+
 export class CustomersViewComponent implements OnInit {
 
   tableView: string = 'DC';
@@ -17,56 +19,92 @@ export class CustomersViewComponent implements OnInit {
   closeResult: string;
   directCustomerArr: any = [];
   cspCustomerArr: any = [];
+  page:Number = 1;
+  totalCount:Number = 0;
+  pageSize:Number = 10;
+  content: string;
+  showReactive: boolean = false;
+  public user : any;
 
   constructor(
-    private modalService: NgbModal,
+    public modalService: NgbModal,
     private router:Router,
     private utilService:UtilService,
     private customerService: CustomerService,
-  ) { }
+    private toastService: ToastService,
+  ) { 
+    this.customerService.user.subscribe((user)=>{
+      if(user) {
+        this.reloadTableView();
+      }
+    })
+  }
+
+  reloadTableView() {
+    const deactivate = 'Customer Deactivated.'
+    const reactivate = 'Customer Reactivated.'
+    this.showToast(this.user.status ? deactivate:reactivate);
+    const obj = {limit:10, pagenumber:0};
+    if(this.tableView === 'DC') {
+      this.getDCData(obj);
+    } else {
+      this.getCSPData(obj);
+    }
+  }
 
   ngOnInit() {
-    this.getDCData();
-    this.getCSPData();
+    const obj = {limit:10, pagenumber:0}
+    this.getDCData(obj);
+    this.getCSPData(obj);
   }
 
   ngAfterViewInit() {
-    this.utilService.setNavHeight('commonContainer')
+    setTimeout(() => {
+      this.utilService.setNavHeight('commonContainer')
+    }, 100);
   }
 
   onChangeTableView() {
-    this.tableView = this.tableView == 'DC' ? 'CSP' : 'DC'
+    this.page = 1;
+    this.tableView = this.tableView == 'DC' ? 'CSP' : 'DC';
+    this.totalCount = this.tableView == 'DC' ? this.directCustomerArr.totalcount : this.cspCustomerArr.totalcount;
   }
 
-  getDCData() {
-    const obj = {limit:10, pagenumber:0}
+  getDCData(obj) {
     this.customerService.getDCData(obj).subscribe((res:any) => {
       if(!res.error){
-        this.directCustomerArr = res && res.data ? res.data : []
+        this.directCustomerArr = res && res.data ? res : [];
+        this.totalCount = res.totalcount
       }
     }, err => {
     })
   }
 
-  getCSPData() {
-    const obj = {limit:10, pagenumber:0}
+  getCSPData(obj) {
     this.customerService.getCSPData(obj).subscribe((res:any) => {
       if(!res.error){
-        this.cspCustomerArr = res && res.data ? res.data : []
+        this.cspCustomerArr = res && res.data ? res : []
       }
     }, err => {
     })
   }
 
-  openDeactivateModal(content) {
-    this.modalService.open(DeactivatePlayaAccountModalComponent,{ariaLabelledBy: 'modal-basic-title', centered: true, windowClass: 'customDeactivateModal'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  showToast(message) {
+    this.toastService.show({
+      text: message,
+      type: 'success',
     });
   }
 
+  openDeactivateModal(user) {
+   this.user = user;
+   const modalRef = this.modalService.open(DeactivatePlayaAccountModalComponent);
+   modalRef.componentInstance.user = this.user;
+   
+  }
+
   private getDismissReason(reason: any): string {
+
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -76,13 +114,21 @@ export class CustomersViewComponent implements OnInit {
     }
   }
 
-  navigateToaddCustomerPage(type){
-    let url = `/addcustomer/${type}`
-    this.router.navigate([url]);
+  navigateToaddCustomerPage(type,data){
+    if(data && data.id){
+      const url = `/editcustomer/${type}`
+      this.router.navigate([url],{ queryParams: {id: data.id}});
+    }
   }
 
   navigate() {
     this.router.navigate(['/addcustomer']);
+  }
+
+  loadPage(page: number) {
+      this.page = page;
+      const obj = {limit:10, pagenumber:page-1}
+      this.tableView == 'DC' ? this.getDCData(obj) : this.getCSPData(obj)
   }
 
 }

@@ -20,7 +20,8 @@ export class CreatePasswordComponent implements OnInit {
   messages:any={};
   userid:string = '';
   passwordPostObj:any = {};
-  validPasswordToken:boolean = false;
+  validPasswordToken:boolean = true;
+  showPasswordScreen:boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -43,9 +44,10 @@ export class CreatePasswordComponent implements OnInit {
   }
 
   validateToken() {
-    const data = {token:this.userid}
+    const data = {userid:this.userid}
     this.authService.validatePasswordToken(data).subscribe((res:any) => {
       this.validPasswordToken = true;
+      this.showPasswordScreen = true;
     }, err => {
       this.authService.logout();
       this.validPasswordToken = false;

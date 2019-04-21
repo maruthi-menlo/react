@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +18,8 @@ import { PlayaAdminLandingModule } from './playa-admin-landing/playa-admin-landi
 import { CustomersDataComponent } from './customers-data/customers-data.component';
 import { DeactivatePlayaAccountModalComponent } from './core/modals/deactivate-playa-account-modal/deactivate-playa-account-modal.component';
 import { DeactivateEditUserComponent } from './core/modals/deactivate-edit-user/deactivate-edit-user.component';
+import {ToastModule} from '../app/core/toaster/toaster.module';
+// import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
@@ -39,6 +42,8 @@ import { DeactivateEditUserComponent } from './core/modals/deactivate-edit-user/
     FormsModule,
     SharedModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastModule.forRoot()
   ],
   providers: [
     {

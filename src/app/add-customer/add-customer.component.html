@@ -21,6 +21,7 @@
         </div>
     </div>
     <h1 class="addCustomerText" *ngIf="!addCustomer">Edit Customer</h1>
+    <p class="addCustomerText completeForm" *ngIf="!addCustomer">Make changes to this customer profile below.</p>
     <!--Direct customer section starts ----------------------------------------- -->
     <form [formGroup]="customerForm">
       <div class="customerForm" id="directCustomer" *ngIf="customerTypeValue == 'DC'">
@@ -431,7 +432,7 @@
                       <label class="file"></label>
                       <div class="row dragDropFile">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
-                          <img [src]="logoObj.fileUrl" class="" style="width: 1auto;height: 80px;margin-left:25px;">
+                          <img [src]="logoObj.fileUrl" class="" style="width: 110px;height: 80px;margin-left:25px;">
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dragDropPad pdLeft">
                           <div class="fileSize" style="margin-top:13px;">{{logoObj.fileName}}</div>
@@ -556,7 +557,7 @@
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <button type="submit" class="btn saveSubmitBtn floatRight" [ngClass]="!(customerForm.valid) ? 'disabled' : ''"
-          [disabled]="!(customerForm.valid)" (click)="submit();">Save & Submit</button>
+          [disabled]="!(customerForm.valid)" (click)="submit();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
       </div>
     </div>
     <div class="row" *ngIf="customerTypeValue == 'CSP'">
@@ -566,7 +567,7 @@
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <button type="submit" class="btn saveSubmitBtn floatRight"
           [ngClass]="!(cspCustomerForm.valid) ? 'disabled' : ''" [disabled]="!(cspCustomerForm.valid)"
-          (click)="submitCSP();">Save & Submit</button>
+          (click)="submitCSP();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
       </div>
     </div>
   </div>

@@ -2,11 +2,12 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { CustomerService } from '../shared/services/customer.service';
 import { ValidationService } from '../shared/services/validation.service';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { UtilService } from '../shared/services/util.service';
 import { GetJsonService } from '../shared/services/json.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { DeactivateEditUserComponent } from '../core/modals/deactivate-edit-user/deactivate-edit-user.component'
+import { DeactivateEditUserComponent } from '../core/modals/deactivate-edit-user/deactivate-edit-user.component';
+import { ToastService } from '../shared/services/toaster.service';
 
 @Component({
   selector: 'app-add-customer',
@@ -19,6 +20,7 @@ export class AddCustomerComponent implements OnInit {
   userDetailsObj: FormGroup;
   azureSubDetailsObj: FormGroup;
   customerTypeValue: any = 'DC';
+  type:any = 'add';
   cspUserDetailsObj: FormGroup;
   allCountries: any=[];
   allStates:any=[];
@@ -32,26 +34,45 @@ export class AddCustomerComponent implements OnInit {
   openDeleteUserModal = true;
   closeResult: string;
   errorMsz:string = '';
+  editDCdetails: any;
+  editCSPdetails: any;
+  data:any;
+  customerid:any = '';
   @ViewChild('fileInput') imageUpload: any;
 
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
     private router: Router,
+    private route:ActivatedRoute,
     private utilService:UtilService,
     private jsonService:GetJsonService,
     private validationService: ValidationService,
     private modalService: NgbModal,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit() {
-    this.addCustomer = this.router.url.indexOf('DC') > -1 || this.router.url.indexOf('CSP') > -1 ? false : true;
-    this.customerTypeValue = this.router.url.indexOf('CSP') > -1 ? 'CSP' : 'DC';
+    this.type = this.router.url.indexOf('editcustomer') > -1 ? 'edit' : 'add';
     this.initForm();
     this.initCSPForm();
-    this.getAllCountries();
-    this.getAllRoles();
     this.getMessages('messages');
+    this.fetchEditCustomerDetails();
+  }
+
+  fetchEditCustomerDetails() {
+    if(this.type === 'edit') {
+      this.customerid = this.customerService.getCustomerId;
+      this.addCustomer = false;
+      this.customerTypeValue = this.router.url.indexOf('CSP') > -1 ? 'CSP' : 'DC';
+      if(this.customerTypeValue === 'DC') {
+        this.getDCDetails();
+      } else{
+        this.getCSPDetails();
+      }
+    }
+    this.getAllCountries();
+    this.getAllRoles(this.customerTypeValue);
   }
 
   ngAfterViewInit() {
@@ -75,76 +96,97 @@ export class AddCustomerComponent implements OnInit {
     return this.customerForm.get('azuresubscriptions') as FormArray;
   }
 
-  addUserDetails(){
+  addUserDetails(data?,idx?){
     let formArrayDetails = this.customerForm.controls['users'] as FormArray;
     formArrayDetails.push(this.fb.group({
-      firstname: ['', Validators.compose([Validators.required])],
-      lastname: ['', Validators.compose([Validators.required])],
-      email: ['', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
-      roleid: ['', Validators.compose([Validators.required])]
+      id: [data ? data.id : ''],
+      firstname: [data ? data.firstname : '', Validators.compose([Validators.required])],
+      lastname: [data ? data.lastname : '', Validators.compose([Validators.required])],
+      email: [data ? data.email : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
+      roleid: [data ? data.roleid : '', Validators.compose([Validators.required])]
     }))
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
     }, 100);
   }
 
-  addCSPUserDetails(){
+  addCSPUserDetails(data?, idx?){
     let cspFormArrayDetails = this.cspCustomerForm.controls['users'] as FormArray;
     cspFormArrayDetails.push(this.fb.group({
-      firstname: ['', Validators.compose([Validators.required])],
-      lastname: ['', Validators.compose([Validators.required])],
-      email: ['', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
-      roleid: ['', Validators.compose([Validators.required])]
+      id: [data ? data.id : ''],
+      firstname: [data ? data.firstname : '', Validators.compose([Validators.required])],
+      lastname: [data ? data.lastname : '', Validators.compose([Validators.required])],
+      email: [data ? data.email : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
+      roleid: [data ? data.roleid : '', Validators.compose([Validators.required])]
     }))
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
     }, 100);
   }
 
-  addazureSubDetails() {
+  addazureSubDetails(data?, idx?) {
     let formArray = this.customerForm.controls['azuresubscriptions'] as FormArray;
     formArray.push(this.fb.group({
-      subscriptionid: ['', Validators.compose([Validators.required])],
+      id: [data ? data.id : ''],
+      subscriptionid: [data? data.subscriptionId: '', Validators.compose([Validators.required])],
       markup: ['', Validators.compose([Validators.required])],
       markupMask: ['', Validators.compose([Validators.required])],
       discount: ['', Validators.compose([Validators.required])],
       discountMask: ['', Validators.compose([Validators.required])]
     }));
+
+    if(data){
+      this.percentBlur(data.markup,idx,'azuresubscriptions','markup');
+      this.percentBlur(data.discount,idx,'azuresubscriptions','discount');
+    }
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
     }, 100);
   }
  
-  initForm(){
+  initForm(data?){
     this.customerForm = this.fb.group({
-      companyname: ['', Validators.compose([Validators.required])],
-      tenantid: ['', Validators.compose([Validators.required])],
-      address1: ['', Validators.compose([Validators.required])],
-      address2: ['', Validators.compose([Validators.required])],
-      city: ['', Validators.compose([Validators.required])],
-      zipcode: ['', Validators.compose([Validators.required, Validators.pattern(this.validationService.number_regexPattern)])],
-      countryid: ['', Validators.compose([Validators.required])],
-      stateid: ['', Validators.compose([Validators.required])],
+      companyname: [data ? data.companyname : '', Validators.compose([Validators.required])],
+      tenantid: [data ? data.tenantid : '', Validators.compose([Validators.required])],
+      address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
+      address2: [data ? data.address2 : '', Validators.compose([Validators.required])],
+      city: [data ? data.city : '', Validators.compose([Validators.required])],
+      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.number_regexPattern)])],
+      countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
+      stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       users: this.fb.array([ ]),
       azuresubscriptions: this.fb.array([ ])
     });
     [1].forEach(ele => {
-      this.addUserDetails();
+      if(data && data.users.length){
+        data.users.forEach((eachuser, index) => {
+          this.addUserDetails(eachuser,index);
+        })
+      } else{
+        this.addUserDetails(null,null);
+      }      
     }),
     [1].forEach(ele => {
-      this.addazureSubDetails();
+      if(data && data.azuresubscriptions.length){
+        data.azuresubscriptions.forEach((eachSubscriptionObj, index) => {    
+          this.addazureSubDetails(eachSubscriptionObj, index);
+        });
+      }else{
+        this.addazureSubDetails(null, null);
+      }
+      
     })
   }
 
-  initCSPForm(){
+  initCSPForm(data?){
     this.cspCustomerForm = this.fb.group({
-      companyname : ['', Validators.compose([Validators.required])],      
-      address1: ['', Validators.compose([Validators.required])],
-      address2: ['', Validators.compose([Validators.required])],
-      city: ['', Validators.compose([Validators.required])],
-      zipcode: ['', Validators.compose([Validators.required])],
-      countryid: ['', Validators.compose([Validators.required])],
-      stateid: ['', Validators.compose([Validators.required])],
+      companyname : [data ? data.companyname : '', Validators.compose([Validators.required])],      
+      address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
+      address2: [data ? data.address2 : '', Validators.compose([Validators.required])],
+      city: [data ? data.city : '', Validators.compose([Validators.required])],
+      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required])],
+      countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
+      stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       logo : [''],
       headerHexCode : [''],
       primaryButtonHexCode : [''],
@@ -152,7 +194,13 @@ export class AddCustomerComponent implements OnInit {
       users: this.fb.array([ ])
     });
     [1].forEach(ele => {
-      this.addCSPUserDetails();
+      if(data && data.users.length){
+        data.users.forEach((eachUser, index) =>{
+          this.addCSPUserDetails(eachUser, index);
+        })
+      } else{
+        this.addCSPUserDetails(null,null);
+      }  
     })
   }
 
@@ -160,22 +208,19 @@ export class AddCustomerComponent implements OnInit {
     this.customerTypeValue = event.target.value;
     this.customerForm.reset();
     this.cspCustomerForm.reset();
-    this.setDefaultValues()
+    this.getAllRoles(this.customerTypeValue);
+    this.setDefaultValues(event.target.value)
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
     }, 100);
   }
 
-  setDefaultValues() {
-    if(this.customerTypeValue == 'CSP') {
-      this.setUSDefault('cspCustomerForm','countryid',222);
+  setDefaultValues(value?) {
+      const formArrayName = value === 'DC' ? 'customerForm' : 'cspCustomerForm'
+      this.setUSDefault(formArrayName,'countryid',222);
+      this.setUSDefault(formArrayName,'stateid','');
       this.getStatesForCountry(222);
-      this.setRoleDefaultAdministrator('cspCustomerForm','users','roleid',2)
-    } else {
-      this.setUSDefault('customerForm','countryid',222);
-      this.getStatesForCountry(222);
-      this.setRoleDefaultAdministrator('customerForm','users','roleid',2);
-    }
+      this.setRoleDefaultAdministrator(formArrayName,'users','roleid', value === 'DC' ? 3 : 2);
   }
 
   //to get all the countries
@@ -190,11 +235,11 @@ export class AddCustomerComponent implements OnInit {
     })
   }
 
-  getAllRoles(){
-    this.customerService.getRoles().subscribe((res:any) => {
+  getAllRoles(type?){
+    this.customerService.getRoles(type).subscribe((res:any) => {
       if(!res.error){
         this.allRoles = res.data;
-        this.setRoleDefaultAdministrator('customerForm','users','roleid',2)
+        this.setRoleDefaultAdministrator('customerForm','users','roleid', 3)
       }
     }, err => {
     })
@@ -249,9 +294,19 @@ export class AddCustomerComponent implements OnInit {
   }
   
   submit(){
-    const addCustomerPostObj = this.customerForm.value
-    this.customerService.addCustomer(addCustomerPostObj).subscribe((res:any) => {
-      alert('Direct customer has been created successfully.');
+    let addCustomerPostObj = this.customerForm.value;
+    if(this.type === 'edit') {
+      addCustomerPostObj['customerid'] = this.customerid
+    }
+    this.customerService.addCustomer(addCustomerPostObj,this.type).subscribe((res:any) => {
+      const editDC = 'Direct customer has been updated successfully.'
+      const addDC = 'Direct customer has been added successfully.'
+      if(this.type === 'edit') {
+        this.showToast(editDC);
+      }else{
+        this.showToast(addDC);
+      }
+      // alert('Direct customer has been created successfully.');
       setTimeout(() => {
         this.router.navigate(['/customersview']);
       }, 500);
@@ -284,9 +339,19 @@ export class AddCustomerComponent implements OnInit {
   }
   
   submitCSP(){
-    const addCspPostObj = this.cspCustomerForm.value
-    this.customerService.addCSPCustomer(addCspPostObj).subscribe((res:any) => {
-      alert('CSP customer has been created successfully.');
+    let addCspPostObj = this.cspCustomerForm.value;
+    if(this.type === 'edit') {
+      addCspPostObj['customerid'] = this.customerid
+    }
+    this.customerService.addCSPCustomer(addCspPostObj,this.type).subscribe((res:any) => {
+      // alert('CSP customer has been created successfully.');
+      const editCsp = 'CSP customer has been updated successfully.'
+      const addCsp = 'CSP customer has been added successfully.'
+      if(this.type === 'edit') {
+        this.showToast(editCsp);
+      }else{
+        this.showToast(addCsp);
+      }
       setTimeout(() => {
         this.router.navigate(['/customersview']);
       }, 500);
@@ -295,12 +360,27 @@ export class AddCustomerComponent implements OnInit {
     })
   }
 
+  showToast(message) {
+    this.toastService.show({
+      text: message,
+      type: 'success',
+    });
+  }
+
   cancel(){
     this.router.navigate(['/customersview']);
   }
 
   percentBlur(e,id,formArray,formControl) {
-    let value = e.target.value;
+    let value = '';
+    if(e == null){
+      value = '';
+    }
+    else if(e.target){
+      value = e.target.value ? e.target.value : '';
+    }else {
+      value = e;
+    }
     let maskValue = value ? `${value}%` : value;
     let azureSubscription = this.customerForm.controls[formArray]['controls'] as FormArray;
     azureSubscription[id].controls[`${formControl}Mask`].setValue(maskValue);
@@ -311,6 +391,31 @@ export class AddCustomerComponent implements OnInit {
     let azureSubscription = this.customerForm.controls[formArray]['controls'] as FormArray;
     let markupValue = azureSubscription[id].controls[formControl].value;
     azureSubscription[id].controls[`${formControl}Mask`].setValue(markupValue);
+  }
+
+  getDCDetails(){
+    if(this.customerid) {
+      const postObj = {customerid:this.customerid}
+      this.customerService.getDCUserData(postObj).subscribe((res:any) => {
+        this.editDCdetails = res.data;
+        this.initForm(this.editDCdetails);
+      }, err => {
+        this.errorMsz = err && err.error ? err.error.message : '';
+      })
+    }
+  }
+
+  getCSPDetails(){
+    if(this.customerid) {
+      const postObj = {customerid:this.customerid}
+      this.customerService.getCSPUserData(postObj).subscribe((res:any) => {
+        this.editCSPdetails = res.data;
+        this.initCSPForm(this.editCSPdetails);
+      }, err => {
+        this.errorMsz = err && err.error ? err.error.message : '';
+      })
+
+    }
   }
 
 }

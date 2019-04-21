@@ -1,0 +1,31 @@
+.toast {
+  position: absolute;
+  top: 0;
+  left: 40%;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 10px; 
+  min-width: 350px;
+  background: #fff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dddddd #d6d6d6 #cfcfcf;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+  margin:0 auto;
+  // transform: translate(-50%,20%);
+
+}
+
+.success{
+  background: green;
+  color:#dddddd;
+}
+
+.error{
+  background: red;
+  color:#dddddd;
+}
+
+
