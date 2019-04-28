@@ -9,18 +9,18 @@ export class ToastData {
 
 export type ToastType = 'warning' | 'info' | 'success';
 
-export interface ToastConfig {
-    position?: {
-        top: number;
-        right: number;
-    };
-    animation?: {
-        fadeOut: number;
-        fadeIn: number;
-    };
-}
+// export interface ToastConfig {
+//     position?: {
+//         top: number;
+//         right: number;
+//     };
+//     animation?: {
+//         // fadeOut: number;
+//         // fadeIn: number;
+//     };
+// }
 
-export const defaultToastConfig: ToastConfig = {
+export const defaultToastConfig: any = {
     position: {
         top: -20,
         right: 0,

@@ -2,7 +2,7 @@ import { Injectable, Injector, Inject } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { ToastComponent } from '../../core/toaster/toaster.component';
-import { ToastData, TOAST_CONFIG_TOKEN, ToastConfig } from '../../core/toaster/toaster-config';
+import { ToastData, TOAST_CONFIG_TOKEN } from '../../core/toaster/toaster-config';
 import { ToastRef } from '../../core/toaster/toaster-ref';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class ToastService {
   constructor(
     private overlay: Overlay,
     private parentInjector: Injector,
-    @Inject(TOAST_CONFIG_TOKEN) private toastConfig: ToastConfig
+    // @Inject(TOAST_CONFIG_TOKEN) private toastConfig: ToastConfig
   ) { }
 
     show(data: ToastData) {
@@ -33,15 +33,15 @@ export class ToastService {
   getPositionStrategy() {
     return this.overlay.position()
       .global()
-      .top(this.getPosition())
-      .right(this.toastConfig.position.right + 'px');
+     // .top(this.getPosition())
+      // .right(this.toastConfig.position.right + 'px');
   }
 
   getPosition() {
     const lastToastIsVisible = this.lastToast && this.lastToast.isVisible();
     const position = lastToastIsVisible 
       ? this.lastToast.getPosition().bottom
-      : this.toastConfig.position.top;
+      : -20;
 
     return position + 'px';
   }

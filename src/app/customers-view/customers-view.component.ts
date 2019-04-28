@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UtilService } from '../shared/services/util.service';
 import { CustomerService } from '../shared/services/customer.service';
 import { ToastService } from '../shared/services/toaster.service';
+import { forkJoin, Subject, Subscription } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customers-view',
@@ -20,11 +22,14 @@ export class CustomersViewComponent implements OnInit {
   directCustomerArr: any = [];
   cspCustomerArr: any = [];
   page:Number = 1;
-  totalCount:Number = 0;
+  totalCount:Number;
   pageSize:Number = 10;
   content: string;
   showReactive: boolean = false;
   public user : any;
+  userRow:Subscription;
+  destroySubscription$: Subject<boolean> = new Subject();
+  userRole:any=null;
 
   constructor(
     public modalService: NgbModal,
@@ -44,18 +49,44 @@ export class CustomersViewComponent implements OnInit {
     const deactivate = 'Customer Deactivated.'
     const reactivate = 'Customer Reactivated.'
     this.showToast(this.user.status ? deactivate:reactivate);
-    const obj = {limit:10, pagenumber:0};
-    if(this.tableView === 'DC') {
-      this.getDCData(obj);
+    const obj = {limit:10, pagenumber:+this.page-1};
+    if(this.tableView === 'DC') {  
+      if(this.utilService.userRole === 1) {
+        this.getDCData(obj);        
+      }else if(this.utilService.userRole === 2){
+        this.getCSPDCData(obj);
+      }       
     } else {
       this.getCSPData(obj);
     }
   }
 
   ngOnInit() {
+    this.userRole = this.utilService.userRole;
+    this.onChangeTable()
+    this.getDataByRole()
+    
+  }
+
+  onChangeTable() {
+    this.userRow = this.customerService.user
+    .pipe(takeUntil(this.destroySubscription$))
+    .subscribe((user: any) => {
+      if(user) {
+        this.reloadTableView();
+      }
+    });
+  }
+
+
+  getDataByRole() {
     const obj = {limit:10, pagenumber:0}
-    this.getDCData(obj);
-    this.getCSPData(obj);
+    if(this.utilService.userRole === 1) {
+      this.getDCData(obj);
+      this.getCSPData(obj);
+    }else if(this.utilService.userRole === 2){
+      this.getCSPDCData(obj);
+    }
   }
 
   ngAfterViewInit() {
@@ -64,14 +95,28 @@ export class CustomersViewComponent implements OnInit {
     }, 100);
   }
 
-  onChangeTableView() {
-    this.page = 1;
-    this.tableView = this.tableView == 'DC' ? 'CSP' : 'DC';
-    this.totalCount = this.tableView == 'DC' ? this.directCustomerArr.totalcount : this.cspCustomerArr.totalcount;
+  onChangeTableView(type) {
+    if(type !== this.tableView) {
+      const obj = {limit:10, pagenumber:0}
+      this.page = 1;
+      type == 'DC' ? this.getDCData(obj) : this.getCSPData(obj)
+      this.tableView = type;
+      this.totalCount = this.tableView == 'DC' ? this.directCustomerArr.totalcount : this.cspCustomerArr.totalcount;
+    }
   }
 
   getDCData(obj) {
     this.customerService.getDCData(obj).subscribe((res:any) => {
+      if(!res.error){
+        this.directCustomerArr = res && res.data ? res : [];
+        this.totalCount = res.totalcount
+      }
+    }, err => {
+    })
+  }
+
+  getCSPDCData(obj) {
+    this.customerService.getCSPDCData(obj).subscribe((res:any) => {
       if(!res.error){
         this.directCustomerArr = res && res.data ? res : [];
         this.totalCount = res.totalcount
@@ -122,13 +167,20 @@ export class CustomersViewComponent implements OnInit {
   }
 
   navigate() {
-    this.router.navigate(['/addcustomer']);
+    const url = this.tableView === 'DC' ? '/addcustomer' : '/addcsp'
+    this.router.navigate([url]);
   }
 
   loadPage(page: number) {
       this.page = page;
       const obj = {limit:10, pagenumber:page-1}
       this.tableView == 'DC' ? this.getDCData(obj) : this.getCSPData(obj)
+  }
+
+  ngOnDestroy() {
+    this.customerService.deleteUser('')
+    this.destroySubscription$.next(true);
+    this.userRow.unsubscribe();
   }
 
 }

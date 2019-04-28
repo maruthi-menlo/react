@@ -1,21 +1,21 @@
 @import 'styles/variables.scss';
 @import 'styles/mixin.scss';
 
-.editProfileContainer{
+.addCustomerContainer{
     width: 78.30%;
     // height: 1592px;
     float: left;
     background-color: $white;
     margin: auto;
-    .editProfile{
+    .addCustomer{
         width: 59%;
         margin-left: 9%;
         padding-top: 48px;
         padding-bottom: 40px;
-        .editProfileText{
+        .addCustomerText{
             font-family: $heebo;
             font-size: 24px;
-            font-weight: 500;
+            font-weight: 600;
             font-style: normal;
             font-stretch: normal;
             line-height: 1.33;
@@ -41,7 +41,7 @@
                 line-height: 1.43;
                 font-weight: normal;
             }
-            &.editProfileFormHeading{
+            &.customerFormHeading{
                 font-size: 16px;
                 line-height: 1.5;
                 margin-bottom: 16px;
@@ -75,14 +75,23 @@
                 border-radius: 4px;
                 border: 1px solid rgba(0,0,0,0.5);
                 ::placeholder, ::-webkit-input-placeholder, :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder { 
-                        color: #00a0ff;
+                        color: $colorBlue;
                         opacity: 0.25;
                 }
                 &:focus {
-                        border: 1px solid #00a0ff;
+                        border: 1px solid $colorBlue;
                         box-shadow: 0 0 8px 0 rgba(96, 195, 253, 0.7);
                 }
             }
+            // input, .role{
+            //     width: 87%;
+            // }
+            // .country{
+            //     width: 84%;
+            // }
+            // .state{
+            //     width: 90%;
+            // }
         }
         .faCircleMargin{
             margin-left: 12px;
@@ -94,91 +103,48 @@
         }
         .saveSubmitBtn{
             cursor: pointer;
-            @include form-button(164px, 40px, $heebo, 16px, bold, normal, normal, 1.5, normal, center, $white, $hexaBlue, 4px,"");
+            @include form-button(164px, 40px, $heebo, 16px, bold, normal, normal, 1.5, normal, center, $white, $menloBlue, 4px,"");
         }
         .removeBtn{
           cursor: pointer;
           position: relative;
           top: 25px;
           @include form-button('70px', 25px, $heebo, 10px, bold, normal, normal, 1.5, normal, center, $white, $menloBlue, 4px,"");
-        }
-        .fileInputs{
-          position: relative;
-          z-index: 2;
-
-          .file{
-              height: 80px !important;
-              position: relative;
-              opacity: 0;
-              z-index: 2;
-              cursor: pointer;
-          }
-          .dragDropFile{
-              border: 1px dashed $nobel;
-              background-color: $white;
-              // height: 80px;
-              width: 100%;
-              position: absolute;
-              top: 0px;
-              left: 0px;
-              z-index: 1;
-              .dragDropPad{
-                  padding-top: 12px;
-                  padding-bottom: 12px;
-                  .dragDropChoose{
-                      font-family: $heebo;
-                      font-size: 16px;
-                      font-weight: normal;
-                      font-style: normal;
-                      font-stretch: normal;
-                      line-height: 1.5;
-                      letter-spacing: normal;
-                      color: $hexaBlack;
-                      .chooseFile{
-                        color: $hexaBlue;
-                      }
-                  }
-                  .fileType, .fileSize{
-                      opacity: 0.5;
-                      font-family: $heebo;
-                      font-size: 12px;
-                      font-weight: normal;
-                      font-style: normal;
-                      font-stretch: normal;
-                      line-height: 1.33;
-                      letter-spacing: normal;
-                      color: $hexaBlack;
-                  }
-              }
-          }
       }
     }
 }
 
+// @media only screen and (min-width: 375px) and (max-width: 1365px){
+//     .addCustomerContainer{
+//         width: 100% !important;
+//     }
+
+// }
+
 @media only screen and (min-width: 1366px) and (max-width: 1583px){
-  .editProfile{
+  .addCustomer{
       width: 82% !important;
   }
-  .editProfileContainer{
+  .addCustomerContainer{
     width: 74.30% !important;
   }
 }
 
 @media only screen and (min-width: 1024px) and (max-width: 1365px){
-  .editProfile{
+  .addCustomer{
     width: 85% !important;
   }
-  .editProfileContainer{
+  .addCustomerContainer{
     width: 66.30% !important;
   }
 }
 
 
 @media only screen and (min-width: 768px) and (max-width: 1023px){
-  .editProfile{
+  .addCustomer{
     width: 89% !important;
   }
-  .editProfileContainer{
+  .addCustomerContainer{
     width: 55.30% !important;
   }
 }
@@ -193,4 +159,10 @@
   .width85Percent{
     width: 95% !important;
   }
+}
+
+.facircleMinus{
+  padding: 0px;
+  position: relative;
+  top: 36px;
 }

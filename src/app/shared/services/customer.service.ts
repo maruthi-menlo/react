@@ -12,7 +12,9 @@ export class CustomerService {
 
   api_url = `${environment.BASE_API}${environment.API}`;
   private userDelete = new BehaviorSubject('');
+  private removeRow = new BehaviorSubject('');
   user = this.userDelete.asObservable();
+  row = this.removeRow.asObservable();
 
 
   constructor(
@@ -22,6 +24,10 @@ export class CustomerService {
 
   deleteUser(user: any) {
     this.userDelete.next(user)
+  }
+
+  removeArr(data: any) {
+    this.removeRow.next(data)
   }
 
 
@@ -61,6 +67,11 @@ export class CustomerService {
     return this.http.post(url,data);
   }
 
+  removeUserOrSubscription(data,type) {
+    let url = type == 'users' ? `${this.api_url}${urls.DEACTIVATE_CSP_DIRECT_USERS}` : `${this.api_url}${urls.REMOVE_SUBSCRIPTION}`;
+    return this.http.post(url,data);
+  }
+
   addCSPCustomer(data,type?) {
     let formData:any = new FormData();
     formData.append('companyname',data.companyname )
@@ -70,11 +81,12 @@ export class CustomerService {
     formData.append('zipcode',data.zipcode)
     formData.append('countryid',data.countryid)
     formData.append('stateid',data.stateid)
-    formData.append('logo',data.logo)
+    formData.append('logo',data.logo ? data.logo : '')
     formData.append('headerHexCode',data.headerHexCode ? data.headerHexCode:'')
     formData.append('primaryButtonHexCode',data.primaryButtonHexCode ? data.primaryButtonHexCode:'')
     formData.append('activeFieldHexCode',data.activeFieldHexCode ? data.activeFieldHexCode:'')
     formData.append('customerid',data.customerid ? data.customerid:'')
+    formData.append('removelogo',data.removelogo)
     formData.append('users',JSON.stringify(data.users))
     let url = type === 'add' ? `${this.api_url}${urls.ADD_CSP_CUSTOMER}` : `${this.api_url}${urls.UPDATE_CSP_CUSTOMER}`;
     return this.http.post(url, formData)
@@ -82,6 +94,11 @@ export class CustomerService {
 
   getDCData(obj) {
     let url = `${this.api_url}${urls.GET_DC_DATA}`;
+    return this.http.post(url,obj)
+  }
+
+  getCSPDCData(obj) {
+    let url = `${this.api_url}${urls.GET_CSP_DC_DATA}`;
     return this.http.post(url,obj)
   }
 
@@ -100,9 +117,45 @@ export class CustomerService {
     return this.http.post(url,obj)
   }
 
+  getLogo(obj) {
+    let url = `${this.api_url}${urls.GET_LOGO}`; 
+    return this.http.post(url,obj)
+  }
+
+  getSubscriptions() {
+    let url = `${this.api_url}${urls.GET_SUBSCRIPTIONS}`; 
+    return this.http.post(url,null)
+  }
+
+  updateSubscriptions(obj) {
+    let url = `${this.api_url}${urls.UPDATE_SUBSCRIPTIONS}`; 
+    return this.http.post(url,obj)
+  }
+
   editPlayaUserData(obj) {
     let url = `${this.api_url}${urls.EDIT_PLAYA_USER_DATA}`; 
     return this.http.post(url,obj)
+  }
+
+  customerAdminUserSubmit(obj) {
+    let url = `${this.api_url}${urls.EDIT_CUST_ADMIN_USER_DATA}`; 
+    return this.http.post(url,obj)
+  }
+
+  updateCSPAdminProfile(data) {
+    let formData:any = new FormData();
+    formData.append('firstname',data.firstname)
+    formData.append('lastname',data.lastname)
+    formData.append('email',data.email)
+    formData.append('oldpassword',data.oldpassword?data.oldpassword:'')
+    formData.append('newpassword',data.newpassword?data.newpassword:'')
+    formData.append('logo',data.logo ? data.logo : '')
+    formData.append('headerHexCode',data.headerHexCode ? data.headerHexCode:'')
+    formData.append('primaryButtonHexCode',data.primaryButtonHexCode ? data.primaryButtonHexCode:'')
+    formData.append('activeFieldHexCode',data.activeFieldHexCode ? data.activeFieldHexCode:'')
+    formData.append('removelogo',data.removelogo)
+    let url = `${this.api_url}${urls.EDIT_ADMIN_USER_DATA}`; 
+    return this.http.post(url,formData)
   }
 
   get getCustomerId() {
@@ -113,6 +166,11 @@ export class CustomerService {
       }
     });
     return id ? id : null;
+  }
+
+  getParamasPowerbi() {
+    let url = `${this.api_url}${urls.GET_POWERBI_DATA}`;
+    return this.http.get(url)
   }
 
 }

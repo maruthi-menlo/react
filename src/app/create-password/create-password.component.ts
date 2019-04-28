@@ -22,6 +22,8 @@ export class CreatePasswordComponent implements OnInit {
   passwordPostObj:any = {};
   validPasswordToken:boolean = true;
   showPasswordScreen:boolean = false;
+  pwdChangedSuccess:boolean = false;
+  hideResetForm: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +49,7 @@ export class CreatePasswordComponent implements OnInit {
     const data = {userid:this.userid}
     this.authService.validatePasswordToken(data).subscribe((res:any) => {
       this.validPasswordToken = true;
+      this.authService.logout();
       this.showPasswordScreen = true;
     }, err => {
       this.authService.logout();
@@ -76,16 +79,17 @@ export class CreatePasswordComponent implements OnInit {
     let password = this.createPasswordForm.controls.password.value;
     const passwordPostObj= {userid:this.userid,password:password};
     this.authService.createPassword(passwordPostObj).subscribe((res:any) => {
-      alert("Password changed successfully") 
-      setTimeout(() => {
-        this.router.navigate(['/login'])     
-      }, 1500);
+      this.pwdChangedSuccess = true;
+      this.showPasswordScreen = false;
+      this.hideResetForm = false;
+      // setTimeout(() => {
+      //   this.router.navigate(['/login'])     
+      // }, 3000);
     }, err => {
     })
   };
 
-  cancel(){
-    this.router.navigate(['/customersview']);
+  cancelToSign(){
+    this.router.navigate(['/login']);
   }
-
 }

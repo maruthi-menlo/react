@@ -1,0 +1,45 @@
+<div class="addCustomerContainer commonContainer">
+  <div class="addCustomer">
+    <form [formGroup]="azureSubscriptionForm">
+      <div class="customerForm" id="directCustomer">
+        <!--Azure Subscription Details section Starts-->
+        <div class="azureSubscription userDetails" formArrayName="azuresubscriptions">
+          <div class="addCustomerText customerFormHeading mb8">Azure Subscriptions</div>
+          <div class="addCustomerText completeForm mb28">You can edit credentials, and add or remove the subscriptions linked to Playa here.</div>
+          <div formGroupName={{j}}
+            *ngFor="let azureDetails of azureSubscriptionForm.get('azuresubscriptions')['controls']; let j=index">
+            <div class="row">
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pdZero">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                    <div class="form-group inputTextBox mb24">
+                      <label class="labelText">Subscription ID</label>
+                      <input type="text" class="form-control" formControlName="subscriptionid">
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3 pdZero" style="position: relative;top:36px;opacity:0.7;" *ngIf = " j > 0">
+                    <i class="fa fa-minus-circle faCircleMargin cursor" aria-hidden="true" (click) = "openDeleteModal('azuresubscriptions',j,azureDetails)"></i>                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb10 useAzureSeperatorCustAdmin" *ngIf = "azureSubscriptionForm.controls['azuresubscriptions'].length-1 !== j"></div>
+          </div>
+          <div class="addCustomerText completeForm mb72 mt_8 width215" (click)="addazureSubDetails()"><i
+              class="fa fa-plus-circle faCircleMargin cursor" aria-hidden="true"></i>Add Row</div>
+        </div>
+        <!--Azure Subscription Details section Ends-->
+      </div>
+    </form>
+    <p class="labelText errorText mb10" *ngIf="errorMsz">{{errorMsz}}</p>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
+        <button type="submit" class="btn cancelBtn opacity-5" (click)="cancel();">Cancel</button>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <button type="submit" class="btn saveSubmitBtn floatRight" [ngClass]="!(azureSubscriptionForm.valid) ? 'disabled' : ''"
+          [disabled]="!(azureSubscriptionForm.valid)" (click)="submit();">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

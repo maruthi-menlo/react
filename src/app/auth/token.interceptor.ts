@@ -26,7 +26,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const auth = this.inj.get(AuthService);
     const token = auth.getToken;
       // Set token if user logged in
-      if (token && request.url.indexOf('login') === -1) {
+      if (token && request.url.indexOf('login') === -1 || request.url.indexOf('forgotPassword') === -1) {
         request = request.clone({ headers: request.headers.set('x-Auth-Token', `${token}`) });
       }
       return next.handle(request);

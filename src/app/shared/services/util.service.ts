@@ -105,6 +105,14 @@ export class UtilService {
  
   }
 
+  get userRole() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user ? user['roleid'] : null;
+  }
 
+  get brandingLogo() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] ? user['brandinginfo'][0]['logoPath'] : '/assets/images/logo.png';
+  }
  
 }
