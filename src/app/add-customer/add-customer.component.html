@@ -412,7 +412,7 @@
                           <div class="fileSize">{{logoObj.fileSize}}</div> -->
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
-                          <button type="submit" class="btn removeBtn" (click)="resetFileInput()">Remove</button>
+                          <button type="submit" class="btn removeBtn bgColor" (click)="resetFileInput()">Remove</button>
                         </div>
                       </div>
                     </div>
@@ -534,19 +534,19 @@
     <!--CSP customer section ends ----------------------------------------------- -->
     <div class="row" *ngIf="customerTypeValue == 'DC'">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
-        <button type="submit" class="btn cancelBtn opacity-5" (click)="cancel();">Cancel</button>
+        <button type="submit" class="btn cancelBtn opacity-5 bgColor" (click)="cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight" [ngClass]="!(customerForm.valid) ? 'disabled' : ''"
+        <button type="submit" class="btn saveSubmitBtn floatRight bgColor" [ngClass]="!(customerForm.valid) ? 'disabled' : ''"
           [disabled]="!(customerForm.valid)" (click)="submit();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
       </div>
     </div>
     <div class="row" *ngIf="customerTypeValue == 'CSP'">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
-        <button type="submit" class="btn cancelBtn opacity-5" (click)="cancel();">Cancel</button>
+        <button type="submit" class="btn cancelBtn opacity-5 bgColor" (click)="cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight"
+        <button type="submit" class="btn saveSubmitBtn floatRight bgColor"
           [ngClass]="!(cspCustomerForm.valid) ? 'disabled' : ''" [disabled]="!(cspCustomerForm.valid)"
           (click)="submitCSP();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
       </div>

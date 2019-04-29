@@ -109,7 +109,7 @@
                         <div class="fileSize">{{logoObj.fileSize}}</div> -->
                       </div>
                       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
-                        <button type="submit" class="btn removeBtn" (click)="resetFileInput()">Remove</button>
+                        <button type="submit" class="btn removeBtn bgColor" (click)="resetFileInput()">Remove</button>
                       </div>
                     </div>
                   </div>
@@ -150,10 +150,10 @@
     </form>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
-        <button type="submit" class="btn cancelBtn opacity-5" (click) = "cancel();">Cancel</button>
+        <button type="submit" class="btn cancelBtn opacity-5 bgColor" #highlight (click) = "cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight" (click) = "submit();">Save Changes</button>
+        <button type="submit" class="btn saveSubmitBtn floatRight bgColor" #highlight (click) = "submit();">Save Changes</button>
       </div>
     </div>
   </div>

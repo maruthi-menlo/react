@@ -12,8 +12,8 @@
       <div class="mb24" *ngIf = "userRole === 1">
           <span class="customerViewType">View:</span>
           <div class="btn-group btn-toggle"> 
-              <button class="btn defaultBtn cspButton" (click) = "onChangeTableView('CSP');" [ngClass]="tableView == 'CSP' ? 'dcBtn bNone' : 'cspButton brNone'">CSP</button>
-              <button class="btn defaultBtn" (click) = "onChangeTableView('DC');" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
+              <button class="btn defaultBtn cspButton bgColor" (click) = "onChangeTableView('CSP');" [ngClass]="tableView == 'CSP' ? 'dcBtn bNone' : 'cspButton brNone'">CSP</button>
+              <button class="btn defaultBtn bgColor" (click) = "onChangeTableView('DC');" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
             </div>
       </div>
       <div *ngIf= "tableView == 'DC' && userRole === 2">

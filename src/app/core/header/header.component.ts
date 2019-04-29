@@ -6,6 +6,7 @@ import {AuthService} from '../../auth/auth.service';
 import { takeUntil, filter } from 'rxjs/operators';
 import { UtilService } from '../../shared/services/util.service';
 
+declare var jQuery: any
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userRole = this.utilService.userRole;
     this.getLogo();
+   // this.btnColor();
     this.loggedInSubscription = this.authService.loggedIn$
     .pipe(takeUntil(this.destroySubscription$))
     .subscribe((state: any) => {
@@ -77,6 +79,11 @@ export class HeaderComponent implements OnInit {
 
   getLogo() {
     this.logo = this.utilService.brandingLogo;
+  }
+
+  btnColor() {
+    console.log(this.utilService.buttonColor);
+    console.log(jQuery('.bgColor'))
   }
 
 }

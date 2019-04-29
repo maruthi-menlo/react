@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { UtilService } from '../shared/services/util.service';
 import { AuthService } from '../auth/auth.service'
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { MustMatch } from '../shared/services/must-match.validator';
 import { CustomerService } from '../shared/services/customer.service';
 import { ToastService } from '../shared/services/toaster.service';
 
+declare var jQuery: any
 @Component({
   selector: 'app-edit-playa-admin',
   templateUrl: './edit-playa-admin.component.html',
@@ -24,6 +25,8 @@ export class EditPlayaAdminComponent implements OnInit {
   logoObj:any={};
   logoError:boolean = false;
   removelogo:boolean =false;
+  @ViewChild('highlight') Highlight: any;
+
 
   constructor(
     private utilService:UtilService,
@@ -36,6 +39,7 @@ export class EditPlayaAdminComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.btnColor();
     this.userRole = this.utilService.userRole;
     this.getCurrentUser();
     this.initForm();
@@ -177,6 +181,14 @@ export class EditPlayaAdminComponent implements OnInit {
       text: message,
       type: 'success',
     });
+  }
+
+  btnColor() {
+    // this.Highlight.toArray().map((row)=>{
+
+    // })
+    // this.Highlight.nativeElement.queryselectorAll('btn').style.backgroundColor = this.utilService.buttonColor;
+    this.Highlight.nativeElement.style.backgroundColor = this.utilService.buttonColor;
   }
 
 }

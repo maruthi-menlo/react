@@ -34,10 +34,10 @@
     <p class="labelText errorText mb10" *ngIf="errorMsz">{{errorMsz}}</p>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
-        <button type="submit" class="btn cancelBtn opacity-5" (click)="cancel();">Cancel</button>
+        <button type="submit" class="btn cancelBtn opacity-5 bgColor" (click)="cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight" [ngClass]="!(azureSubscriptionForm.valid) ? 'disabled' : ''"
+        <button type="submit" class="btn saveSubmitBtn floatRight bgColor" [ngClass]="!(azureSubscriptionForm.valid) ? 'disabled' : ''"
           [disabled]="!(azureSubscriptionForm.valid)" (click)="submit();">Save Changes</button>
       </div>
     </div>

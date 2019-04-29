@@ -114,5 +114,10 @@ export class UtilService {
     const user = JSON.parse(localStorage.getItem('profile'));
     return user && user['brandinginfo'][0] ? user['brandinginfo'][0]['logoPath'] : '/assets/images/logo.png';
   }
+
+  get buttonColor() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] && user['brandinginfo'][0]['primaryButtonHexCode'] ? `#${user['brandinginfo'][0]['primaryButtonHexCode']}` : '#0695d3';
+  }
  
 }

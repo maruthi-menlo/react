@@ -8,6 +8,6 @@
   <div class="modalBodyText">Are you sure you want to remove this {{removeSelectedArray.formArray == "users" ? "User": "Subscription"}}? They will no longer be able to access Playa.</div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn cancelBtn opacity-5" (click)="modal.close('Save click')">Cancel</button>
-  <button type="button" class="btn removeBtn" (click)="removeArray()">Remove {{removeSelectedArray.formArray == "users" ? "User": "Subscription"}}</button>
+  <button type="button" class="btn cancelBtn opacity-5 bgColor" (click)="modal.close('Save click')">Cancel</button>
+  <button type="button" class="btn removeBtn bgColor" (click)="removeArray()">Remove {{removeSelectedArray.formArray == "users" ? "User": "Subscription"}}</button>
 </div>

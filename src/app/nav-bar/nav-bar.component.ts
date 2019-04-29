@@ -9,12 +9,16 @@ import {UtilService} from '../shared/services/util.service'
 })
 export class NavBarComponent implements OnInit {
   userRole:any;
+  showactive:any='';
   constructor(
     private utilService:UtilService
   ) { }
 
   ngOnInit() {
     this.userRole = this.utilService.userRole;
+    //Get routerlink
+    console.log("hai")
+
   }
 
 }
