@@ -5,17 +5,36 @@
         <div class="customerText">Here you can add new customers and make edits to existing customer accounts. Select edit details to make changes to company profiles, Azure subscriptions, and user access.</div>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 pdRight">
-        <button type="submit" class="btn signInBtn" (click)="navigate()">Add Customer</button>
+        <button type="submit" class="btn signInBtn" (click)="navigate()">{{tableView == 'CSP' ? 'Add CSP' : 'Add Customer'}}</button>
       </div>
     </div>
-    <div class="mb24">
-      <span class="customerViewType">View:</span>
-      <div class="btn-group btn-toggle"> 
-          <button class="btn defaultBtn cspButton" (click) = "onChangeTableView();" [ngClass]="tableView == 'CSP' ? 'dcBtn bNone' : 'cspButton brNone'">CSP</button>
-          <button class="btn defaultBtn" (click) = "onChangeTableView();" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
+    <div>
+      <div class="mb24" *ngIf = "userRole === 1">
+          <span class="customerViewType">View:</span>
+          <div class="btn-group btn-toggle"> 
+              <button class="btn defaultBtn cspButton" (click) = "onChangeTableView('CSP');" [ngClass]="tableView == 'CSP' ? 'dcBtn bNone' : 'cspButton brNone'">CSP</button>
+              <button class="btn defaultBtn" (click) = "onChangeTableView('DC');" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
+            </div>
+      </div>
+      <div *ngIf= "tableView == 'DC' && userRole === 2">
+        <div *ngIf="totalCount === 0">
+          <div class="mb48">
+            <img class="center" src="../../assets/images/empty-state.png"/>
+          </div>
+          <div class="customerText cspAddYet mb24">You haven’t added any customers yet.</div>
+          <div class="customerText addCustomerMessage">Click “Add Customer” above to get started adding a customer to the platform.</div>
         </div>
-    </div>
-    <div class="row tableBorder table-responsive mb28" *ngIf= "tableView == 'DC'">
+      </div>
+      <div *ngIf= "tableView == 'CSP'">
+          <div *ngIf="totalCount === 0">
+            <div class="mb48">
+              <img class="center" src="../../assets/images/empty-state.png"/>
+            </div>
+            <div class="customerText cspAddYet mb24">You haven’t added a CSP yet.</div>
+            <div class="customerText addCustomerMessage">Click “Add Customer” above to get started adding a CSP to the platform.</div>
+          </div>
+        </div>
+      <div class="row tableBorder table-responsive mb28" *ngIf= "tableView == 'DC' && totalCount && totalCount !== 0">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -40,40 +59,41 @@
                 <span style="padding-right: 40px;text-decoration: underline;cursor:pointer;" (click)="navigateToaddCustomerPage('DC',customer)">Edit Details</span>
                 <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
               </td> -->
-              <td class="actionsTD" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''"><span class="cursor" (click)="navigateToaddCustomerPage('DC',customer)">Edit Details</span></td>
+              <td class="actionsTD cursor" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''"><span [ngClass]="!(customer.status) ? 'disabledClick' : ''" (click)="navigateToaddCustomerPage('DC',customer)">Edit Details</span></td>
               <td class="actionsTD textAlignLeft"><span class="cursor" (click) = openDeactivateModal(customer)>{{customer.status ? "Deactivate" : "Reactivate"}}</span></td>
             </tr>
           </tbody>
         </table>
-    </div>
-    <div class="row tableBorder table-responsive mb28" *ngIf= "tableView == 'CSP'">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th class="companyName">Company Name </th>
-            <th class="updated">Updated</th>
-            <th class="dateAdded">Date Added</th>
-            <th class="admins">Admins</th>
-            <th class="Users">Users</th>
-            <th class="actionsTH" colspan="2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let cspCustomer of cspCustomerArr.data">
-            <td class="companyNameCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.name}}</td>
-            <td class="updatedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.updated}}</td>
-            <td class="dateAddedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.created}}</td>
-            <td class="adminsCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totaladmins}} {{cspCustomer.totaladmins > 1 ? "Admins" : "Admin"}}</td>
-            <td class="UsersCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totalusers}} {{cspCustomer.totalusers > 1 ? "Users" : "User"}}</td>
-            <!-- <td class="actionsTD">
-              <span style="padding-right: 40px;text-decoration: underline;" class="cursor" (click)="navigateToaddCustomerPage('CSP',cspCustomer)">Edit Details</span>
-              <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
-            </td> -->
-            <td class="actionsTDCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''"><span class="cursor" (click)="navigateToaddCustomerPage('CSP',cspCustomer)">Edit Details</span></td>
-            <td class="actionsTDCSP textAlignLeft"><span class="cursor" (click) = openDeactivateModal(cspCustomer)>{{cspCustomer.status ? "Deactivate" : "Reactivate"}}</span></td>
-          </tr>
-        </tbody>
-      </table>
+      </div>
+      <div class="row tableBorder table-responsive mb28" *ngIf= "tableView == 'CSP' && totalCount && totalCount !== 0">
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th class="companyName">Company Name </th>
+                <th class="updated">Updated</th>
+                <th class="dateAdded">Date Added</th>
+                <th class="admins">Admins</th>
+                <th class="Users">Users</th>
+                <th class="actionsTH" colspan="2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cspCustomer of cspCustomerArr.data">
+                <td class="companyNameCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.name}}</td>
+                <td class="updatedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.updated}}</td>
+                <td class="dateAddedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.created}}</td>
+                <td class="adminsCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totaladmins}} {{cspCustomer.totaladmins > 1 ? "Admins" : "Admin"}}</td>
+                <td class="UsersCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totalusers}} {{cspCustomer.totalusers > 1 ? "Users" : "User"}}</td>
+                <!-- <td class="actionsTD">
+                  <span style="padding-right: 40px;text-decoration: underline;" class="cursor" (click)="navigateToaddCustomerPage('CSP',cspCustomer)">Edit Details</span>
+                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
+                </td> -->
+                <td class="actionsTDCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''"><span [ngClass]="!(cspCustomer.status) ? 'disabledClick' : ''" class="cursor" (click)="navigateToaddCustomerPage('CSP',cspCustomer)">Edit Details</span></td>
+                <td class="actionsTDCSP textAlignLeft"><span class="cursor" (click) = openDeactivateModal(cspCustomer)>{{cspCustomer.status ? "Deactivate" : "Reactivate"}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
     </div>
   </div>
   <div class="paginationWidth" *ngIf="totalCount > pageSize">

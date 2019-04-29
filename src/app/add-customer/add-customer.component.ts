@@ -5,9 +5,12 @@ import { ValidationService } from '../shared/services/validation.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { UtilService } from '../shared/services/util.service';
 import { GetJsonService } from '../shared/services/json.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { DeactivateEditUserComponent } from '../core/modals/deactivate-edit-user/deactivate-edit-user.component';
 import { ToastService } from '../shared/services/toaster.service';
+import { forkJoin, Subject, Subscription } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-add-customer',
@@ -29,6 +32,7 @@ export class AddCustomerComponent implements OnInit {
   imageFile:any;
   logoObj:any={};
   logoError:boolean = false;
+  removelogo:boolean =false;
   addCustomer:boolean = true;
   cspCustomerForm:  FormGroup;
   openDeleteUserModal = true;
@@ -38,7 +42,12 @@ export class AddCustomerComponent implements OnInit {
   editCSPdetails: any;
   data:any;
   customerid:any = '';
+  userRole:any=null;
   @ViewChild('fileInput') imageUpload: any;
+  public removeSelectedArray : any;
+  deleteRow:Subscription;
+  destroySubscription$: Subject<boolean> = new Subject();
+  @ViewChild('btnColor') btnColor: any;
 
   constructor(
     private fb: FormBuilder,
@@ -50,17 +59,30 @@ export class AddCustomerComponent implements OnInit {
     private validationService: ValidationService,
     private modalService: NgbModal,
     private toastService: ToastService,
-  ) { }
+  ) {
+    
+   }
 
   ngOnInit() {
+    
+    this.deleteRow = this.customerService.row
+    .pipe(takeUntil(this.destroySubscription$))
+    .subscribe((data: any) => {
+      if(data) {
+        let getArray = this[data['formBuilder']].controls[data['formArray']] as FormArray;
+        getArray.removeAt(data['index']);
+        setTimeout(() => {
+          this.utilService.setNavHeight('commonContainer')
+        }, 100);
+      }
+    });
     this.type = this.router.url.indexOf('editcustomer') > -1 ? 'edit' : 'add';
-    this.initForm();
-    this.initCSPForm();
     this.getMessages('messages');
-    this.fetchEditCustomerDetails();
+    this.fetchCustomerDetails();
+    this.userRole = this.utilService.userRole;
   }
 
-  fetchEditCustomerDetails() {
+  fetchCustomerDetails() {
     if(this.type === 'edit') {
       this.customerid = this.customerService.getCustomerId;
       this.addCustomer = false;
@@ -70,13 +92,18 @@ export class AddCustomerComponent implements OnInit {
       } else{
         this.getCSPDetails();
       }
+    } else {
+      this.customerTypeValue = this.router.url.indexOf('addcsp') > -1 ? 'CSP' : 'DC';
     }
     this.getAllCountries();
     this.getAllRoles(this.customerTypeValue);
+    this.initForm();
+    this.initCSPForm();
   }
 
   ngAfterViewInit() {
     this.utilService.setNavHeight('commonContainer');
+    this.updateBtnColor();
   }
 
   getMessages(name) {
@@ -128,11 +155,11 @@ export class AddCustomerComponent implements OnInit {
     let formArray = this.customerForm.controls['azuresubscriptions'] as FormArray;
     formArray.push(this.fb.group({
       id: [data ? data.id : ''],
-      subscriptionid: [data? data.subscriptionId: '', Validators.compose([Validators.required])],
-      markup: ['', Validators.compose([Validators.required])],
-      markupMask: ['', Validators.compose([Validators.required])],
-      discount: ['', Validators.compose([Validators.required])],
-      discountMask: ['', Validators.compose([Validators.required])]
+      subscriptionid: [data? data.subscriptionId: ''],
+      markup: [''],
+      markupMask: [''],
+      discount: [''],
+      discountMask: ['']
     }));
 
     if(data){
@@ -149,9 +176,9 @@ export class AddCustomerComponent implements OnInit {
       companyname: [data ? data.companyname : '', Validators.compose([Validators.required])],
       tenantid: [data ? data.tenantid : '', Validators.compose([Validators.required])],
       address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
-      address2: [data ? data.address2 : '', Validators.compose([Validators.required])],
+      address2: [data ? data.address2 : ''],
       city: [data ? data.city : '', Validators.compose([Validators.required])],
-      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.number_regexPattern)])],
+      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required, Validators.compose([Validators.minLength(5), Validators.maxLength(5),Validators.pattern(this.validationService.number_regexPattern)])])],
       countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
       stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       users: this.fb.array([ ]),
@@ -176,21 +203,25 @@ export class AddCustomerComponent implements OnInit {
       }
       
     })
+
+    this.customerForm.valueChanges.subscribe(value => {
+      this.errorMsz = '';
+    })
   }
 
   initCSPForm(data?){
     this.cspCustomerForm = this.fb.group({
       companyname : [data ? data.companyname : '', Validators.compose([Validators.required])],      
       address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
-      address2: [data ? data.address2 : '', Validators.compose([Validators.required])],
+      address2: [data ? data.address2 : ''],
       city: [data ? data.city : '', Validators.compose([Validators.required])],
       zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required])],
       countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
       stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       logo : [''],
-      headerHexCode : [''],
-      primaryButtonHexCode : [''],
-      activeFieldHexCode : [''],
+      headerHexCode : [data ? data.brandinginfo[0].headerHexCode : '', Validators.compose([Validators.minLength(6), Validators.maxLength(6),Validators.pattern(this.validationService.number_regexPattern)])],
+      primaryButtonHexCode : [data ? data.brandinginfo[0].primaryButtonHexCode : '',Validators.compose([Validators.minLength(6), Validators.maxLength(6),Validators.pattern(this.validationService.number_regexPattern)])],
+      activeFieldHexCode : [data ? data.brandinginfo[0].activeFieldHexCode : '',Validators.compose([Validators.minLength(6), Validators.maxLength(6),Validators.pattern(this.validationService.number_regexPattern)])],
       users: this.fb.array([ ])
     });
     [1].forEach(ele => {
@@ -202,12 +233,20 @@ export class AddCustomerComponent implements OnInit {
         this.addCSPUserDetails(null,null);
       }  
     })
+    this.cspCustomerForm.valueChanges.subscribe(value => {
+      this.errorMsz = '';
+    })
   }
 
   customerType(event: any){
     this.customerTypeValue = event.target.value;
-    this.customerForm.reset();
-    this.cspCustomerForm.reset();
+    if(this.customerTypeValue === 'DC') {
+      this.customerForm.reset();
+      this.initForm();
+    } else {
+      this.cspCustomerForm.reset();
+      this.initCSPForm();
+    }
     this.getAllRoles(this.customerTypeValue);
     this.setDefaultValues(event.target.value)
     setTimeout(() => {
@@ -229,6 +268,7 @@ export class AddCustomerComponent implements OnInit {
       if(!res.error){
         this.allCountries = res.data;
         this.setUSDefault('customerForm','countryid',222);
+        this.setUSDefault('cspCustomerForm','countryid',222);
         this.getStatesForCountry(222)
       }
     }, err => {
@@ -239,7 +279,10 @@ export class AddCustomerComponent implements OnInit {
     this.customerService.getRoles(type).subscribe((res:any) => {
       if(!res.error){
         this.allRoles = res.data;
-        this.setRoleDefaultAdministrator('customerForm','users','roleid', 3)
+        if(this.type === 'add') {
+          this.setRoleDefaultAdministrator('customerForm','users','roleid', 3)
+          this.setRoleDefaultAdministrator('cspCustomerForm','users','roleid', 2)
+        }
       }
     }, err => {
     })
@@ -273,6 +316,7 @@ export class AddCustomerComponent implements OnInit {
     this.imageFile = imageEvent.target.files[0];
     if (fileList.length > 0 && this.imageFile.size <= 16777216 && (this.imageFile.type === 'image/png' || this.imageFile.type === 'image/jpg' || this.imageFile.type === 'image/jpeg')) {
       this[`${formControl}Error`] = false;
+      this.removelogo = false;
       this.cspCustomerForm.controls[formControl].setValue(this.imageFile);
       reader.readAsDataURL(this.imageFile);
       reader.onload = () => {
@@ -291,6 +335,7 @@ export class AddCustomerComponent implements OnInit {
 
   resetFileInput(element?) {
     this.logoObj = {}
+    this.removelogo = true;
   }
   
   submit(){
@@ -306,7 +351,6 @@ export class AddCustomerComponent implements OnInit {
       }else{
         this.showToast(addDC);
       }
-      // alert('Direct customer has been created successfully.');
       setTimeout(() => {
         this.router.navigate(['/customersview']);
       }, 500);
@@ -320,21 +364,17 @@ export class AddCustomerComponent implements OnInit {
     this.router.navigate(['/customersview']);
   }
 
-  openDeleteModal(content) {
-    this.modalService.open(DeactivateEditUserComponent,{ariaLabelledBy: 'modal-basic-title', centered: true, windowClass: 'customDeactivateModal'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+  openDeleteModal(formArray,index,obj) {
+    const formBuilder = this.customerTypeValue === 'DC' ? 'customerForm' : 'cspCustomerForm'
+    if(this.type == 'edit') {
+      const modalRef = this.modalService.open(DeactivateEditUserComponent);
+      modalRef.componentInstance.removeSelectedArray = {formBuilder:formBuilder,formArray:formArray,index:index,id:obj.value.id};
     } else {
-      return  `with: ${reason}`;
+      let getArray = this[formBuilder].controls[formArray] as FormArray;
+      getArray.removeAt(index); 
+      setTimeout(() => {
+        this.utilService.setNavHeight('commonContainer')
+      }, 100);
     }
   }
   
@@ -342,16 +382,12 @@ export class AddCustomerComponent implements OnInit {
     let addCspPostObj = this.cspCustomerForm.value;
     if(this.type === 'edit') {
       addCspPostObj['customerid'] = this.customerid
+      addCspPostObj['removelogo'] = this.removelogo
     }
     this.customerService.addCSPCustomer(addCspPostObj,this.type).subscribe((res:any) => {
-      // alert('CSP customer has been created successfully.');
       const editCsp = 'CSP customer has been updated successfully.'
       const addCsp = 'CSP customer has been added successfully.'
-      if(this.type === 'edit') {
-        this.showToast(editCsp);
-      }else{
-        this.showToast(addCsp);
-      }
+      this.showToast(this.type === 'edit' ? editCsp:addCsp);
       setTimeout(() => {
         this.router.navigate(['/customersview']);
       }, 500);
@@ -411,11 +447,24 @@ export class AddCustomerComponent implements OnInit {
       this.customerService.getCSPUserData(postObj).subscribe((res:any) => {
         this.editCSPdetails = res.data;
         this.initCSPForm(this.editCSPdetails);
+        if(res.data.brandinginfo[0].logoPath) {
+          this.logoObj.fileUrl = res.data.brandinginfo[0].logoPath
+        }
       }, err => {
         this.errorMsz = err && err.error ? err.error.message : '';
       })
 
     }
+  }
+
+  updateBtnColor () {
+    this.btnColor.nativeElement.style.backgroundColor = this.utilService.primaryButtonHexCode;
+  }
+
+  ngOnDestroy() {
+    this.customerService.removeArr('')
+    this.destroySubscription$.next(true);
+    this.deleteRow.unsubscribe();
   }
 
 }

@@ -1,13 +1,13 @@
 <div class="modal-header">
-  <h4 class="modal-title deactivateText" id="modal-basic-title">Remove User</h4>
+  <h4 class="modal-title deactivateText" id="modal-basic-title">Remove {{removeSelectedArray.formArray == "users" ? "User": "Subscription"}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <div class="modalBodyText">Are you sure you want to remove this user? They will no longer be able to access Playa.</div>
+  <div class="modalBodyText">Are you sure you want to remove this {{removeSelectedArray.formArray == "users" ? "User": "Subscription"}}? They will no longer be able to access Playa.</div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn cancelBtn opacity-5" (click)="modal.close('Save click')">Cancel</button>
-  <button type="button" class="btn removeBtn" (click)="modal.close('Save click')">Remove User</button>
+  <button type="button" class="btn removeBtn" (click)="removeArray()">Remove {{removeSelectedArray.formArray == "users" ? "User": "Subscription"}}</button>
 </div>

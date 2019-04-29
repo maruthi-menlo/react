@@ -30,6 +30,7 @@ export class DeactivatePlayaAccountModalComponent implements OnInit {
     this.customerService.updateStatusCustomer(postObj).subscribe(data  => {
       this.modal.close();
       this.customerService.deleteUser(this.user)
+      window.scrollTo(0,0)
     });
   }
 

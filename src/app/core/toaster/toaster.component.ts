@@ -17,7 +17,7 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 
-import { ToastData, TOAST_CONFIG_TOKEN, ToastConfig } from './toaster-config';
+import { ToastData, TOAST_CONFIG_TOKEN } from './toaster-config';
 import { ToastRef } from './toaster-ref';
 import { toastAnimations, ToastAnimationState } from './toaster-animation';
 //import { ToastService } from '../../shared/services/toaster.service';
@@ -38,7 +38,7 @@ export class ToastComponent implements OnInit, OnDestroy {
     readonly data: ToastData,
     readonly ref: ToastRef,
     //private toastService : ToastService,
-    @Inject(TOAST_CONFIG_TOKEN) public toastConfig: ToastConfig
+    // @Inject(TOAST_CONFIG_TOKEN) public toastConfig: ToastConfig
     ) {
       this.iconType = data.type === 'success' ? 'done' : data.type;
   }

@@ -14,13 +14,13 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb24">
                         <label class="labelText">First Name</label>
-                        <input type="text" class="form-control"  formControlName="firstname" placeholder="abc">
+                        <input type="text" class="form-control capitalize"  formControlName="firstname" placeholder="abc">
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                         <div class="form-group inputTextBox mb24">
                           <label class="labelText">Last Name</label>
-                          <input type="text" class="form-control"  formControlName="lastname" placeholder="xyz">
+                          <input type="text" class="form-control capitalize"  formControlName="lastname" placeholder="xyz">
                         </div>
                       </div>
                   </div>
@@ -60,13 +60,69 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb64">
                       <label class="labelText">New Password</label>
-                      <input type="password" class="form-control"  formControlName="newpassword">
+                      <input type="password" class="form-control"  formControlName="newpassword" [ngClass]="editPlayaProfileForm.controls['newpassword'].hasError('required') && editPlayaProfileForm.controls['newpassword'].touched || editPlayaProfileForm.controls['newpassword'].hasError('minlength') || editPlayaProfileForm.controls['newpassword'].hasError('maxlength') && editPlayaProfileForm.controls['newpassword'].dirty? 'error mb10' : ''">
+                      <p class="labelText errorText"
+                            *ngIf="editPlayaProfileForm.controls['newpassword'].hasError('required') && editPlayaProfileForm.controls['newpassword'].touched">
+                            {{messages.PASSWORD}}</p>
+                          <p class="labelText errorText"
+                            *ngIf="editPlayaProfileForm.controls['newpassword'].hasError('minlength') && editPlayaProfileForm.controls['newpassword'].dirty">
+                            {{messages.PASSWORD_MIN_LENGTH}}</p>
+                          <p class="labelText errorText"
+                            *ngIf="editPlayaProfileForm.controls['newpassword'].hasError('maxlength') && editPlayaProfileForm.controls['newpassword'].dirty">
+                            {{messages.PASSWORD_MAX_LENGTH}}</p>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb64">
                       <label class="labelText">New Password Again</label>
-                      <input type="password" class="form-control"  formControlName="newpasswordagain">
+                      <input type="password" class="form-control"  formControlName="newpasswordagain" [ngClass]="editPlayaProfileForm.controls['newpasswordagain'].hasError('required') &&editPlayaProfileForm.controls['newpasswordagain'].touched || editPlayaProfileForm.controls['newpasswordagain'].hasError('minlength') || editPlayaProfileForm.controls['newpasswordagain'].hasError('maxlength') && editPlayaProfileForm.controls['newpasswordagain'].dirty || editPlayaProfileForm.controls['newpasswordagain'].hasError('mustMatch') ? 'error mb10' : ''">
+                      <p class="labelText errorText"
+                            *ngIf="editPlayaProfileForm.controls['newpasswordagain'].hasError('required') && editPlayaProfileForm.controls['newpasswordagain'].touched">
+                            {{messages.NEW_PASSWORD}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+        <!--User details section Ends-->
+      <div *ngIf = "userRole === 2">
+        <div class="editProfileText completeForm mb24">Some elements can be customized to match the branding of your
+          CSP. By default Playa branding and colors are displayed.</div>
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 pdLeft">
+            <div class="row">
+              <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pdZero">
+                <div class="form-group inputTextBox mb24">
+                  <label for="sel1" class="labelText">Company Logo (Optional)</label>
+                  <div class="fileInputs" *ngIf="(logoObj | json) == '{}'">
+                    <input type="file" class="form-control file" #fileInput id="imageUpload"
+                      (change)="imageChangeEvent($event,'logo')" accept=".jpg,.jpeg,.png">
+                    <div class="row dragDropFile">
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
+                        <img src="../../assets/images/upload.png" class="floatRight pdtop20">
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dragDropPad pdLeft">
+                        <div class="dragDropChoose">Drag & Drop or <span class="chooseFile">Choose File</span></div>
+                        <div class="fileType">File Types: JPG, JPEG, or PNG</div>
+                        <div class="fileSize">Max file size: 16MB</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fileInputs" *ngIf="logoObj && logoObj.fileUrl">
+                    <label class="file"></label>
+                    <div class="row dragDropFile">
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
+                        <img [src]="logoObj.fileUrl" class="" style="width: 110px;height: 80px;margin-left:25px;">
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dragDropPad pdLeft">
+                        <!-- <div class="fileSize" style="margin-top:13px;">{{logoObj.fileName}}</div>
+                        <div class="fileSize">{{logoObj.fileSize}}</div> -->
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
+                        <button type="submit" class="btn removeBtn" (click)="resetFileInput()">Remove</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -74,15 +130,42 @@
             </div>
           </div>
         </div>
-        <div class="errorText mb8" *ngIf="errorMsz">{{errorMsz}}</div>
-        <!--User details section Ends-->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdZero">
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                <div class="form-group inputTextBox mb40">
+                  <label class="labelText width85Percent">Header Hex Code (Optional)</label>
+                  <input type="text" class="form-control" placeholder="#000000" formControlName="headerHexCode"
+                    [ngClass]="editPlayaProfileForm.controls['headerHexCode'].hasError('required') && editPlayaProfileForm.controls['headerHexCode'].touched ? 'error mb10' : ''">
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                <div class="form-group inputTextBox mb40">
+                  <label class="labelText width85Percent">Primary Button Hex Code (Optional)</label>
+                  <input type="text" class="form-control" placeholder="#000000" formControlName="primaryButtonHexCode"
+                    [ngClass]="editPlayaProfileForm.controls['primaryButtonHexCode'].hasError('required') && editPlayaProfileForm.controls['primaryButtonHexCode'].touched ? 'error mb10' : ''">
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
+                <div class="form-group inputTextBox mb40">
+                  <label class="labelText width85Percent">Active Field Hex Code (Optional)</label>
+                  <input type="text" class="form-control" placeholder="#000000" formControlName="activeFieldHexCode"
+                    [ngClass]="editPlayaProfileForm.controls['activeFieldHexCode'].hasError('required') && editPlayaProfileForm.controls['activeFieldHexCode'].touched ? 'error mb10' : ''">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="errorText mb8" *ngIf="errorMsz">{{errorMsz}}</div>
     </form>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">
         <button type="submit" class="btn cancelBtn opacity-5" (click) = "cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight" (click) = "submit();">Save Changes</button>
+        <button type="submit" class="btn saveSubmitBtn floatRight" #btnColor (click) = "submit();">Save Changes</button>
       </div>
     </div>
   </div>

@@ -1,20 +1,21 @@
 <div class="addCustomerContainer commonContainer">
   <div class="addCustomer">
     <div *ngIf="addCustomer">
-        <h1 class="addCustomerText">Add New Customer</h1>
+        <h1 class="addCustomerText" *ngIf="customerTypeValue == 'DC'">Add New Customer</h1>
+        <h1 class="addCustomerText" *ngIf="customerTypeValue == 'CSP'">Add CSP</h1>
         <p class="addCustomerText completeForm" *ngIf="customerTypeValue == 'DC'">Complete the form below to add a new
           customer to the system. A valid Azure subscription ID is required for a customer to be added.</p>
         <p class="addCustomerText completeForm" *ngIf="customerTypeValue == 'CSP'">Complete the form below to add a new
           customer to the system. A CSP will be able to add their own customers when they login for the first time.</p>
-        <div class="addCustomerText completeForm customerType">Are you adding a CSP (Cloud Service Provider) or a Direct
+        <div class="addCustomerText completeForm customerType" *ngIf = "userRole === 1">Are you adding a CSP (Cloud Service Provider) or a Direct
           Customer?</div>
-        <div class="mb20">
-          <div class="radio">
-            <input id="radio-1" name="radio" type="radio" value="CSP" (change)=customerType($event)>
+        <div class="mb20" *ngIf = "userRole === 1">
+          <div class="radio cursor">
+            <input id="radio-1" name="radio" type="radio" value="CSP" [(ngModel)]="customerTypeValue" (change)=customerType($event)>
             <label for="radio-1" class="radio-label"><span class="addCustomerText radioLabelText">CSP</span></label>
           </div>
-          <div class="radio">
-            <input id="radio-2" name="radio" type="radio" checked value="DC" (change)=customerType($event)>
+          <div class="radio cursor">
+            <input id="radio-2" name="radio" type="radio" checked value="DC" [(ngModel)]="customerTypeValue" (change)=customerType($event)>
             <label for="radio-2" class="radio-label"><span class="addCustomerText radioLabelText">Direct
                 Customer</span></label>
           </div>
@@ -70,11 +71,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Suite, apt, etc.</label>
-                    <input type="text" class="form-control capitalize" formControlName="address2"
-                      [ngClass]="customerForm.controls['address2'].hasError('required') && customerForm.controls['address2'].touched ? 'error mb10' : ''">
-                    <p class="labelText errorText"
-                      *ngIf="customerForm.controls['address2'].hasError('required') && customerForm.controls['address2'].touched">
-                      {{messages.ADDRESS_2}}</p>
+                    <input type="text" class="form-control capitalize" formControlName="address2">
                   </div>
                 </div>
               </div>
@@ -205,18 +202,19 @@
                     </div>
                   </div>
                 </div>
+                <div class="mb10 userSeperator" *ngIf = "customerForm.controls['users'].length-1 !== i"></div>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-2 pdLeft" *ngIf = "!addCustomer">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-2 pdLeft" *ngIf="i > 0">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-xs-12 col=sm-12 pdLeft"  style="position: relative;top:36px;opacity:0.7;">
-                      <i class="fa fa-minus-circle" aria-hidden="true" (click) = openDeleteModal(content)></i>
+                      <i class="fa fa-minus-circle cursor" aria-hidden="true" (click) = "openDeleteModal('users',i,address)"></i>
                     </div>
                   </div>
               </div>
             </div>
           </div>
           <div class="addCustomerText completeForm mb48 width215" (click)="addUserDetails()"><i
-              class="fa fa-plus-circle faCircleMargin" aria-hidden="true"></i>Add Another User</div>
+              class="fa fa-plus-circle faCircleMargin cursor" aria-hidden="true"></i>Add Another User</div>
         </div>
         <!--User details section Ends-->
         <!--Azure Subscription Details section Starts-->
@@ -232,11 +230,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Subscription ID</label>
-                      <input type="text" class="form-control" formControlName="subscriptionid"
-                        [ngClass]="azureDetails.controls['subscriptionid'].hasError('required') && azureDetails.controls['subscriptionid'].touched ? 'error mb10' : ''">
-                      <p class="labelText errorText"
-                        *ngIf="azureDetails.controls['subscriptionid'].hasError('required') && azureDetails.controls['subscriptionid'].touched">
-                        {{messages.SUBSCRIPTION_ID}}</p>
+                      <input type="text" class="form-control" formControlName="subscriptionid">
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
@@ -248,29 +242,14 @@
                         (focus)="percentFocus(j,'azuresubscriptions','markup')"
                         [value]="azureDetails.controls['markupMask'].value"
                         onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" 
-                        [ngClass]="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched ? 'error mb10' : ''">
-                      <p class="labelText errorText"
-                        *ngIf="azureDetails.controls['markup'].hasError('required') && azureDetails.controls['markup'].touched">
-                        {{messages.MARKUP}}</p>
+                        >
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pdLeft">
-                <!-- <div class="form-group inputTextBox mb24">
-                  <label class="labelText">Discount %</label>
-                  <input type="text" class="form-control" formControlName="discount"
-                    (keypress)="utilService.numberAndDecimalOnly($event)"
-                    (blur)="percentBlur($event,j,'azuresubscriptions','discount')"
-                    (focus)="percentFocus(j,'azuresubscriptions','discount')"
-                    [value]="azureDetails.controls['discountMask'].value"
-                    [ngClass]="azureDetails.controls['discount'].hasError('required') && azureDetails.controls['discount'].touched ? 'error mb10' : ''">
-                  <p class="labelText errorText"
-                    *ngIf="azureDetails.controls['discount'].hasError('required') && azureDetails.controls['discount'].touched">
-                    {{messages.DISCOUNT}}</p>
-                </div> -->
                 <div class="row">
-                  <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9 pdRight">
+                  <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9 pdZero">
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Discount %</label>
                       <input type="text" class="form-control" formControlName="discount"
@@ -278,21 +257,19 @@
                         (blur)="percentBlur($event,j,'azuresubscriptions','discount')"
                         (focus)="percentFocus(j,'azuresubscriptions','discount')"
                         [value]="azureDetails.controls['discountMask'].value"
-                        [ngClass]="azureDetails.controls['discount'].hasError('required') && azureDetails.controls['discount'].touched ? 'error mb10' : ''">
-                      <p class="labelText errorText"
-                        *ngIf="azureDetails.controls['discount'].hasError('required') && azureDetails.controls['discount'].touched">
-                        {{messages.DISCOUNT}}</p>
+                        >
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3 pdZero" style="position: relative;top:36px;opacity:0.7;" *ngIf = "!addCustomer">
-                    <i class="fa fa-minus-circle faCircleMargin" aria-hidden="true" (click) = openDeleteModal(content)></i>                    
+                  <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3 pdZero" style="position: relative;top:36px;opacity:0.7;" *ngIf = " j > 0">
+                    <i class="fa fa-minus-circle faCircleMargin cursor" aria-hidden="true" (click) = "openDeleteModal('azuresubscriptions',j,azureDetails)"></i>                    
                   </div>
                 </div>
               </div>
             </div>
+            <div class="mb10 useAzureSeperator" *ngIf = "customerForm.controls['azuresubscriptions'].length-1 !== j"></div>
           </div>
           <div class="addCustomerText completeForm mb72 mt_8 width215" (click)="addazureSubDetails()"><i
-              class="fa fa-plus-circle faCircleMargin" aria-hidden="true"></i>Add Row</div>
+              class="fa fa-plus-circle faCircleMargin cursor" aria-hidden="true"></i>Add Row</div>
         </div>
         <!--Azure Subscription Details section Ends-->
       </div>
@@ -336,11 +313,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Suite, apt, etc.</label>
-                    <input type="text" class="form-control capitalize" formControlName="address2"
-                      [ngClass]="cspCustomerForm.controls['address2'].hasError('required') && cspCustomerForm.controls['address2'].touched ? 'error mb10' : ''">
-                    <p class="labelText errorText"
-                      *ngIf="cspCustomerForm.controls['address2'].hasError('required') && cspCustomerForm.controls['address2'].touched">
-                      {{messages.ADDRESS_2}}</p>
+                    <input type="text" class="form-control capitalize" formControlName="address2">
                   </div>
                 </div>
               </div>
@@ -435,8 +408,8 @@
                           <img [src]="logoObj.fileUrl" class="" style="width: 110px;height: 80px;margin-left:25px;">
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dragDropPad pdLeft">
-                          <div class="fileSize" style="margin-top:13px;">{{logoObj.fileName}}</div>
-                          <div class="fileSize">{{logoObj.fileSize}}</div>
+                          <!-- <div class="fileSize" style="margin-top:13px;">{{logoObj.fileName}}</div>
+                          <div class="fileSize">{{logoObj.fileSize}}</div> -->
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
                           <button type="submit" class="btn removeBtn" (click)="resetFileInput()">Remove</button>
@@ -541,11 +514,19 @@
                     </div>
                   </div>
                 </div>
+                <div class="mb10 userSeperator" *ngIf = "cspCustomerForm.controls['users'].length-1 !== k"></div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-2 pdLeft" *ngIf="k > 0">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col=sm-12 pdLeft"  style="position: relative;top:36px;opacity:0.7;">
+                      <i class="fa fa-minus-circle cursor" aria-hidden="true" (click) = "openDeleteModal('users',k,cspUserDetails)"></i>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
           <div class="addCustomerText completeForm mb48 width215" (click)="addCSPUserDetails()"><i
-              class="fa fa-plus-circle faCircleMargin" aria-hidden="true"></i>Add Another User</div>
+              class="fa fa-plus-circle faCircleMargin cursor" aria-hidden="true"></i>Add Another User</div>
         </div>
       </div>
     </form>
@@ -557,7 +538,7 @@
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <button type="submit" class="btn saveSubmitBtn floatRight" [ngClass]="!(customerForm.valid) ? 'disabled' : ''"
-          [disabled]="!(customerForm.valid)" (click)="submit();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
+          [disabled]="!(customerForm.valid)" #btnColor (click)="submit();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
       </div>
     </div>
     <div class="row" *ngIf="customerTypeValue == 'CSP'">
@@ -566,7 +547,7 @@
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <button type="submit" class="btn saveSubmitBtn floatRight"
-          [ngClass]="!(cspCustomerForm.valid) ? 'disabled' : ''" [disabled]="!(cspCustomerForm.valid)"
+          [ngClass]="!(cspCustomerForm.valid) ? 'disabled' : ''" [disabled]="!(cspCustomerForm.valid)" #btnColor
           (click)="submitCSP();">{{addCustomer ? 'Save & Submit': 'Save Changes'}}</button>
       </div>
     </div>

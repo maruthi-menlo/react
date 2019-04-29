@@ -41,9 +41,10 @@ export class ForgotPasswordComponent implements OnInit {
   sendPassword() {
     const fgtPwdPostObj = this.forgotPasswordForm.value
     this.authService.forgotPassword(fgtPwdPostObj).subscribe((res: any) => {
-      this.forgotPassword = 1;
+      this.forgotPassword = 2;
     }, err => {
-      this.errorMsg = err && err.message ? err.message : '' ;
+      const errorObj = err.error
+      this.errorMsg = errorObj && errorObj.message ? errorObj.message : '' ;
       setTimeout(() => {
         this.errorMsg = "";      
       }, 2000);

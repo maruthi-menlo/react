@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,6 +19,7 @@ import { CustomersDataComponent } from './customers-data/customers-data.componen
 import { DeactivatePlayaAccountModalComponent } from './core/modals/deactivate-playa-account-modal/deactivate-playa-account-modal.component';
 import { DeactivateEditUserComponent } from './core/modals/deactivate-edit-user/deactivate-edit-user.component';
 import {ToastModule} from '../app/core/toaster/toaster.module';
+// import { AzureSubscriptionsComponent } from './azure-subscriptions/azure-subscriptions.component';
 // import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -29,6 +30,7 @@ import {ToastModule} from '../app/core/toaster/toaster.module';
     CustomersDataComponent,
     DeactivatePlayaAccountModalComponent,
     DeactivateEditUserComponent,
+    // AzureSubscriptionsComponent,
     // DashboardComponent
   ],
   entryComponents: [DeactivatePlayaAccountModalComponent,DeactivateEditUserComponent],
@@ -58,6 +60,7 @@ import {ToastModule} from '../app/core/toaster/toaster.module';
     }
   ],
   bootstrap: [AppComponent],
-  exports: [ DeactivatePlayaAccountModalComponent ]
+  exports: [ DeactivatePlayaAccountModalComponent ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule { }

@@ -1,13 +1,37 @@
 <div class="primaryNavbar">
   <nav class="navbar">
     <ul class="navbar-nav">
-      <li class="nav-item cursor" [routerLink]="['/dashboard']" routerLinkActive="active-link">
+      <li class="nav-item cursor" [routerLink]="['/dashboard']" routerLinkActive="primaryActive" *ngIf="userRole !== 1">
         <a class="nav-link">
           <img src="../../assets/images/dashboard.png">
           <div class="controlPanel">Dashboard</div>
         </a>
       </li>
-      <li class="nav-item cursor" [routerLink]="['/customersview']" routerLinkActive="active-link">
+      <li class="nav-item cursor" *ngIf="userRole !== 1 && userRole !== 2">
+        <a class="nav-link">
+          <img src="../../assets/images/control-panel.png">
+          <div class="controlPanel">Alerts</div>
+        </a>
+      </li>
+      <li class="nav-item cursor" *ngIf="userRole !== 1 && userRole !== 2">
+        <a class="nav-link">
+          <img src="../../assets/images/control-panel.png">
+          <div class="controlPanel">Tags</div>
+        </a>
+      </li>
+      <li class="nav-item cursor" [routerLink]="['/customersview']" routerLinkActive="primaryActive" *ngIf="userRole !== 3 && userRole !== 4">
+        <a class="nav-link">
+          <img src="../../assets/images/control-panel.png">
+          <div class="controlPanel">Control Panel</div>
+        </a>
+      </li>
+      <li class="nav-item cursor" [routerLink]="['/azuresubscriptions']" routerLinkActive="primaryActive" *ngIf="userRole == 3 && userRole !== 4">
+        <a class="nav-link">
+          <img src="../../assets/images/control-panel.png">
+          <div class="controlPanel">Control Panel</div>
+        </a>
+      </li>
+      <li class="nav-item cursor" [routerLink]="['/editplayaprofile']" routerLinkActive="primaryActive" *ngIf="userRole == 4">
         <a class="nav-link">
           <img src="../../assets/images/control-panel.png">
           <div class="controlPanel">Control Panel</div>
@@ -16,19 +40,25 @@
     </ul>
   </nav>
 </div>
-<div class="secondaryNavbar">
+<div class="secondaryNavbar" *ngIf="showSubHeader">
   <nav class="navbar">
     <ul class="navbar-nav">
-      <li class="nav-item cursor" [routerLink]="['/editplayaprofile']">
+      <li class="nav-item cursor" [routerLink]="['/editplayaprofile']" routerLinkActive="secondaryActive">
         <a class="nav-link">
           <img src="../../assets/images/edit-profile.png">
           <span class="navList">Profile Details</span>
         </a>
       </li>
-      <li class="nav-item cursor">
-        <a class="nav-link" [routerLink]="['/addcustomer']">
+      <li class="nav-item cursor" *ngIf="userRole !== 3 && userRole !== 4" [routerLink]="['/customersview']" routerLinkActive="secondaryActive">
+        <a class="nav-link">
           <img src="../../assets/images/customers.png">
           <span class="navList">Customer Subscriptions</span>
+        </a>
+      </li>
+      <li class="nav-item cursor" *ngIf="userRole == 3" [routerLink]="['/azuresubscriptions']" routerLinkActive="secondaryActive">
+        <a class="nav-link">
+          <img src="../../assets/images/customers.png">
+          <span class="navList">Azure Subscriptions</span>
         </a>
       </li>
     </ul>

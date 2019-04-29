@@ -27,7 +27,9 @@ export class AuthInterceptor implements HttpInterceptor {
     loader.show();
     return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
-        loader.hide();
+        setTimeout(() => {
+          loader.hide();
+        }, 500);
         if (event.url.indexOf('login') > -1) {
           loader.hide();
           if (event.body) {
@@ -39,7 +41,9 @@ export class AuthInterceptor implements HttpInterceptor {
       }
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
-        loader.hide();
+        setTimeout(() => {
+          loader.hide();
+        }, 500);
         if (err.status === 401) {
           auth.logout(err.status);
           return event;

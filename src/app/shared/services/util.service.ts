@@ -40,8 +40,8 @@ export class UtilService {
       let primaryNavElement = document.getElementsByClassName('primaryNavbar') as HTMLCollectionOf<HTMLElement>;
       let secondatNavElement = document.getElementsByClassName('secondaryNavbar') as HTMLCollectionOf<HTMLElement>;
       let bodyHeight = document.body.offsetHeight-85;
-      primaryNavElement[0].style.height = height > bodyHeight ? `${height}px` : `${bodyHeight}px` ;
-      secondatNavElement[0].style.height = height > bodyHeight ? `${height}px` : `${bodyHeight}px` ;
+      primaryNavElement && primaryNavElement.length ? primaryNavElement[0].style.height = height > bodyHeight ? `${height}px` : `${bodyHeight}px` : null;
+      secondatNavElement && secondatNavElement.length ? secondatNavElement[0].style.height = height > bodyHeight ? `${height}px` : `${bodyHeight}px`  : null;
     }
   }
 
@@ -105,6 +105,29 @@ export class UtilService {
  
   }
 
+  get userRole() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user ? user['roleid'] : null;
+  }
 
+  get brandingLogo() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['logoPath'] ? user['brandinginfo'][0]['logoPath'] : '/assets/images/logo.png';
+  }
+  
+  get headerHexCode() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['headerHexCode'] ? `#${user['brandinginfo'][0]['headerHexCode']}` : '#2a3438';
+  }
+
+  get primaryButtonHexCode() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['primaryButtonHexCode'] ? `#${user['brandinginfo'][0]['primaryButtonHexCode']}` : '#35b2fc';
+  }
+
+  get activeFieldHexCode() {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['activeFieldHexCode'] ? `1px solid #${user['brandinginfo'][0]['activeFieldHexCode']}` : '1px solid #00a0ff';
+  }
  
 }
