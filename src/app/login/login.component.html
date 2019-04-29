@@ -21,7 +21,7 @@
           </label>
         </div>
         <div class="errorText mb8" *ngIf="loginErrorMsz">{{loginErrorMsz}}</div>
-        <button type="submit" class="btn signInBtn bgColor" [ngClass]="!(loginForm.valid) ? 'disabled' : ''" [disabled]="!(loginForm.valid)" (click)="login()">Sign In</button>
+        <button type="submit" class="btn signInBtn" [ngClass]="!(loginForm.valid) ? 'disabled' : ''" [disabled]="!(loginForm.valid)" (click)="login()">Sign In</button>
         <div class="forgotPwd cursor" [routerLink]="['/forgotpassword']">Forgot Password?</div>
       </form>
   </div>
