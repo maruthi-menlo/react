@@ -7,6 +7,7 @@ import { CustomerService } from './services/customer.service';
 import {GetJsonService} from './services/json.service';
 import {PercentPipe} from './pipes/percent.pipe';
 import { ToastService } from './services/toaster.service';
+import { AuthGuardService } from './services/auth-guard.service';
 
 @NgModule({
   declarations: [LoaderComponent,PercentPipe],
@@ -21,7 +22,8 @@ import { ToastService } from './services/toaster.service';
     LoaderService,
     CustomerService,
     GetJsonService,
-    ToastService
+    ToastService,
+    AuthGuardService
   ],
   exports: [
     LoaderComponent,

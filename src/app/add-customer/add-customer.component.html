@@ -95,10 +95,11 @@
                     <label class="labelText">Zipcode</label>
                     <input type="text" class="form-control" maxlength="5" formControlName="zipcode"
                       (keypress)="utilService.numberOnly($event)"
-                      [ngClass]="customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched? 'error mb10' : ''">
+                      [ngClass]="(customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched) || (customerForm.controls['zipcode'].value.length < 5 && customerForm.controls['zipcode'].dirty) ? 'error mb10' : ''">
                     <p class="labelText errorText"
                       *ngIf="customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched">
                       {{messages.ZIP_CODE}}</p>
+                      <p class="labelText errorText" *ngIf="customerForm.controls['zipcode'].value.length < 5 && customerForm.controls['zipcode'].dirty">{{messages.VALID_ZIP_CODE}}</p>
                   </div>
                 </div>
               </div>
@@ -257,6 +258,7 @@
                         (blur)="percentBlur($event,j,'azuresubscriptions','discount')"
                         (focus)="percentFocus(j,'azuresubscriptions','discount')"
                         [value]="azureDetails.controls['discountMask'].value"
+                        onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
                         >
                     </div>
                   </div>
@@ -337,10 +339,11 @@
                     <label class="labelText">Zipcode</label>
                     <input type="text" class="form-control" formControlName="zipcode" maxlength="5"
                       (keypress)="utilService.numberOnly($event)"
-                      [ngClass]="cspCustomerForm.controls['zipcode'].hasError('required') && cspCustomerForm.controls['zipcode'].touched ? 'error mb10' : ''">
+                      [ngClass]="(cspCustomerForm.controls['zipcode'].hasError('required') && cspCustomerForm.controls['zipcode'].touched) || (cspCustomerForm.controls['zipcode'].value.length < 5 && cspCustomerForm.controls['zipcode'].dirty) ? 'error mb10' : ''">
                     <p class="labelText errorText"
                       *ngIf="cspCustomerForm.controls['zipcode'].hasError('required') && cspCustomerForm.controls['zipcode'].touched">
                       {{messages.ZIP_CODE}}</p>
+                      <p class="labelText errorText" *ngIf="cspCustomerForm.controls['zipcode'].value.length < 5 && cspCustomerForm.controls['zipcode'].dirty">{{messages.VALID_ZIP_CODE}}</p>
                   </div>
                 </div>
               </div>
@@ -427,21 +430,21 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb40">
                     <label class="labelText width85Percent">Header Hex Code (Optional)</label>
-                    <input type="text" class="form-control" placeholder="#000000" formControlName="headerHexCode"
+                    <input type="text" class="form-control" placeholder="000000" formControlName="headerHexCode"
                       [ngClass]="cspCustomerForm.controls['headerHexCode'].hasError('required') && cspCustomerForm.controls['headerHexCode'].touched ? 'error mb10' : ''">
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb40">
                     <label class="labelText width85Percent">Primary Button Hex Code (Optional)</label>
-                    <input type="text" class="form-control" placeholder="#000000" formControlName="primaryButtonHexCode"
+                    <input type="text" class="form-control" placeholder="000000" formControlName="primaryButtonHexCode"
                       [ngClass]="cspCustomerForm.controls['primaryButtonHexCode'].hasError('required') && cspCustomerForm.controls['primaryButtonHexCode'].touched ? 'error mb10' : ''">
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb40">
                     <label class="labelText width85Percent">Active Field Hex Code (Optional)</label>
-                    <input type="text" class="form-control" placeholder="#000000" formControlName="activeFieldHexCode"
+                    <input type="text" class="form-control" placeholder="000000" formControlName="activeFieldHexCode"
                       [ngClass]="cspCustomerForm.controls['activeFieldHexCode'].hasError('required') && cspCustomerForm.controls['activeFieldHexCode'].touched ? 'error mb10' : ''">
                   </div>
                 </div>

@@ -32,12 +32,10 @@ export class LoginComponent implements OnInit {
     this.initForm();
     this.getMessages('messages');
     this.userRole = this.utilService.userRole;
-    console.log('this.userRole',this.userRole)
   }
 
   getMessages(name) {
     this.jsonService.getJSON(name).subscribe((res:any) => {
-      console.log(res);
       if(res){
         this.messages = res;        
       }
@@ -56,7 +54,6 @@ export class LoginComponent implements OnInit {
     const loginPostObj = this.loginForm.value
     this.authService.login(loginPostObj).subscribe((res: any) => {
       this.userRole = this.utilService.userRole;
-      console.log('this.userRole',this.userRole)
       this.authService.setLoggedIn({ loggedIn: true });
       if(this.userRole === 3){
         this.router.navigate(['/azuresubscriptions']);

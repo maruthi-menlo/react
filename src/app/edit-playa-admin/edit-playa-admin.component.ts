@@ -19,6 +19,7 @@ export class EditPlayaAdminComponent implements OnInit {
   editPlayaProfileForm: FormGroup;
   user: any;
   errorMsz:string = '';
+  pwdMsz:string = '';
   upateUser: any;
   userRole:any=null;
   imageFile:any;
@@ -43,6 +44,7 @@ export class EditPlayaAdminComponent implements OnInit {
     this.userRole = this.utilService.userRole;
     this.getCurrentUser();
     this.initForm();
+    this.getMessages('messages');
   }
 
   getCurrentUser() {    
@@ -76,20 +78,41 @@ export class EditPlayaAdminComponent implements OnInit {
     }
   }
 
+  checkPasswordValidations() {
+    this.pwdMsz = '';
+    const oldpassword = this.editPlayaProfileForm.controls['oldpassword'].value;
+    const newpassword = this.editPlayaProfileForm.controls['newpassword'].value;
+    const newpasswordagain = this.editPlayaProfileForm.controls['newpasswordagain'].value;
+    if(oldpassword && (newpassword == '' && newpasswordagain == '')) {
+      this.pwdMsz = 'Please enter New Password and New Password Again.'
+    }else if(oldpassword && (newpassword == '')) {
+      this.pwdMsz = 'Please enter New Password.'
+    } else if(oldpassword && (newpasswordagain == '')) {
+      this.pwdMsz = 'Please enter New Password Again.'
+    } else if(oldpassword == '' && (newpassword || newpasswordagain)) {
+      this.pwdMsz = 'Please enter old Password.'
+    } else if(oldpassword && (newpassword != newpasswordagain)) {
+      this.pwdMsz = 'New Password and Confirm Password should be same.'
+    } else if(oldpassword && (newpassword.length < 8  || newpasswordagain.length < 8)) {
+      this.pwdMsz = 'New Password/New Password Again should contain min 8 characters.'
+    }
+    return this.pwdMsz ? true : false;
+  }
+
   initForm() {
     this.editPlayaProfileForm = this.fb.group({ 
       firstname: [this.user ? this.user.firstname : '', Validators.compose([Validators.required])],
       lastname: [this.user ? this.user.lastname : '', Validators.compose([Validators.required])],
       email: [this.user ? this.user.email : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])], 
-      oldpassword: ['', Validators.compose([Validators.required])],
-      newpassword: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(20)])],
-      newpasswordagain: ['',Validators.compose([Validators.required])],
+      oldpassword: [''],
+      newpassword: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(20)])],
+      newpasswordagain: ['',Validators.compose([Validators.minLength(8), Validators.maxLength(20)])],
       logo : [''],
       headerHexCode : [this.user && this.user.brandinginfo[0] ? this.user.brandinginfo[0].headerHexCode :''],
       primaryButtonHexCode : [this.user && this.user.brandinginfo[0] ? this.user.brandinginfo[0].primaryButtonHexCode :''],
       activeFieldHexCode : [this.user && this.user.brandinginfo[0] ? this.user.brandinginfo[0].activeFieldHexCode :''],
     },{
-      validator: MustMatch('newpassword', 'newpasswordagain')
+      // validator: MustMatch('newpassword', 'newpasswordagain')
     })
   }
 
@@ -123,12 +146,15 @@ export class EditPlayaAdminComponent implements OnInit {
   }
 
   submit(){
-    if(this.userRole === 2) {
-      this.adminSubmit()
-    } else if (this.userRole === 1){
-      this.userSubmit();
-    } else {
-      this.customerAdminUserSubmit();
+    const error = this.checkPasswordValidations();
+    if(!error) {
+      if(this.userRole === 2) {
+        this.adminSubmit()
+      } else if (this.userRole === 1){
+        this.userSubmit();
+      } else {
+        this.customerAdminUserSubmit();
+      }
     }
   }
 

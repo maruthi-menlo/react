@@ -215,13 +215,13 @@ export class AddCustomerComponent implements OnInit {
       address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
       address2: [data ? data.address2 : ''],
       city: [data ? data.city : '', Validators.compose([Validators.required])],
-      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required])],
+      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required, Validators.compose([Validators.minLength(5), Validators.maxLength(5),Validators.pattern(this.validationService.number_regexPattern)])])],
       countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
       stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       logo : [''],
-      headerHexCode : [data ? data.brandinginfo[0].headerHexCode : '', Validators.compose([Validators.minLength(6), Validators.maxLength(6),Validators.pattern(this.validationService.number_regexPattern)])],
-      primaryButtonHexCode : [data ? data.brandinginfo[0].primaryButtonHexCode : '',Validators.compose([Validators.minLength(6), Validators.maxLength(6),Validators.pattern(this.validationService.number_regexPattern)])],
-      activeFieldHexCode : [data ? data.brandinginfo[0].activeFieldHexCode : '',Validators.compose([Validators.minLength(6), Validators.maxLength(6),Validators.pattern(this.validationService.number_regexPattern)])],
+      headerHexCode : [data ? data.brandinginfo[0].headerHexCode : '', Validators.compose([Validators.minLength(6), Validators.maxLength(6)])],
+      primaryButtonHexCode : [data ? data.brandinginfo[0].primaryButtonHexCode : '',Validators.compose([Validators.minLength(6), Validators.maxLength(6)])],
+      activeFieldHexCode : [data ? data.brandinginfo[0].activeFieldHexCode : '',Validators.compose([Validators.minLength(6), Validators.maxLength(6)])],
       users: this.fb.array([ ])
     });
     [1].forEach(ele => {

@@ -1,7 +1,9 @@
 import { Component, OnInit,HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { UtilService } from './shared/services/util.service';
+import { AuthService } from './auth/auth.service';
 
+declare var jQuery:any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,7 +17,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private utilService:UtilService
+    private utilService:UtilService,
+    private authService:AuthService
   ) {
 
     router.events.subscribe((event: any) => {
@@ -24,6 +27,7 @@ export class AppComponent implements OnInit {
       || event.urlAfterRedirects.indexOf('/resetpassword') > -1 ) {
         this.loginRoute = true
         } else {
+          this.isAuthenticated();
           this.loginRoute = false;
           if(event.url.indexOf('/dashboard') > -1) {
             this.showSubHeader = false;
@@ -39,10 +43,20 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
-  @HostListener('window:click', ['$event.target'])
-  onClick(targetElement: any) {
-    if(targetElement.className.indexOf('form-control') > -1) {
-      targetElement.style.border = this.utilService.activeFieldHexCode;
+  // @HostListener('window:click', ['$event.target'])
+  // onClick(targetElement: any) {
+  //   jQuery('.form-control').css('border','1px solid rgba(0,0,0,.5)');
+  //   if(targetElement.className.indexOf('form-control') > -1) {
+  //     targetElement.style.border = this.utilService.activeFieldHexCode;
+  //   }
+  // }
+
+  isAuthenticated() {
+    if(this.authService.getCurrentUser == null) {
+      this.authService.logout;
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 100);
     }
   }
 }

@@ -79,7 +79,7 @@
                         opacity: 0.25;
                 }
                 &:focus {
-                        border: 1px solid #00a0ff;
+                        border: 1px solid #00a0ff !important;
                         box-shadow: 0 0 8px 0 rgba(96, 195, 253, 0.7);
                 }
             }

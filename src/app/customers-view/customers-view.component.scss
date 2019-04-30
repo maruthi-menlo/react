@@ -149,62 +149,84 @@
                     letter-spacing: normal;
                 }
                 .companyName{
-                    min-width: 16%;
-                    max-width: 16%;
+                    // min-width: 16%;
+                    // max-width: 16%;
+                    width: 16%;
+                    // max-width: 0;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                    // white-space: nowrap;
                 }
                 .updated{
-                    min-width: 11%;
-                    max-width: 11%;
+                    // min-width: 11%;
+                    // max-width: 11%;
+                    width: 11%;
                 }
                 .dateAdded{
-                    min-width: 13%;
-                    max-width: 13%;
+                    // min-width: 13%;
+                    // max-width: 13%;
+                    width: 13%;
                 }
                 .subscriptions{
-                    min-width:15%;
-                    min-width:15%;
+                    // min-width:15%;
+                    // max-width:15%;
+                    width:15%;
                 }
                 .admins{
-                    min-width:11%;
-                    max-width:11%
+                    // min-width:11%;
+                    // max-width:11%
+                    width:11%;
                 }
                 .Users{
-                    max-width:10%;
-                    min-width:10%;
+                    // max-width:10%;
+                    // min-width:10%;
+                    width:10%;
                 }
                 .actionsTH{
-                    max-width:24%;
-                    min-width:24%;
+                    // max-width:24%;
+                    // min-width:24%;
+                    width:24%;
                     text-align: center;
                 }
                 .actionsTD{
-                    min-width:12%;
-                    max-width:12%;
+                    // min-width:12%;
+                    // max-width:12%;
+                    width:12%;
                     text-align: center;
                     text-align: right;
                     text-decoration: underline;
                 }
 
-
+                .tableEllipsis{
+                    max-width: 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
                 .companyNameCSP{
-                    min-width: 21%;
-                    max-width: 21%;
+                    // min-width: 21%;
+                    // max-width: 21%;
+                    width: 21%;
                 }
                 .updatedCSP{
-                    min-width: 13%;
-                    max-width: 13%;
+                    // min-width: 13%;
+                    // max-width: 13%;
+                    width: 13%;
                 }
                 .dateAddedCSP{
-                    min-width: 16%;
-                    max-width: 16%;
+                    // min-width: 16%;
+                    // max-width: 16%;
+                    width: 16%;
                 }
                 .adminsCSP{
-                    min-width:13%;
-                    max-width:13%
+                    // min-width:13%;
+                    // max-width:13%
+                    width:13%;
                 }
                 .UsersCSP{
-                    max-width:13%;
-                    min-width:13%;
+                    // max-width:13%;
+                    // min-width:13%;
+                    width:13%;
                 }
                 .actionsTHCSP{
                     max-width:24%;
@@ -212,8 +234,9 @@
                     text-align: center;
                 }
                 .actionsTDCSP{
-                    min-width:12%;
-                    max-width:12%;
+                    // min-width:12%;
+                    // max-width:12%;
+                    width:12%;
                     text-align: right;
                     text-decoration: underline;
                 }
@@ -280,7 +303,7 @@
         min-width: 150px !important;
         max-width: 150px !important;
     }
-    .users{
+    .Users{
         min-width: 110px !important;
         max-width: 110px !important;
     }
@@ -290,15 +313,18 @@
         text-align: center;
     }
     .actionsTD{
-        min-width: 300px !important;
-        max-width: 300px !important;
+        min-width: 150px !important;
+        max-width: 150px !important;
         text-align: center;
+    }
+    .signInBtn{
+        width: 130px !important;
     }
 }
 
     @media only screen and (min-width: 1279px) and (max-width: 1365px){
         .customersView{
-          width: 85% !important;
+          width: 90% !important;
         }
         .customersViewContainer{
           width: 72.30% !important;
@@ -312,6 +338,10 @@
 }
 .customersViewContainer{
     width: 55.30% !important;
+}
+
+.signInBtn{
+    width: 130px !important;
 }
 
 .companyName{
@@ -334,7 +364,7 @@
     min-width: 150px !important;
     max-width: 150px !important;
 }
-.users{
+.Users{
     min-width: 110px !important;
     max-width: 110px !important;
 }
@@ -344,8 +374,8 @@
     text-align: center;
 }
 .actionsTD{
-    min-width: 300px !important;
-    max-width: 300px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
     text-align: center;
 }
 

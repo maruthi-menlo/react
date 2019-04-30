@@ -127,7 +127,7 @@ export class UtilService {
 
   get activeFieldHexCode() {
     const user = JSON.parse(localStorage.getItem('profile'));
-    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['activeFieldHexCode'] ? `1px solid #${user['brandinginfo'][0]['activeFieldHexCode']}` : '1px solid #00a0ff';
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['activeFieldHexCode'] ? `1px solid #${user['brandinginfo'][0]['activeFieldHexCode']}` : '1px solid rgba(0,0,0,.5)';
   }
  
 }

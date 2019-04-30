@@ -14,13 +14,19 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb24">
                         <label class="labelText">First Name</label>
-                        <input type="text" class="form-control capitalize"  formControlName="firstname" placeholder="abc">
+                        <input type="text" class="form-control capitalize"  formControlName="firstname" placeholder="abc" [ngClass]="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched ? 'error mb10' : ''">
+                        <p class="labelText errorText"
+                      *ngIf="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched">
+                      Please enter first name.</p>
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                         <div class="form-group inputTextBox mb24">
                           <label class="labelText">Last Name</label>
-                          <input type="text" class="form-control capitalize"  formControlName="lastname" placeholder="xyz">
+                          <input type="text" class="form-control capitalize"  formControlName="lastname" placeholder="xyz" [ngClass]="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched ? 'error mb10' : ''">
+                          <p class="labelText errorText"
+                      *ngIf="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched">
+                      Please enter last name.</p>
                         </div>
                       </div>
                   </div>
@@ -32,7 +38,9 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb32">
                         <label class="labelText">Email</label>
-                        <input type="text" class="form-control"  formControlName="email" placeholder="abcxyz@gmail.com">
+                        <input type="text" class="form-control"  formControlName="email" placeholder="abcxyz@gmail.com" [ngClass]="editPlayaProfileForm.controls['email'].hasError('required') && editPlayaProfileForm.controls['email'].touched || editPlayaProfileForm.controls['email'].hasError('pattern') && editPlayaProfileForm.controls['email'].dirty ? 'error mb10' : ''">
+                        <p class="labelText errorText" *ngIf="editPlayaProfileForm.controls['email'].hasError('required') && editPlayaProfileForm.controls['email'].touched">{{messages.EMAIL}}</p>
+                        <p class="labelText errorText" *ngIf="editPlayaProfileForm.controls['email'].hasError('pattern') && editPlayaProfileForm.controls['email'].dirty">{{messages.EMAIL_VALID}}</p>
                       </div>
                     </div>
                   </div>
@@ -85,6 +93,7 @@
               </div>
             </div>
           </div>
+          <div class="labelText errorText mb8 positonError" *ngIf="pwdMsz">{{pwdMsz}}</div>
       </div>
         <!--User details section Ends-->
       <div *ngIf = "userRole === 2">
@@ -136,21 +145,21 @@
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                 <div class="form-group inputTextBox mb40">
                   <label class="labelText width85Percent">Header Hex Code (Optional)</label>
-                  <input type="text" class="form-control" placeholder="#000000" formControlName="headerHexCode"
+                  <input type="text" class="form-control" placeholder="000000" formControlName="headerHexCode"
                     [ngClass]="editPlayaProfileForm.controls['headerHexCode'].hasError('required') && editPlayaProfileForm.controls['headerHexCode'].touched ? 'error mb10' : ''">
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                 <div class="form-group inputTextBox mb40">
                   <label class="labelText width85Percent">Primary Button Hex Code (Optional)</label>
-                  <input type="text" class="form-control" placeholder="#000000" formControlName="primaryButtonHexCode"
+                  <input type="text" class="form-control" placeholder="000000" formControlName="primaryButtonHexCode"
                     [ngClass]="editPlayaProfileForm.controls['primaryButtonHexCode'].hasError('required') && editPlayaProfileForm.controls['primaryButtonHexCode'].touched ? 'error mb10' : ''">
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                 <div class="form-group inputTextBox mb40">
                   <label class="labelText width85Percent">Active Field Hex Code (Optional)</label>
-                  <input type="text" class="form-control" placeholder="#000000" formControlName="activeFieldHexCode"
+                  <input type="text" class="form-control" placeholder="000000" formControlName="activeFieldHexCode"
                     [ngClass]="editPlayaProfileForm.controls['activeFieldHexCode'].hasError('required') && editPlayaProfileForm.controls['activeFieldHexCode'].touched ? 'error mb10' : ''">
                 </div>
               </div>
@@ -165,7 +174,7 @@
         <button type="submit" class="btn cancelBtn opacity-5" (click) = "cancel();">Cancel</button>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <button type="submit" class="btn saveSubmitBtn floatRight" #btnColor (click) = "submit();">Save Changes</button>
+        <button type="submit" class="btn saveSubmitBtn floatRight" #btnColor [ngClass]="!(editPlayaProfileForm.valid) ? 'disabled' : ''" [disabled]="!(editPlayaProfileForm.valid)" (click) = "submit();">Save Changes</button>
       </div>
     </div>
   </div>

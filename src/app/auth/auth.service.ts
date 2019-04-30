@@ -68,6 +68,10 @@ export class AuthService {
     return this.loggedIn$.asObservable();
   }
 
+  get isAuthenticated() {
+    return this.loggedIn ? true:false
+  }
+
   logout(status?) {
     // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;

@@ -13,18 +13,21 @@
     background-image: url(/assets/images/background.svg);
     background-repeat: no-repeat;
     background-size: cover;
-    height: 990px;
     background-position: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    min-height: 580px;
+    height: 100%;
     .loginFormSection {
         width: 387px;
         // height: 448px;
-        margin: auto;
+        margin: 50px 0px 20px;
         border-radius: 8px;
         border: solid 1px rgba(74, 74, 74, 0.25);
         background-color: $white;
         padding: 40px 20px 33px 20px;
-        position: relative;
-        top: 19%;
         .signInText {
             font-family: $heebo;
             font-size: 24px;
@@ -94,7 +97,7 @@
                         opacity: 0.25;
                 }
                 &:focus {
-                        border: 1px solid #00a0ff;
+                        border: 1px solid #00a0ff !important;
                         box-shadow: 0 0 8px 0 rgba(96, 195, 253, 0.7);
                 }
             }

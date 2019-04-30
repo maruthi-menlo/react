@@ -1,4 +1,4 @@
-<div class="headerContainer" #headerBGColor>
+<div class="headerContainer" [ngClass] = "showFixedHeader ? 'positionFixed' : ''" #headerBGColor>
   <div class="row">
     <div class="playaLogo col-lg-6 col-md-6 col-sm-3 col-xs-4">
       <div class="floatLeft">
@@ -9,7 +9,7 @@
       <div class="floatRight" >
         <img src="/assets/images/empty-state.png" class="customerLogoWidth">
         <div class="customerDetails">
-          <div class="customerName">{{userProfileObj.name}}</div>
+          <div class="customerName cursor" title="{{userProfileObj.name}}">{{userProfileObj.name}}</div>
           <div class="customerDesignation">{{userProfileObj.rolename}}</div>
         </div>
         <!-- <img src="/assets/images/down-arrow.png" class="arrowIcon"> -->
