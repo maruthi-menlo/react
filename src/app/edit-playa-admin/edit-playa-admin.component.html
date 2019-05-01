@@ -15,7 +15,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb24">
                         <label class="labelText">First Name</label>
-                        <input type="text" class="form-control capitalize"  formControlName="firstname" placeholder="abc" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched ? 'error mb10' : ''">
+                        <input type="text" class="form-control capitalize" maxlength="100"  formControlName="firstname" placeholder="abc" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched ? 'error mb10' : ''">
                         <p class="labelText errorText"
                       *ngIf="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched">
                       Please enter first name.</p>
@@ -24,7 +24,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                         <div class="form-group inputTextBox mb24">
                           <label class="labelText">Last Name</label>
-                          <input type="text" class="form-control capitalize"  formControlName="lastname" placeholder="xyz" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched ? 'error mb10' : ''">
+                          <input type="text" class="form-control capitalize" maxlength="100" formControlName="lastname" placeholder="xyz" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched ? 'error mb10' : ''">
                           <p class="labelText errorText"
                       *ngIf="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched">
                       Please enter last name.</p>
@@ -95,6 +95,7 @@
             </div>
           </div>
           <div class="labelText errorText mb8 positonError" *ngIf="pwdMsz">{{pwdMsz}}</div>
+          <div class="errorText mb8 positonError" *ngIf="errorMsz">{{errorMsz}}</div>
       </div>
         <!--User details section Ends-->
       <div *ngIf = "userRole === 2">
@@ -141,24 +142,24 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdZero">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdZero mb40">
             <div class="row">
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
-                <div class="form-group inputTextBox mb40">
+                <div class="form-group inputTextBox">
                   <label class="labelText width85Percent">Header Hex Code (Optional)</label>
                   <input type="text" class="form-control" maxlength="6" placeholder="000000" formControlName="headerHexCode"
                     [ngClass]="editPlayaProfileForm.controls['headerHexCode'].hasError('required') && editPlayaProfileForm.controls['headerHexCode'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
-                <div class="form-group inputTextBox mb40">
+                <div class="form-group inputTextBox">
                   <label class="labelText width85Percent">Primary Button Hex Code (Optional)</label>
                   <input type="text" class="form-control" maxlength="6" placeholder="000000" formControlName="primaryButtonHexCode"
                     [ngClass]="editPlayaProfileForm.controls['primaryButtonHexCode'].hasError('required') && editPlayaProfileForm.controls['primaryButtonHexCode'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
-                <div class="form-group inputTextBox mb40">
+                <div class="form-group inputTextBox">
                   <label class="labelText width85Percent">Active Field Hex Code (Optional)</label>
                   <input type="text" class="form-control" maxlength="6" placeholder="000000" formControlName="activeFieldHexCode"
                     [ngClass]="editPlayaProfileForm.controls['activeFieldHexCode'].hasError('required') && editPlayaProfileForm.controls['activeFieldHexCode'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
@@ -167,8 +168,7 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="errorText mb8" *ngIf="errorMsz">{{errorMsz}}</div>
+      </div>      
     </form>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">

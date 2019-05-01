@@ -102,9 +102,11 @@ body {
 .opacity-5{
     opacity: 0.5;
 }
-.width215{
-    width: 195px;
-    cursor: pointer;
+.width200{
+    width: 215px;
+}
+.width255{
+    width: 255px;    
 }
 
 .customDeactivateModal{
@@ -175,4 +177,8 @@ input[type=number]::-webkit-outer-spin-button {
 .positonError{
     position: relative;
     top: -55px;
+}
+.positionAddError{
+    position: relative;
+    top: -65px;
 }
