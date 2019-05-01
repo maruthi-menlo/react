@@ -147,6 +147,7 @@ export class EditPlayaAdminComponent implements OnInit {
 
   submit(){
     const error = this.checkPasswordValidations();
+    this.errorMsz = '';
     if(!error) {
       if(this.userRole === 2) {
         this.adminSubmit()
@@ -177,8 +178,8 @@ export class EditPlayaAdminComponent implements OnInit {
     })
   }
   userSubmit() {
-    const editPostObj = this.editPlayaProfileForm.value;
-    this.customerService.editPlayaUserData(editPostObj).subscribe((res:any) => {
+     const editPostObj = this.editPlayaProfileForm.value;
+    this.customerService.editPlayaUserData(editPostObj).subscribe((res:any) => {    
       this.updateLocalStorage(editPostObj)
     }, err => {
       this.errorMsz = err && err.error ? err.error.message : '';
@@ -219,6 +220,13 @@ export class EditPlayaAdminComponent implements OnInit {
       text: message,
       type: 'success',
     });
+  }
+
+  restrictLeadingSpace(event) {
+    let strInput = event.target.value;
+    if (!strInput.length) {
+      event.preventDefault();
+    }
   }
 
   updateBtnColor () {
