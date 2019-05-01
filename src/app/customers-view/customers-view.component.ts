@@ -92,7 +92,7 @@ export class CustomersViewComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')
-    }, 100);
+    }, 1000);
   }
 
   onChangeTableView(type) {

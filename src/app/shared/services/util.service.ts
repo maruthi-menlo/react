@@ -65,8 +65,10 @@ export class UtilService {
     const charCode = (event.which) ? event.which : event.keyCode;
     let ch = event.target.value;
     var charStr = String.fromCharCode(charCode);
-
-    if(ch !== '' && ch.length !== 2 && ch<100){
+    let splitDot = ch.split('.');
+    if((splitDot.length == 2 && charStr == '.') || ch.length > 5 || (ch.length > 1 && ch[0] == 0 && ch.indexOf('.') == -1)) {
+      return false
+    }else if(ch !== '' && ch.length !== 2 && ch<100){
       if(this.regexStr.test(ch)  && !ch.includes('.')){//
         if (((charCode > 31 && (charCode < 48 || charCode > 57))&& (charCode != 46))) {
           return false;
@@ -136,6 +138,11 @@ export class UtilService {
   get activeFieldHexCode() {
     const user = JSON.parse(localStorage.getItem('profile'));
     return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['activeFieldHexCode'] ? `1px solid #${user['brandinginfo'][0]['activeFieldHexCode']}` : '1px solid rgba(0,0,0,.5)';
+  }
+
+  get isActiveHexCode () {
+    const user = JSON.parse(localStorage.getItem('profile'));
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['activeFieldHexCode'] ? true : false;
   }
  
 }

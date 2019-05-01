@@ -50,13 +50,18 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // @HostListener('window:click', ['$event.target'])
-  // onClick(targetElement: any) {
-  //   jQuery('.form-control').css('border','1px solid rgba(0,0,0,.5)');
-  //   if(targetElement.className.indexOf('form-control') > -1) {
-  //     targetElement.style.border = this.utilService.activeFieldHexCode;
-  //   }
-  // }
+  @HostListener('window:click', ['$event.target'])
+  onClick(targetElement: any) {
+    const userRole  = this.utilService.userRole
+    if(userRole == 2 && this.utilService.isActiveHexCode) {
+      jQuery('.form-control').css('border','');
+      jQuery('.form-control').css('box-shadow','');
+      if(targetElement.className.indexOf('form-control') > -1) {
+        targetElement.style.border = this.utilService.activeFieldHexCode;
+        targetElement.style.boxShadow = 'inherit'
+      }
+    }
+  }
 
   isAuthenticated() {
     if(this.authService.getCurrentUser == null) {

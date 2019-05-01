@@ -53,7 +53,7 @@ export class AzureSubscriptionsComponent implements OnInit {
     let formArray = this.azureSubscriptionForm.controls['azuresubscriptions'] as FormArray;
     formArray.push(this.fb.group({
       id: [data ? data.id : ''],
-      subscriptionid: [data? data.subscriptionId: ''],
+      subscriptionid: [data? data.subscriptionId.trim(): ''],
     }));
     setTimeout(() => {
       this.utilService.setNavHeight('commonContainer')

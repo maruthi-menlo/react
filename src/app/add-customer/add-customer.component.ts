@@ -127,9 +127,9 @@ export class AddCustomerComponent implements OnInit {
     let formArrayDetails = this.customerForm.controls['users'] as FormArray;
     formArrayDetails.push(this.fb.group({
       id: [data ? data.id : ''],
-      firstname: [data ? data.firstname : '', Validators.compose([Validators.required])],
-      lastname: [data ? data.lastname : '', Validators.compose([Validators.required])],
-      email: [data ? data.email : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
+      firstname: [data ? data.firstname.trim() : '', Validators.compose([Validators.required])],
+      lastname: [data ? data.lastname.trim() : '', Validators.compose([Validators.required])],
+      email: [data ? data.email.trim() : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
       roleid: [data ? data.roleid : '', Validators.compose([Validators.required])]
     }))
     setTimeout(() => {
@@ -141,9 +141,9 @@ export class AddCustomerComponent implements OnInit {
     let cspFormArrayDetails = this.cspCustomerForm.controls['users'] as FormArray;
     cspFormArrayDetails.push(this.fb.group({
       id: [data ? data.id : ''],
-      firstname: [data ? data.firstname : '', Validators.compose([Validators.required])],
-      lastname: [data ? data.lastname : '', Validators.compose([Validators.required])],
-      email: [data ? data.email : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
+      firstname: [data ? data.firstname.trim() : '', Validators.compose([Validators.required])],
+      lastname: [data ? data.lastname.trim() : '', Validators.compose([Validators.required])],
+      email: [data ? data.email.trim() : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])],
       roleid: [data ? data.roleid : '', Validators.compose([Validators.required])]
     }))
     setTimeout(() => {
@@ -155,7 +155,7 @@ export class AddCustomerComponent implements OnInit {
     let formArray = this.customerForm.controls['azuresubscriptions'] as FormArray;
     formArray.push(this.fb.group({
       id: [data ? data.id : ''],
-      subscriptionid: [data? data.subscriptionId: ''],
+      subscriptionid: [data? data.subscriptionId.trim(): ''],
       markup: [''],
       markupMask: [''],
       discount: [''],
@@ -173,12 +173,12 @@ export class AddCustomerComponent implements OnInit {
  
   initForm(data?){
     this.customerForm = this.fb.group({
-      companyname: [data ? data.companyname : '', Validators.compose([Validators.required])],
-      tenantid: [data ? data.tenantid : '', Validators.compose([Validators.required])],
-      address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
-      address2: [data ? data.address2 : ''],
-      city: [data ? data.city : '', Validators.compose([Validators.required])],
-      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required, Validators.compose([Validators.minLength(5), Validators.maxLength(5),Validators.pattern(this.validationService.number_regexPattern)])])],
+      companyname: [data ? data.companyname.trim() : '', Validators.compose([Validators.required])],
+      tenantid: [data ? data.tenantid.trim() : '', Validators.compose([Validators.required])],
+      address1: [data ? data.address1.trim() : '', Validators.compose([Validators.required])],
+      address2: [data ? data.address2.trim() : ''],
+      city: [data ? data.city.trim() : '', Validators.compose([Validators.required])],
+      zipcode: [data ? data.zipcode.trim() : '', Validators.compose([Validators.required, Validators.compose([Validators.minLength(5), Validators.maxLength(5),Validators.pattern(this.validationService.number_regexPattern)])])],
       countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
       stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       users: this.fb.array([ ]),
@@ -211,11 +211,11 @@ export class AddCustomerComponent implements OnInit {
 
   initCSPForm(data?){
     this.cspCustomerForm = this.fb.group({
-      companyname : [data ? data.companyname : '', Validators.compose([Validators.required])],      
-      address1: [data ? data.address1 : '', Validators.compose([Validators.required])],
-      address2: [data ? data.address2 : ''],
-      city: [data ? data.city : '', Validators.compose([Validators.required])],
-      zipcode: [data ? data.zipcode : '', Validators.compose([Validators.required, Validators.compose([Validators.minLength(5), Validators.maxLength(5),Validators.pattern(this.validationService.number_regexPattern)])])],
+      companyname : [data ? data.companyname.trim() : '', Validators.compose([Validators.required])],      
+      address1: [data ? data.address1.trim() : '', Validators.compose([Validators.required])],
+      address2: [data ? data.address2.trim() : ''],
+      city: [data ? data.city.trim() : '', Validators.compose([Validators.required])],
+      zipcode: [data ? data.zipcode.trim() : '', Validators.compose([Validators.required, Validators.compose([Validators.minLength(5), Validators.maxLength(5),Validators.pattern(this.validationService.number_regexPattern)])])],
       countryid: [data ? data.countryid : '', Validators.compose([Validators.required])],
       stateid: [data ? data.stateid : '', Validators.compose([Validators.required])],
       logo : [''],

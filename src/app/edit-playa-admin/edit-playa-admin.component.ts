@@ -101,9 +101,9 @@ export class EditPlayaAdminComponent implements OnInit {
 
   initForm() {
     this.editPlayaProfileForm = this.fb.group({ 
-      firstname: [this.user ? this.user.firstname : '', Validators.compose([Validators.required])],
-      lastname: [this.user ? this.user.lastname : '', Validators.compose([Validators.required])],
-      email: [this.user ? this.user.email : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])], 
+      firstname: [this.user ? this.user.firstname.trim() : '', Validators.compose([Validators.required])],
+      lastname: [this.user ? this.user.lastname.trim() : '', Validators.compose([Validators.required])],
+      email: [this.user ? this.user.email.trim() : '', Validators.compose([Validators.required, Validators.pattern(this.validationService.email_regexPattern)])], 
       oldpassword: [''],
       newpassword: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(20)])],
       newpasswordagain: ['',Validators.compose([Validators.minLength(8), Validators.maxLength(20)])],
