@@ -1,7 +1,8 @@
 <div class="editProfileContainer commonContainer">
   <div class="editProfile">
     <h1 class="editProfileText">Edit Profile</h1>
-    <p class="editProfileText completeForm">Here you can make changes to your profile or password.</p>
+    <p class="editProfileText completeForm" *ngIf = "userRole === 1">Here you can make changes to your profile or password.</p>
+    <p class="editProfileText completeForm" *ngIf = "userRole !== 1">Complete the form below to add a new customer to the system. A valid Azure subscription ID is required for a customer to be added.</p>
     <form [formGroup]="editPlayaProfileForm">
       <div class="editProfileForm">
         <!--User details section starts-->
@@ -55,7 +56,7 @@
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb24">
-                      <label class="labelText">Current Pasword</label>
+                      <label class="labelText">Current Password</label>
                       <input type="password" class="form-control"  formControlName="oldpassword">
                     </div>
                   </div>

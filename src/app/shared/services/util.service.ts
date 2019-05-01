@@ -53,6 +53,14 @@ export class UtilService {
     return true;
   }
 
+  alphaNemericOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode >= 19 && charCode <= 46 ) 
+      return false;
+    else
+      return true;
+  }
+
   numberAndDecimalOnly(event){
     const charCode = (event.which) ? event.which : event.keyCode;
     let ch = event.target.value;

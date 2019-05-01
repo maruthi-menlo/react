@@ -11,11 +11,11 @@
           Customer?</div>
         <div class="mb20" *ngIf = "userRole === 1">
           <div class="radio cursor">
-            <input id="radio-1" name="radio" type="radio" value="CSP" [(ngModel)]="customerTypeValue" (change)=customerType($event)>
+            <input id="radio-1" name="radio" type="radio" value="CSP" (keydown.space)="restrictLeadingSpace($event);" [(ngModel)]="customerTypeValue" (change)=customerType($event)>
             <label for="radio-1" class="radio-label"><span class="addCustomerText radioLabelText">CSP</span></label>
           </div>
           <div class="radio cursor">
-            <input id="radio-2" name="radio" type="radio" checked value="DC" [(ngModel)]="customerTypeValue" (change)=customerType($event)>
+            <input id="radio-2" name="radio" type="radio" checked value="DC" (keydown.space)="restrictLeadingSpace($event);" [(ngModel)]="customerTypeValue" (change)=customerType($event)>
             <label for="radio-2" class="radio-label"><span class="addCustomerText radioLabelText">Direct
                 Customer</span></label>
           </div>
@@ -35,7 +35,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Company Name</label>
-                    <input type="text" class="form-control capitalize" formControlName="companyname"
+                    <input type="text" class="form-control capitalize" (keydown.space)="restrictLeadingSpace($event);" formControlName="companyname"
                       [ngClass]="customerForm.controls['companyname'].hasError('required') && customerForm.controls['companyname'].touched ? 'error mb10' : ''">
                     <p class="labelText errorText"
                       *ngIf="customerForm.controls['companyname'].hasError('required') && customerForm.controls['companyname'].touched">
@@ -45,8 +45,8 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Tenant Id</label>
-                    <input type="text" class="form-control" formControlName="tenantid"
-                      [ngClass]="customerForm.controls['tenantid'].hasError('required') && customerForm.controls['tenantid'].touched ? 'error mb10' : ''">
+                    <input type="text" class="form-control" formControlName="tenantid" 
+                      [ngClass]="customerForm.controls['tenantid'].hasError('required') && customerForm.controls['tenantid'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="customerForm.controls['tenantid'].hasError('required') && customerForm.controls['tenantid'].touched">
                       {{messages.TENENT_ID}}</p>
@@ -62,7 +62,7 @@
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Address</label>
                     <input type="text" class="form-control capitalize" formControlName="address1"
-                      [ngClass]="customerForm.controls['address1'].hasError('required') && customerForm.controls['address1'].touched ? 'error mb10' : ''">
+                      [ngClass]="customerForm.controls['address1'].hasError('required') && customerForm.controls['address1'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="customerForm.controls['address1'].hasError('required') && customerForm.controls['address1'].touched">
                       {{messages.ADDRESS_1}}</p>
@@ -71,7 +71,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Suite, apt, etc.</label>
-                    <input type="text" class="form-control capitalize" formControlName="address2">
+                    <input type="text" class="form-control capitalize" formControlName="address2" (keydown.space)="restrictLeadingSpace($event);">
                   </div>
                 </div>
               </div>
@@ -84,7 +84,7 @@
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">City</label>
                     <input type="text" class="form-control capitalize" formControlName="city"
-                      [ngClass]="customerForm.controls['city'].hasError('required') && customerForm.controls['city'].touched ? 'error mb10' : ''">
+                      [ngClass]="customerForm.controls['city'].hasError('required') && customerForm.controls['city'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="customerForm.controls['city'].hasError('required') && customerForm.controls['city'].touched">
                       {{messages.CITY}}</p>
@@ -95,7 +95,7 @@
                     <label class="labelText">Zipcode</label>
                     <input type="text" class="form-control" maxlength="5" formControlName="zipcode"
                       (keypress)="utilService.numberOnly($event)"
-                      [ngClass]="(customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched) || (customerForm.controls['zipcode'].value.length < 5 && customerForm.controls['zipcode'].dirty) ? 'error mb10' : ''">
+                      [ngClass]="(customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched) || (customerForm.controls['zipcode'].value.length < 5 && customerForm.controls['zipcode'].dirty) ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="customerForm.controls['zipcode'].hasError('required') && customerForm.controls['zipcode'].touched">
                       {{messages.ZIP_CODE}}</p>
@@ -154,7 +154,7 @@
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">First Name</label>
                       <input type="text" class="form-control capitalize" formControlName="firstname"
-                        [ngClass]="address.controls['firstname'].hasError('required') && address.controls['firstname'].touched ? 'error mb10' : ''">
+                        [ngClass]="address.controls['firstname'].hasError('required') && address.controls['firstname'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                       <p class="labelText errorText"
                         *ngIf="address.controls['firstname'].hasError('required') && address.controls['firstname'].touched">
                         {{messages.FIRST_NAME}}</p>
@@ -164,7 +164,7 @@
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Last Name</label>
                       <input type="text" class="form-control capitalize" formControlName="lastname"
-                        [ngClass]="address.controls['lastname'].hasError('required') && address.controls['lastname'].touched ? 'error mb10' : ''">
+                        [ngClass]="address.controls['lastname'].hasError('required') && address.controls['lastname'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                       <p class="labelText errorText"
                         *ngIf="address.controls['lastname'].hasError('required') && address.controls['lastname'].touched">
                         {{messages.LAST_NAME}}</p>
@@ -180,7 +180,7 @@
                     <div class="form-group inputTextBox mb16">
                       <label class="labelText">Email</label>
                       <input type="text" class="form-control" formControlName="email"
-                        [ngClass]="address.controls['email'].hasError('required') && address.controls['email'].touched || address.controls['email'].hasError('pattern') && address.controls['email'].dirty ? 'error mb10' : ''">
+                        [ngClass]="address.controls['email'].hasError('required') && address.controls['email'].touched || address.controls['email'].hasError('pattern') && address.controls['email'].dirty ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                       <p class="labelText errorText"
                         *ngIf="address.controls['email'].hasError('required') && address.controls['email'].touched">
                         {{messages.EMAIL}}</p>
@@ -231,7 +231,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Subscription ID</label>
-                      <input type="text" class="form-control" formControlName="subscriptionid">
+                      <input type="text" class="form-control" formControlName="subscriptionid" (keydown.space)="restrictLeadingSpace($event);" (keypress)="utilService.alphaNemericOnly($event)">
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
@@ -242,7 +242,7 @@
                         (blur)="percentBlur($event,j,'azuresubscriptions','markup')"
                         (focus)="percentFocus(j,'azuresubscriptions','markup')"
                         [value]="azureDetails.controls['markupMask'].value"
-                        onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" 
+                        onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" (keydown.space)="restrictLeadingSpace($event);"
                         >
                     </div>
                   </div>
@@ -258,7 +258,7 @@
                         (blur)="percentBlur($event,j,'azuresubscriptions','discount')"
                         (focus)="percentFocus(j,'azuresubscriptions','discount')"
                         [value]="azureDetails.controls['discountMask'].value"
-                        onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                        onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" (keydown.space)="restrictLeadingSpace($event);"
                         >
                     </div>
                   </div>
@@ -290,7 +290,7 @@
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Company Name</label>
                     <input type="text" class="form-control capitalize" formControlName="companyname"
-                      [ngClass]="cspCustomerForm.controls['companyname'].hasError('required') && cspCustomerForm.controls['companyname'].touched ? 'error mb10' : ''">
+                      [ngClass]="cspCustomerForm.controls['companyname'].hasError('required') && cspCustomerForm.controls['companyname'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="cspCustomerForm.controls['companyname'].hasError('required') && cspCustomerForm.controls['companyname'].touched">
                       {{messages.COMPANY_NAME}}</p>
@@ -306,7 +306,7 @@
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Address</label>
                     <input type="text" class="form-control capitalize" formControlName="address1"
-                      [ngClass]="cspCustomerForm.controls['address1'].hasError('required') && cspCustomerForm.controls['address1'].touched ? 'error mb10' : ''">
+                      [ngClass]="cspCustomerForm.controls['address1'].hasError('required') && cspCustomerForm.controls['address1'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="cspCustomerForm.controls['address1'].hasError('required') && cspCustomerForm.controls['address1'].touched">
                       {{messages.ADDRESS_1}}</p>
@@ -315,7 +315,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">Suite, apt, etc.</label>
-                    <input type="text" class="form-control capitalize" formControlName="address2">
+                    <input type="text" class="form-control capitalize" formControlName="address2" (keydown.space)="restrictLeadingSpace($event);">
                   </div>
                 </div>
               </div>
@@ -328,7 +328,7 @@
                   <div class="form-group inputTextBox mb24">
                     <label class="labelText">City</label>
                     <input type="text" class="form-control capitalize" formControlName="city"
-                      [ngClass]="cspCustomerForm.controls['city'].hasError('required') && cspCustomerForm.controls['city'].touched ? 'error mb10' : ''">
+                      [ngClass]="cspCustomerForm.controls['city'].hasError('required') && cspCustomerForm.controls['city'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="cspCustomerForm.controls['city'].hasError('required') && cspCustomerForm.controls['city'].touched">
                       {{messages.CITY}}</p>
@@ -339,7 +339,7 @@
                     <label class="labelText">Zipcode</label>
                     <input type="text" class="form-control" formControlName="zipcode" maxlength="5"
                       (keypress)="utilService.numberOnly($event)"
-                      [ngClass]="(cspCustomerForm.controls['zipcode'].hasError('required') && cspCustomerForm.controls['zipcode'].touched) || (cspCustomerForm.controls['zipcode'].value.length < 5 && cspCustomerForm.controls['zipcode'].dirty) ? 'error mb10' : ''">
+                      [ngClass]="(cspCustomerForm.controls['zipcode'].hasError('required') && cspCustomerForm.controls['zipcode'].touched) || (cspCustomerForm.controls['zipcode'].value.length < 5 && cspCustomerForm.controls['zipcode'].dirty) ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                     <p class="labelText errorText"
                       *ngIf="cspCustomerForm.controls['zipcode'].hasError('required') && cspCustomerForm.controls['zipcode'].touched">
                       {{messages.ZIP_CODE}}</p>
@@ -392,7 +392,7 @@
                     <label for="sel1" class="labelText">Company Logo (Optional)</label>
                     <div class="fileInputs" *ngIf="(logoObj | json) == '{}'">
                       <input type="file" class="form-control file" #fileInput id="imageUpload"
-                        (change)="imageChangeEvent($event,'logo')" accept=".jpg,.jpeg,.png">
+                        (change)="imageChangeEvent($event,'logo')" accept=".jpg,.jpeg,.png" (keydown.space)="restrictLeadingSpace($event);">
                       <div class="row dragDropFile">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
                           <img src="../../assets/images/upload.png" class="floatRight pdtop20">
@@ -431,21 +431,21 @@
                   <div class="form-group inputTextBox mb40">
                     <label class="labelText width85Percent">Header Hex Code (Optional)</label>
                     <input type="text" class="form-control" placeholder="000000" formControlName="headerHexCode"
-                      [ngClass]="cspCustomerForm.controls['headerHexCode'].hasError('required') && cspCustomerForm.controls['headerHexCode'].touched ? 'error mb10' : ''">
+                      [ngClass]="cspCustomerForm.controls['headerHexCode'].hasError('required') && cspCustomerForm.controls['headerHexCode'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb40">
                     <label class="labelText width85Percent">Primary Button Hex Code (Optional)</label>
                     <input type="text" class="form-control" placeholder="000000" formControlName="primaryButtonHexCode"
-                      [ngClass]="cspCustomerForm.controls['primaryButtonHexCode'].hasError('required') && cspCustomerForm.controls['primaryButtonHexCode'].touched ? 'error mb10' : ''">
+                      [ngClass]="cspCustomerForm.controls['primaryButtonHexCode'].hasError('required') && cspCustomerForm.controls['primaryButtonHexCode'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pdLeft">
                   <div class="form-group inputTextBox mb40">
                     <label class="labelText width85Percent">Active Field Hex Code (Optional)</label>
                     <input type="text" class="form-control" placeholder="000000" formControlName="activeFieldHexCode"
-                      [ngClass]="cspCustomerForm.controls['activeFieldHexCode'].hasError('required') && cspCustomerForm.controls['activeFieldHexCode'].touched ? 'error mb10' : ''">
+                      [ngClass]="cspCustomerForm.controls['activeFieldHexCode'].hasError('required') && cspCustomerForm.controls['activeFieldHexCode'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                   </div>
                 </div>
               </div>
@@ -468,7 +468,7 @@
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">First Name</label>
                       <input type="text" class="form-control capitalize" formControlName="firstname"
-                        [ngClass]="cspUserDetails.controls['firstname'].hasError('required') && cspUserDetails.controls['firstname'].touched ? 'error mb10' : ''">
+                        [ngClass]="cspUserDetails.controls['firstname'].hasError('required') && cspUserDetails.controls['firstname'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                       <p class="labelText errorText"
                         *ngIf="cspUserDetails.controls['firstname'].hasError('required') && cspUserDetails.controls['firstname'].touched">
                         {{messages.FIRST_NAME}}</p>
@@ -478,7 +478,7 @@
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Last Name</label>
                       <input type="text" class="form-control capitalize" formControlName="lastname"
-                        [ngClass]="cspUserDetails.controls['lastname'].hasError('required') && cspUserDetails.controls['lastname'].touched ? 'error mb10' : ''">
+                        [ngClass]="cspUserDetails.controls['lastname'].hasError('required') && cspUserDetails.controls['lastname'].touched ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                       <p class="labelText errorText"
                         *ngIf="cspUserDetails.controls['lastname'].hasError('required') && cspUserDetails.controls['lastname'].touched">
                         {{messages.LAST_NAME}}</p>
@@ -494,7 +494,7 @@
                     <div class="form-group inputTextBox mb16">
                       <label class="labelText">Email</label>
                       <input type="text" class="form-control" formControlName="email"
-                        [ngClass]="cspUserDetails.controls['email'].hasError('required') && cspUserDetails.controls['email'].touched || cspUserDetails.controls['email'].hasError('pattern') && cspUserDetails.controls['email'].dirty ? 'error mb10' : ''">
+                        [ngClass]="cspUserDetails.controls['email'].hasError('required') && cspUserDetails.controls['email'].touched || cspUserDetails.controls['email'].hasError('pattern') && cspUserDetails.controls['email'].dirty ? 'error mb10' : ''" (keydown.space)="restrictLeadingSpace($event);">
                       <p class="labelText errorText"
                         *ngIf="cspUserDetails.controls['email'].hasError('required') && cspUserDetails.controls['email'].touched">
                         {{messages.EMAIL}}</p>

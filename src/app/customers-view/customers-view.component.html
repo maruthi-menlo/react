@@ -49,7 +49,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let customer of directCustomerArr.data">
-              <td class="companyName cursor tableEllipsis" title = "{{customer.name}}" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.name}}</td>
+              <td class="companyName capitalize cursor tableEllipsis" title = "{{customer.name}}" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.name}}</td>
               <td class="updated" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.updated}}</td>
               <td class="dateAdded" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.created}}</td>
               <td class="subscriptions cursor tableEllipsis" title="{{customer.totalsubscriptions}} {{customer.totalsubscriptions > 1 ? 'Subscriptions' : 'Subscription'}}" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.totalsubscriptions}} {{customer.totalsubscriptions > 1 ? "Subscriptions" : "Subscription"}}</td>
@@ -79,7 +79,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let cspCustomer of cspCustomerArr.data">
-                <td class="companyNameCSP cursor tableEllipsis" title = "{{cspCustomer.name}}" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.name}}</td>
+                <td class="companyNameCSP capitalize cursor tableEllipsis" title = "{{cspCustomer.name}}" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.name}}</td>
                 <td class="updatedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.updated}}</td>
                 <td class="dateAddedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.created}}</td>
                 <td class="adminsCSP cursor tableEllipsis" title = "{{cspCustomer.totaladmins}} {{cspCustomer.totaladmins > 1 ? 'Admins' : 'Admin'}}" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totaladmins}} {{cspCustomer.totaladmins > 1 ? "Admins" : "Admin"}}</td>

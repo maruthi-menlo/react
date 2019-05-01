@@ -43,6 +43,13 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
+  restrictLeadingSpace(event) {
+    let strInput = event.target.value;
+    if (!strInput.length) {
+      event.preventDefault();
+    }
+  }
+
   // @HostListener('window:click', ['$event.target'])
   // onClick(targetElement: any) {
   //   jQuery('.form-control').css('border','1px solid rgba(0,0,0,.5)');

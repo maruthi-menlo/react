@@ -461,6 +461,13 @@ export class AddCustomerComponent implements OnInit {
     this.btnColor.nativeElement.style.backgroundColor = this.utilService.primaryButtonHexCode;
   }
 
+  restrictLeadingSpace(event) {
+    let strInput = event.target.value;
+    if (!strInput.length) {
+      event.preventDefault();
+    }
+  }
+
   ngOnDestroy() {
     this.customerService.removeArr('')
     this.destroySubscription$.next(true);
