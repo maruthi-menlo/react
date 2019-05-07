@@ -90,7 +90,7 @@ export class EditPlayaAdminComponent implements OnInit {
     } else if(oldpassword && (newpasswordagain == '')) {
       this.pwdMsz = 'Please enter New Password Again.'
     } else if(oldpassword == '' && (newpassword || newpasswordagain)) {
-      this.pwdMsz = 'Please enter old Password.'
+      this.pwdMsz = 'Please enter Current Password.'
     } else if(oldpassword && (newpassword != newpasswordagain)) {
       this.pwdMsz = 'New Password and Confirm Password should be same.'
     } else if(oldpassword && (newpassword.length < 8  || newpasswordagain.length < 8)) {
@@ -225,6 +225,13 @@ export class EditPlayaAdminComponent implements OnInit {
   restrictLeadingSpace(event) {
     let strInput = event.target.value;
     if (!strInput.length) {
+      event.preventDefault();
+    }
+  }
+
+  restrictEntireSpace(event) {
+    let strInput = event.target.value;
+    if (event.keyCode == 32) {
       event.preventDefault();
     }
   }

@@ -4,6 +4,7 @@ import { NgbModule, NgbDatepickerModule, NgbDatepickerConfig, NgbAlertModule, Ng
 import { LoaderService } from './services/loader.service';
 import { LoaderComponent } from '../core/loader/loader.component';
 import { CustomerService } from './services/customer.service';
+import { TagService } from './services/tag.service';
 import {GetJsonService} from './services/json.service';
 import {PercentPipe} from './pipes/percent.pipe';
 import { ToastService } from './services/toaster.service';
@@ -21,6 +22,7 @@ import { AuthGuardService } from './services/auth-guard.service';
   providers: [
     LoaderService,
     CustomerService,
+    TagService,
     GetJsonService,
     ToastService,
     AuthGuardService

@@ -18,7 +18,8 @@ const routes: Routes = [
   { path:'forgotpassword', loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'},
   { path:'azuresubscriptions', loadChildren: './azure-subscriptions/azure-subscriptions.module#AzureSubscriptionsModule',canActivate: [AuthGuard]},
   { path: 'updatepassword/:id', loadChildren: './create-password/create-password.module#CreatePasswordModule'},
-  { path: 'resetpassword/:id', loadChildren: './create-password/create-password.module#CreatePasswordModule'}
+  { path: 'resetpassword/:id', loadChildren: './create-password/create-password.module#CreatePasswordModule'},
+  { path:'tags', loadChildren: './tags/tags.module#TagsModule',canActivate: [AuthGuard]}
 ];
 
 @NgModule({

@@ -14,8 +14,8 @@
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb24">
-                        <label class="labelText">First Name</label>
-                        <input type="text" class="form-control capitalize" maxlength="100"  formControlName="firstname" placeholder="abc" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched ? 'error mb10' : ''">
+                        <label class="labelText">First Name*</label>
+                        <input type="text" class="form-control capitalize" maxlength="48"  formControlName="firstname" placeholder="abc" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched ? 'error mb10' : ''">
                         <p class="labelText errorText"
                       *ngIf="editPlayaProfileForm.controls['firstname'].hasError('required') && editPlayaProfileForm.controls['firstname'].touched">
                       Please enter first name.</p>
@@ -23,8 +23,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                         <div class="form-group inputTextBox mb24">
-                          <label class="labelText">Last Name</label>
-                          <input type="text" class="form-control capitalize" maxlength="100" formControlName="lastname" placeholder="xyz" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched ? 'error mb10' : ''">
+                          <label class="labelText">Last Name*</label>
+                          <input type="text" class="form-control capitalize" maxlength="48" formControlName="lastname" placeholder="xyz" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched ? 'error mb10' : ''">
                           <p class="labelText errorText"
                       *ngIf="editPlayaProfileForm.controls['lastname'].hasError('required') && editPlayaProfileForm.controls['lastname'].touched">
                       Please enter last name.</p>
@@ -38,7 +38,7 @@
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                       <div class="form-group inputTextBox mb32">
-                        <label class="labelText">Email</label>
+                        <label class="labelText">Email*</label>
                         <input type="text" class="form-control"  formControlName="email" placeholder="abcxyz@gmail.com" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['email'].hasError('required') && editPlayaProfileForm.controls['email'].touched || editPlayaProfileForm.controls['email'].hasError('pattern') && editPlayaProfileForm.controls['email'].dirty ? 'error mb10' : ''">
                         <p class="labelText errorText" *ngIf="editPlayaProfileForm.controls['email'].hasError('required') && editPlayaProfileForm.controls['email'].touched">{{messages.EMAIL}}</p>
                         <p class="labelText errorText" *ngIf="editPlayaProfileForm.controls['email'].hasError('pattern') && editPlayaProfileForm.controls['email'].dirty">{{messages.EMAIL_VALID}}</p>
@@ -57,7 +57,8 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb24">
                       <label class="labelText">Current Password</label>
-                      <input type="password" class="form-control"  formControlName="oldpassword" (keydown.space)="restrictLeadingSpace($event);">
+                      <input type="password" class="form-control"  formControlName="oldpassword" (keydown) = "restrictEntireSpace($event);" (keydown.space)="restrictLeadingSpace($event);">
+                      <!-- <div class="errorText mb8 " *ngIf="errorMsz">{{errorMsz}}</div> -->
                     </div>
                   </div>
                 </div>
@@ -69,7 +70,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb64">
                       <label class="labelText">New Password</label>
-                      <input type="password" class="form-control"  formControlName="newpassword" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['newpassword'].hasError('required') && editPlayaProfileForm.controls['newpassword'].touched || editPlayaProfileForm.controls['newpassword'].hasError('minlength') || editPlayaProfileForm.controls['newpassword'].hasError('maxlength') && editPlayaProfileForm.controls['newpassword'].dirty? 'error mb10' : ''">
+                      <input type="password" class="form-control"  formControlName="newpassword" (keydown.space)="restrictLeadingSpace($event);" (keydown) = "restrictEntireSpace($event);" [ngClass]="editPlayaProfileForm.controls['newpassword'].hasError('required') && editPlayaProfileForm.controls['newpassword'].touched || editPlayaProfileForm.controls['newpassword'].hasError('minlength') || editPlayaProfileForm.controls['newpassword'].hasError('maxlength') && editPlayaProfileForm.controls['newpassword'].dirty? 'error mb10' : ''">
                       <p class="labelText errorText"
                             *ngIf="editPlayaProfileForm.controls['newpassword'].hasError('required') && editPlayaProfileForm.controls['newpassword'].touched">
                             {{messages.PASSWORD}}</p>
@@ -84,7 +85,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdLeft">
                     <div class="form-group inputTextBox mb64">
                       <label class="labelText">New Password Again</label>
-                      <input type="password" class="form-control"  formControlName="newpasswordagain" (keydown.space)="restrictLeadingSpace($event);" [ngClass]="editPlayaProfileForm.controls['newpasswordagain'].hasError('required') &&editPlayaProfileForm.controls['newpasswordagain'].touched || editPlayaProfileForm.controls['newpasswordagain'].hasError('minlength') || editPlayaProfileForm.controls['newpasswordagain'].hasError('maxlength') && editPlayaProfileForm.controls['newpasswordagain'].dirty || editPlayaProfileForm.controls['newpasswordagain'].hasError('mustMatch') ? 'error mb10' : ''">
+                      <input type="password" class="form-control"  formControlName="newpasswordagain" (keydown.space)="restrictLeadingSpace($event);" (keydown) = "restrictEntireSpace($event);" [ngClass]="editPlayaProfileForm.controls['newpasswordagain'].hasError('required') &&editPlayaProfileForm.controls['newpasswordagain'].touched || editPlayaProfileForm.controls['newpasswordagain'].hasError('minlength') || editPlayaProfileForm.controls['newpasswordagain'].hasError('maxlength') && editPlayaProfileForm.controls['newpasswordagain'].dirty || editPlayaProfileForm.controls['newpasswordagain'].hasError('mustMatch') ? 'error mb10' : ''">
                       <p class="labelText errorText"
                             *ngIf="editPlayaProfileForm.controls['newpasswordagain'].hasError('required') && editPlayaProfileForm.controls['newpasswordagain'].touched">
                             {{messages.NEW_PASSWORD}}</p>
@@ -94,8 +95,7 @@
               </div>
             </div>
           </div>
-          <div class="labelText errorText mb8 positonError" *ngIf="pwdMsz">{{pwdMsz}}</div>
-          <div class="errorText mb8 positonError" *ngIf="errorMsz">{{errorMsz}}</div>
+          <div class="labelText errorText mb8 positonError" *ngIf="pwdMsz">{{pwdMsz}}</div>          
       </div>
         <!--User details section Ends-->
       <div *ngIf = "userRole === 2">
@@ -112,7 +112,7 @@
                       (change)="imageChangeEvent($event,'logo')" accept=".jpg,.jpeg,.png" (keydown.space)="restrictLeadingSpace($event);">
                     <div class="row dragDropFile">
                       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pdLeft">
-                        <img src="../../assets/images/upload.png" class="floatRight pdtop20">
+                        <img src="assets/images/upload.png" class="floatRight pdtop20">
                       </div>
                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dragDropPad pdLeft">
                         <div class="dragDropChoose">Drag & Drop or <span class="chooseFile">Choose File</span></div>
@@ -136,6 +136,7 @@
                       </div>
                     </div>
                   </div>
+                  <p class="labelText errorText mt10 positionAddError" *ngIf="logoError">Please upload image in png/jpeg format only.</p>
                 </div>
               </div>
             </div>
@@ -168,7 +169,8 @@
             </div>
           </div>
         </div>
-      </div>      
+      </div> 
+      <div class="errorText mb8 positonError" *ngIf="errorMsz">{{errorMsz}}</div>     
     </form>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pdZero">

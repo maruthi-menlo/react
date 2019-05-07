@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {UtilService} from '../shared/services/util.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
+import { browserRefresh } from '../app.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,7 +11,10 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
   userRole:any;
+  public browserRefresh: boolean;
+
   @Input() showSubHeader:boolean;
+
   constructor(
     private utilService:UtilService,
     private router:Router,
@@ -29,6 +33,18 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit() {
     this.userRole = this.utilService.userRole;
+    this.browserRefresh = browserRefresh;
+    /*If refresh button is clicked in tags component then secondaryMenu is hidden*/
+    if(this.browserRefresh == true){
+      this.showSubHeader = false;
+    }
+  }
+
+  tagsClick(){
+    this.showSubHeader = false;
+  }
+  azureClick(){
+    this.showSubHeader = true;
   }
 
 }

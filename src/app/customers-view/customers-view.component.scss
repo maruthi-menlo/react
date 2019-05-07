@@ -392,3 +392,19 @@
     width: 95% !important;
 }
 }
+
+.showText{
+    select{
+        font-family: 'Heebo';
+        font-size: 12px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.33;
+        letter-spacing: normal;
+        color: #00a0ff;
+        margin-left: 25px;
+        border: 1px solid #00a0ff;
+        width: 80px;
+    }
+}

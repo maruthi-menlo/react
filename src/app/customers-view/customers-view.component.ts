@@ -49,7 +49,7 @@ export class CustomersViewComponent implements OnInit {
     const deactivate = 'Customer Deactivated.'
     const reactivate = 'Customer Reactivated.'
     this.showToast(this.user.status ? deactivate:reactivate);
-    const obj = {limit:10, pagenumber:+this.page-1};
+    const obj = {limit:this.pageSize, pagenumber:+this.page-1};
     if(this.tableView === 'DC') {  
       if(this.utilService.userRole === 1) {
         this.getDCData(obj);        
@@ -80,7 +80,7 @@ export class CustomersViewComponent implements OnInit {
 
 
   getDataByRole() {
-    const obj = {limit:10, pagenumber:0}
+    const obj = {limit:this.pageSize, pagenumber:0}
     if(this.utilService.userRole === 1) {
       this.getDCData(obj);
       this.getCSPData(obj);
@@ -97,7 +97,8 @@ export class CustomersViewComponent implements OnInit {
 
   onChangeTableView(type) {
     if(type !== this.tableView) {
-      const obj = {limit:10, pagenumber:0}
+      this.pageSize = 10;
+      const obj = {limit:this.pageSize, pagenumber:0}
       this.page = 1;
       type == 'DC' ? this.getDCData(obj) : this.getCSPData(obj)
       this.tableView = type;
@@ -107,7 +108,7 @@ export class CustomersViewComponent implements OnInit {
 
   getDCData(obj) {
     this.customerService.getDCData(obj).subscribe((res:any) => {
-      if(!res.error){
+      if(!res.error && res.data.length > 0){
         this.directCustomerArr = res && res.data ? res : [];
         this.totalCount = res.totalcount
       }
@@ -117,7 +118,7 @@ export class CustomersViewComponent implements OnInit {
 
   getCSPDCData(obj) {
     this.customerService.getCSPDCData(obj).subscribe((res:any) => {
-      if(!res.error){
+      if(!res.error && res.data.length > 0){
         this.directCustomerArr = res && res.data ? res : [];
         this.totalCount = res.totalcount
       }
@@ -145,7 +146,6 @@ export class CustomersViewComponent implements OnInit {
    this.user = user;
    const modalRef = this.modalService.open(DeactivatePlayaAccountModalComponent);
    modalRef.componentInstance.user = this.user;
-   
   }
 
   private getDismissReason(reason: any): string {
@@ -171,9 +171,9 @@ export class CustomersViewComponent implements OnInit {
     this.router.navigate([url]);
   }
 
-  loadPage(page: number) {
+  loadPage(page,pageSize) {
       this.page = page;
-      const obj = {limit:10, pagenumber:page-1}
+      const obj = {limit:pageSize, pagenumber:page-1}
       this.tableView == 'DC' ? this.getDCData(obj) : this.getCSPData(obj)
   }
 
@@ -181,6 +181,16 @@ export class CustomersViewComponent implements OnInit {
     this.customerService.deleteUser('')
     this.destroySubscription$.next(true);
     this.userRow.unsubscribe();
+  }
+  valuechange(event){
+    if(this.totalCount > 10) {
+      this.pageSize = event.target.value;
+      this.page = 1;
+      this.getDataByRole();
+      setTimeout(() => {
+        this.utilService.setNavHeight('commonContainer')
+      }, 1000);
+    }
   }
 
 }

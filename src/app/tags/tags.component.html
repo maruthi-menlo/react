@@ -1,0 +1,171 @@
+<div class="tagComponentContainer commonContainer">
+
+  <div class="leftsideTagsNavbar" *ngIf="show_sidebar">
+    <div class="manageTags">
+      <ul>
+        <li><span><img src="../../assets/images/settings/settings_light.svg" alt="settings_img"></span> Manage Tags</li>
+        <li (click)="toggle()">Hide Sidebar</li>
+      </ul>
+    </div>
+    <div class="companyTags">
+      <p class="header">Company Name {{this.status}}</p>
+      <!-- <input id="typeahead-basic" type="text" class="form-control" placeholder="Enter a tag" [(ngModel)]="model" [ngbTypeahead]="search"/> -->
+      <div class="inputBlock">
+        <input type="text" placeholder="Enter a tag" (keypress)="showAddBtn($event)" />
+        <span><img src="../../assets/images/close_images/close_dark.svg"></span>
+        <button class="btn btn-sm btn-primary">Add</button>
+      </div>
+      <span>20/20</span>
+      <div class="emptyTagsImage" *ngIf="companyTags.length == 0">
+        <img src="assets/images/empty-state_tags.png" />
+      </div>
+      <div class="defaultbadgeList" *ngIf="companyTags.length > 0">
+        <div class="defaultbadge" *ngFor="let tag of companyTags">
+          <span class="label badgeText">{{tag.name}} <img (click)="removeTag()"
+              src="assets/images/close_images/close_light.svg" /></span>
+        </div>
+      </div>
+    </div>
+    <div class="companyTags">
+      <p class="header">Custom Name</p>
+      <div class="inputBlock">
+        <input type="text" placeholder="Enter a tag" />
+        <span><img src="../../assets/images/close_images/close_dark.svg"></span>
+        <button class="btn btn-sm btn-primary">Add</button>
+      </div>
+      <span>20/20</span>
+      <div class="emptyTagsImage" *ngIf="customTags.length == 0">
+        <img src="assets/images/empty-state_tags.png" />
+      </div>
+      <div class="defaultbadgeList" *ngIf="customTags.length > 0">
+        <div class="defaultbadge" *ngFor="let tag of customTags">
+          <span class="label badgeText">{{tag.name}} <img (click)="removeTag()"
+              src="assets/images/close_images/close_light.svg" /></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-tagsList-container">
+    <div class="row">
+      <div class="col-1">
+        <span *ngIf="!show_sidebar" (click)="toggle()"><img src="assets/images/settings/settings_dark.svg"
+            alt="settings_dark" title="Show Sidebar" /></span>
+      </div>
+      <div class="col-11">
+        <!-- <div>
+            <span>
+                <img src="assets/images/filter/filter.png" />
+            </span>
+            <select class="select-control" id="#" (click) = "open()">
+                <option>Filters : Off</option>
+                <option>Filters : On</option>
+            </select>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" sortable="resource-name" class="custom-select">Resource Name</th>
+                  <th scope="col" sortable="resource-typename" class="custom-select">Resource Type Name</th>
+                  <th scope="col" sortable="resource-category" class="custom-select">Resource Category</th>
+                  <th scope="col" sortable="resource-subcategory" class="custom-select">Resource Subcategory</th>
+                  <th scope="col" sortable="resource-id" class="custom-select">Resource ID</th>
+                  <th scope="col" sortable="resource-region" class="custom-select">Resource Region</th>
+                  <th scope="col" sortable="usage-start-time" class="custom-select">Usage Start Time</th>
+                  <th scope="col" sortable="usage-end-time" class="custom-select">Usage End Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let resource of allResourcesArr.data">
+                  <td>{{resource.resourceName}}</td>
+                  <td>{{resource.resourceTypeName}}</td>
+                  <td>{{resource.resourceCategory}}</td>
+                  <td>{{resource.resourceSubcategory}}</td>
+                  <td>{{resource.resourceId}}</td>
+                  <td>{{resource.resourceRegion}}</td>
+                  <td>{{resource.usageStartTime}}</td>
+                  <td>{{resource.usageEndTime}}</td>
+                </tr>
+                
+              </tbody>
+            </table>
+            <div class="paginationWidth">
+                <ngb-pagination *ngIf="totalCount > pageSize" [collectionSize]="totalCount" [(page)]="page" [pageSize]="pageSize" [maxSize]="7" [boundaryLinks]="true" (pageChange)="loadPage($event,pageSize)"></ngb-pagination>
+                <div class="showText floatRight" *ngIf="totalCount > 10">Show:
+                  <select (change)="valuechange($event)"  [(ngModel)]="pageSize">
+                    <option value="10">10 Rows</option>
+                    <option value="20">20 Rows</option>
+                    <option value="40">40 Rows</option>
+                    <option value="60">60 Rows</option>
+                    <option value="100">100 Rows</option>
+                  </select>
+                </div>
+            </div>
+        </div> -->
+        <select class="select-control" id="#">
+          <option>All Tags</option>
+          <option>Tag 1</option>
+          <option>Tag 2</option>
+          <option>Tag 3</option>
+        </select>
+        <ul class="P0" *ngIf="allTags.length > 0">
+          <li class="badge" *ngFor="let tag of allTags"><span class="label badgeText">{{tag.name}}</span></li>
+        </ul>
+        <div *ngIf="allResourcesArr.data.length > 0"> 
+          <span>
+            <img src="assets/images/filter/filter.png" />
+          </span>
+          <select class="select-control" id="#" (click)="open()">
+            <option>Filters : Off</option>
+            <option>Filters : On</option>
+          </select>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" sortable="resource-name" class="custom-select">Resource Name</th>
+                <th scope="col" sortable="resource-typename" class="custom-select">Resource Type Name</th>
+                <th scope="col" sortable="resource-category" class="custom-select">Resource Category</th>
+                <th scope="col" sortable="resource-subcategory" class="custom-select">Resource Subcategory</th>
+                <th scope="col" sortable="resource-id" class="custom-select">Resource ID</th>
+                <th scope="col" sortable="resource-region" class="custom-select">Resource Region</th>
+                <th scope="col" sortable="usage-start-time" class="custom-select">Usage Start Time</th>
+                <th scope="col" sortable="usage-end-time" class="custom-select">Usage End Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let resource of allResourcesArr.data">
+                <td>{{resource.resourceName}}</td>
+                <td>{{resource.resourceTypeName}}</td>
+                <td>{{resource.resourceCategory}}</td>
+                <td>{{resource.resourceSubcategory}}</td>
+                <td>{{resource.resourceId}}</td>
+                <td>{{resource.resourceRegion}}</td>
+                <td>{{resource.usageStartTime}}</td>
+                <td>{{resource.usageEndTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="paginationWidth">
+            <ngb-pagination *ngIf="totalCount > pageSize" [collectionSize]="totalCount" [(page)]="page"
+              [pageSize]="pageSize" [maxSize]="7" [boundaryLinks]="true" (pageChange)="loadPage($event,pageSize)">
+            </ngb-pagination>
+            <div class="showText floatRight" *ngIf="totalCount > 10">Show:
+              <select (change)="valuechange($event)" [(ngModel)]="pageSize">
+                <option value="10">10 Rows</option>
+                <option value="20">20 Rows</option>
+                <option value="40">40 Rows</option>
+                <option value="60">60 Rows</option>
+                <option value="100">100 Rows</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="notag-matches" *ngIf="allResourcesArr.data.length === 0">
+          <img src="../../assets/images/notag-matches.svg" alt="nomatch-tag_img">
+          <p>No matches for the combination of tags you’ve selected.</p>
+        </div>
+      </div>
+      <!--col-11-->
+    </div>
+    <!--row-->
+  </div>
+  <!--right-tagsList-container-->

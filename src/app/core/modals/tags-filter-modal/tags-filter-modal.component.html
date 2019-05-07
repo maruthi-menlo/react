@@ -1,0 +1,140 @@
+<div class="tagsfilterModal">
+  <div class="modal-header">
+    
+    <ul>
+      <li>Usage Date Range</li>
+      <li class="clearFilter"><a href="">CLEAR ALL FILTERS</a></li>
+    </ul>
+    <div class="row">
+      <div class="col-5 datePicker">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="startDate" ngbDatepicker #sd="ngbDatepicker"/>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="sd.toggle()" type="button"><img src="../../../../assets/images/calendar/calendar_light.svg" alt="cal_img" /></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-2 label">
+        <p>To</p>
+      </div>
+      <div class="col-5 datePicker">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd" name="dp2" [(ngModel)]="endDate" ngbDatepicker
+            #ed="ngbDatepicker" />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="ed.toggle()" type="button"><img src="../../../../assets/images/calendar/calendar_light.svg" alt="cal_img"/></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="checkbox-block">
+      <p>Resource Category</p>
+      <div class="row">
+        <div class="col-6">
+          <ul>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 1</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 2</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 3</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 4</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 5</span>
+            </li>
+          </ul>
+        </div>
+        <div class="col-6">
+          <ul>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 6</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 7</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 8</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 9</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 10</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="checkbox-block">
+      <p>Resource Subcategory</p>
+      <div class="row">
+        <div class="col-6">
+          <ul>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 1</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 2</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 3</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 4</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 5</span>
+            </li>
+          </ul>
+        </div>
+        <div class="col-6">
+          <ul>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 6</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 7</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 8</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 9</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Subcategory 10</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="checkbox-block">
+      <p>Resource Region</p>
+      <div class="row">
+        <div class="col-6">
+          <ul>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 1</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 2</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 3</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 4</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 5</span>
+            </li>
+          </ul>
+        </div>
+        <div class="col-6">
+          <ul>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 6</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 7</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 8</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 9</span>
+            </li>
+            <li><input class="form-check-input cursor" type="checkbox"> <span class="checkBoxText">Category 10</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="row">
+      <button type="button" class="btn cancelBtn opacity-5" (click)="close()">Cancel</button>
+      <button type="button" class="btn updateBtn" (click)="removeSubscription()">Update Filters</button>
+    </div>
+  </div>
+</div>

@@ -16,10 +16,17 @@
               <button class="btn defaultBtn" (click) = "onChangeTableView('DC');" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
             </div>
       </div>
+      <div class="mb24" *ngIf = "userRole === 3">
+        <span class="customerViewType">View:</span>
+        <div class="btn-group btn-toggle"> 
+            <button class="btn defaultBtn cspButton" (click) = "onChangeTableView('CSP');" [ngClass]="tableView == 'CSP' ? 'dcBtn bNone' : 'cspButton brNone'">CSP</button>
+            <button class="btn defaultBtn" (click) = "onChangeTableView('DC');" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
+          </div>
+    </div>
       <div *ngIf= "tableView == 'DC' && userRole === 2">
         <div *ngIf="totalCount === 0">
           <div class="mb48">
-            <img class="center" src="../../assets/images/empty-state.png"/>
+            <img class="center" src="assets/images/empty-state.png"/>
           </div>
           <div class="customerText cspAddYet mb24">You haven’t added any customers yet.</div>
           <div class="customerText addCustomerMessage">Click “Add Customer” above to get started adding a customer to the platform.</div>
@@ -28,7 +35,7 @@
       <div *ngIf= "tableView == 'CSP'">
           <div *ngIf="totalCount === 0">
             <div class="mb48">
-              <img class="center" src="../../assets/images/empty-state.png"/>
+              <img class="center" src="assets/images/empty-state.png"/>
             </div>
             <div class="customerText cspAddYet mb24">You haven’t added a CSP yet.</div>
             <div class="customerText addCustomerMessage">Click “Add Customer” above to get started adding a CSP to the platform.</div>
@@ -96,7 +103,16 @@
       </div>
     </div>
   </div>
-  <div class="paginationWidth" *ngIf="totalCount > pageSize">
-    <ngb-pagination [collectionSize]="totalCount" [(page)]="page" [pageSize]="pageSize" [maxSize]="7" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
-  </div>
+  <!-- <div class="paginationWidth">
+    <ngb-pagination *ngIf="totalCount > pageSize" [collectionSize]="totalCount" [(page)]="page" [pageSize]="pageSize" [maxSize]="7" [boundaryLinks]="true" (pageChange)="loadPage($event,pageSize)"></ngb-pagination>
+    <div class="showText floatRight" *ngIf="totalCount > 10">Show:
+      <select (change)="valuechange($event)"  [(ngModel)]="pageSize">
+        <option value="10">10 Rows</option>
+        <option value="20">20 Rows</option>
+        <option value="40">40 Rows</option>
+        <option value="60">60 Rows</option>
+        <option value="100">100 Rows</option>
+      </select>
+    </div>
+  </div> -->
 </div>

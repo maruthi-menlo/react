@@ -1,7 +1,11 @@
 import { Component, OnInit,HostListener } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart,ActivatedRoute } from '@angular/router';
 import { UtilService } from './shared/services/util.service';
 import { AuthService } from './auth/auth.service';
+
+
+import { Subscription } from 'rxjs';
+export let browserRefresh = false;
 
 declare var jQuery:any;
 @Component({
@@ -13,7 +17,7 @@ export class AppComponent implements OnInit {
   title = 'Playa';
   loginRoute:boolean = true
   showSubHeader: boolean;
- 
+  subscription: Subscription;
 
   constructor(
     private router: Router,
@@ -36,30 +40,31 @@ export class AppComponent implements OnInit {
           }
         }
       }
-      
     });
+
+
+    /*To detect the refresh button on tags component click*/
+    this.subscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if(event.url.indexOf('/tags') > -1 ){
+          browserRefresh = !router.navigated;
+        }
+      }
+  });
   }
 
   ngOnInit() {
   }
 
-  restrictLeadingSpace(event) {
-    let strInput = event.target.value;
-    if (!strInput.length) {
-      event.preventDefault();
-    }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   @HostListener('window:click', ['$event.target'])
   onClick(targetElement: any) {
-    const userRole  = this.utilService.userRole
-    if(userRole == 2 && this.utilService.isActiveHexCode) {
-      jQuery('.form-control').css('border','');
-      jQuery('.form-control').css('box-shadow','');
-      if(targetElement.className.indexOf('form-control') > -1) {
-        targetElement.style.border = this.utilService.activeFieldHexCode;
-        targetElement.style.boxShadow = 'inherit'
-      }
+    jQuery('.form-control').css('border','1px solid rgba(0,0,0,.5)');
+    if(targetElement.className.indexOf('form-control') > -1) {
+      targetElement.style.border = this.utilService.activeFieldHexCode;
     }
   }
 

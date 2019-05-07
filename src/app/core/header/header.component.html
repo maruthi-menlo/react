@@ -4,10 +4,23 @@
       <div class="floatLeft">
         <img [src]="logo" (click)="dashboard()">
       </div>
+        <!-- <div *ngIf = "showProfile && userRole !== 1 && userProfileObj.customers.length > 0">
+          <div class="companyView" *ngIf="userProfileObj.customers.length == 1">
+              <div class="customerName companyNameAlign" >{{userProfileObj.companyname}}</div>
+          </div>
+          <div class="companyView" *ngIf="userProfileObj.customers.length > 1">
+            <select>
+                <option *ngFor="let customer of userProfileObj.customers" [value]="customer"> {{customer}} </option>
+            </select>
+          </div>
+        </div> -->
+        <div class="companyView" *ngIf="showProfile && userRole !== 1">
+          <div class="customerName companyNameAlign" title="{{userProfileObj.companyname}}" >{{userProfileObj.companyname}}</div>
+      </div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-9 col-xs-8 paddingRight8Percent" *ngIf="showProfile">
       <div class="floatRight" >
-        <img src="/assets/images/empty-state.png" class="customerLogoWidth">
+        <img src="assets/images/empty-state.png" class="customerLogoWidth">
         <div class="customerDetails">
           <div class="customerName cursor" title="{{userProfileObj.name}}">{{userProfileObj.name}}</div>
           <div class="customerDesignation">{{userProfileObj.rolename}}</div>
@@ -15,7 +28,7 @@
         <!-- <img src="/assets/images/down-arrow.png" class="arrowIcon"> -->
         <span class=" arrowIcon profile cursor"  placement="bottom" [ngbPopover]="profilePopover" [autoClose]="'outside'"
         popoverClass="button-list-popover" #p1="ngbPopover">
-          <img class="profile-pic"  src="/assets/images/down-arrow.png"/>
+          <img class="profile-pic"  src="assets/images/down-arrow.png"/>
           <!-- <img class="profile-pic" *ngIf="!user.profilePic" [src]="'assets/images/user_default.png'"/> -->
       </span>
         <!-- custom Class -->

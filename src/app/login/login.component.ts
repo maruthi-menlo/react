@@ -76,4 +76,11 @@ export class LoginComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  restrictEntireSpace(event) {
+    let strInput = event.target.value;
+    if (event.keyCode == 32) {
+      event.preventDefault();
+    }
+  }
 }

@@ -46,6 +46,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }, 500);
         if (err.status === 401) {
           auth.logout(err.status);
+          auth.setLoggedIn({ loggedIn: false });
           return event;
         }
       }

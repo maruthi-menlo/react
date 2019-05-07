@@ -346,6 +346,7 @@ export class AddCustomerComponent implements OnInit {
     this.customerService.addCustomer(addCustomerPostObj,this.type).subscribe((res:any) => {
       const editDC = 'Direct customer has been updated successfully.'
       const addDC = 'Direct customer has been added successfully.'
+      window.scrollTo(0,0);
       if(this.type === 'edit') {
         this.showToast(editDC);
       }else{
@@ -417,8 +418,13 @@ export class AddCustomerComponent implements OnInit {
     }else {
       value = e;
     }
-    let maskValue = value ? `${value}%` : value;
+   
     let azureSubscription = this.customerForm.controls[formArray]['controls'] as FormArray;
+    if(+value > 100) {
+      const previousValue = azureSubscription[id].controls[`${formControl}Mask`].value
+      value = previousValue
+    }
+    let maskValue = value ? `${value}%` : value;
     azureSubscription[id].controls[`${formControl}Mask`].setValue(maskValue);
     azureSubscription[id].controls[formControl].setValue(value);
   }

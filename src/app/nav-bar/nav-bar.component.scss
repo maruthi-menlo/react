@@ -8,6 +8,7 @@
     .primaryActive{
         border-left: 4px solid $white !important;
         outline: none !important;
+        background-color: rgba(171, 220, 255, 0.25);
     }
     .navbar{
         padding: 0px;
@@ -21,7 +22,7 @@
             .nav-item{
                 width: 96px;
                 // height: 76px;
-                background-color: rgba(171, 220, 255, 0.25);
+                //background-color: rgba(171, 220, 255, 0.25);
                 .nav-link{
                     padding: 0px;
                     .controlPanel{

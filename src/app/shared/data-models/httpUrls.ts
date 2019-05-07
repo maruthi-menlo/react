@@ -27,6 +27,8 @@ export const httpUrls = {
     GET_LOGO:'getProfileImage',
     GET_POWERBI_DATA:'getParamasPowerbi',
     GET_SUBSCRIPTIONS:'CustomerAdminListSubscriptions',
-    UPDATE_SUBSCRIPTIONS:'CustomerAdminUpdateSubscriptions'
+    UPDATE_SUBSCRIPTIONS:'CustomerAdminUpdateSubscriptions',
+    TAG_ALL_RESOURCES:'listAllResources',
+    TAG_ALL_TAGS:'listAllTags',
 }
 

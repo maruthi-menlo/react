@@ -75,6 +75,20 @@ export class CreatePasswordComponent implements OnInit {
     })
   }
 
+  restrictLeadingSpace(event) {
+    let strInput = event.target.value;
+    if (!strInput.length) {
+      event.preventDefault();
+    }
+  }
+
+  restrictEntireSpace(event) {
+    let strInput = event.target.value;
+    if (event.keyCode == 32) {
+      event.preventDefault();
+    }
+  }
+
   submitPwd(){
     let password = this.createPasswordForm.controls.password.value;
     const passwordPostObj= {userid:this.userid,password:password};

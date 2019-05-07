@@ -10,7 +10,7 @@
         </div>
         <div class="form-group inputTextBox mb20">
           <label class="labelText">Password</label>
-          <input type="password" class="form-control" [ngClass]="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched || loginForm.controls['password'].hasError('minlength') || loginForm.controls['password'].hasError('maxlength') && loginForm.controls['password'].dirty? 'error mb10' : ''" formControlName="password" (keydown.space)="restrictLeadingSpace($event);">
+          <input type="password" class="form-control" [ngClass]="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched || loginForm.controls['password'].hasError('minlength') || loginForm.controls['password'].hasError('maxlength') && loginForm.controls['password'].dirty? 'error mb10' : ''" formControlName="password" (keydown)="restrictEntireSpace($event);" (keydown.space)="restrictLeadingSpace($event);">
           <p class="labelText errorText" *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">{{messages.PASSWORD}}</p>
           <p class="labelText errorText" *ngIf="loginForm.controls['password'].hasError('minlength') && loginForm.controls['password'].dirty">{{messages.PASSWORD_MIN_LENGTH}}</p>
           <p class="labelText errorText" *ngIf="loginForm.controls['password'].hasError('maxlength') && loginForm.controls['password'].dirty">{{messages.PASSWORD_MAX_LENGTH}}</p>

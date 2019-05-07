@@ -47,12 +47,12 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.userRole = this.utilService.userRole;
+  ngOnInit() {    
     this.updateHeader();
     this.loggedInSubscription = this.authService.loggedIn$
     .pipe(takeUntil(this.destroySubscription$))
     .subscribe((state: any) => {
+      this.userRole = this.utilService.userRole;
       if (state) {
         if (state.loggedIn) {
           this.userProfileObj = this.authService.getCurrentUser;
@@ -70,11 +70,12 @@ export class HeaderComponent implements OnInit {
   }
 
   dashboard() {
-    if(this.userRole === 3){
+    const role = this.utilService.userRole
+    if(role === 3){
       this.router.navigate(['/azuresubscriptions']);
-    }else if(this.userRole === 4){
+    }else if(role === 4){
       this.router.navigate(['/editplayaprofile']);
-    } else{
+    } else if (role === 1 || role === 2) {
       this.router.navigate(['/customersview']);
     }
   }

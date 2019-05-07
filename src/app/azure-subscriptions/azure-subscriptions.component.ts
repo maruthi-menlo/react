@@ -24,6 +24,7 @@ export class AzureSubscriptionsComponent implements OnInit {
   data:any;
   deleteRow:Subscription;
   destroySubscription$: Subject<boolean> = new Subject();
+  @ViewChild('btnColor') btnColor;
 
   constructor(
     private fb: FormBuilder,
@@ -109,6 +110,11 @@ export class AzureSubscriptionsComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit() {
+    this.utilService.setNavHeight('commonContainer');
+    this.updateBtnColor();
+  }
+
   showToast(message) {
     this.toastService.show({
       text: message,
@@ -127,6 +133,10 @@ export class AzureSubscriptionsComponent implements OnInit {
     }, err => {
       this.errorMsz = err && err.error ? err.error.message : '';
     })
+  }
+
+  updateBtnColor () {
+    this.btnColor.nativeElement.style.backgroundColor = this.utilService.primaryButtonHexCode;
   }
 
   cancel() {

@@ -19,6 +19,11 @@ import { CustomersDataComponent } from './customers-data/customers-data.componen
 import { DeactivatePlayaAccountModalComponent } from './core/modals/deactivate-playa-account-modal/deactivate-playa-account-modal.component';
 import { DeactivateEditUserComponent } from './core/modals/deactivate-edit-user/deactivate-edit-user.component';
 import {ToastModule} from '../app/core/toaster/toaster.module';
+import { TagsFilterModalComponent } from './core/modals/tags-filter-modal/tags-filter-modal.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+export let browserRefresh = false;
+
 // import { AzureSubscriptionsComponent } from './azure-subscriptions/azure-subscriptions.component';
 // import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 // import { DashboardComponent } from './dashboard/dashboard.component';
@@ -30,10 +35,11 @@ import {ToastModule} from '../app/core/toaster/toaster.module';
     CustomersDataComponent,
     DeactivatePlayaAccountModalComponent,
     DeactivateEditUserComponent,
+    TagsFilterModalComponent
     // AzureSubscriptionsComponent,
     // DashboardComponent
   ],
-  entryComponents: [DeactivatePlayaAccountModalComponent,DeactivateEditUserComponent],
+  entryComponents: [DeactivatePlayaAccountModalComponent,DeactivateEditUserComponent,TagsFilterModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -45,6 +51,7 @@ import {ToastModule} from '../app/core/toaster/toaster.module';
     SharedModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    NgbModule,
     ToastModule.forRoot()
   ],
   providers: [

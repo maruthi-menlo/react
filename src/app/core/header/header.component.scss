@@ -43,21 +43,6 @@
             position: relative;
             top: -12px;
         }
-        .customerName{
-            font-family: $heebo;
-            font-size: 16px;
-            font-weight: normal;
-            font-style: normal;
-            font-stretch: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            color: $white;
-            margin-right: 8px;
-            text-transform: capitalize;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
         .customerDesignation{
             opacity: 0.5;
             font-family: Heebo;
@@ -78,4 +63,45 @@
         padding-right: 13px;
         cursor: pointer;
     }
+
+    .customerName{
+        font-family: $heebo;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        color: $white;
+        margin-right: 8px;
+        text-transform: capitalize;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 300px;
+    }
+    .companyView{
+        margin-left: 185px;
+        // display: inline-block;
+        border-left: 2px solid #bdbdbd;
+        height: 48px;
+        padding-left: 36px;
+        position: relative;
+        top: 7px;
+        select {
+            width: 115px;
+            height: 24px;
+            font-family: Heebo;
+            font-size: 16px;
+            margin-top: 12px;
+            background-color: #2a3438;
+            color: #FFF;
+            border: none;
+        }
+    }
+}
+
+.companyNameAlign{
+    position: relative;
+    top: 15px;
 }

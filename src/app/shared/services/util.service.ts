@@ -66,7 +66,7 @@ export class UtilService {
     let ch = event.target.value;
     var charStr = String.fromCharCode(charCode);
     let splitDot = ch.split('.');
-    if((splitDot.length == 2 && charStr == '.') || ch.length > 5 || (ch.length > 1 && ch[0] == 0 && ch.indexOf('.') == -1)) {
+    if((splitDot.length == 2 && charStr == '.') || ch.length > 5 || ch >100 || (ch.length > 1 && ch[0] == 0 && ch.indexOf('.') == -1)) {
       return false
     }else if(ch !== '' && ch.length !== 2 && ch<100){
       if(this.regexStr.test(ch)  && !ch.includes('.')){//
@@ -122,7 +122,7 @@ export class UtilService {
 
   get brandingLogo() {
     const user = JSON.parse(localStorage.getItem('profile'));
-    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['logoPath'] ? user['brandinginfo'][0]['logoPath'] : '/assets/images/logo.png';
+    return user && user['brandinginfo'][0] &&  user['brandinginfo'][0]['logoPath'] ? user['brandinginfo'][0]['logoPath'] : 'assets/images/logo.png';
   }
   
   get headerHexCode() {
