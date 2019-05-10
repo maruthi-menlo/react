@@ -30,5 +30,8 @@ export const httpUrls = {
     UPDATE_SUBSCRIPTIONS:'CustomerAdminUpdateSubscriptions',
     TAG_ALL_RESOURCES:'listAllResources',
     TAG_ALL_TAGS:'listAllTags',
+    AUTO_COMPLETE_TAGS : 'autoSuggestionTags',
+    ADD_TAG : 'addTag',
+    REMOVE_TAG : 'removeTag',
 }
 

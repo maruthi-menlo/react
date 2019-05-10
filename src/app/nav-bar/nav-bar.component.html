@@ -13,7 +13,7 @@
           <div class="controlPanel">Alerts</div>
         </a>
       </li>
-      <li class="nav-item cursor" [routerLink]="['/tags']" (click)="tagsClick()" routerLinkActive="primaryActive" *ngIf="userRole == 3 && userRole !== 4">
+      <li class="nav-item cursor" [routerLink]="['/tags']" (click)="tagsClick()" routerLinkActive="primaryActive" *ngIf="userRole == 3 || userRole == 4">
         <a class="nav-link">
           <img src="assets/images/control-panel.png">
           <div class="controlPanel">Tags</div>

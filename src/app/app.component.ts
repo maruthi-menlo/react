@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
         } else {
           this.isAuthenticated();
           this.loginRoute = false;
-          if(event.url.indexOf('/dashboard') > -1) {
+          if(event.url.indexOf('/dashboard') > -1 || event.url.indexOf('/tags') > -1) {
             this.showSubHeader = false;
           } else {
             this.showSubHeader = true;

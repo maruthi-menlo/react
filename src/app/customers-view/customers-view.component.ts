@@ -82,8 +82,8 @@ export class CustomersViewComponent implements OnInit {
   getDataByRole() {
     const obj = {limit:this.pageSize, pagenumber:0}
     if(this.utilService.userRole === 1) {
-      this.getDCData(obj);
       this.getCSPData(obj);
+      this.getDCData(obj);
     }else if(this.utilService.userRole === 2){
       this.getCSPDCData(obj);
     }
@@ -110,8 +110,8 @@ export class CustomersViewComponent implements OnInit {
     this.customerService.getDCData(obj).subscribe((res:any) => {
       if(!res.error && res.data.length > 0){
         this.directCustomerArr = res && res.data ? res : [];
-        this.totalCount = res.totalcount
       }
+      this.totalCount = res.totalcount
     }, err => {
     })
   }
@@ -120,8 +120,8 @@ export class CustomersViewComponent implements OnInit {
     this.customerService.getCSPDCData(obj).subscribe((res:any) => {
       if(!res.error && res.data.length > 0){
         this.directCustomerArr = res && res.data ? res : [];
-        this.totalCount = res.totalcount
       }
+      this.totalCount = res.totalcount
     }, err => {
     })
   }
@@ -131,6 +131,7 @@ export class CustomersViewComponent implements OnInit {
       if(!res.error){
         this.cspCustomerArr = res && res.data ? res : []
       }
+      this.totalCount = res.totalcount
     }, err => {
     })
   }

@@ -19,25 +19,25 @@ export class NavBarComponent implements OnInit {
     private utilService:UtilService,
     private router:Router,
   ) { 
-    // router.events.subscribe((event: any) => {
-    //   if (event instanceof NavigationEnd) {
-    //     if(event.url.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/updatepassword') > -1 || event.urlAfterRedirects.indexOf('/forgotpassword') > -1 || event.urlAfterRedirects.indexOf('/resetpassword') > -1 ) {
-    //       this.showsecondaryNavbar = false
-    //     } else {
-    //       this.showsecondaryNavbar = true
-    //     }
-    //   }
+    router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        if(event.url.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/login') > -1 || event.urlAfterRedirects.indexOf('/updatepassword') > -1 || event.urlAfterRedirects.indexOf('/forgotpassword') > -1 || event.urlAfterRedirects.indexOf('/resetpassword') > -1 || event.urlAfterRedirects.indexOf('/dashboard') > -1 || event.urlAfterRedirects.indexOf('/tags') > -1) {
+          this.showSubHeader = false
+        } else {
+          this.showSubHeader = true
+        }
+      }
       
-    // });
+    });
   }
 
   ngOnInit() {
     this.userRole = this.utilService.userRole;
-    this.browserRefresh = browserRefresh;
-    /*If refresh button is clicked in tags component then secondaryMenu is hidden*/
-    if(this.browserRefresh == true){
-      this.showSubHeader = false;
-    }
+    // this.browserRefresh = browserRefresh;
+    // /*If refresh button is clicked in tags component then secondaryMenu is hidden*/
+    // if(this.browserRefresh == true){
+    //   this.showSubHeader = false;
+    // }
   }
 
   tagsClick(){

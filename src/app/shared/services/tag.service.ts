@@ -28,4 +28,21 @@ export class TagService {
     return this.http.post(url,obj)
   }
 
+  autoCompleteTagsList(data){
+    let url = `${this.api_url}${urls.AUTO_COMPLETE_TAGS}`;
+    return this.http.post(url,data)
+  }
+
+  addTag(obj) {
+    let url = `${this.api_url}${urls.ADD_TAG}`;
+    return this.http.post(url,obj)
+  }
+
+  removeTag(obj) {
+    let url = `${this.api_url}${urls.REMOVE_TAG}`;
+    return this.http.post(url,obj)
+  }
+
+
+
 }

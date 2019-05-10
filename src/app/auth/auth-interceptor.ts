@@ -24,7 +24,9 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const auth = this.injector.get(AuthService);
     const loader = this.injector.get(LoaderService);
-    loader.show();
+    if(request.url.indexOf('autoSuggestionTags') == -1) {
+      loader.show();
+    }
     return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
         setTimeout(() => {

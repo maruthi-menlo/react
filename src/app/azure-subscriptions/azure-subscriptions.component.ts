@@ -124,7 +124,6 @@ export class AzureSubscriptionsComponent implements OnInit {
 
   submit() {
     const editPostObj = this.azureSubscriptionForm.value;
-    const subscriptionId = 'Subscription added successfully'
     this.customerService.updateSubscriptions(editPostObj).subscribe((res:any) => {
         const addSubscription = 'Subscription added successfully.'
         window.scrollTo(0,0);

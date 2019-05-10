@@ -23,7 +23,7 @@
             <button class="btn defaultBtn" (click) = "onChangeTableView('DC');" [ngClass]="tableView == 'DC' ? 'dcBtn' : 'cspButton blNone'">Direct Customer</button>
           </div>
     </div>
-      <div *ngIf= "tableView == 'DC' && userRole === 2">
+      <div *ngIf= "tableView == 'DC' || userRole === 2">
         <div *ngIf="totalCount === 0">
           <div class="mb48">
             <img class="center" src="assets/images/empty-state.png"/>
@@ -62,10 +62,6 @@
               <td class="subscriptions cursor tableEllipsis" title="{{customer.totalsubscriptions}} {{customer.totalsubscriptions > 1 ? 'Subscriptions' : 'Subscription'}}" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.totalsubscriptions}} {{customer.totalsubscriptions > 1 ? "Subscriptions" : "Subscription"}}</td>
               <td class="admins cursor tableEllipsis" title="{{customer.totaladmins}} {{customer.totaladmins > 1 ? 'Admins' : 'Admin'}}" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.totaladmins}} {{customer.totaladmins > 1 ? "Admins" : "Admin"}}</td>
               <td class="Users cursor tableEllipsis" title="{{customer.totalusers}} {{customer.totalusers > 1 ? 'Users' : 'User'}}" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''">{{customer.totalusers}} {{customer.totalusers > 1 ? "Users" : "User"}}</td>
-              <!-- <td class="actionsTD">
-                <span style="padding-right: 40px;text-decoration: underline;cursor:pointer;" (click)="navigateToaddCustomerPage('DC',customer)">Edit Details</span>
-                <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
-              </td> -->
               <td class="actionsTD cursor" [ngClass]="!(customer.status) ? 'reactiveOpacity' : ''"><span [ngClass]="!(customer.status) ? 'disabledClick' : ''" (click)="navigateToaddCustomerPage('DC',customer)">Edit Details</span></td>
               <td class="actionsTD textAlignLeft"><span class="cursor" (click) = openDeactivateModal(customer)>{{customer.status ? "Deactivate" : "Reactivate"}}</span></td>
             </tr>
@@ -91,10 +87,6 @@
                 <td class="dateAddedCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.created}}</td>
                 <td class="adminsCSP cursor tableEllipsis" title = "{{cspCustomer.totaladmins}} {{cspCustomer.totaladmins > 1 ? 'Admins' : 'Admin'}}" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totaladmins}} {{cspCustomer.totaladmins > 1 ? "Admins" : "Admin"}}</td>
                 <td class="UsersCSP cursor tableEllipsis" title="{{cspCustomer.totalusers}} {{cspCustomer.totalusers > 1 ? 'Users' : 'User'}}" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''">{{cspCustomer.totalusers}} {{cspCustomer.totalusers > 1 ? "Users" : "User"}}</td>
-                <!-- <td class="actionsTD">
-                  <span style="padding-right: 40px;text-decoration: underline;" class="cursor" (click)="navigateToaddCustomerPage('CSP',cspCustomer)">Edit Details</span>
-                  <span style="text-decoration: underline; cursor:pointer;" (click) = openDeactivateModal(content)>Deactivate</span>
-                </td> -->
                 <td class="actionsTDCSP" [ngClass]="!(cspCustomer.status) ? 'reactiveOpacity' : ''"><span [ngClass]="!(cspCustomer.status) ? 'disabledClick' : ''" class="cursor" (click)="navigateToaddCustomerPage('CSP',cspCustomer)">Edit Details</span></td>
                 <td class="actionsTDCSP textAlignLeft"><span class="cursor" (click) = openDeactivateModal(cspCustomer)>{{cspCustomer.status ? "Deactivate" : "Reactivate"}}</span></td>
               </tr>
@@ -103,7 +95,7 @@
       </div>
     </div>
   </div>
-  <!-- <div class="paginationWidth">
+  <div class="paginationWidth">
     <ngb-pagination *ngIf="totalCount > pageSize" [collectionSize]="totalCount" [(page)]="page" [pageSize]="pageSize" [maxSize]="7" [boundaryLinks]="true" (pageChange)="loadPage($event,pageSize)"></ngb-pagination>
     <div class="showText floatRight" *ngIf="totalCount > 10">Show:
       <select (change)="valuechange($event)"  [(ngModel)]="pageSize">
@@ -114,5 +106,5 @@
         <option value="100">100 Rows</option>
       </select>
     </div>
-  </div> -->
+  </div>
 </div>

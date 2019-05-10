@@ -125,12 +125,17 @@
             .defaultbadgeList{
                 margin-top:12px;
                 height: 377px;
-                overflow-y: scroll;
+                overflow-y: auto;
                 .defaultbadge{
                     margin:8px 8px 0px 8px;
+                        .companyTag {
+                            background-color: #ff7f56;
+                        }
+                        .customTag {
+                            background-color: #ff9f2a;
+                        }
                         .badgeText{
                             padding: 4px 12px;
-                            background-color: #ff7f56;
                             font-family: Heebo;
                             font-size: 16px;
                             font-weight: normal;
@@ -166,7 +171,7 @@
         padding-left: 12px;
         padding-top: 12px;
         padding-bottom: 12px;
-        overflow-x: scroll;
+        overflow-x: auto;
         .row{
             .col-1{flex: 0 0 3.333333%;max-width: 3.333333%;padding:0rem;
                 span {     
@@ -192,13 +197,15 @@
                         outline-color: #fbfdff;
                     }
                 }
+
                 ul{
-                    margin-bottom: 30px;
+                    margin-top: 10px;
                     .badge{
                         margin-right:8px;
                         margin-bottom: 8px;
                         border-radius: 20px;
                         background-color: #5f6e74;
+                        cursor: pointer;
                         .badgeText {
                             padding: 0px 12px;
                             font-family: Heebo;
@@ -212,49 +219,72 @@
                             color: #ffffff;
                           }
                     }
+                    .badge.active {
+                        border-radius: 20px;
+                        background-color: #35b2fc;
+                    }
                 }
-        
-                /*Table Design*/
-        
-                table{
-                    thead{
-                        .custom-select{
-                            width: auto;
-                            display: table-cell;
-                            border:none;
-                            border-radius: 0px;
-                            background-color:#fbfdff;
-                        }
-                        th{
-                            padding: 0.5rem 1.5rem;
-                            height:16px;
+                
+                .filterTagsBlock{
+                    .filterStatus{display: flex;
+                        p{
+                            margin:3px 8px;
                             opacity: 0.5;
+                            font-size: 14px;
+                            color: #000000;
+                            font-weight: 500;
+                        }
+
+                    }
+                    /*Table Design*/
+                    table{ margin-top: 25px;margin-bottom:0px;
+                        thead{
+                            .custom-select{
+                                width: auto;
+                                display: table-cell;
+                                border:none;
+                                border-radius: 0px;
+                                background-color:#fbfdff;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                            th{
+                                padding: .5rem 1.5rem 0.5rem 0.5rem;
+                                height:16px;
+                                opacity: 0.5;
+                                font-family: Heebo;
+                                font-size: 12px;
+                                font-weight: normal;
+                                font-style: normal;
+                                font-stretch: normal;
+                                line-height: 1.33;
+                                letter-spacing: normal;
+                                color: #000000;
+                                border-top:none;
+                                border-bottom: none;
+                                box-shadow: inset 0 -1px 0 0 rgba(26, 33, 37, 0.76);
+                            }
+                        }
+                        td{
                             font-family: Heebo;
-                            font-size: 12px;
+                            font-size: 14px;
                             font-weight: normal;
                             font-style: normal;
                             font-stretch: normal;
-                            line-height: 1.33;
+                            line-height: normal;
                             letter-spacing: normal;
                             color: #000000;
                             border-top:none;
-                            border-bottom: none;
-                            box-shadow: inset 0 -1px 0 0 rgba(26, 33, 37, 0.76);
+                            box-shadow: inset 0 -1px 0 0 rgba(42, 52, 56, 0.14);
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                         }
                     }
-                    td{
-                        font-family: Heebo;
-                        font-size: 14px;
-                        font-weight: normal;
-                        font-style: normal;
-                        font-stretch: normal;
-                        line-height: normal;
-                        letter-spacing: normal;
-                        color: #000000;
-                        border-top:none;
-                        box-shadow: inset 0 -1px 0 0 rgba(42, 52, 56, 0.14);
-                    }
                 }
+               
+                
                 .notag-matches{
                     position: relative;top:20%;left:50%;transform: translate(-50%,50%);text-align: center;
                     P{width: 347px;height: 56px;font-weight: normal;
