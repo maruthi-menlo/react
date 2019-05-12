@@ -21,6 +21,7 @@ import { DeactivateEditUserComponent } from './core/modals/deactivate-edit-user/
 import {ToastModule} from '../app/core/toaster/toaster.module';
 import { TagsFilterModalComponent } from './core/modals/tags-filter-modal/tags-filter-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TagsSelectModalComponent } from './core/modals/tags-select-modal/tags-select-modal.component';
 
 export let browserRefresh = false;
 
@@ -35,11 +36,12 @@ export let browserRefresh = false;
     CustomersDataComponent,
     DeactivatePlayaAccountModalComponent,
     DeactivateEditUserComponent,
-    TagsFilterModalComponent
+    TagsFilterModalComponent,
+    TagsSelectModalComponent
     // AzureSubscriptionsComponent,
     // DashboardComponent
   ],
-  entryComponents: [DeactivatePlayaAccountModalComponent,DeactivateEditUserComponent,TagsFilterModalComponent],
+  entryComponents: [DeactivatePlayaAccountModalComponent,DeactivateEditUserComponent,TagsFilterModalComponent,TagsSelectModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

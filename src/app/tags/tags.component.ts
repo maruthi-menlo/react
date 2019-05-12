@@ -5,6 +5,7 @@ import { UtilService } from '../shared/services/util.service';
 import { TagService } from '../shared/services/tag.service';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {TagsSelectModalComponent } from '../core/modals/tags-select-modal/tags-select-modal.component';
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
@@ -118,6 +119,10 @@ export class TagsComponent implements OnInit {
   open(){
   this.changeStatus = !this.changeStatus;
   this.modalService.open(TagsFilterModalComponent);
+  }
+
+  openModal(){
+    this.modalService.open(TagsSelectModalComponent, { windowClass : "customTagsSelectWidth" , centered: true});
   }
 
   toggle(){

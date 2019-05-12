@@ -96,6 +96,9 @@ body {
 .pdLeft{
     padding-left: 0px !important;
 }
+.pdLeft6{
+    padding-left: 6px !important;
+}
 .pdRight{
     padding-right: 0px !important;
 }
@@ -220,4 +223,42 @@ input[type=number]::-webkit-outer-spin-button {
 
 select:focus{
     outline: none;
+}
+
+.customTagsSelectWidth {
+    .modal-dialog{
+        max-width: 360px !important;
+    }
+}
+
+.whiteColor{
+    color: #ffffff;
+}
+
+.my-custom-class{
+    transform: translate(300px, 226px) !important;
+    .arrow{
+        visibility: hidden;
+    }
+    .popover-body{
+        padding: 0px !important;
+        ul{
+            padding: 0;
+            list-style-type: none;
+            margin: 0px !important;
+            li{
+                min-width: 168px;
+                padding: 6px 8px;
+                font-family: $heebo;
+                font-size: 14px;
+                font-weight: normal;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.43;
+                letter-spacing: normal;
+                color: #000000;
+                cursor: pointer;
+            }
+        }
+    }
 }

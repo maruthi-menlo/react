@@ -1,0 +1,99 @@
+@import 'styles/variables.scss';
+@import 'styles/mixin.scss';
+
+.modal-header{
+    padding: 7px 12px 9px 12px;
+    height: 40px;
+    input{
+        border: none;
+        width: 100%;
+    }
+    input:focus{
+        border: none;
+        outline: none;
+    }
+    .enterTagText{
+        opacity: 0.25;
+        font-family: $heebo;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        color: #000000;
+    }    
+}
+.modal-body{   
+    padding: 0px;     
+    .tagsOverflow{
+        margin: 5px 0px 10px 6px;   
+        height: 35px;
+        overflow-y: scroll;
+        ul{
+            list-style-type: none;
+            padding: 0px;
+            margin-bottom: 0px;
+            li{
+                display: inline-block;
+                border-radius: 4px;
+                background-color: #5f6e74;
+                padding: 2px 6px 2px 8px;
+                margin: 3px 10px 3px 0px; 
+                cursor: pointer;
+                span{
+                    font-family: $heebo;
+                    font-size: 16px;
+                    font-weight: normal;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #ffffff;
+                }
+            }
+            li:last-child{
+                margin-right: 0px !important;
+            }
+        }
+    }
+    .tagsOverflowList{        
+        overflow-y: scroll;
+        height: 250px;
+        ul{
+            list-style-type: none;
+            padding: 0px;
+            margin-bottom: 0px;
+            li{
+                padding: 8px 10px 10px 12px;
+                cursor: pointer;
+                span{
+                    font-family: $heebo;
+                    font-size: 14px;
+                    font-weight: normal;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.43;
+                    letter-spacing: normal;
+                    color: #000000;
+                }
+            }
+            .activeClass{
+                background-color: rgba(96, 195, 253, 0.7);
+            }
+        }
+    }
+}
+.modal-footer{
+    border-top: none;
+    .cancelBtn{
+        cursor: pointer;
+        margin-left: 8px;
+        @include form-button(88px, 32px, $heebo, 14px, bold, normal, normal, 1.5, normal, center, $hexaBlack, $white, 4px, none );
+    }
+    .removeBtn{
+        cursor: pointer;
+        @include form-button(88px, 32px, $heebo, 14px, bold, normal, normal, 1.5, normal, center, $white, #00a0ff, 4px, none);
+    }
+}

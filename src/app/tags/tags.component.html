@@ -85,7 +85,14 @@
             <thead>
               <tr>
                 <th scope="col" sortable="resource-name" class="custom-select">Resource Name</th>
-                <th scope="col" sortable="resource-typename" class="custom-select">Resource Type Name</th>
+                <!-- <th scope="col" sortable="resource-typename" class="custom-select">Resource Type Name</th> -->
+                <th scope="col" sortable="resource-typename" class="custom-select">
+                  <div class="pop-div">
+                    <a id="poplink" href="javascript:void(0);">Resource Type Name</a>
+                    <div class="pop-title">Title here</div>
+                    <div class="pop-content">Content here</div>
+                </div>
+                </th>
                 <th scope="col" sortable="resource-category" class="custom-select">Resource Category</th>
                 <th scope="col" sortable="resource-subcategory" class="custom-select">Resource Subcategory</th>
                 <th scope="col" sortable="resource-id" class="custom-select">Resource ID</th>
@@ -98,7 +105,8 @@
               <tr *ngFor="let resource of allResourcesArr.data">
                 <td>{{resource.resourceName}}</td>
                 <td>{{resource.resourceTypeName}}</td>
-                <td>{{resource.resourceCategory}}</td>
+                <td placement="right"
+                [ngbPopover] = "openPopover" popoverClass="my-custom-class" class="cursor">{{resource.resourceCategory}}</td>
                 <td>{{resource.resourceSubcategory}}</td>
                 <td>{{resource.resourceId}}</td>
                 <td>{{resource.resourceRegion}}</td>
@@ -107,6 +115,13 @@
               </tr>
             </tbody>
           </table>
+          <ng-template #openPopover>
+            <ul>
+              <li (click) ="openModal();">Add Tags</li>
+              <li>Action 2</li>
+              <li>Action 3</li>
+            </ul>
+          </ng-template>
           <div class="paginationWidth mt20">
               <ngb-pagination *ngIf="totalCount > pageSize" [collectionSize]="totalCount" [(page)]="page" [pageSize]="pageSize" [maxSize]="7" [boundaryLinks]="true" (pageChange)="loadPage($event,pageSize)"></ngb-pagination>
               <div class="showText floatRight" *ngIf="totalCount > 10">Show:
