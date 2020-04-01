@@ -1,0 +1,66 @@
+.userManagement {
+  // overflow: unset !important;
+  &-subheader {
+    &-title {
+      color: $sky-of-margritte !important;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  &__header {
+    @include text-bold-active(30px);
+    text-align: center;
+    &-addButton {
+      float: right;
+    }
+  }
+  &__group {
+    margin-top: 18px;
+    &-label {
+      @include text-bold-active(20px);
+      margin-bottom: 16px !important;
+    }
+    &__users {
+      display: flex;
+      flex-wrap: wrap;
+      &__user {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 40px;
+        margin-right: 8px;
+        width: 32%;
+        &__info {
+          margin-left: 6px;
+          width: 100%;
+          &-name {
+            @include text-meduim-bold-active(16px);
+            font-weight: 500;
+          }
+          &-text {
+            @include text-normal(16px);
+            word-break: break-word;
+            &-active {
+              color: $caribbean-green;
+            }
+            &-inactive {
+              color: $coral-red;
+            }
+          }
+          &-link {
+            @include text-normal(16px);
+            color: $blue;
+            margin-right: 4px;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+          &-dot {
+            width: 2px;
+            height: 2px;
+            background: $black;
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+}

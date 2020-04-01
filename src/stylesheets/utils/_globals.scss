@@ -1,0 +1,139 @@
+.global__node-text {
+  @include text-normal;
+  margin-left: 0px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: default;
+}
+
+.global__node-selected {
+  background-color: $rockman-blue !important;
+}
+
+.global__icon {
+  color: $blue;
+  font-size: 24px;
+  margin-left: 16px;
+}
+
+.global__file-folder {
+  font-size: 20px;
+  margin-right: 8px;
+  color: $softsun !important;
+}
+
+.global__caret {
+  font-size: 20px;
+  margin-right: 4px;
+  color: $spanish-grey !important;
+  cursor: pointer;
+}
+
+.global__field-label {
+  @include text-normal-inactive;
+  margin-left: 0px;
+  margin-bottom: 4px;
+}
+
+.global__container {
+  background: $blue-gradient;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.global__cursor-pointer {
+  cursor: pointer;
+}
+
+.global__hr-line {
+  width: 100%;
+  height: 1px;
+  background: $froasted-glass;
+}
+
+.global__center-vert {
+  display: flex;
+  align-items: center;
+}
+
+.global__center-horiz-vert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.global__link {
+  color: $sky-of-margritte !important;
+  cursor: pointer;
+}
+
+.global__disabled-box {
+  border: 0 !important;
+  background: $black;
+  opacity: 0.25;
+  color: $white !important;
+  cursor: not-allowed !important;
+}
+
+.global__field__error {
+  &-box {
+    border-color: $red !important;
+  }
+  &-text {
+    @include text-normal;
+    margin-bottom: 15px;
+    margin-top: -25px;
+    color: $red;
+  }
+}
+
+.global__radio {
+  span > span {
+    border-color: $black;
+  }
+}
+
+.global__text-red {
+  color: $red !important;
+}
+
+.global__text-green {
+  color: $caribbean-green !important;
+}
+
+.global__color-sky {
+  color: $sky-of-margritte !important;
+}
+
+.global__color-blue {
+  color: $blue !important;
+}
+
+.omnimodal {
+  > .ant-modal-content {
+    > .ant-modal-body {
+      > .ant-modal-confirm-body-wrapper {
+        > .ant-modal-confirm-btns {
+          > .ant-btn:first-child {
+            border-color: $black !important;
+            @include text-bold-active(12px);
+            &:active,
+            &:hover,
+            &:focus {
+              border-color: $black !important;
+              > span {
+                @include text-bold-active(12px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+p {
+  margin-bottom: 1px !important;
+}

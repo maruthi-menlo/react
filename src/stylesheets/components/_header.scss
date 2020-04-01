@@ -1,0 +1,22 @@
+.headerbar {
+  height: 64px;
+  margin-bottom: 5px;
+  border-bottom: 0.5px solid;
+  width: 100%;
+  top: 0px;
+  box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.25);
+  background-color: $white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 8px;
+  &-logo {
+    width: 176px;
+    height: 36px;
+    cursor: pointer;
+  }
+  &-username {
+    margin: 0px 10px;
+    @include text-normal(16px);
+  }
+}

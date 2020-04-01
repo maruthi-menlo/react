@@ -1,0 +1,60 @@
+.login {
+  width: 360px;
+  margin: auto;
+  padding: 16px 20px;
+  background: $white;
+  border-radius: 4px;
+  border-color: $shadowed-steel;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.1);
+  &-errorbox {
+    border-color: $red !important;
+  }
+  &-error {
+    @include text-normal;
+    margin-bottom: 15px;
+    color: $red;
+  }
+  &-fieldError {
+    @include text-normal;
+    margin-bottom: 15px;
+    margin-top: -25px;
+    color: $red;
+  }
+  &-text {
+    @include text-bold-active(20px);
+    margin-left: 0px;
+    margin-top: 16px;
+    margin-bottom: 0px;
+  }
+  &-logo {
+    display: block;
+    margin: auto;
+    height: 53px;
+  }
+  &__hr-line {
+    margin: 10px 0px 20px;
+  }
+  &__pwdsection {
+    &-forgot-pwd {
+      float: right;
+      font-size: 12px;
+    }
+  }
+  &-rememberpwd {
+    span > span {
+      border-color: $black;
+      font-size: 12px;
+    }
+  }
+  &-form-button {
+    width: 100%;
+    margin-top: 10px;
+    span {
+      @include text-bold-active(12px);
+      color: $white;
+      margin-left: 0px;
+    }
+  }
+}

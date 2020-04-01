@@ -1,0 +1,69 @@
+// form text field color
+.ant-input {
+  color: $black !important;
+}
+.ant-form-item-children {
+  input {
+    border-color: $black;
+  }
+}
+
+.ant-btn {
+  @include text-bold-active(16px);
+  margin-left: 0px;
+  border-color: $blue;
+
+  &-primary {
+    background-color: $blue !important;
+    box-shadow: none !important;
+  }
+}
+
+.ant-pagination {
+  background: $blue;
+  opacity: 0.81;
+  border-radius: 8px;
+  padding: 5px 10px !important;
+
+  > li {
+    color: $white;
+  }
+
+  &-item {
+    border: none !important;
+    background-color: $blue !important;
+    > a,
+    &-ellipsis {
+      color: $white !important;
+    }
+
+    &-active {
+      background: $white !important;
+      > a {
+        color: $black !important;
+      }
+    }
+  }
+}
+
+.ant-message-notice-content {
+  min-width: 200px;
+  height: 36px;
+  border-radius: 24px !important;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.5) !important;
+  background-color: $blue-atoll !important;
+  padding: 5px 20px 0px 6px !important;
+  text-align: left;
+
+  > .ant-message-custom-content {
+    > .anticon {
+      top: 2px;
+      color: $white;
+      font-size: 22px;
+    }
+    > span {
+      @include text-medium(14px);
+      color: $white;
+    }
+  }
+}

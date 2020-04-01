@@ -1,0 +1,16 @@
+.popoverCustomers {
+  height: 200px;
+  overflow-y: auto;
+  &-text {
+    cursor: pointer;
+    &:first-child {
+      border-bottom: solid 1px $ash-blue;
+    }
+    &:hover {
+      color: $blue;
+    }
+    &-selected {
+      color: $blue;
+    }
+  }
+}

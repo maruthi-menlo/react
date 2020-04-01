@@ -1,0 +1,40 @@
+.sortheader {
+  display: flex;
+  border-bottom: solid 0.2px;
+  padding: 2px;
+  justify-content: space-around;
+
+  &__text {
+    @include text-bold-inactive;
+    margin-left: 0px;
+  }
+
+  &__section {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .label {
+      @include text-normal;
+      margin-left: 6px;
+    }
+  }
+
+  .selected-sortby {
+    border: solid 0.5px $sky-of-margritte;
+    border-radius: 4px;
+    padding: 2px;
+    cursor: default;
+  }
+}
+
+.sequenceslist {
+  overflow-y: auto;
+  padding: 10px;
+  height: 88%;
+  &__sequence {
+    display: flex;
+    align-items: center;
+    height: 25px;
+  }
+}

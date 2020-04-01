@@ -1,0 +1,43 @@
+.pagination {
+  > .ant-pagination {
+    opacity: 1;
+    > .ant-pagination-prev,
+    > .ant-pagination-total-text,
+    > .ant-pagination-item {
+      margin-right: 4px !important;
+    }
+  }
+  display: flex;
+  background: $blue;
+  opacity: 0.81;
+  border-radius: 8px;
+  padding: 5px 10px !important;
+  align-items: center;
+  justify-content: space-between;
+
+  &__pagesize {
+    color: $white;
+    &__label {
+      margin-right: 16px;
+    }
+    &__container {
+      display: flex;
+      &-input {
+        width: 45px !important;
+        border: none !important;
+        border-radius: 0px !important;
+        border-top-left-radius: 4px !important;
+        border-bottom-left-radius: 4px !important;
+      }
+      &-arrows {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 32px;
+        background-color: $clear-chill;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
+  }
+}

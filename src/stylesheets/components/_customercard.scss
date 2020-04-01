@@ -1,0 +1,67 @@
+.customercard {
+  width: 244px;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  margin-right: 42px;
+  margin-bottom: 42px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.75);
+  &-more {
+    float: right;
+  }
+  &__heading {
+    display: flex;
+    align-items: center;
+    height: 22%; //60px;
+    overflow: hidden;
+    background: $blue;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    &-text {
+      @include text-bold-active(16px);
+      margin-top: 5px;
+      width: 100%;
+      color: $white;
+      padding: 0px 0px 4px 24px;
+      overflow: hidden;
+    }
+    &-more {
+      padding: 0px 10px;
+      cursor: pointer;
+    }
+  }
+  &__content {
+    cursor: pointer;
+    background: $white;
+    margin: 3px 3px 3px;
+    padding-left: 12px;
+    height: 78%; //100%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+    &__item {
+      height: 28px;
+      padding: 8px;
+      margin-bottom: 10px;
+      &-text {
+        @include text-normal(16px);
+        font-weight: 500;
+        margin-left: 13px;
+      }
+      &-subtext {
+        @include text-normal(14px);
+        margin-left: 30px;
+        display: block;
+        opacity: 0.75;
+      }
+    }
+  }
+}
+
+.red-text {
+  color: red;
+}
